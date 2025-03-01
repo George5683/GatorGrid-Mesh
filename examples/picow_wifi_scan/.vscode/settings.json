@@ -38,6 +38,7 @@
     "raspberry-pi-pico.ninjaPath": "${HOME}/.pico-sdk/ninja/v1.12.1/ninja",
     "files.associations": {
         "clocks.h": "c",
-        "btstack_cyw43.h": "c"
+        "btstack_cyw43.h": "c",
+        "cyw43_arch.h": "c"
     }
 }
