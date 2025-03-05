@@ -1,6 +1,7 @@
 #include "MeshNode.hpp"
 #include <random>
 #include <stdio.h>
+#include <ctime>
 
 extern "C" {
     #include "pico/cyw43_arch.h"
@@ -18,9 +19,11 @@ extern "C" {
     #include "hardware/clocks.h"
 }
 
-MeshNode::MeshNode(){
-    // assign a random number to the NodeID
-    NodeID = 1;
+MeshNode::MeshNode() {
+    // Seed the random number generator
+    std::srand(time(nullptr));
+    // Assign a random number to the NodeID
+    NodeID = std::rand() % 10000 + 1; // Random number between 1 and 10,000
 }
 
 // ______________________Access Point Commands____________________________________________________
@@ -227,7 +230,7 @@ static err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err)
     DEBUG_printf("client connected\n");
 
     // Create the state for the connection
-    TCP_CONNECT_STATE_T *con_state = calloc(1, sizeof(TCP_CONNECT_STATE_T));
+    TCP_CONNECT_STATE_T *con_state = (TCP_CONNECT_STATE_T*)calloc(1, sizeof(TCP_CONNECT_STATE_T));
     if (!con_state) {
         DEBUG_printf("failed to allocate connect state\n");
         return ERR_MEM;
@@ -292,7 +295,7 @@ void key_pressed_func(void *param) {
 
 bool MeshNode::init_ap_mode(){
     // Allocate the state of the TCP server
-    TCP_SERVER_T *state = calloc(1, sizeof(TCP_SERVER_T));
+    TCP_SERVER_T *state = (TCP_SERVER_T*)calloc(1, sizeof(TCP_SERVER_T));
     if (!state) {
         DEBUG_printf("failed to allocate state\n");
         return 1;
@@ -304,9 +307,17 @@ bool MeshNode::init_ap_mode(){
         return 1;
     }
 
+    // Get notified if the user presses a key
+    stdio_set_chars_available_callback(key_pressed_func, state);
+
     // Assign a name and password for the wifi network
     const char *ap_name = "test";
-    const char *password = NULL;
+
+    #if 1
+     const char *password = "password";
+    #else
+        const char *password = NULL;
+    #endif
 
     // enable the ap mode on the driver
     cyw43_arch_enable_ap_mode(ap_name, password, CYW43_AUTH_WPA2_AES_PSK);
@@ -341,6 +352,24 @@ bool MeshNode::init_ap_mode(){
     }
 
     state->complete = false;
+
+    while(!state->complete) {
+        // the following #ifdef is only here so this same example can be used in multiple modes;
+        // you do not need it in your code
+#if PICO_CYW43_ARCH_POLL
+        // if you are using pico_cyw43_arch_poll, then you must poll periodically from your
+        // main loop (not from a timer interrupt) to check for Wi-Fi driver or lwIP work that needs to be done.
+        cyw43_arch_poll();
+        // you can poll as often as you like, however if you have nothing else to do you can
+        // choose to sleep until either a specified time, or cyw43_arch_poll() has work to do:
+        cyw43_arch_wait_for_work_until(make_timeout_time_ms(1000));
+#else
+        // if you are not using pico_cyw43_arch_poll, then Wi-FI driver and lwIP work
+        // is done via interrupt in the background. This sleep is just an example of some (blocking)
+        // work you might be doing.
+        sleep_ms(1000);
+#endif
+    }
 
     return true;
 }

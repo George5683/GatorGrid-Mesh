@@ -7,7 +7,7 @@ class MeshNode{
         // Default Constructor
         MeshNode(); 
         
-        // Initialize and start the access point mode
+        // Initialize and start the access point mode 
         bool init_ap_mode();
 
         // Initialize and start the stand alone mode
