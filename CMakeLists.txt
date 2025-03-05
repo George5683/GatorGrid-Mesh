@@ -36,7 +36,7 @@ pico_sdk_init()
 # Add executable. Default name is the project name, version 0.1
 
 add_executable(picow_access_point_background
-        picow_access_point.cpp
+        src/main.cpp
         dhcpserver/dhcpserver.c
         dnsserver/dnsserver.c
         )
@@ -60,7 +60,7 @@ pico_configure_ip4_address(picow_access_point_background PRIVATE
 pico_add_extra_outputs(picow_access_point_background)
 
 add_executable(picow_access_point_poll
-        picow_access_point.cpp
+        src/main.cpp
         dhcpserver/dhcpserver.c
         dnsserver/dnsserver.c
         )

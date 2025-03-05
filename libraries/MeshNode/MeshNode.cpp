@@ -1,20 +1,29 @@
-/**
- * Copyright (c) 2022 Raspberry Pi (Trading) Ltd.
- *
- * SPDX-License-Identifier: BSD-3-Clause
- */
+#include "MeshNode.hpp"
+#include <random>
+#include <stdio.h>
 
-#include <string.h>
+extern "C" {
+    #include "pico/cyw43_arch.h"
+    #include "pico/stdlib.h"
+    
+    #include "lwip/pbuf.h"
+    #include "lwip/tcp.h"
+    
+    #include "dhcpserver.h"
+    #include "dnsserver.h"
 
-#include "pico/cyw43_arch.h"
-#include "pico/stdlib.h"
+    #include "pico/stdlib.h"
+    #include "pico/cyw43_arch.h"
+    #include "hardware/vreg.h"
+    #include "hardware/clocks.h"
+}
 
-#include "lwip/pbuf.h"
-#include "lwip/tcp.h"
+MeshNode::MeshNode(){
+    // assign a random number to the NodeID
+    NodeID = 1;
+}
 
-#include "dhcpserver.h"
-#include "dnsserver.h"
-
+// ______________________Access Point Commands____________________________________________________
 #define TCP_PORT 80
 #define DEBUG_printf printf
 #define POLL_TIME_S 5
@@ -279,39 +288,39 @@ void key_pressed_func(void *param) {
         state->complete = true;
     }
 }
+// ____________________________________________________________________________________________
 
-int main() {
-    stdio_init_all();
-
+bool MeshNode::init_ap_mode(){
+    // Allocate the state of the TCP server
     TCP_SERVER_T *state = calloc(1, sizeof(TCP_SERVER_T));
     if (!state) {
         DEBUG_printf("failed to allocate state\n");
         return 1;
     }
 
+    // initialize the driver
     if (cyw43_arch_init()) {
-        DEBUG_printf("failed to initialise\n");
+        DEBUG_printf("failed to initialise cyw43 driver\n");
         return 1;
     }
 
-    // Get notified if the user presses a key
-    stdio_set_chars_available_callback(key_pressed_func, state);
-
-    const char *ap_name = "picow_test";
-#if 1
-    const char *password = "password";
-#else
+    // Assign a name and password for the wifi network
+    const char *ap_name = "test";
     const char *password = NULL;
-#endif
 
+    // enable the ap mode on the driver
     cyw43_arch_enable_ap_mode(ap_name, password, CYW43_AUTH_WPA2_AES_PSK);
 
+    // Check if an IPV6 was assigned
     #if LWIP_IPV6
+    // Get the union of the IPV4 and IPV6
     #define IP(x) ((x).u_addr.ip4)
     #else
+    // if no IP is established, return x
     #define IP(x) (x)
     #endif
 
+    // set the mask and IP address of the access point
     ip4_addr_t mask;
     IP(state->gw).addr = PP_HTONL(CYW43_DEFAULT_IP_AP_ADDRESS);
     IP(mask).addr = PP_HTONL(CYW43_DEFAULT_IP_MASK);
@@ -332,27 +341,6 @@ int main() {
     }
 
     state->complete = false;
-    while(!state->complete) {
-        // the following #ifdef is only here so this same example can be used in multiple modes;
-        // you do not need it in your code
-#if PICO_CYW43_ARCH_POLL
-        // if you are using pico_cyw43_arch_poll, then you must poll periodically from your
-        // main loop (not from a timer interrupt) to check for Wi-Fi driver or lwIP work that needs to be done.
-        cyw43_arch_poll();
-        // you can poll as often as you like, however if you have nothing else to do you can
-        // choose to sleep until either a specified time, or cyw43_arch_poll() has work to do:
-        cyw43_arch_wait_for_work_until(make_timeout_time_ms(1000));
-#else
-        // if you are not using pico_cyw43_arch_poll, then Wi-FI driver and lwIP work
-        // is done via interrupt in the background. This sleep is just an example of some (blocking)
-        // work you might be doing.
-        sleep_ms(1000);
-#endif
-    }
-    tcp_server_close(state);
-    dns_server_deinit(&dns_server);
-    dhcp_server_deinit(&dhcp_server);
-    cyw43_arch_deinit();
-    printf("Test complete\n");
-    return 0;
+
+    return true;
 }
