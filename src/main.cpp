@@ -6,7 +6,7 @@ int main() {
     // Initialize stdio for debugging
     stdio_init_all();
     
-    // Create the MeshNode object
+    // Create the APNode object
     APNode node;
     
     // Initialize hardware and resources
@@ -16,6 +16,7 @@ int main() {
     }
     
     // Configure AP (optional - uses defaults if not set)
+    // defaults are below
     node.set_ap_credentials("mesh_network", "password123");
     
     // Start AP mode
