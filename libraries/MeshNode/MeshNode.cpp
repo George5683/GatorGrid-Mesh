@@ -323,7 +323,7 @@ MeshNode::~MeshNode() {
     cyw43_arch_deinit();
 }
 
-bool MeshNode::init() {
+bool MeshNode::init_ap_mode() {
     // Allocate the state of the TCP server if not already allocated
     if (!state) {
         state = (TCP_SERVER_T*)calloc(1, sizeof(TCP_SERVER_T));

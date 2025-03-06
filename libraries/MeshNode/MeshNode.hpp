@@ -20,7 +20,7 @@ public:
     ~MeshNode();
     
     // Initialize hardware and allocate resources
-    bool init();
+    bool init_ap_mode();
     
     // Start the AP mode and servers
     bool start_ap_mode();

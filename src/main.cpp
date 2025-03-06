@@ -10,7 +10,7 @@ int main() {
     MeshNode node;
     
     // Initialize hardware and resources
-    if (!node.init()) {
+    if (!node.init_ap_mode()) {
         printf("Failed to initialize MeshNode\n");
         return 1;
     }
@@ -25,7 +25,6 @@ int main() {
     }
     
     printf("MeshNode AP started with ID: %d\n", node.get_node_id());
-    printf("Press 'd' to disable the access point\n");
     
     // Main loop
     while (true) {
