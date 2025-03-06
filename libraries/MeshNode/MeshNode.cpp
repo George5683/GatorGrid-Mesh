@@ -1,7 +1,9 @@
 #include "MeshNode.hpp"
 #include <random>
-#include <stdio.h>
 #include <ctime>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 extern "C" {
     #include "pico/cyw43_arch.h"
@@ -13,20 +15,11 @@ extern "C" {
     #include "dhcpserver.h"
     #include "dnsserver.h"
 
-    #include "pico/stdlib.h"
-    #include "pico/cyw43_arch.h"
     #include "hardware/vreg.h"
     #include "hardware/clocks.h"
 }
 
-MeshNode::MeshNode() {
-    // Seed the random number generator
-    std::srand(time(nullptr));
-    // Assign a random number to the NodeID
-    NodeID = std::rand() % 10000 + 1; // Random number between 1 and 10,000
-}
-
-// ______________________Access Point Commands____________________________________________________
+// TCP Server definitions
 #define TCP_PORT 80
 #define DEBUG_printf printf
 #define POLL_TIME_S 5
@@ -38,12 +31,7 @@ MeshNode::MeshNode() {
 #define LED_GPIO 0
 #define HTTP_RESPONSE_REDIRECT "HTTP/1.1 302 Redirect\nLocation: http://%s" LED_TEST "\n\n"
 
-typedef struct TCP_SERVER_T_ {
-    struct tcp_pcb *server_pcb;
-    bool complete;
-    ip_addr_t gw;
-} TCP_SERVER_T;
-
+// TCP Server state structures
 typedef struct TCP_CONNECT_STATE_T_ {
     struct tcp_pcb *pcb;
     int sent_len;
@@ -54,6 +42,27 @@ typedef struct TCP_CONNECT_STATE_T_ {
     ip_addr_t *gw;
 } TCP_CONNECT_STATE_T;
 
+typedef struct TCP_SERVER_T_ {
+    struct tcp_pcb *server_pcb;
+    bool complete;
+    ip_addr_t gw;
+    dhcp_server_t dhcp_server;
+    dns_server_t dns_server;
+} TCP_SERVER_T;
+
+// Forward declarations for server functions
+static err_t tcp_close_client_connection(TCP_CONNECT_STATE_T *con_state, struct tcp_pcb *client_pcb, err_t close_err);
+static void tcp_server_close(TCP_SERVER_T *state);
+static err_t tcp_server_sent(void *arg, struct tcp_pcb *pcb, u16_t len);
+static int test_server_content(const char *request, const char *params, char *result, size_t max_result_len);
+static err_t tcp_server_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err);
+static err_t tcp_server_poll(void *arg, struct tcp_pcb *pcb);
+static void tcp_server_err(void *arg, err_t err);
+static err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err);
+static bool tcp_server_open(void *arg, const char *ap_name);
+static void key_pressed_func(void *param);
+
+// Implementation of these functions (same as in your original code)
 static err_t tcp_close_client_connection(TCP_CONNECT_STATE_T *con_state, struct tcp_pcb *client_pcb, err_t close_err) {
     if (client_pcb) {
         assert(con_state && con_state->pcb == client_pcb);
@@ -125,7 +134,7 @@ static int test_server_content(const char *request, const char *params, char *re
     return len;
 }
 
-err_t tcp_server_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err) {
+static err_t tcp_server_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err) {
     TCP_CONNECT_STATE_T *con_state = (TCP_CONNECT_STATE_T*)arg;
     if (!p) {
         DEBUG_printf("connection closed\n");
@@ -210,7 +219,7 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err)
 static err_t tcp_server_poll(void *arg, struct tcp_pcb *pcb) {
     TCP_CONNECT_STATE_T *con_state = (TCP_CONNECT_STATE_T*)arg;
     DEBUG_printf("tcp_server_poll_fn\n");
-    return tcp_close_client_connection(con_state, pcb, ERR_OK); // Just disconnect clent?
+    return tcp_close_client_connection(con_state, pcb, ERR_OK); // Just disconnect client?
 }
 
 static void tcp_server_err(void *arg, err_t err) {
@@ -280,7 +289,7 @@ static bool tcp_server_open(void *arg, const char *ap_name) {
     return true;
 }
 
-void key_pressed_func(void *param) {
+static void key_pressed_func(void *param) {
     assert(param);
     TCP_SERVER_T *state = (TCP_SERVER_T*)param;
     int key = getchar_timeout_us(0); // get any pending key press but don't wait
@@ -291,37 +300,69 @@ void key_pressed_func(void *param) {
         state->complete = true;
     }
 }
-// ____________________________________________________________________________________________
 
-bool MeshNode::init_ap_mode(){
-    // Allocate the state of the TCP server
-    TCP_SERVER_T *state = (TCP_SERVER_T*)calloc(1, sizeof(TCP_SERVER_T));
+// MeshNode class implementation
+MeshNode::MeshNode() : state(nullptr), running(false), ap_name("mesh_node"), password("password") {
+    // Seed the random number generator
+    std::srand(static_cast<unsigned>(time(nullptr)));
+    // Assign a random number to the NodeID
+    NodeID = std::rand() % 10000 + 1; // Random number between 1 and 10,000
+}
+
+MeshNode::~MeshNode() {
+    // Make sure AP mode is stopped
+    stop_ap_mode();
+    
+    // Free the state if it exists
+    if (state) {
+        free(state);
+        state = nullptr;
+    }
+    
+    // Deinitialize the driver
+    cyw43_arch_deinit();
+}
+
+bool MeshNode::init() {
+    // Allocate the state of the TCP server if not already allocated
     if (!state) {
-        DEBUG_printf("failed to allocate state\n");
-        return 1;
+        state = (TCP_SERVER_T*)calloc(1, sizeof(TCP_SERVER_T));
+        if (!state) {
+            DEBUG_printf("failed to allocate state\n");
+            return false;
+        }
     }
-
-    // initialize the driver
+    
+    // Initialize the state
+    state->complete = false;
+    state->server_pcb = nullptr;
+    
+    // Initialize the driver
     if (cyw43_arch_init()) {
-        DEBUG_printf("failed to initialise cyw43 driver\n");
-        return 1;
+        DEBUG_printf("failed to initialize cyw43 driver\n");
+        return false;
     }
-
+    
     // Get notified if the user presses a key
     stdio_set_chars_available_callback(key_pressed_func, state);
+    
+    return true;
+}
 
-    // Assign a name and password for the wifi network
-    const char *ap_name = "test";
+void MeshNode::set_ap_credentials(const char* name, const char* pwd) {
+    ap_name = name;
+    password = pwd;
+}
 
-    #if 1
-     const char *password = "password";
-    #else
-        const char *password = NULL;
-    #endif
-
-    // enable the ap mode on the driver
+bool MeshNode::start_ap_mode() {
+    if (!state) {
+        DEBUG_printf("MeshNode not initialized\n");
+        return false;
+    }
+    
+    // Enable the AP mode on the driver
     cyw43_arch_enable_ap_mode(ap_name, password, CYW43_AUTH_WPA2_AES_PSK);
-
+    
     // Check if an IPV6 was assigned
     #if LWIP_IPV6
     // Get the union of the IPV4 and IPV6
@@ -330,46 +371,67 @@ bool MeshNode::init_ap_mode(){
     // if no IP is established, return x
     #define IP(x) (x)
     #endif
-
-    // set the mask and IP address of the access point
+    
+    // Set the mask and IP address of the access point
     ip4_addr_t mask;
     IP(state->gw).addr = PP_HTONL(CYW43_DEFAULT_IP_AP_ADDRESS);
     IP(mask).addr = PP_HTONL(CYW43_DEFAULT_IP_MASK);
-
+    
     #undef IP
-
-    // Start the dhcp server
-    dhcp_server_t dhcp_server;
-    dhcp_server_init(&dhcp_server, &state->gw, &mask);
-
-    // Start the dns server
-    dns_server_t dns_server;
-    dns_server_init(&dns_server, &state->gw);
-
+    
+    // Start the DHCP server
+    dhcp_server_init(&state->dhcp_server, &state->gw, &mask);
+    
+    // Start the DNS server
+    dns_server_init(&state->dns_server, &state->gw);
+    
+    // Open the TCP server
     if (!tcp_server_open(state, ap_name)) {
         DEBUG_printf("failed to open server\n");
-        return 1;
+        return false;
     }
-
-    state->complete = false;
-
-    while(!state->complete) {
-        // the following #ifdef is only here so this same example can be used in multiple modes;
-        // you do not need it in your code
-#if PICO_CYW43_ARCH_POLL
-        // if you are using pico_cyw43_arch_poll, then you must poll periodically from your
-        // main loop (not from a timer interrupt) to check for Wi-Fi driver or lwIP work that needs to be done.
-        cyw43_arch_poll();
-        // you can poll as often as you like, however if you have nothing else to do you can
-        // choose to sleep until either a specified time, or cyw43_arch_poll() has work to do:
-        cyw43_arch_wait_for_work_until(make_timeout_time_ms(1000));
-#else
-        // if you are not using pico_cyw43_arch_poll, then Wi-FI driver and lwIP work
-        // is done via interrupt in the background. This sleep is just an example of some (blocking)
-        // work you might be doing.
-        sleep_ms(1000);
-#endif
-    }
-
+    
+    running = true;
     return true;
+}
+
+void MeshNode::poll(unsigned int timeout_ms) {
+    if (!running || !state) {
+        return;
+    }
+    
+    // Check if we should stop
+    if (state->complete) {
+        running = false;
+        return;
+    }
+    
+    // Handle polling operations based on the architecture
+    #if PICO_CYW43_ARCH_POLL
+    // If using poll architecture, check for work
+    cyw43_arch_poll();
+    // Wait for work or timeout
+    cyw43_arch_wait_for_work_until(make_timeout_time_ms(timeout_ms));
+    #else
+    // If using interrupt architecture, just sleep
+    sleep_ms(timeout_ms);
+    #endif
+}
+
+void MeshNode::stop_ap_mode() {
+    if (!running) {
+        return;
+    }
+    
+    // Disable the AP mode
+    cyw43_arch_lwip_begin();
+    cyw43_arch_disable_ap_mode();
+    cyw43_arch_lwip_end();
+    
+    // Close the TCP server
+    if (state && state->server_pcb) {
+        tcp_server_close(state);
+    }
+    
+    running = false;
 }
