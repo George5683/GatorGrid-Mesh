@@ -7,7 +7,7 @@ int main() {
     stdio_init_all();
     
     // Create the MeshNode object
-    MeshNode node;
+    APNode node;
     
     // Initialize hardware and resources
     if (!node.init_ap_mode()) {

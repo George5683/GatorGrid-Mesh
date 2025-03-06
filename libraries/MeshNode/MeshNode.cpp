@@ -301,15 +301,48 @@ static void key_pressed_func(void *param) {
     }
 }
 
-// MeshNode class implementation
-MeshNode::MeshNode() : state(nullptr), running(false), ap_name("mesh_node"), password("password") {
+// APNode class constructor
+APNode::APNode() : state(nullptr), running(false), ap_name("mesh_node"), password("password") {}
+
+// MeshNode class constructor
+MeshNode::MeshNode(){
     // Seed the random number generator
     std::srand(static_cast<unsigned>(time(nullptr)));
-    // Assign a random number to the NodeID
-    NodeID = std::rand() % 10000 + 1; // Random number between 1 and 10,000
+
+    int ID = std::rand() % 10000 + 1; // Random number between 1 and 10,000
+    // set the NodeID variable
+    set_NodeID(ID);
 }
 
-MeshNode::~MeshNode() {
+// MeshNode deconstructor
+MeshNode::~MeshNode(){
+    NodeID = 0;
+}
+
+// set node ID from the APNode class
+void APNode::set_node_id(int ID){
+    // calls the base class function
+    set_NodeID(ID);
+}
+
+// MeshNode base class function to set NodeID
+void MeshNode::set_NodeID(int ID){
+    // Assign ID to NodeID
+    NodeID = ID; // Random number between 1 and 10,000
+}
+
+// APNode class function for getting the node id
+int APNode::get_node_id(){
+    return get_NodeID();
+}
+
+// MeshNode class function for getting Node ID
+int MeshNode::get_NodeID(){
+    return NodeID;
+}
+
+// APNode deconstructor
+APNode::~APNode(){
     // Make sure AP mode is stopped
     stop_ap_mode();
     
@@ -323,7 +356,7 @@ MeshNode::~MeshNode() {
     cyw43_arch_deinit();
 }
 
-bool MeshNode::init_ap_mode() {
+bool APNode::init_ap_mode() {
     // Allocate the state of the TCP server if not already allocated
     if (!state) {
         state = (TCP_SERVER_T*)calloc(1, sizeof(TCP_SERVER_T));
@@ -349,14 +382,14 @@ bool MeshNode::init_ap_mode() {
     return true;
 }
 
-void MeshNode::set_ap_credentials(const char* name, const char* pwd) {
+void APNode::set_ap_credentials(const char* name, const char* pwd) {
     ap_name = name;
     password = pwd;
 }
 
-bool MeshNode::start_ap_mode() {
+bool APNode::start_ap_mode() {
     if (!state) {
-        DEBUG_printf("MeshNode not initialized\n");
+        DEBUG_printf("APNode not initialized\n");
         return false;
     }
     
@@ -395,7 +428,7 @@ bool MeshNode::start_ap_mode() {
     return true;
 }
 
-void MeshNode::poll(unsigned int timeout_ms) {
+void APNode::poll(unsigned int timeout_ms) {
     if (!running || !state) {
         return;
     }
@@ -418,7 +451,7 @@ void MeshNode::poll(unsigned int timeout_ms) {
     #endif
 }
 
-void MeshNode::stop_ap_mode() {
+void APNode::stop_ap_mode() {
     if (!running) {
         return;
     }
