@@ -1,5 +1,6 @@
 #include "pico/stdlib.h"
 #include "libraries/MeshNode/MeshNode.hpp"
+#include "pico/cyw43_arch.h"
 #include <cstdio>
 
 int main() {
@@ -17,7 +18,7 @@ int main() {
     
     // Configure AP (optional - uses defaults if not set)
     // defaults are below
-    node.set_ap_credentials("mesh_network", "password123");
+    //node.set_ap_credentials("mesh_network", "password123");
     
     // Start AP mode
     if (!node.start_ap_mode()) {
@@ -26,11 +27,14 @@ int main() {
     }
     
     printf("MeshNode AP started with ID: %d\n", node.get_node_id());
-    
+    bool toggle = true;
     // Main loop
     while (true) {
         // Poll for network events
         node.poll(1000);  // Poll with 1000ms timeout
+        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
+        toggle = !toggle;
+        printf("Ap Name: %-32s\n", node.ap_name);
     }
     
     return 0;

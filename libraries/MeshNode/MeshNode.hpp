@@ -23,7 +23,7 @@ class APNode : public MeshNode{
     public:
         TCP_SERVER_T* state;
         bool running;
-        const char* ap_name;
+        char ap_name[32];
         const char* password;
 
         APNode();
@@ -42,7 +42,7 @@ class APNode : public MeshNode{
         void stop_ap_mode();
         
         // Getters/setters for AP configuration
-        void set_ap_credentials(const char* name, const char* pwd);
+        void set_ap_credentials(char name[32], const char* pwd);
         
         int get_node_id();
         void set_node_id(int ID);

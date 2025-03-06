@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <sstream>
 
 extern "C" {
     #include "pico/cyw43_arch.h"
@@ -302,7 +303,10 @@ static void key_pressed_func(void *param) {
 }
 
 // APNode class constructor
-APNode::APNode() : state(nullptr), running(false), ap_name("mesh_node"), password("password") {}
+APNode::APNode() : state(nullptr), running(false), password("password") {
+    snprintf(ap_name, sizeof(ap_name), "GatorGrid_Node:%08X", get_NodeID());
+    
+}
 
 // MeshNode class constructor
 MeshNode::MeshNode(){
@@ -382,8 +386,8 @@ bool APNode::init_ap_mode() {
     return true;
 }
 
-void APNode::set_ap_credentials(const char* name, const char* pwd) {
-    ap_name = name;
+void APNode::set_ap_credentials(char name[32], const char* pwd) {
+    memcpy(ap_name, name, sizeof(ap_name));
     password = pwd;
 }
 
