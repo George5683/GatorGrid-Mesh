@@ -35,6 +35,32 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
+add_executable(sta_background
+        src/sta_test.cpp
+        libraries/dhcpserver/dhcpserver.c
+        libraries/dnsserver/dnsserver.c
+        libraries/MeshNode/MeshNode.cpp
+        )
+
+target_include_directories(sta_background PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/dhcpserver
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/dnsserver
+        )
+
+target_link_libraries(sta_background
+        pico_cyw43_arch_lwip_threadsafe_background
+        pico_stdlib
+        pico_multicore
+        )
+
+pico_enable_stdio_uart(sta_background 0)
+pico_enable_stdio_usb(sta_background 1)
+        
+
+pico_add_extra_outputs(sta_background)
+
 add_executable(picow_access_point_background
         src/main.cpp
         libraries/dhcpserver/dhcpserver.c
@@ -68,8 +94,8 @@ add_executable(picow_access_point_poll
         )
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(picow_access_point_poll 0)
-pico_enable_stdio_usb(picow_access_point_poll 1)
+pico_enable_stdio_uart(picow_access_point_poll 1)
+pico_enable_stdio_usb(picow_access_point_poll 0)
 
 # Modify the below lines to enable/disable output over UART/USB
 pico_enable_stdio_uart(picow_access_point_background 0)
