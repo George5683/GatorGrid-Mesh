@@ -36,7 +36,7 @@ pico_sdk_init()
 # Add executable. Default name is the project name, version 0.1
 
 add_executable(sta_background
-        src/sta_test.cpp
+        tests/main.cpp
         libraries/dhcpserver/dhcpserver.c
         libraries/dnsserver/dnsserver.c
         libraries/MeshNode/MeshNode.cpp

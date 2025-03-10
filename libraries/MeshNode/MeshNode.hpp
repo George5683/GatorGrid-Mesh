@@ -21,12 +21,14 @@ public:
     int get_NodeID();
 };
 
-class APNode : public MeshNode{
+class APNode : public MeshNode{   
 public:
     TCP_SERVER_T* state;
     bool running;
     char ap_name[32];
     const char* password;
+    // Flag to track if the webpage is enabled
+    bool webpage_enabled;
 
     APNode();
     ~APNode();
@@ -36,18 +38,27 @@ public:
     
     // Start the AP mode and servers
     bool start_ap_mode();
-    
-    // Poll function to handle network events
-    void poll(unsigned int timeout_ms = 1000);
-    
+
     // Stop the AP mode
     void stop_ap_mode();
     
+    // Poll function to handle network events
+    void poll(unsigned int timeout_ms = 1000);
+
     // Getters/setters for AP configuration
     void set_ap_credentials(char name[32], const char* pwd);
     
     int get_node_id();
     void set_node_id(int ID);
+
+    // REACH MILESTONES
+
+    // function to enable a webpage on the access point
+    void enable_webpage();
+
+    // function to disable a webpage on the access point
+    void disable_webpage();
+
 };
 
 class STANode : public MeshNode{

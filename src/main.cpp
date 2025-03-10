@@ -6,7 +6,7 @@
 int main() {
     // Initialize stdio for debugging
     stdio_init_all();
-    /*
+    
     // Create the APNode object
     APNode node;
     
@@ -31,27 +31,6 @@ int main() {
     while (true) {
         // Poll for network events
         node.poll(1000);  // Poll with 1000ms timeout
-    }
-    */
-
-
-    STANode node;
-
-    if (!node.init_sta_mode())
-    {
-        return 1;
-    }
-
-    if (!node.start_sta_mode()) {
-        return 1;
-    }
-
-    bool toggle = true;
-    for (;;) {
-        node.scan_for_nodes();
-        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
-        toggle = !toggle;
-        sleep_ms(5000);
     }
 
     return 0;
