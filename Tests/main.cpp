@@ -24,6 +24,7 @@ void core1_entry() {
         node.scan_for_nodes();
         cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
         toggle = !toggle;
+        printf("core print...");
         sleep_ms(5000);
     }
 
@@ -37,6 +38,7 @@ int main() {
 
     for (;;) {
         sleep_ms(1000);
+        printf("main printing...");
     }
 
     return 0;
