@@ -567,6 +567,7 @@ int STANode::scan_result(void* env, const cyw43_ev_scan_result_t* result) {
 
     // No need to allocate memory for result_copy if we're not storing it
     // Just use the result directly
+    cyw43_ev_scan_result_t* result_copy = static_cast<cyw43_ev_scan_result_t*>(malloc(sizeof(cyw43_ev_scan_result_t)));
     
     STANode* self = static_cast<STANode*>(env);
     const char* ssid_str = reinterpret_cast<const char*>(result->ssid);
@@ -579,9 +580,13 @@ int STANode::scan_result(void* env, const cyw43_ev_scan_result_t* result) {
             // Add to known nodes if not already present
             if (self->known_nodes.find(id) == self->known_nodes.end()) {
                 printf("New node ID: %d\n", id);
-                self->known_nodes.emplace(id);
+                self->known_nodes[id] = result_copy;
             }
         }
+    }
+    else
+    {
+        free(result_copy);
     }
     
     return 0;
