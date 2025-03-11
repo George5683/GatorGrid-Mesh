@@ -34,10 +34,15 @@ void core1_entry() {
 int main() {
     stdio_init_all();
 
-    multicore_launch_core1(core1_entry);
+    //multicore_launch_core1(core1_entry);\
+
+    STANode Node;
+    Node.init_sta_mode();
+    Node.start_sta_mode();
 
     for (;;) {
         sleep_ms(1000);
+        Node.scan_for_nodes();
         printf("main printing...");
     }
 

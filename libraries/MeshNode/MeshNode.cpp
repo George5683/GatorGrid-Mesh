@@ -548,6 +548,8 @@ int STANode::scan_result(void* env, const cyw43_ev_scan_result_t* result) {
 
     *result_copy = *result;
 
+    STANode* self = static_cast<STANode*>(env);
+
     const char* ssid_str = reinterpret_cast<const char*>(result->ssid);
 
     const char* prefix = "GatorGrid_Node:";
@@ -555,13 +557,21 @@ int STANode::scan_result(void* env, const cyw43_ev_scan_result_t* result) {
 
     if (strncmp(ssid_str, prefix, prefix_len) == 0) {
         const char* incomingID = ssid_str + prefix_len;
-        printf("SSID matches. Node data: \"%s\"\n", incomingID);
 
-        char* endptr;
-        unsigned long value = strtoul(incomingID, &endptr, 16);
-        uint32_t id = (uint32_t) value;
-        STANode* self = static_cast<STANode*>(env);
-        self->known_nodes[id] = result_copy;
+        int id;
+        sscanf((char*)&(result->ssid), "GatorGrid_Node:%d", &id);
+
+        //printf("%d\n", id);
+        
+        // If id is found in the set
+        if (self->known_nodes.find(id) != self->known_nodes.end()) {
+            // Element exists in the set
+            printf("Node ID %d is already known\n", id);
+        } else {
+            // Element does not exist in the set
+            printf("SSID matches. New node data: \"%s\"\n", incomingID);
+            self->known_nodes.emplace(id);
+        }
     }
     
     return 0;

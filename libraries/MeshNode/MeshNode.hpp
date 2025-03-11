@@ -2,7 +2,7 @@
 #define MESH_NODE_HPP
 
 #include <cstdint>
-#include <map>
+#include <set>
 #include "pico/cyw43_arch.h"
 
 // Forward declarations
@@ -64,7 +64,7 @@ public:
 class STANode : public MeshNode{
 public:
 
-    std::map<uint32_t, cyw43_ev_scan_result_t*> known_nodes;
+    std::set<int> known_nodes;
 
     STANode();
     ~STANode();
