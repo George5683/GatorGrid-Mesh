@@ -1,6 +1,6 @@
 # MeshNode Library 
 
-The MeshNode library is meant to be used on the cyw43 driver. It allows for functionalities such as access point and stand alone modes to work. 
+The MeshNode library is meant to be used on the cyw43 driver. It allows for functionalities such as access point and stand alone modes to work. Enables multiple picos to be connected to each other in a mesh node fashion.
 
 ## Features
 - access point mode
