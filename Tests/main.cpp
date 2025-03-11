@@ -33,18 +33,38 @@ void core1_entry() {
 
 int main() {
     stdio_init_all();
-
-    //multicore_launch_core1(core1_entry);\
-
+    
+    // Initial delay for serial monitor
+    sleep_ms(10000);
+    
     STANode Node;
-    Node.init_sta_mode();
-    Node.start_sta_mode();
-
-    for (;;) {
-        sleep_ms(1000);
-        Node.scan_for_nodes();
-        printf("main printing...");
+    if (!Node.init_sta_mode()) {
+        printf("Failed to initialize STA mode\n");
+        return -1;
     }
-
+    
+    if (!Node.start_sta_mode()) {
+        printf("Failed to start STA mode\n");
+        return -1;
+    }
+    
+    bool scan_ok = true;
+    for (;;) {
+        if (scan_ok) {
+            printf("Starting WiFi scan...\n");
+            scan_ok = Node.scan_for_nodes();
+            if (!scan_ok) {
+                printf("Scan failed, will retry after longer delay\n");
+                sleep_ms(10000); // Longer recovery delay
+                scan_ok = true;  // Reset to try again
+                continue;
+            }
+        }
+        
+        // Allow some time between scans (at least 5 seconds)
+        printf("Scan complete. Waiting before next scan...\n");
+        sleep_ms(5000);
+    }
+    
     return 0;
 }

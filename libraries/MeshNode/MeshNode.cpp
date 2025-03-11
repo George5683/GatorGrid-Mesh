@@ -534,49 +534,6 @@ bool APNode::start_ap_mode() {
 *   Client Class
 */
 
-
-int STANode::scan_result(void* env, const cyw43_ev_scan_result_t* result) {
-    if (result == NULL) {
-        return 0;
-    }
-
-    cyw43_ev_scan_result_t* result_copy = static_cast<cyw43_ev_scan_result_t*>(malloc(sizeof(cyw43_ev_scan_result_t)));
-
-    if (!result_copy) {
-        return -1;
-    }
-
-    *result_copy = *result;
-
-    STANode* self = static_cast<STANode*>(env);
-
-    const char* ssid_str = reinterpret_cast<const char*>(result->ssid);
-
-    const char* prefix = "GatorGrid_Node:";
-    size_t prefix_len = strlen(prefix);
-
-    if (strncmp(ssid_str, prefix, prefix_len) == 0) {
-        const char* incomingID = ssid_str + prefix_len;
-
-        int id;
-        sscanf((char*)&(result->ssid), "GatorGrid_Node:%d", &id);
-
-        //printf("%d\n", id);
-        
-        // If id is found in the set
-        if (self->known_nodes.find(id) != self->known_nodes.end()) {
-            // Element exists in the set
-            printf("Node ID %d is already known\n", id);
-        } else {
-            // Element does not exist in the set
-            printf("SSID matches. New node data: \"%s\"\n", incomingID);
-            self->known_nodes.emplace(id);
-        }
-    }
-    
-    return 0;
-}
-
 STANode::STANode() {
 
 }
@@ -592,55 +549,79 @@ bool STANode::init_sta_mode() {
         return false;
     }
 
+    printf("Initiation to STA mode successful\n");
     return true;
 }
 
 bool STANode::start_sta_mode() {
     cyw43_arch_enable_sta_mode();
-
+    printf("Starting STA mode\n");
     return true; // ggwp
 }
 
+// Fix memory leak in scan_result
+int STANode::scan_result(void* env, const cyw43_ev_scan_result_t* result) {
+    if (result == NULL) {
+        return 0;
+    }
+
+    // No need to allocate memory for result_copy if we're not storing it
+    // Just use the result directly
+    
+    STANode* self = static_cast<STANode*>(env);
+    const char* ssid_str = reinterpret_cast<const char*>(result->ssid);
+    const char* prefix = "GatorGrid_Node:";
+    size_t prefix_len = strlen(prefix);
+
+    if (strncmp(ssid_str, prefix, prefix_len) == 0) {
+        int id;
+        if (sscanf((char*)&(result->ssid), "GatorGrid_Node:%d", &id) == 1) {
+            // Add to known nodes if not already present
+            if (self->known_nodes.find(id) == self->known_nodes.end()) {
+                printf("New node ID: %d\n", id);
+                self->known_nodes.emplace(id);
+            }
+        }
+    }
+    
+    return 0;
+}
+
+// Improve scan_for_nodes with better error handling
 bool STANode::scan_for_nodes() {
-    bool scan_in_progress = false;
+    // Check if a scan is already in progress
+    if (cyw43_wifi_scan_active(&cyw43_state)) {
+        printf("Scan already in progress, skipping\n");
+        return false;
+    }
+    
     absolute_time_t scan_start_time = get_absolute_time();
     absolute_time_t scan_time = make_timeout_time_ms(5000);
     
     cyw43_wifi_scan_options_t scan_options = { 0 };
     int err = cyw43_wifi_scan(&cyw43_state, &scan_options, this, STANode::scan_result);
     if (err != 0) {
-        DEBUG_printf("Failed to start scan: %d\n", err);
+        printf("Failed to start scan: %d\n", err);
         return false;
     }
-    scan_in_progress = true;
-    while (scan_in_progress) {
-        if (!cyw43_wifi_scan_active(&cyw43_state)) {
-            DEBUG_printf("Scan completed\n");
-            scan_in_progress = false;
-        }
-        int64_t elapsed_us = absolute_time_diff_us(get_absolute_time(), scan_start_time);
-        // wait max 5 secs
-        if (elapsed_us > 5000 * 1000) {
-            DEBUG_printf("Scan taking too long; aborting scan...\n");
-            scan_in_progress = false;
+    
+    printf("Scan started\n");
+    
+    // Wait for scan to complete with timeout
+    while (cyw43_wifi_scan_active(&cyw43_state)) {
+        if (absolute_time_diff_us(scan_start_time, get_absolute_time()) > 5000000) {
+            printf("Scan timeout\n");
             return false;
         }
 
         #if PICO_CYW43_ARCH_POLL
-        // if you are using pico_cyw43_arch_poll, then you must poll periodically from your
-        // main loop (not from a timer) to check for Wi-Fi driver or lwIP work that needs to be done.
             cyw43_arch_poll();
-        // you can poll as often as you like, however if you have nothing else to do you can
-        // choose to sleep until either a specified time, or cyw43_arch_poll() has work to do:
             cyw43_arch_wait_for_work_until(scan_time);
         #else
-        // if you are not using pico_cyw43_arch_poll, then WiFI driver and lwIP work
-        // is done via interrupt in the background. This sleep is just an example of some (blocking)
-        // work you might be doing.
             sleep_ms(100);
         #endif
     }
-
-
+    
+    printf("Scan completed successfully\n");
     return true;
 }

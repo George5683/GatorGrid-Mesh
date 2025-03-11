@@ -6,6 +6,9 @@
 int main() {
     // Initialize stdio for debugging
     stdio_init_all();
+
+    // delay
+    sleep_ms(10000);
     
     // Create the APNode object
     APNode node;
