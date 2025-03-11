@@ -10,6 +10,9 @@
 struct TCP_SERVER_T_;
 typedef struct TCP_SERVER_T_ TCP_SERVER_T;
 
+struct TCP_CLIENT_T_;
+typedef struct TCP_CLIENT_T_ TCP_CLIENT_T;
+
 class MeshNode {
 private:
     int NodeID;
@@ -66,6 +69,7 @@ class STANode : public MeshNode{
 public:
 
     std::map<int, cyw43_ev_scan_result_t*> known_nodes;
+    TCP_CLIENT_T* state;
   
 
     STANode();
@@ -74,6 +78,8 @@ public:
     bool init_sta_mode();
     bool start_sta_mode();
     bool scan_for_nodes();
+    bool connect_to_node(uint32_t id);
+
     static int scan_result(void* env, const cyw43_ev_scan_result_t* result);
 };
 
