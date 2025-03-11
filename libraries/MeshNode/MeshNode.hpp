@@ -79,6 +79,7 @@ public:
     bool start_sta_mode();
     bool scan_for_nodes();
     bool connect_to_node(uint32_t id);
+    bool is_connected();
 
     static int scan_result(void* env, const cyw43_ev_scan_result_t* result);
 };

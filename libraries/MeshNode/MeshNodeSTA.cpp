@@ -1,4 +1,5 @@
 #include "MeshNode.hpp"
+#include <cyw43.h>
 #include <random>
 #include <ctime>
 #include <cstdio>
@@ -25,7 +26,6 @@ extern "C" {
 */
 
 #define TCP_PORT 4242
-#define DEBUG_printf printf
 #define BUF_SIZE 2048
 
 #define TEST_ITERATIONS 10
@@ -74,7 +74,7 @@ static err_t tcp_client_close(void *arg) {
         tcp_err(state->tcp_pcb, NULL);
         err = tcp_close(state->tcp_pcb);
         if (err != ERR_OK) {
-            DEBUG_printf("close failed %d, calling abort\n", err);
+            printf("close failed %d, calling abort\n", err);
             tcp_abort(state->tcp_pcb);
             err = ERR_ABRT;
         }
@@ -87,9 +87,9 @@ static err_t tcp_client_close(void *arg) {
 static err_t tcp_result(void *arg, int status) {
     TCP_CLIENT_T *state = (TCP_CLIENT_T*)arg;
     if (status == 0) {
-        DEBUG_printf("test success\n");
+        printf("test success\n");
     } else {
-        DEBUG_printf("test failed %d\n", status);
+        printf("test failed %d\n", status);
     }
     state->complete = true;
     return tcp_client_close(arg);
@@ -97,7 +97,7 @@ static err_t tcp_result(void *arg, int status) {
 
 static err_t tcp_client_sent(void *arg, struct tcp_pcb *tpcb, u16_t len) {
     TCP_CLIENT_T *state = (TCP_CLIENT_T*)arg;
-    DEBUG_printf("tcp_client_sent %u\n", len);
+    printf("tcp_client_sent %u\n", len);
     state->sent_len += len;
 
     if (state->sent_len >= BUF_SIZE) {
@@ -111,7 +111,7 @@ static err_t tcp_client_sent(void *arg, struct tcp_pcb *tpcb, u16_t len) {
         // We should receive a new buffer from the server
         state->buffer_len = 0;
         state->sent_len = 0;
-        DEBUG_printf("Waiting for buffer from server\n");
+        printf("Waiting for buffer from server\n");
     }
 
     return ERR_OK;
@@ -124,18 +124,18 @@ static err_t tcp_client_connected(void *arg, struct tcp_pcb *tpcb, err_t err) {
         return tcp_result(arg, err);
     }
     state->connected = true;
-    DEBUG_printf("Waiting for buffer from server\n");
+    printf("Waiting for buffer from server\n");
     return ERR_OK;
 }
 
 static err_t tcp_client_poll(void *arg, struct tcp_pcb *tpcb) {
-    DEBUG_printf("tcp_client_poll\n");
+    printf("tcp_client_poll\n");
     return tcp_result(arg, -1); // no response is an error?
 }
 
 static void tcp_client_err(void *arg, err_t err) {
     if (err != ERR_ABRT) {
-        DEBUG_printf("tcp_client_err %d\n", err);
+        printf("tcp_client_err %d\n", err);
         tcp_result(arg, err);
     }
 }
@@ -150,7 +150,7 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
     // cyw43_arch_lwip_begin IS needed
     cyw43_arch_lwip_check();
     if (p->tot_len > 0) {
-        DEBUG_printf("recv %d err %d\n", p->tot_len, err);
+        printf("recv %d err %d\n", p->tot_len, err);
         for (struct pbuf *q = p; q != NULL; q = q->next) {
             DUMP_BYTES(q->payload, q->len);
         }
@@ -164,10 +164,10 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 
     // If we have received the whole buffer, send it back to the server
     if (state->buffer_len == BUF_SIZE) {
-        DEBUG_printf("Writing %d bytes to server\n", state->buffer_len);
+        printf("Writing %d bytes to server\n", state->buffer_len);
         err_t err = tcp_write(tpcb, state->buffer, state->buffer_len, TCP_WRITE_FLAG_COPY);
         if (err != ERR_OK) {
-            DEBUG_printf("Failed to write data %d\n", err);
+            printf("Failed to write data %d\n", err);
             return tcp_result(arg, -1);
         }
     }
@@ -176,10 +176,10 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 
 static bool tcp_client_open(void *arg) {
     TCP_CLIENT_T *state = (TCP_CLIENT_T*)arg;
-    DEBUG_printf("Connecting to %s port %u\n", ip4addr_ntoa(&state->remote_addr), TCP_PORT);
+    printf("Connecting to %s port %u\n", ip4addr_ntoa(&state->remote_addr), TCP_PORT);
     state->tcp_pcb = tcp_new_ip_type(IP_GET_TYPE(&state->remote_addr));
     if (!state->tcp_pcb) {
-        DEBUG_printf("failed to create pcb\n");
+        printf("failed to create pcb\n");
         return false;
     }
 
@@ -206,7 +206,7 @@ static bool tcp_client_open(void *arg) {
 static TCP_CLIENT_T* tcp_client_init(void) {
     TCP_CLIENT_T *state = (TCP_CLIENT_T*)calloc(1, sizeof(TCP_CLIENT_T));
     if (!state) {
-        DEBUG_printf("failed to allocate state\n");
+        printf("failed to allocate state\n");
         return NULL;
     }
     ip4addr_aton("192.168.4.1", &state->remote_addr);
@@ -323,22 +323,37 @@ bool STANode::connect_to_node(uint32_t id) {
         return false;
     }
 
-    char* ssid = new char[32];
-    const char* ssid_c = ssid;
-
-    if (cyw43_arch_wifi_connect_timeout_ms(ssid_c, "password", CYW43_AUTH_WPA2_AES_PSK, 20000)) {
+    if (cyw43_arch_wifi_connect_timeout_ms((char*)known_nodes.at(id)->ssid, "password", CYW43_AUTH_WPA2_AES_PSK, 20000)) {
         for (int i = 0; i < 20; i ++)
         {
             printf("failed to connect.\n");
             sleep_ms(1000);
         }
-        delete[] ssid;
+        
         return false;
     } else {
         printf("Connected.\n");
     }
-    delete[] ssid;
+    
     return true;
 }
 
+bool STANode::is_connected() {
+    int res = cyw43_wifi_link_status(&cyw43_state, CYW43_ITF_STA);
+    if (res != CYW43_LINK_JOIN) {
+      return false;
+    }
+    return true;
+}
 
+bool STANode::tcp_init() {
+    state = tcp_client_init();
+    if (!state) {
+        printf("Unable to initalize tcp client state\n");
+        return false;
+    }
+    if (!tcp_client_open(state)) {
+        tcp_result(state, -1);
+        
+    }
+}
