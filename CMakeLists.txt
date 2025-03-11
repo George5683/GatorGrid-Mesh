@@ -36,10 +36,11 @@ pico_sdk_init()
 # Add executable. Default name is the project name, version 0.1
 
 add_executable(sta_background
-        tests/main.cpp
+        Tests/main.cpp
         libraries/dhcpserver/dhcpserver.c
         libraries/dnsserver/dnsserver.c
-        libraries/MeshNode/MeshNode.cpp
+        libraries/MeshNode/MeshNodeAP.cpp
+        libraries/MeshNode/MeshNodeSTA.cpp
         )
 
 target_include_directories(sta_background PRIVATE
@@ -65,7 +66,8 @@ add_executable(picow_access_point_background
         src/main.cpp
         libraries/dhcpserver/dhcpserver.c
         libraries/dnsserver/dnsserver.c
-        libraries/MeshNode/MeshNode.cpp
+        libraries/MeshNode/MeshNodeAP.cpp
+        libraries/MeshNode/MeshNodeSTA.cpp
         )
 
 target_include_directories(picow_access_point_background PRIVATE
@@ -90,7 +92,8 @@ add_executable(picow_access_point_poll
         src/main.cpp
         libraries/dhcpserver/dhcpserver.c
         libraries/dnsserver/dnsserver.c
-        libraries/MeshNode/MeshNode.cpp
+        libraries/MeshNode/MeshNodeAP.cpp
+        libraries/MeshNode/MeshNodeSTA.cpp
         )
 
 # Modify the below lines to enable/disable output over UART/USB
