@@ -69,6 +69,7 @@ class STANode : public MeshNode{
 public:
 
     std::map<int, cyw43_ev_scan_result_t*> known_nodes;
+    uint32_t upstream_node;
     TCP_CLIENT_T* state;
   
 
@@ -80,6 +81,7 @@ public:
     bool scan_for_nodes();
     bool connect_to_node(uint32_t id);
     bool is_connected();
+    bool tcp_init();
 
     static int scan_result(void* env, const cyw43_ev_scan_result_t* result);
 };

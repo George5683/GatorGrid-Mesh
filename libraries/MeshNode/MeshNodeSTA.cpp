@@ -1,5 +1,5 @@
 #include "MeshNode.hpp"
-#include <cyw43.h>
+#include <stdio.h>
 #include <random>
 #include <ctime>
 #include <cstdio>
@@ -50,6 +50,8 @@ extern "C" {
  #else
  #define DUMP_BYTES(A,B)
  #endif
+
+#define BYTE_FROM_32BITS(INT, SHIFT) (((INT) >> ((SHIFT) * 8)) & 0xFF)
  
 
 typedef struct TCP_CLIENT_T_ {
@@ -213,8 +215,31 @@ static TCP_CLIENT_T* tcp_client_init(void) {
     return state;
 }
 
+
+static void create_join_message(size_t buff_size, uint8_t* buff, int id) {
+  buff[0] = 0xFF; // Highest priority message signaling incoming connection 
+  buff[1] = BYTE_FROM_32BITS(id, 0); // LSB of id
+  buff[2] = BYTE_FROM_32BITS(id, 1);
+  buff[3] = BYTE_FROM_32BITS(id, 2); 
+  buff[4] = BYTE_FROM_32BITS(id, 3); // MSB of id
+  
+  // send current downstream nodes connected to our hardware connected AP 
+  int connected_nodes = 0;
+  buff[5] = connected_nodes; // connected nodes
+  for (int i = 0; i < connected_nodes; i++)
+  {
+    buff[6+(i*4)] = 0;
+    buff[7+(i*4)] = 0;
+    buff[8+(i*4)] = 0;
+    buff[9+(i*4)] = 0;
+  }
+}
+
+
+
+
 STANode::STANode() {
-    
+    upstream_node = ~0;
 }
 
 STANode::~STANode() {
@@ -354,6 +379,26 @@ bool STANode::tcp_init() {
     }
     if (!tcp_client_open(state)) {
         tcp_result(state, -1);
-        
+        return false; 
     }
+
+    uint8_t buffer[64] = {};
+    create_join_message(64, buffer, this->get_NodeID());
+    bool flag = false;
+
+    cyw43_arch_lwip_begin();
+    err_t err = tcp_write(state->tcp_pcb, (void*)buffer, 64, TCP_WRITE_FLAG_COPY);
+    err_t err2 = tcp_output(state->tcp_pcb);
+    if (err != ERR_OK) {
+        printf("Init message failed to be queued\n");
+        flag = true;
+    }
+    if (err2 != ERR_OK) {
+        printf("Init message failed to be sent\n");
+        flag = true;
+    }
+    cyw43_arch_lwip_end();
+    if (flag)
+      return false;
+    return true;
 }
