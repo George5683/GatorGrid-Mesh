@@ -66,17 +66,20 @@ int main() {
         node.tcp_init();
     }
 
-    // for (int i = 0; i < 10; i++)
-    // {
-    //     uint8_t* data;
-    //     data = new uint8_t[2048];
-    //     data[0] = i;
-    //     if (!node.send_tcp_data(data, 2048)) {
-    //         printf("Failed to send data\n");
-    //         return 0;
-    //     }
-    //     delete[] data;
-    // }
+    sleep_ms(1000);
+
+    for (int i = 0; i < 10; i++)
+    {
+        uint8_t* data;
+        data = new uint8_t[2048];
+        data[0] = i;
+        if (!node.send_tcp_data(data, 2048)) {
+            printf("Failed to send data\n");
+            return 0;
+        }
+        delete[] data;
+        sleep_ms(500);
+    }
 
     bool toggle = true;
     for (;;) {

@@ -5,6 +5,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <sstream>
+#include "hardware/regs/rosc.h"
+#include "hardware/regs/addressmap.h"
 
 extern "C" {
     #include "pico/cyw43_arch.h"
@@ -168,18 +170,36 @@ APNode::APNode() : state(nullptr), running(false), password("password"), webpage
 
 // MeshNode class constructor
 MeshNode::MeshNode(){
-    // Seed the random number generator
-    std::srand(static_cast<unsigned>(time(nullptr)));
-
-    int ID = std::rand() % 10000 + 1; // Random number between 1 and 10,000
+    seed_rand();
     // set the NodeID variable
-    set_NodeID(ID);
+    set_NodeID(rand());
 }
+
+
 
 // MeshNode deconstructor
 MeshNode::~MeshNode(){
     NodeID = 0;
 }
+
+// https://forums.raspberrypi.com/viewtopic.php?t=302960
+void MeshNode::seed_rand() {
+
+    uint32_t random = 0x811c9dc5;
+    uint8_t next_byte = 0;
+    volatile uint32_t *rnd_reg = (uint32_t *)(ROSC_BASE + ROSC_RANDOMBIT_OFFSET);
+  
+    for (int i = 0; i < 16; i++) {
+      for (int k = 0; k < 8; k++) {
+        next_byte = (next_byte << 1) | (*rnd_reg & 1);
+      }
+  
+      random ^= next_byte;
+      random *= 0x01000193;
+    }
+  
+    srand(random);
+  }
 
 // set node ID from the APNode class
 void APNode::set_node_id(int ID){

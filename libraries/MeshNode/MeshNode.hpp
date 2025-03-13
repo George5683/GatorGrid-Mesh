@@ -6,6 +6,8 @@
 #include <map>
 #include "pico/cyw43_arch.h"
 
+#define BUF_SIZE 2048
+
 // Forward declarations
 struct TCP_SERVER_T_;
 typedef struct TCP_SERVER_T_ TCP_SERVER_T;
@@ -15,7 +17,7 @@ typedef struct TCP_CLIENT_T_ TCP_CLIENT_T;
 
 class MeshNode {
 private:
-    int NodeID;
+    uint32_t NodeID;
 public:
     MeshNode();
     virtual ~MeshNode();
@@ -23,6 +25,7 @@ public:
     // Base class functions for get/set NodeID
     void set_NodeID(int ID);
     int get_NodeID();
+    void seed_rand();
 };
 
 class APNode : public MeshNode{   
@@ -63,6 +66,20 @@ public:
     // function to disable a webpage on the access point
     void disable_webpage();
 
+};
+
+class TCP_MESSAGE {
+    uint8_t* buffer;
+public:
+    TCP_MESSAGE() { buffer = new uint8_t[BUF_SIZE]; }
+    ~TCP_MESSAGE() { delete[] buffer; }
+    uint8_t* get_msg() { return buffer; }
+    virtual void create_msg() = 0;
+};
+
+class TCP_INIT_MESSAGE : public TCP_MESSAGE {
+public:
+    void create_msg();
 };
 
 class STANode : public MeshNode{

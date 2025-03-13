@@ -1,4 +1,5 @@
 #include "MeshNode.hpp"
+#include <lwip/tcpbase.h>
 #include <stdio.h>
 #include <random>
 #include <ctime>
@@ -27,7 +28,7 @@ extern "C" {
 */
 
 #define TCP_PORT 4242
-#define BUF_SIZE 2048
+
 
 #define TEST_ITERATIONS 10
 #define POLL_TIME_S 5
@@ -106,12 +107,6 @@ static err_t tcp_client_sent(void *arg, struct tcp_pcb *tpcb, u16_t len) {
 
     if (state->sent_len >= BUF_SIZE) {
 
-        state->run_count++;
-        if (state->run_count >= TEST_ITERATIONS) {
-            tcp_result(arg, 0);
-            return ERR_OK;
-        }
-
         // We should receive a new buffer from the server
         state->buffer_len = 0;
         state->sent_len = 0;
@@ -174,6 +169,7 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         tcp_recved(tpcb, p->tot_len);
     }
     pbuf_free(p);
+
 
     // if ()
 
@@ -239,15 +235,14 @@ static TCP_CLIENT_T* tcp_client_init(void) {
 static void create_join_message(size_t buff_size, uint8_t* buff, STANode* node) {
   buff[0] = 0xFF; // Highest priority message signaling incoming connection
   buff[1] = 64;
-  printf("%d\n",node->get_NodeID()); 
-  buff[2] = BYTE_FROM_32BITS(node->get_NodeID(), 0); // LSB of id
-  printf("%d\n",BYTE_FROM_32BITS(node->get_NodeID(), 0)); 
-  buff[3] = BYTE_FROM_32BITS(node->get_NodeID(), 1);
-  printf("%d\n",BYTE_FROM_32BITS(node->get_NodeID(), 1)); 
-  buff[4] = BYTE_FROM_32BITS(node->get_NodeID(), 2); 
-  printf("%d\n",BYTE_FROM_32BITS(node->get_NodeID(), 2)); 
-  buff[5] = BYTE_FROM_32BITS(node->get_NodeID(), 3); // MSB of id
-  printf("%d\n",BYTE_FROM_32BITS(node->get_NodeID(), 3)); 
+//   printf("%d\n",node->get_NodeID()); 
+//   buff[2] = BYTE_FROM_32BITS(node->get_NodeID(), 0); // LSB of id
+//   buff[3] = BYTE_FROM_32BITS(node->get_NodeID(), 1);
+//   buff[4] = BYTE_FROM_32BITS(node->get_NodeID(), 2); 
+//   buff[5] = BYTE_FROM_32BITS(node->get_NodeID(), 3); // MSB of id 
+
+  //*(uint32_t*)(buff[2]) = node->get_NodeID();
+  *reinterpret_cast<uint32_t*>(buff[2]) = node->get_NodeID();
   
   // send current downstream nodes connected to our hardware connected AP 
   int connected_nodes = 0;
@@ -443,19 +438,29 @@ bool STANode::tcp_init() {
 
 bool STANode::send_tcp_data(uint8_t* data, uint32_t size) {
 
-    uint8_t* buffer[BUF_SIZE] = {};
-    if (size > BUF_SIZE) { size = 2048; }
+    uint8_t buffer[BUF_SIZE] = {};
+    if (size > BUF_SIZE) { size = BUF_SIZE; }
     memcpy(buffer, data, size);
 
     bool flag = false;
 
+    // while(state->tcp_pcb->snd_buf != 0) {
+    //   printf("tcp buffer has %d bytes in it\n", state->tcp_pcb->snd_buf);
+    // }
+
     cyw43_arch_lwip_begin();
-    err_t err = tcp_write(state->tcp_pcb, (void*)buffer, BUF_SIZE, TCP_WRITE_FLAG_COPY);
-    err_t err2 = tcp_output(state->tcp_pcb);
-    if (err != ERR_OK) {
-        printf("Message failed to be queued\n");
-        flag = true;
+    printf("Space used in the buffer %d\n", tcp_sndbuf(state->tcp_pcb));
+    while (tcp_write(state->tcp_pcb, (void*)buffer, BUF_SIZE, TCP_WRITE_FLAG_COPY) == -1) {
+        printf("attempting to write\n");
+        sleep_ms(100);
     }
+    //err_t err = tcp_write(state->tcp_pcb, (void*)buffer, BUF_SIZE, TCP_WRITE_FLAG_COPY);
+    err_t err2 = tcp_output(state->tcp_pcb);
+    // if (err != ERR_OK) {
+    //     printf("Message failed to write\n");
+    //     printf("ERR: %d\n", err);
+    //     flag = true;
+    // }
     if (err2 != ERR_OK) {
         printf("Message failed to be sent\n");
         flag = true;
