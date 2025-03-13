@@ -27,6 +27,7 @@ public:
 
     // Generic function for generating and assiging random IDs
     void generate_id();
+    void seed_rand();
 };
 
 class APNode : public MeshNode{   

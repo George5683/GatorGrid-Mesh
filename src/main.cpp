@@ -8,15 +8,15 @@ int main() {
     stdio_init_all();
     
     // Create the APNode object
-    //APNode node;
-    STANode node;
+    APNode node;
+    //STANode node;
 
     //node.set_node_id(2);
 
     sleep_ms(5000);
     char ssid[] = "GatorGrid_Node:0000172E";
     char pass[] = "password";
-        
+        /*
     printf("Starting STA Mode\n");
     node.init_sta_mode();
     int err;
@@ -35,8 +35,9 @@ int main() {
 
     node.init_tcp();
     node.client_test();
+    */
     
-        /*
+
         
     // Initialize hardware and resources
     if (!node.init_ap_mode()) {
@@ -73,7 +74,7 @@ int main() {
         // Poll for network events
         node.poll(1000);  // Poll with 1000ms timeout
     }
-        */
+
 
     return 0;
 }
