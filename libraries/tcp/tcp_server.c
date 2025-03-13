@@ -19,7 +19,7 @@
 #define TEST_ITERATIONS 10
 #define POLL_TIME_S 5
 
-static TCP_SERVER_T* tcp_server_init(void) {
+TCP_SERVER_T* tcp_server_init(void) {
     TCP_SERVER_T *state = (TCP_SERVER_T*)calloc(1, sizeof(TCP_SERVER_T));
     if (!state) {
         DEBUG_printf("failed to allocate state\n");
@@ -53,7 +53,7 @@ err_t tcp_server_close(void *arg) {
     return err;
 }
 
-static err_t tcp_server_result(void *arg, int status) {
+err_t tcp_server_result(void *arg, int status) {
     TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
     if (status == 0) {
         DEBUG_printf("test success\n");
@@ -64,7 +64,7 @@ static err_t tcp_server_result(void *arg, int status) {
     return tcp_server_close(arg);
 }
 
-static err_t tcp_server_sent(void *arg, struct tcp_pcb *tpcb, u16_t len) {
+err_t tcp_server_sent(void *arg, struct tcp_pcb *tpcb, u16_t len) {
     TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
     DEBUG_printf("tcp_server_sent %u\n", len);
     state->sent_len += len;
@@ -143,19 +143,19 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
     return ERR_OK;
 }
 
-static err_t tcp_server_poll(void *arg, struct tcp_pcb *tpcb) {
+err_t tcp_server_poll(void *arg, struct tcp_pcb *tpcb) {
     DEBUG_printf("tcp_server_poll_fn\n");
     return tcp_server_result(arg, -1); // no response is an error?
 }
 
-static void tcp_server_err(void *arg, err_t err) {
+void tcp_server_err(void *arg, err_t err) {
     if (err != ERR_ABRT) {
         DEBUG_printf("tcp_client_err_fn %d\n", err);
         tcp_server_result(arg, err);
     }
 }
 
-static err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
+err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
     TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
     if (err != ERR_OK || client_pcb == NULL) {
         DEBUG_printf("Failure in accept\n");
@@ -205,11 +205,8 @@ bool tcp_server_open(void *arg) {
     return true;
 }
 
-void run_tcp_server_test(void) {
-    TCP_SERVER_T *state = tcp_server_init();
-    if (!state) {
-        return;
-    }
+void run_tcp_server_test(TCP_SERVER_T *state) {
+
     if (!tcp_server_open(state)) {
         tcp_server_result(state, -1);
         return;

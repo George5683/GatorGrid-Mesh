@@ -89,20 +89,6 @@ APNode::~APNode(){
 }
 
 bool APNode::init_ap_mode() {
-    // Allocate the state of the TCP server if not already allocated
-    if (!state) {
-        state = (TCP_SERVER_T*)calloc(1, sizeof(TCP_SERVER_T));
-        if (!state) {
-            printf("failed to allocate state\n");
-            return false;
-        }
-    }
-    
-    // Initialize the state
-    state->complete = false;
-    state->server_pcb = nullptr;
-    //state->ap_node = &this;
-    
     // Initialize the driver
     if (cyw43_arch_init()) {
         printf("failed to initialize cyw43 driver\n");
@@ -113,7 +99,7 @@ bool APNode::init_ap_mode() {
 }
 
 void APNode::set_ap_credentials(char *name, const char* pwd) {
-    memcpy(ap_name, name, sizeof(ap_name));
+    //memcpy(ap_name, name, sizeof(ap_name));
     password = pwd;
 }
 
@@ -181,53 +167,37 @@ void APNode::disable_webpage() {
 }
 
 void APNode::server_test() {
-    run_tcp_server_test();
+    run_tcp_server_test(state);
 }
 
 // Modified start_ap_mode to initialize with webpage disabled by default
 bool APNode::start_ap_mode() {
-    if (!state) {
-        DEBUG_printf("APNode not initialized\n");
-        return false;
-    }
-    
+
     // Enable the AP mode on the driver
     cyw43_arch_enable_ap_mode(ap_name, password, CYW43_AUTH_WPA2_AES_PSK);
-    
-    // Check if an IPV6 was assigned
+
+    state = tcp_server_init();
+    if (!state) {
+        return false;
+    }
+
     #if LWIP_IPV6
-    // Get the union of the IPV4 and IPV6
-    #define IP(x) ((x).u_addr.ip4)
-    #else
-    // if no IP is established, return x
-    #define IP(x) (x)
-    #endif
-    
-    // Set the mask and IP address of the access point
-    ip4_addr_t mask;
-    IP(state->gw).addr = PP_HTONL(CYW43_DEFAULT_IP_AP_ADDRESS);
-    IP(mask).addr = PP_HTONL(CYW43_DEFAULT_IP_MASK);
-    
-    #undef IP
-    
+     #define IP(x) ((x).u_addr.ip4)
+     #else
+     #define IP(x) (x)
+     #endif
+ \
+     ip4_addr_t mask;
+     IP(state->gw).addr = PP_HTONL(CYW43_DEFAULT_IP_AP_ADDRESS);
+     IP(mask).addr = PP_HTONL(CYW43_DEFAULT_IP_MASK);
+ 
+     #undef IP
+
     // Start the DHCP server
     dhcp_server_t dhcp_server;
     dhcp_server_init(&dhcp_server, &state->gw, &mask);
-    
-    // Start the DNS server
-    //dns_server_init(&state->dns_server, &state->gw);
-    
-    // Open the TCP server
-    //run_tcp_server_test();
 
-    /*if (!tcp_server_open(state)) {
-        DEBUG_printf("failed to open server\n");
-        return false;
-    }*/
-    
-    // Webpage is disabled by default
-    webpage_enabled = false;
-    printf("AP mode started with webpage disabled. Use enable_webpage() to enable it.\n");
+    server_test();
     
     running = true;
     return true;
