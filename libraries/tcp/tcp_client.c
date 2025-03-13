@@ -7,12 +7,8 @@
 #include "lwip/pbuf.h"
 #include "lwip/tcp.h"
 
-#define TCP_PORT 4242
-#define BUF_SIZE 2048
-#define DEBUG_printf printf
-#define TEST_ITERATIONS 10
-#define POLL_TIME_S 5
- 
+#include "tcp_client.h"
+
 #if 0
  static void dump_bytes(const uint8_t *bptr, uint32_t len) {
      unsigned int i = 0;
@@ -32,17 +28,6 @@
  #else
  #define DUMP_BYTES(A,B)
  #endif
- 
- typedef struct TCP_CLIENT_T_ {
-     struct tcp_pcb *tcp_pcb;
-     ip_addr_t remote_addr;
-     uint8_t buffer[BUF_SIZE];
-     int buffer_len;
-     int sent_len;
-     bool complete;
-     int run_count;
-     bool connected;
- } TCP_CLIENT_T;
  
  static err_t tcp_client_close(void *arg) {
      TCP_CLIENT_T *state = (TCP_CLIENT_T*)arg;
@@ -165,7 +150,7 @@
      }
  
      tcp_arg(state->tcp_pcb, state);
-     tcp_poll(state->tcp_pcb, tcp_client_poll, POLL_TIME_S * 2);
+     tcp_poll(state->tcp_pcb, tcp_client_poll, (POLL_TIME_S * 2));
      tcp_sent(state->tcp_pcb, tcp_client_sent);
      tcp_recv(state->tcp_pcb, tcp_client_recv);
      tcp_err(state->tcp_pcb, tcp_client_err);
@@ -185,7 +170,7 @@
  
  // Perform initialisation
  static TCP_CLIENT_T* tcp_client_init(void) {
-     TCP_CLIENT_T *state = calloc(1, sizeof(TCP_CLIENT_T));
+     TCP_CLIENT_T *state = (TCP_CLIENT_T*)calloc(1, sizeof(TCP_CLIENT_T));
      if (!state) {
          DEBUG_printf("failed to allocate state\n");
          return NULL;

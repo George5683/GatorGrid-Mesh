@@ -1,3 +1,5 @@
+
+
 #include <string.h>
 
  #include "pico/cyw43_arch.h"
@@ -9,26 +11,16 @@
  #include "dhcpserver.h"
  #include "dnsserver.h"
  
- #define TCP_PORT 4242
+ #include "tcp_server.h"
+ 
+#define TCP_PORT 4242
 #define DEBUG_printf printf
 #define BUF_SIZE 2048
 #define TEST_ITERATIONS 10
 #define POLL_TIME_S 5
 
-typedef struct TCP_SERVER_T_ {
-    struct tcp_pcb *server_pcb;
-    struct tcp_pcb *client_pcb;
-    bool complete;
-    uint8_t buffer_sent[BUF_SIZE];
-    uint8_t buffer_recv[BUF_SIZE];
-    int sent_len;
-    int recv_len;
-    int run_count;
-    ip_addr_t gw;
-} TCP_SERVER_T;
-
 static TCP_SERVER_T* tcp_server_init(void) {
-    TCP_SERVER_T *state = calloc(1, sizeof(TCP_SERVER_T));
+    TCP_SERVER_T *state = (TCP_SERVER_T*)calloc(1, sizeof(TCP_SERVER_T));
     if (!state) {
         DEBUG_printf("failed to allocate state\n");
         return NULL;
@@ -36,7 +28,7 @@ static TCP_SERVER_T* tcp_server_init(void) {
     return state;
 }
 
-static err_t tcp_server_close(void *arg) {
+err_t tcp_server_close(void *arg) {
     TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
     err_t err = ERR_OK;
     if (state->client_pcb != NULL) {
@@ -182,7 +174,7 @@ static err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err)
     return tcp_server_send_data(arg, state->client_pcb);
 }
 
-static bool tcp_server_open(void *arg) {
+bool tcp_server_open(void *arg) {
     TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
     DEBUG_printf("Starting server at %s on port %u\n", ip4addr_ntoa(netif_ip4_addr(netif_list)), TCP_PORT);
 
@@ -241,3 +233,5 @@ void run_tcp_server_test(void) {
     }
     free(state);
 }
+
+

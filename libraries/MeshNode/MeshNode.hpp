@@ -5,6 +5,7 @@
 #include <map>
 #include "pico/cyw43_arch.h"
 
+
 // Forward declarations
 struct TCP_SERVER_T_;
 typedef struct TCP_SERVER_T_ TCP_SERVER_T;
@@ -19,6 +20,9 @@ public:
     // Base class functions for get/set NodeID
     void set_NodeID(int ID);
     int get_NodeID();
+
+    // Generic function for generating and assiging random IDs
+    void generate_id();
 };
 
 class APNode : public MeshNode{   
@@ -46,7 +50,7 @@ public:
     void poll(unsigned int timeout_ms = 1000);
 
     // Getters/setters for AP configuration
-    void set_ap_credentials(char name[32], const char* pwd);
+    void set_ap_credentials(char *name, const char* pwd);
     
     int get_node_id();
     void set_node_id(int ID);
@@ -59,6 +63,7 @@ public:
     // function to disable a webpage on the access point
     void disable_webpage();
 
+    void server_test();
 };
 
 class STANode : public MeshNode{
@@ -72,6 +77,8 @@ public:
     bool init_sta_mode();
     bool start_sta_mode();
     bool scan_for_nodes();
+    bool connect_to_AP(char* SSID, char* password, int ms_timeout);
+    void client_test();
     static int scan_result(void* env, const cyw43_ev_scan_result_t* result);
 };
 

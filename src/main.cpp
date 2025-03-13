@@ -8,8 +8,25 @@ int main() {
     stdio_init_all();
     
     // Create the APNode object
-    APNode node;
+    //APNode node;
+    STANode node;
+
+    //node.set_node_id(2);
+
+    sleep_ms(5000);
+    char ssid[] = "GatorGrid_Node:0000172E";
+    char pass[] = "password";
+
+    if (true) {
+        printf("Starting STA Mode\n");
+        node.init_sta_mode();
+        
+        //node.connect_to_AP(ssid, pass, 20000);
+        printf("Connected! Running Client Test\n");
+        node.client_test();
+    } else {
     
+        /*
     // Initialize hardware and resources
     if (!node.init_ap_mode()) {
         printf("Failed to initialize MeshNode\n");
@@ -19,18 +36,33 @@ int main() {
     // Configure AP (optional - uses defaults if not set)
     // defaults are below
     //node.set_ap_credentials("mesh_network", "password123");
-    
+
     // Start AP mode
     if (!node.start_ap_mode()) {
-        printf("Failed to start AP mode\n");
-        return 1;
+        while(true) {
+            printf("Failed to start AP mode\n");
+            sleep_ms(1000);
+        }
     }
+
+    sleep_ms(5000);
+
+    printf("Starting server test\n");
+
+    node.server_test();
+
+    sleep_ms(5000);
     
     printf("MeshNode AP started with ID: %d\n", node.get_node_id());
     // Main loop
     while (true) {
+        printf("Polling.\n");
         // Poll for network events
         node.poll(1000);  // Poll with 1000ms timeout
+    }
+
+    */
+
     }
 
     return 0;
