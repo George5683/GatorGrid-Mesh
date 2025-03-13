@@ -23,7 +23,7 @@ if (EXISTS ${picoVscode})
     include(${picoVscode})
 endif()
 # ====================================================================================
-set(PICO_BOARD pico_w CACHE STRING "Board type")
+set(PICO_BOARD pico2_w CACHE STRING "Board type")
 
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
@@ -36,7 +36,7 @@ pico_sdk_init()
 # Add executable. Default name is the project name, version 0.1
 
 add_executable(sta_background
-        Tests/main.cpp
+        Tests/sta_test.cpp
         libraries/dhcpserver/dhcpserver.c
         libraries/dnsserver/dnsserver.c
         libraries/MeshNode/MeshNodeAP.cpp

@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <string.h>
 #include <sstream>
 
 extern "C" {
@@ -31,8 +32,9 @@ extern "C" {
 #define TEST_ITERATIONS 10
 #define POLL_TIME_S 5
 
-#if 0
- static void dump_bytes(const uint8_t *bptr, uint32_t len) {
+#if 1
+ static void dump_bytes(const void *ptr, uint32_t len) {
+    const uint8_t* bptr = (uint8_t*)ptr;
      unsigned int i = 0;
  
      printf("dump_bytes %d", len);
@@ -119,6 +121,14 @@ static err_t tcp_client_sent(void *arg, struct tcp_pcb *tpcb, u16_t len) {
     return ERR_OK;
 }
 
+// static err_t tcp_client_sent(void *arg, struct tcp_pcb *tpcb, u16_t len) {
+//     TCP_CLIENT_T *state = (TCP_CLIENT_T*)arg;
+//     printf("tcp_client_sent called, len=%d\n", len);
+//     //DUMP_BYTES()
+
+//     return ERR_OK;
+// }
+
 static err_t tcp_client_connected(void *arg, struct tcp_pcb *tpcb, err_t err) {
     TCP_CLIENT_T *state = (TCP_CLIENT_T*)arg;
     if (err != ERR_OK) {
@@ -132,7 +142,7 @@ static err_t tcp_client_connected(void *arg, struct tcp_pcb *tpcb, err_t err) {
 
 static err_t tcp_client_poll(void *arg, struct tcp_pcb *tpcb) {
     printf("tcp_client_poll\n");
-    return tcp_result(arg, -1); // no response is an error?
+    return ERR_OK; // no response is an error?
 }
 
 static void tcp_client_err(void *arg, err_t err) {
@@ -145,6 +155,7 @@ static void tcp_client_err(void *arg, err_t err) {
 err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err) {
     TCP_CLIENT_T *state = (TCP_CLIENT_T*)arg;
     if (!p) {
+        printf("No p_buffer detected, ending\n");
         return tcp_result(arg, -1);
     }
     // this method is callback from lwIP, so cyw43_arch_lwip_begin is not required, however you
@@ -156,7 +167,7 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         for (struct pbuf *q = p; q != NULL; q = q->next) {
             DUMP_BYTES(q->payload, q->len);
         }
-        // Receive the buffer
+        //Receive the buffer
         const uint16_t buffer_left = BUF_SIZE - state->buffer_len;
         state->buffer_len += pbuf_copy_partial(p, state->buffer + state->buffer_len,
                                                p->tot_len > buffer_left ? buffer_left : p->tot_len, 0);
@@ -164,19 +175,28 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
     }
     pbuf_free(p);
 
+    // if ()
+
     // If we have received the whole buffer, send it back to the server
-    if (state->buffer_len == BUF_SIZE) {
-        printf("Writing %d bytes to server\n", state->buffer_len);
-        err_t err = tcp_write(tpcb, state->buffer, state->buffer_len, TCP_WRITE_FLAG_COPY);
-        if (err != ERR_OK) {
-            printf("Failed to write data %d\n", err);
-            return tcp_result(arg, -1);
-        }
-    }
+    // if (state->buffer_len == BUF_SIZE) {
+    //     printf("Writing %d bytes to server\n", state->buffer_len);
+    //     cyw43_arch_lwip_begin();
+    //     err_t err = tcp_write(tpcb, state->buffer, state->buffer_len, TCP_WRITE_FLAG_COPY);
+    //     cyw43_arch_lwip_end();
+    //     if (err != ERR_OK) {
+    //         printf("Failed to write data %d\n", err);
+    //         return tcp_result(arg, -1);
+    //     }
+    // }
     return ERR_OK;
 }
 
-static bool tcp_client_open(void *arg) {
+// err_t STANode::tcp_client_recved(struct tcp_pcb *tpcb, u16_t len) {
+//     printf("Bytes recieved: %d. Bytes written to buffer: %d\n.", len, len+recieved_bytes);
+//     return ERR_OK;
+// }
+
+bool tcp_client_open(void *arg) {
     TCP_CLIENT_T *state = (TCP_CLIENT_T*)arg;
     printf("Connecting to %s port %u\n", ip4addr_ntoa(&state->remote_addr), TCP_PORT);
     state->tcp_pcb = tcp_new_ip_type(IP_GET_TYPE(&state->remote_addr));
@@ -186,7 +206,7 @@ static bool tcp_client_open(void *arg) {
     }
 
     tcp_arg(state->tcp_pcb, state);
-    tcp_poll(state->tcp_pcb, tcp_client_poll, POLL_TIME_S * 2);
+    //tcp_poll(state->tcp_pcb, tcp_client_poll, POLL_TIME_S * 2);
     tcp_sent(state->tcp_pcb, tcp_client_sent);
     tcp_recv(state->tcp_pcb, tcp_client_recv);
     tcp_err(state->tcp_pcb, tcp_client_err);
@@ -216,22 +236,28 @@ static TCP_CLIENT_T* tcp_client_init(void) {
 }
 
 
-static void create_join_message(size_t buff_size, uint8_t* buff, int id) {
-  buff[0] = 0xFF; // Highest priority message signaling incoming connection 
-  buff[1] = BYTE_FROM_32BITS(id, 0); // LSB of id
-  buff[2] = BYTE_FROM_32BITS(id, 1);
-  buff[3] = BYTE_FROM_32BITS(id, 2); 
-  buff[4] = BYTE_FROM_32BITS(id, 3); // MSB of id
+static void create_join_message(size_t buff_size, uint8_t* buff, STANode* node) {
+  buff[0] = 0xFF; // Highest priority message signaling incoming connection
+  buff[1] = 64;
+  printf("%d\n",node->get_NodeID()); 
+  buff[2] = BYTE_FROM_32BITS(node->get_NodeID(), 0); // LSB of id
+  printf("%d\n",BYTE_FROM_32BITS(node->get_NodeID(), 0)); 
+  buff[3] = BYTE_FROM_32BITS(node->get_NodeID(), 1);
+  printf("%d\n",BYTE_FROM_32BITS(node->get_NodeID(), 1)); 
+  buff[4] = BYTE_FROM_32BITS(node->get_NodeID(), 2); 
+  printf("%d\n",BYTE_FROM_32BITS(node->get_NodeID(), 2)); 
+  buff[5] = BYTE_FROM_32BITS(node->get_NodeID(), 3); // MSB of id
+  printf("%d\n",BYTE_FROM_32BITS(node->get_NodeID(), 3)); 
   
   // send current downstream nodes connected to our hardware connected AP 
   int connected_nodes = 0;
-  buff[5] = connected_nodes; // connected nodes
+  buff[6] = connected_nodes; // connected nodes
   for (int i = 0; i < connected_nodes; i++)
   {
-    buff[6+(i*4)] = 0;
     buff[7+(i*4)] = 0;
     buff[8+(i*4)] = 0;
     buff[9+(i*4)] = 0;
+    buff[10+(i*4)] = 0;
   }
 }
 
@@ -277,6 +303,7 @@ int STANode::scan_result(void* env, const cyw43_ev_scan_result_t* result) {
     // No need to allocate memory for result_copy if we're not storing it
     // Just use the result directly
     cyw43_ev_scan_result_t* result_copy = static_cast<cyw43_ev_scan_result_t*>(malloc(sizeof(cyw43_ev_scan_result_t)));
+    *result_copy = *result;
     
     STANode* self = static_cast<STANode*>(env);
     const char* ssid_str = reinterpret_cast<const char*>(result->ssid);
@@ -284,13 +311,17 @@ int STANode::scan_result(void* env, const cyw43_ev_scan_result_t* result) {
     size_t prefix_len = strlen(prefix);
 
     if (strncmp(ssid_str, prefix, prefix_len) == 0) {
-        int id;
-        if (sscanf((char*)&(result->ssid), "GatorGrid_Node:%d", &id) == 1) {
-            // Add to known nodes if not already present
-            if (self->known_nodes.find(id) == self->known_nodes.end()) {
-                printf("New node ID: %d\n", id);
-                self->known_nodes[id] = result_copy;
-            }
+        const char* incomingID = ssid_str + prefix_len;
+
+        char* endptr;
+        unsigned long value = strtoul(incomingID, &endptr, 16);
+        uint32_t id = (uint32_t) value;
+        // Add to known nodes if not already present
+        
+        if (self->known_nodes.find(id) == self->known_nodes.end()) {
+            printf("New node ID: %d\n", id);
+            printf("SSID: %-32s\n", result_copy->ssid);
+            self->known_nodes[id] = result_copy;
         }
     }
     else
@@ -329,8 +360,8 @@ bool STANode::scan_for_nodes() {
         }
 
         #if PICO_CYW43_ARCH_POLL
-            cyw43_arch_poll();
-            cyw43_arch_wait_for_work_until(scan_time);
+            //cyw43_arch_poll();
+            //cyw43_arch_wait_for_work_until(scan_time);
         #else
             sleep_ms(100);
         #endif
@@ -341,19 +372,22 @@ bool STANode::scan_for_nodes() {
 }
 
 bool STANode::connect_to_node(uint32_t id) {
+    if (upstream_node == ~0) {
+        upstream_node = id;
+    }
 
     printf("Connecting to node:%d\n", id);
     if (known_nodes.count(id) == 0) {
         printf("Unknown node. Ending connection attempt\n");
         return false;
     }
-
-    if (cyw43_arch_wifi_connect_timeout_ms((char*)known_nodes.at(id)->ssid, "password", CYW43_AUTH_WPA2_AES_PSK, 20000)) {
-        for (int i = 0; i < 20; i ++)
-        {
+    printf("Connecting to %-32s\n", known_nodes.at(id)->ssid);
+    if (cyw43_arch_wifi_connect_timeout_ms((char*)known_nodes.at(id)->ssid, "password", CYW43_AUTH_WPA2_AES_PSK, 10000)) {
+        // for (int i = 0; i < 20; i ++)
+        // {
             printf("failed to connect.\n");
-            sleep_ms(1000);
-        }
+        //     sleep_ms(1000);
+        // }
         
         return false;
     } else {
@@ -374,20 +408,23 @@ bool STANode::is_connected() {
 bool STANode::tcp_init() {
     state = tcp_client_init();
     if (!state) {
-        printf("Unable to initalize tcp client state\n");
+        printf("Unable to initialize tcp client state\n");
         return false;
     }
+    printf("Initialized tcp client\n");
     if (!tcp_client_open(state)) {
+        printf("Failed to open client\n");
         tcp_result(state, -1);
         return false; 
     }
+    printf("Opened tcp client connection\n");
 
-    uint8_t buffer[64] = {};
-    create_join_message(64, buffer, this->get_NodeID());
+    uint8_t buffer[BUF_SIZE] = {};
+    create_join_message(BUF_SIZE, buffer, this);
     bool flag = false;
 
     cyw43_arch_lwip_begin();
-    err_t err = tcp_write(state->tcp_pcb, (void*)buffer, 64, TCP_WRITE_FLAG_COPY);
+    err_t err = tcp_write(state->tcp_pcb, (void*)buffer, BUF_SIZE, TCP_WRITE_FLAG_COPY);
     err_t err2 = tcp_output(state->tcp_pcb);
     if (err != ERR_OK) {
         printf("Init message failed to be queued\n");
@@ -400,5 +437,32 @@ bool STANode::tcp_init() {
     cyw43_arch_lwip_end();
     if (flag)
       return false;
+    printf("Successfully sent init message\n");
+    return true;
+}
+
+bool STANode::send_tcp_data(uint8_t* data, uint32_t size) {
+
+    uint8_t* buffer[BUF_SIZE] = {};
+    if (size > BUF_SIZE) { size = 2048; }
+    memcpy(buffer, data, size);
+
+    bool flag = false;
+
+    cyw43_arch_lwip_begin();
+    err_t err = tcp_write(state->tcp_pcb, (void*)buffer, BUF_SIZE, TCP_WRITE_FLAG_COPY);
+    err_t err2 = tcp_output(state->tcp_pcb);
+    if (err != ERR_OK) {
+        printf("Message failed to be queued\n");
+        flag = true;
+    }
+    if (err2 != ERR_OK) {
+        printf("Message failed to be sent\n");
+        flag = true;
+    }
+    cyw43_arch_lwip_end();
+    if (flag)
+      return false;
+    printf("Successfully sent message\n");
     return true;
 }
