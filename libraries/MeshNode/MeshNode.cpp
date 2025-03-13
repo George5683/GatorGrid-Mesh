@@ -269,7 +269,14 @@ bool STANode::connect_to_AP(char* SSID, char* password, int ms_timeout) {
 }
 
 void STANode::client_test(){
-    run_tcp_client_test();
+    run_tcp_client_test(state);
+}
+
+void STANode::init_tcp() {
+    state = tcp_client_init();
+     if (!state) {
+         return;
+     }
 }
 
 bool STANode::scan_for_nodes() {

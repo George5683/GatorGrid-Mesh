@@ -33,6 +33,7 @@ int main() {
 
     printf("Connected! Running Client Test\n");
 
+    node.init_tcp();
     node.client_test();
     
         /*

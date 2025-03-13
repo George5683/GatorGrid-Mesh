@@ -27,24 +27,24 @@ typedef struct TCP_CLIENT_T_ {
     bool connected;
 } TCP_CLIENT_T;
 
-static err_t tcp_client_close(void *arg);
+err_t tcp_client_close(void *arg);
 
-static err_t tcp_result(void *arg, int status);
+err_t tcp_result(void *arg, int status);
 
-static err_t tcp_client_sent(void *arg, struct tcp_pcb *tpcb, u16_t len) ;
+err_t tcp_client_sent(void *arg, struct tcp_pcb *tpcb, u16_t len) ;
 
-static err_t tcp_client_connected(void *arg, struct tcp_pcb *tpcb, err_t err);
+err_t tcp_client_connected(void *arg, struct tcp_pcb *tpcb, err_t err);
 
-static err_t tcp_client_poll(void *arg, struct tcp_pcb *tpcb);
+err_t tcp_client_poll(void *arg, struct tcp_pcb *tpcb);
 
-static void tcp_client_err(void *arg, err_t err);
+void tcp_client_err(void *arg, err_t err);
 
 err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err);
 
-static bool tcp_client_open(void *arg);
+bool tcp_client_open(void *arg);
 
-static TCP_CLIENT_T* tcp_client_init(void);
+TCP_CLIENT_T* tcp_client_init(void);
 
-void run_tcp_client_test(void);
+void run_tcp_client_test(TCP_CLIENT_T* state);
 
 #endif
