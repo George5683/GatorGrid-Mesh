@@ -254,6 +254,8 @@ bool STANode::init_sta_mode() {
         return false;
     }
 
+    cyw43_arch_enable_sta_mode();
+
     return true;
 }
 

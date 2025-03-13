@@ -8,41 +8,34 @@ int main() {
     stdio_init_all();
     
     // Create the APNode object
-    APNode node;
-    //STANode node;
+    //APNode node;
+    STANode node;
 
     //node.set_node_id(2);
 
     sleep_ms(5000);
     char ssid[] = "GatorGrid_Node:0000172E";
     char pass[] = "password";
-
-    if (false) {
-        /*
         
-        printf("Starting STA Mode\n");
-        node.init_sta_mode();
-        int err;
-        err = node.connect_to_AP(ssid, pass, 20000);
-        
-        if(0 < err)
-        {
-            while(true) {
-                printf("Wifi Error: %d\n", err);
-                sleep_ms(1000);
-                break;
-            }
-        }
-
-        printf("Connected! Running Client Test\n");
-
-        node.client_test();
-
-        */
-
-        
-    } else {
+    printf("Starting STA Mode\n");
+    node.init_sta_mode();
+    int err;
+    err = node.connect_to_AP(ssid, pass, 10000);
     
+    if(0 < err)
+    {
+        while(true) {
+            printf("Wifi Error: %d\n", err);
+            sleep_ms(1000);
+            break;
+        }
+    }
+
+    printf("Connected! Running Client Test\n");
+
+    node.client_test();
+    
+        /*
         
     // Initialize hardware and resources
     if (!node.init_ap_mode()) {
@@ -79,10 +72,7 @@ int main() {
         // Poll for network events
         node.poll(1000);  // Poll with 1000ms timeout
     }
-
-    
-
-    }
+        */
 
     return 0;
 }
