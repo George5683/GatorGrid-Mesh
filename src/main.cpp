@@ -70,9 +70,10 @@ int main() {
     printf("MeshNode AP started with ID: %d\n", node.get_node_id());
     // Main loop
     while (true) {
-        printf("Polling.\n");
+        printf("Server over.\n");
+        sleep_ms(1000);
         // Poll for network events
-        node.poll(1000);  // Poll with 1000ms timeout
+        //node.poll(1000);  // Poll with 1000ms timeout
     }
 
 

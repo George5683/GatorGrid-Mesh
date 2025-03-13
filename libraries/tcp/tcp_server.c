@@ -117,6 +117,11 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         state->recv_len += pbuf_copy_partial(p, state->buffer_recv + state->recv_len,
                                              p->tot_len > buffer_left ? buffer_left : p->tot_len, 0);
         tcp_recved(tpcb, p->tot_len);
+
+        for (int i = 0; i < 10; i++) {
+            printf("recv buff[%d] == %02x\n", i, state->buffer_recv[i]);
+            printf("sent buff[%d] == %02x\n", i, state->buffer_sent[i]);
+        }
     }
     pbuf_free(p);
 
