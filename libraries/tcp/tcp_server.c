@@ -82,9 +82,9 @@ err_t tcp_server_sent(void *arg, struct tcp_pcb *tpcb, u16_t len) {
 err_t tcp_server_send_data(void *arg, struct tcp_pcb *tpcb)
 {
     TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
-    for(int i=0; i< BUF_SIZE; i++) {
+    /*for(int i=0; i< BUF_SIZE; i++) {
         state->buffer_sent[i] = rand();
-    }
+    }*/
 
     state->sent_len = 0;
     DEBUG_printf("Writing %ld bytes to client\n", BUF_SIZE);
@@ -118,9 +118,20 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
                                              p->tot_len > buffer_left ? buffer_left : p->tot_len, 0);
         tcp_recved(tpcb, p->tot_len);
 
-        for (int i = 0; i < 10; i++) {
-            printf("recv buff[%d] == %02x\n", i, state->buffer_recv[i]);
-            printf("sent buff[%d] == %02x\n", i, state->buffer_sent[i]);
+        if(state->recv_len == 2048) {
+            printf("SERVER DEBUG: GOT 2048\n");
+            for(int i=0; i < BUF_SIZE; i++) {
+                state->buffer_sent[i] = state->buffer_recv[i];
+            }
+            tcp_server_send_data(arg, state->client_pcb);
+
+            for (int i = 0; i < 10; i++) {
+                printf("recv buff[%d] == %02x\n", i, state->buffer_recv[i]);
+                printf("sent buff[%d] == %02x\n", i, state->buffer_sent[i]);
+            }
+
+        } else {
+            printf("SERVER DEBUG: Currently recv %d\n", state->recv_len);
         }
     }
     pbuf_free(p);
@@ -136,21 +147,23 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         DEBUG_printf("tcp_server_recv buffer ok\n");
 
         // Test complete?
-        state->run_count++;
-        if (state->run_count >= TEST_ITERATIONS) {
+        //state->run_count++;
+        /*if (state->run_count >= TEST_ITERATIONS) {
             tcp_server_result(arg, 0);
             return ERR_OK;
-        }
+        }*/
 
         // Send another buffer
-        return tcp_server_send_data(arg, state->client_pcb);
+        return ERR_OK;
+        //return tcp_server_send_data(arg, state->client_pcb);
     }
     return ERR_OK;
 }
 
 err_t tcp_server_poll(void *arg, struct tcp_pcb *tpcb) {
     DEBUG_printf("tcp_server_poll_fn\n");
-    return tcp_server_result(arg, -1); // no response is an error?
+    return ERR_OK;
+    //return tcp_server_result(arg, -1); // no response is an error?
 }
 
 void tcp_server_err(void *arg, err_t err) {
@@ -176,7 +189,8 @@ err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
     tcp_poll(client_pcb, tcp_server_poll, POLL_TIME_S * 2);
     tcp_err(client_pcb, tcp_server_err);
 
-    return tcp_server_send_data(arg, state->client_pcb);
+    //return tcp_server_send_data(arg, state->client_pcb);
+    return ERR_OK;
 }
 
 bool tcp_server_open(void *arg) {
