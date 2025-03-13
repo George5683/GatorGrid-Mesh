@@ -27,7 +27,7 @@ extern "C" {
 
 
 // APNode class constructor
-APNode::APNode() : state(nullptr), running(false), password("password"), webpage_enabled(false) {
+APNode::APNode() : state(nullptr), running(false), password("password") {
     snprintf(ap_name, sizeof(ap_name), "GatorGrid_Node:%08X", get_NodeID());
     
 }
@@ -164,33 +164,10 @@ void APNode::stop_ap_mode() {
     running = false;
 }
 
-// Function to enable a webpage on the access point
-void APNode::enable_webpage() {
-    if (!running || !state) {
-        DEBUG_printf("AP not running, cannot enable webpage\n");
-        return;
-    }
-    
-    webpage_enabled = true;
-    printf("Webpage enabled on the access point\n");
-}
-
-// Function to disable a webpage on the access point
-void APNode::disable_webpage() {
-    if (!running || !state) {
-        DEBUG_printf("AP not running, cannot disable webpage\n");
-        return;
-    }
-    
-    webpage_enabled = false;
-    printf("Webpage disabled on the access point\n");
-}
-
 void APNode::server_test() {
     run_tcp_server_test(state);
 }
 
-// Modified start_ap_mode to initialize with webpage disabled by default
 bool APNode::start_ap_mode() {
 
     // Enable the AP mode on the driver

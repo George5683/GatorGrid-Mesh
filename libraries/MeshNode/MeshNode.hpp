@@ -16,7 +16,7 @@ typedef struct TCP_CLIENT_T_ TCP_CLIENT_T;
 
 class MeshNode {
 private:
-    int NodeID;
+    uint32_t NodeID;
 public:
     MeshNode();
     virtual ~MeshNode();
@@ -36,8 +36,6 @@ public:
     bool running;
     char ap_name[32];
     const char* password;
-    // Flag to track if the webpage is enabled
-    bool webpage_enabled;
 
     APNode();
     ~APNode();
@@ -61,12 +59,6 @@ public:
     void set_node_id(int ID);
 
     // REACH MILESTONES
-
-    // function to enable a webpage on the access point
-    void enable_webpage();
-
-    // function to disable a webpage on the access point
-    void disable_webpage();
 
     void server_test();
 };
