@@ -69,7 +69,8 @@ typedef struct TCP_CLIENT_T_ {
 } TCP_CLIENT_T;
 
 static err_t tcp_client_close(void *arg) {
-    TCP_CLIENT_T *state = (TCP_CLIENT_T*)arg;
+    STANode* node = (STANode*)arg;
+    TCP_CLIENT_T *state = node->state;
     err_t err = ERR_OK;
     if (state->tcp_pcb != NULL) {
         tcp_arg(state->tcp_pcb, NULL);
@@ -90,7 +91,8 @@ static err_t tcp_client_close(void *arg) {
 
 // Called with results of operation
 static err_t tcp_result(void *arg, int status) {
-    TCP_CLIENT_T *state = (TCP_CLIENT_T*)arg;
+    STANode* node = (STANode*)arg;
+    TCP_CLIENT_T *state = node->state;
     if (status == 0) {
         printf("test success\n");
     } else {
@@ -101,16 +103,18 @@ static err_t tcp_result(void *arg, int status) {
 }
 
 static err_t tcp_client_sent(void *arg, struct tcp_pcb *tpcb, u16_t len) {
-    TCP_CLIENT_T *state = (TCP_CLIENT_T*)arg;
-    printf("tcp_client_sent %u\n", len);
+    STANode* node = (STANode*)arg;
+    TCP_CLIENT_T *state = node->state;
+    //printf("tcp_client_sent %u\n", len);
     state->sent_len += len;
 
     if (state->sent_len >= BUF_SIZE) {
+        printf("Successfully sent full %d byte message\n", BUF_SIZE);
 
         // We should receive a new buffer from the server
         state->buffer_len = 0;
         state->sent_len = 0;
-        printf("Waiting for buffer from server\n");
+        //printf("Waiting for buffer from server\n");
     }
 
     return ERR_OK;
@@ -125,13 +129,14 @@ static err_t tcp_client_sent(void *arg, struct tcp_pcb *tpcb, u16_t len) {
 // }
 
 static err_t tcp_client_connected(void *arg, struct tcp_pcb *tpcb, err_t err) {
-    TCP_CLIENT_T *state = (TCP_CLIENT_T*)arg;
+    STANode* node = (STANode*)arg;
+    TCP_CLIENT_T *state = node->state;
     if (err != ERR_OK) {
         printf("connect failed %d\n", err);
         return tcp_result(arg, err);
     }
     state->connected = true;
-    printf("Waiting for buffer from server\n");
+    //printf("Waiting for buffer from server\n");
     return ERR_OK;
 }
 
@@ -148,7 +153,8 @@ static void tcp_client_err(void *arg, err_t err) {
 }
 
 err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err) {
-    TCP_CLIENT_T *state = (TCP_CLIENT_T*)arg;
+    STANode* node = (STANode*)arg;
+    TCP_CLIENT_T *state = node->state;
     if (!p) {
         printf("No p_buffer detected, ending\n");
         return tcp_result(arg, -1);
@@ -158,10 +164,10 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
     // cyw43_arch_lwip_begin IS needed
     cyw43_arch_lwip_check();
     if (p->tot_len > 0) {
-        printf("recv %d err %d\n", p->tot_len, err);
-        for (struct pbuf *q = p; q != NULL; q = q->next) {
-            DUMP_BYTES(q->payload, q->len);
-        }
+        //printf("recv %d err %d\n", p->tot_len, err);
+        // for (struct pbuf *q = p; q != NULL; q = q->next) {
+        //     DUMP_BYTES(q->payload, q->len);
+        // }
         //Receive the buffer
         const uint16_t buffer_left = BUF_SIZE - state->buffer_len;
         state->buffer_len += pbuf_copy_partial(p, state->buffer + state->buffer_len,
@@ -171,7 +177,19 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
     pbuf_free(p);
 
 
-    // if ()
+    if (state->buffer_len == BUF_SIZE) {
+        printf("\n\tReceived full %d buffer:\n", BUF_SIZE);
+        // DUMP_BYTES(state->buffer, state->buffer_len);
+        if (state->buffer[1] == 0x00) {
+            printf("Message priority: %02X\n", state->buffer[0]);
+            uint32_t node_id = *reinterpret_cast<uint32_t*>(state->buffer + 2);
+            printf("Recieved personal id: %04X\n", node_id);
+        }
+        else {
+            printf("Message priority: %02X\n", state->buffer[0]);
+            printf("Recieved data: %d\n\n", state->buffer[2]);
+        }
+    }
 
     // If we have received the whole buffer, send it back to the server
     // if (state->buffer_len == BUF_SIZE) {
@@ -193,7 +211,8 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 // }
 
 bool tcp_client_open(void *arg) {
-    TCP_CLIENT_T *state = (TCP_CLIENT_T*)arg;
+    STANode* node = (STANode*)arg;
+    TCP_CLIENT_T *state = node->state;
     printf("Connecting to %s port %u\n", ip4addr_ntoa(&state->remote_addr), TCP_PORT);
     state->tcp_pcb = tcp_new_ip_type(IP_GET_TYPE(&state->remote_addr));
     if (!state->tcp_pcb) {
@@ -201,7 +220,7 @@ bool tcp_client_open(void *arg) {
         return false;
     }
 
-    tcp_arg(state->tcp_pcb, state);
+    tcp_arg(state->tcp_pcb, node);
     //tcp_poll(state->tcp_pcb, tcp_client_poll, POLL_TIME_S * 2);
     tcp_sent(state->tcp_pcb, tcp_client_sent);
     tcp_recv(state->tcp_pcb, tcp_client_recv);
@@ -234,15 +253,9 @@ static TCP_CLIENT_T* tcp_client_init(void) {
 
 static void create_join_message(size_t buff_size, uint8_t* buff, STANode* node) {
   buff[0] = 0xFF; // Highest priority message signaling incoming connection
-  buff[1] = 64;
-//   printf("%d\n",node->get_NodeID()); 
-//   buff[2] = BYTE_FROM_32BITS(node->get_NodeID(), 0); // LSB of id
-//   buff[3] = BYTE_FROM_32BITS(node->get_NodeID(), 1);
-//   buff[4] = BYTE_FROM_32BITS(node->get_NodeID(), 2); 
-//   buff[5] = BYTE_FROM_32BITS(node->get_NodeID(), 3); // MSB of id 
+  buff[1] = 0x00; // Init message
 
-  //*(uint32_t*)(buff[2]) = node->get_NodeID();
-  *reinterpret_cast<uint32_t*>(buff[2]) = node->get_NodeID();
+  *reinterpret_cast<uint32_t*>(buff + 2) = node->get_NodeID();
   
   // send current downstream nodes connected to our hardware connected AP 
   int connected_nodes = 0;
@@ -407,7 +420,7 @@ bool STANode::tcp_init() {
         return false;
     }
     printf("Initialized tcp client\n");
-    if (!tcp_client_open(state)) {
+    if (!tcp_client_open(this)) {
         printf("Failed to open client\n");
         tcp_result(state, -1);
         return false; 
@@ -432,7 +445,7 @@ bool STANode::tcp_init() {
     cyw43_arch_lwip_end();
     if (flag)
       return false;
-    printf("Successfully sent init message\n");
+    printf("Successfully queued init message\n");
     return true;
 }
 
@@ -449,10 +462,10 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size) {
     // }
 
     cyw43_arch_lwip_begin();
-    printf("Space used in the buffer %d\n", tcp_sndbuf(state->tcp_pcb));
+    //printf("Space used in the buffer %d\n", tcp_sndbuf(state->tcp_pcb));
     while (tcp_write(state->tcp_pcb, (void*)buffer, BUF_SIZE, TCP_WRITE_FLAG_COPY) == -1) {
         printf("attempting to write\n");
-        sleep_ms(100);
+        sleep_ms(2);
     }
     //err_t err = tcp_write(state->tcp_pcb, (void*)buffer, BUF_SIZE, TCP_WRITE_FLAG_COPY);
     err_t err2 = tcp_output(state->tcp_pcb);
@@ -468,6 +481,6 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size) {
     cyw43_arch_lwip_end();
     if (flag)
       return false;
-    printf("Successfully sent message\n");
+    printf("Successfully queued message\n");
     return true;
 }

@@ -72,7 +72,9 @@ int main() {
     {
         uint8_t* data;
         data = new uint8_t[2048];
-        data[0] = i;
+        data[0] = 0x7F;
+        data[1] = 0x01;
+        data[2] = i;
         if (!node.send_tcp_data(data, 2048)) {
             printf("Failed to send data\n");
             return 0;
