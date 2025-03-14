@@ -1,31 +1,11 @@
-# MeshNode Library 
+# GatorGrid
 
-The MeshNode library is meant to be used on the cyw43 driver. It allows for functionalities such as access point and stand alone modes to work. Enables multiple picos to be connected to each other in a mesh node fashion.
+GatorGrid is a multifunctional software solution designed for the Raspberry Pi Pico W by UF students to create a mesh network with wireless communication. It provides a low-cost, open-source alternative to existing mesh network solutions like ESP-WIFI-MESH and Zigbee by enabling seamless Wi-Fi-based communication between multiple nodes. The design uses two Pico W's per node in the network The project aims to ensure reliable message relay, even in case of node failures, making it ideal for individuals and organizations needing decentralized communication in remote or disaster-affected areas. GatorGrid focuses on accessibility, scalability, and real-time data transmission.
 
 ## Features
-- access point mode
-- stand alone mode (connecting)
-
-## Functions Overview
-
-### **MeshNode**
-
-### `void MeshNode()`
-Default constructor for each Node and initializing a Node-ID using the cyw43 driver 
-
-### `virtual ~MeshNode()`
-Deconstructor for MeshNode
-
-### `void set_NodeID(int ID)`
-Setting the NodeID variable to be an integer ID passed in
-
-### `int get_NodeID()`
-Returns the NodeID of the Node object
-
-### **Access Point Mode**
-
-### `bool init_ap_mode()`
-
+- Access point mode (AP)
+- Stand alone mode (STA)
+- SPI interaction for internode communication
 ## Author
 George Salomon, Cole Smith, Jonathon Brown, Mateo Slivka, Maxwell Evans
 
