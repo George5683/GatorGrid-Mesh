@@ -35,12 +35,14 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
+# Cmake for STA_testing
 add_executable(sta_background
-        Tests/main.cpp
+        Tests/STA_Test.cpp
         libraries/dhcpserver/dhcpserver.c
         libraries/dnsserver/dnsserver.c
         libraries/MeshNode/MeshNodeAP.cpp
         libraries/MeshNode/MeshNodeSTA.cpp
+        libraries/SPI/SPI.cpp
         )
 
 target_include_directories(sta_background PRIVATE
@@ -48,12 +50,15 @@ target_include_directories(sta_background PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
         ${CMAKE_CURRENT_LIST_DIR}/libraries/dhcpserver
         ${CMAKE_CURRENT_LIST_DIR}/libraries/dnsserver
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
         )
 
 target_link_libraries(sta_background
         pico_cyw43_arch_lwip_threadsafe_background
         pico_stdlib
         pico_multicore
+        hardware_spi
         )
 
 pico_enable_stdio_uart(sta_background 0)
@@ -61,6 +66,40 @@ pico_enable_stdio_usb(sta_background 1)
         
 
 pico_add_extra_outputs(sta_background)
+
+# Cmake for AP_testing
+add_executable(ap_background
+        Tests/AP_Test.cpp
+        libraries/dhcpserver/dhcpserver.c
+        libraries/dnsserver/dnsserver.c
+        libraries/MeshNode/MeshNodeAP.cpp
+        libraries/MeshNode/MeshNodeSTA.cpp
+        libraries/SPI/SPI.cpp
+        )
+
+target_include_directories(ap_background PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/dhcpserver
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/dnsserver
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
+        )
+
+target_link_libraries(ap_background
+        pico_cyw43_arch_lwip_threadsafe_background
+        pico_stdlib
+        pico_multicore
+        hardware_spi
+        )
+
+pico_enable_stdio_uart(ap_background 0)
+pico_enable_stdio_usb(ap_background 1)
+        
+
+pico_add_extra_outputs(ap_background)
+
+# Cmake for AccessPoint Example
 
 add_executable(picow_access_point_background
         src/main.cpp

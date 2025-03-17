@@ -243,6 +243,25 @@ bool STANode::start_sta_mode() {
     return true; // ggwp
 }
 
+int extract_id(const char *ssid) {
+    // Find the position of ':'
+    char *id_str = strchr(ssid, ':'); 
+    if (id_str && *(id_str + 1)) {
+        id_str++; // Move past ':'
+
+        // Print extracted string for debugging
+        //printf("Extracted ID string: %s\n", id_str);
+
+        // Convert it to an integer
+        int id = strtol(id_str, NULL, 16); // Assuming it's hexadecimal
+        //printf("Converted ID: %d (Hex to Decimal)\n", id);
+        return id;
+    } else {
+        printf("Invalid SSID format: %s\n", ssid);
+        return -1;
+    }
+}
+
 // Fix memory leak in scan_result
 int STANode::scan_result(void* env, const cyw43_ev_scan_result_t* result) {
     if (result == NULL) {
@@ -260,10 +279,12 @@ int STANode::scan_result(void* env, const cyw43_ev_scan_result_t* result) {
 
     if (strncmp(ssid_str, prefix, prefix_len) == 0) {
         int id;
-        if (sscanf((char*)&(result->ssid), "GatorGrid_Node:%d", &id) == 1) {
+        if (sscanf(ssid_str, "GatorGrid_Node:%d", &id) == 1) {
+            id = extract_id(ssid_str);
             // Add to known nodes if not already present
             if (self->known_nodes.find(id) == self->known_nodes.end()) {
                 printf("New node ID: %d\n", id);
+                printf("New node ID: %d, SSID: %s, Signal strength: %d dBm\n", id, (char*)&(result->ssid), result->rssi);
                 self->known_nodes[id] = result_copy;
             }
         }
@@ -316,28 +337,30 @@ bool STANode::scan_for_nodes() {
 }
 
 bool STANode::connect_to_node(uint32_t id) {
+    printf("Connecting to node: %u\n", id);
 
-    printf("Connecting to node:%d\n", id);
+    // Check if node is known
     if (known_nodes.count(id) == 0) {
-        printf("Unknown node. Ending connection attempt\n");
+        printf("Unknown node. Ending connection attempt.\n");
         return false;
     }
 
-    char* ssid = new char[32];
-    const char* ssid_c = ssid;
+    // Generate SSID string
+    char ssid[32];  // Allocate on stack instead of heap
+    snprintf(ssid, sizeof(ssid), "GatorGrid_Node:%08X", id);  // Convert ID to uppercase hex
 
-    if (cyw43_arch_wifi_connect_timeout_ms(ssid_c, "password", CYW43_AUTH_WPA2_AES_PSK, 20000)) {
-        for (int i = 0; i < 20; i ++)
-        {
-            printf("failed to connect.\n");
-            sleep_ms(1000);
+    printf("Generated SSID: %s\n", ssid);
+
+    // Attempt to connect
+    if (cyw43_arch_wifi_connect_timeout_ms(ssid, "password", CYW43_AUTH_WPA2_AES_PSK, 20000)) {
+        for (int i = 0; i < 20; i++) {
+            printf("Failed to connect. Retrying...\n");
+            sleep_ms(1000);  
         }
-        delete[] ssid;
         return false;
-    } else {
-        printf("Connected.\n");
     }
-    delete[] ssid;
+
+    printf("Connected successfully.\n");
     return true;
 }
 

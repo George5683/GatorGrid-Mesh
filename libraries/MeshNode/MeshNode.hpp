@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <set>
+#include <string>
 #include <map>
 #include "pico/cyw43_arch.h"
 
@@ -15,7 +16,7 @@ typedef struct TCP_CLIENT_T_ TCP_CLIENT_T;
 
 class MeshNode {
 private:
-    int NodeID;
+    uint32_t NodeID;
 public:
     MeshNode();
     virtual ~MeshNode();
@@ -31,9 +32,15 @@ public:
     bool running;
     char ap_name[32];
     const char* password;
+
+    // map for results/results_flag from clients
+    std::map<int, std::string> client_results;
+    std::map<int, bool> client_results_flag;
+
     // Flag to track if the webpage is enabled
     bool webpage_enabled;
 
+    // CONSTRUCTOR/DECONSTRUCTOR
     APNode();
     ~APNode();
 
@@ -48,6 +55,12 @@ public:
     
     // Poll function to handle network events
     void poll(unsigned int timeout_ms = 1000);
+
+    // Get the data from the incoming client
+
+    // Check for incoming data from a client
+    bool has_client_data();
+    // Check data incoming from all connected clients
 
     // Getters/setters for AP configuration
     void set_ap_credentials(char name[32], const char* pwd);
@@ -71,7 +84,6 @@ public:
     std::map<int, cyw43_ev_scan_result_t*> known_nodes;
     TCP_CLIENT_T* state;
   
-
     STANode();
     ~STANode();
 

@@ -171,7 +171,7 @@ MeshNode::MeshNode(){
     // Seed the random number generator
     std::srand(static_cast<unsigned>(time(nullptr)));
 
-    int ID = std::rand() % 10000 + 1; // Random number between 1 and 10,000
+    uint32_t ID = std::rand() % 10000 + 1; // Random number between 1 and 10,000
     // set the NodeID variable
     set_NodeID(ID);
 }
@@ -355,6 +355,9 @@ static int test_server_content(APNode* ap_node, const char *request, const char 
 
 // Modified TCP server receive function to print received data to serial
 static err_t tcp_server_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err) {
+    // buffer for the client data
+    char client_data_buffer[512];
+
     TCP_CONNECT_STATE_T *con_state = (TCP_CONNECT_STATE_T*)arg;
 
     APNode* ap_node = (APNode*)con_state->ap_node;
@@ -372,6 +375,17 @@ static err_t tcp_server_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err
         
         // Print received data to serial
         printf("Received data from client: %.*s\n", p->tot_len, con_state->headers);
+
+        // Place data in client_data_buffer with NULL terminator ending
+        size_t copy_len = p->tot_len > sizeof(client_data_buffer) - 1 ? sizeof(client_data_buffer) - 1 : p->tot_len;
+        memcpy(client_data_buffer, con_state->headers, copy_len);
+        client_data_buffer[copy_len] = '\0';
+
+        // set the result flag for the corresponding GatorGrid ID node you are receiving from
+
+        // Put the result buffer into the corresponding GatorGrid ID node you are receiving from into the receive map
+        //int ID;
+        //ap_node->client_results.emplace(ID, client_data_buffer);
 
         // Handle GET request if webpage is enabled
         if (ap_node->webpage_enabled && strncmp(HTTP_GET, con_state->headers, sizeof(HTTP_GET) - 1) == 0) {
