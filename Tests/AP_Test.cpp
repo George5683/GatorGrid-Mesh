@@ -9,8 +9,6 @@ bool is_wifi_connected = false;
 
 void core1_entry() {
 
-    stdio_init_all();
-
     APNode node;
 
     if (!node.init_ap_mode())
@@ -26,8 +24,8 @@ void core1_entry() {
     for (;;) {
         cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
         toggle = !toggle;
-        printf("core print...");
-        sleep_ms(10000);
+        //printf("core print...");
+        sleep_ms(1000);
     }
 
 

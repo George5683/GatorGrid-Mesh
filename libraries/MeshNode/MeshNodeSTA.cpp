@@ -24,7 +24,7 @@ extern "C" {
 *   Client Class
 */
 
-#define TCP_PORT 4242
+#define TCP_PORT 80
 #define DEBUG_printf printf
 #define BUF_SIZE 2048
 
@@ -87,9 +87,9 @@ static err_t tcp_client_close(void *arg) {
 static err_t tcp_result(void *arg, int status) {
     TCP_CLIENT_T *state = (TCP_CLIENT_T*)arg;
     if (status == 0) {
-        DEBUG_printf("test success\n");
+        DEBUG_printf("Response back gotten\n");
     } else {
-        DEBUG_printf("test failed %d\n", status);
+        DEBUG_printf("Did not receive a response back!\n");
     }
     state->complete = true;
     return tcp_client_close(arg);
@@ -124,12 +124,12 @@ static err_t tcp_client_connected(void *arg, struct tcp_pcb *tpcb, err_t err) {
         return tcp_result(arg, err);
     }
     state->connected = true;
-    DEBUG_printf("Waiting for buffer from server\n");
+    DEBUG_printf("Waiting for response from server...\n");
     return ERR_OK;
 }
 
 static err_t tcp_client_poll(void *arg, struct tcp_pcb *tpcb) {
-    DEBUG_printf("tcp_client_poll\n");
+    //DEBUG_printf("tcp_client_poll\n");
     return tcp_result(arg, -1); // no response is an error?
 }
 
@@ -226,7 +226,7 @@ STANode::~STANode() {
 }
 
 bool STANode::init_sta_mode() {
-    stdio_init_all();
+    //stdio_init_all();
 
     if (cyw43_arch_init()) {
         printf("failed to initialise\n");
@@ -267,33 +267,40 @@ int STANode::scan_result(void* env, const cyw43_ev_scan_result_t* result) {
     if (result == NULL) {
         return 0;
     }
-
-    // No need to allocate memory for result_copy if we're not storing it
-    // Just use the result directly
+    // copy the result
     cyw43_ev_scan_result_t* result_copy = static_cast<cyw43_ev_scan_result_t*>(malloc(sizeof(cyw43_ev_scan_result_t)));
-    
+    if (result_copy) {
+        memcpy(result_copy, result, sizeof(cyw43_ev_scan_result_t));
+    }
+          
     STANode* self = static_cast<STANode*>(env);
     const char* ssid_str = reinterpret_cast<const char*>(result->ssid);
     const char* prefix = "GatorGrid_Node:";
     size_t prefix_len = strlen(prefix);
-
+    
+    //printf(ssid_str);
+    
     if (strncmp(ssid_str, prefix, prefix_len) == 0) {
-        int id;
-        if (sscanf(ssid_str, "GatorGrid_Node:%d", &id) == 1) {
-            id = extract_id(ssid_str);
+        unsigned int id; // Changed to unsigned int for hexadecimal
+        if (sscanf(ssid_str, "GatorGrid_Node:%x", &id) == 1) { // Changed format to %x for hexadecimal
             // Add to known nodes if not already present
             if (self->known_nodes.find(id) == self->known_nodes.end()) {
-                printf("New node ID: %d\n", id);
-                printf("New node ID: %d, SSID: %s, Signal strength: %d dBm\n", id, (char*)&(result->ssid), result->rssi);
+                printf("New node ID: 0x%x\n", id); // Changed format to 0x%x for hexadecimal output
+                printf("New node ID: 0x%x, SSID: %s, Signal strength: %d dBm\n", id, (char*)&(result->ssid), result->rssi);
                 self->known_nodes[id] = result_copy;
+            } else {
+                // Free if node is already known
+                free(result_copy);
             }
+        } else {
+            // Free if parsing fails
+            free(result_copy);
         }
-    }
-    else
-    {
+    } else {
+        // Free if SSID doesn't match prefix
         free(result_copy);
     }
-    
+     
     return 0;
 }
 
@@ -364,4 +371,83 @@ bool STANode::connect_to_node(uint32_t id) {
     return true;
 }
 
+bool STANode::send_string_data(const char* data_string) {
+    // Initialize the TCP client
+    TCP_CLIENT_T *state = tcp_client_init();
+    if (!state) {
+        printf("Failed to initialize TCP client\n");
+        return false;
+    }
 
+    // Open the TCP connection
+    if (!tcp_client_open(state)) {
+        printf("Failed to open TCP connection\n");
+        tcp_client_close(state);
+        free(state);
+        return false;
+    }
+
+    // Wait for the connection to be established
+    while (!state->connected) {
+        #if PICO_CYW43_ARCH_POLL
+            cyw43_arch_poll();
+        #else
+            sleep_ms(100);
+        #endif
+    }
+
+    // Add the ID to the string data 
+    char buffer[BUF_SIZE];
+    uint32_t node_id = get_NodeID();
+    int header_len = snprintf(buffer, BUF_SIZE, "ID:%u;DATA:", node_id);
+    
+    // Check if we have enough space for the header and data
+    if (header_len < 0 || header_len + strlen(data_string) >= BUF_SIZE) {
+        printf("Buffer too small for data with ID header\n");
+        tcp_client_close(state);
+        free(state);
+        return false;
+    }
+    
+    // Append the actual data after the ID header
+    strcpy(buffer + header_len, data_string);
+    
+    // Use the combined buffer instead of the original data_string
+    data_string = buffer;
+
+    // Prepare the data to be sent
+    size_t data_len = strlen(data_string);
+    if (data_len > BUF_SIZE) {
+        printf("Data string is too long\n");
+        tcp_client_close(state);
+        free(state);
+        return false;
+    }
+
+    // Copy the data into the buffer
+    memcpy(state->buffer, data_string, data_len);
+    state->buffer_len = data_len;
+
+    // Send the data
+    err_t err = tcp_write(state->tcp_pcb, state->buffer, state->buffer_len, TCP_WRITE_FLAG_COPY);
+    if (err != ERR_OK) {
+        printf("Failed to write data %d\n", err);
+        tcp_client_close(state);
+        free(state);
+        return false;
+    }
+
+    // Wait for the data to be sent
+    while (!state->complete) {
+        #if PICO_CYW43_ARCH_POLL
+            cyw43_arch_poll();
+        #else
+            sleep_ms(100);
+        #endif
+    }
+
+    // Close the TCP connection
+    tcp_client_close(state);
+    free(state);
+    return true;
+}

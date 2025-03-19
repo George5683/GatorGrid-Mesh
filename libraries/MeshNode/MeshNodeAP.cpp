@@ -126,7 +126,7 @@ static err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err)
         DEBUG_printf("failure in accept\n");
         return ERR_VAL;
     }
-    DEBUG_printf("client connected\n");
+    //DEBUG_printf("client connected\n");
 
     // Create the state for the connection
     TCP_CONNECT_STATE_T *con_state = (TCP_CONNECT_STATE_T*)calloc(1, sizeof(TCP_CONNECT_STATE_T));
@@ -167,13 +167,33 @@ APNode::APNode() : state(nullptr), running(false), password("password"), webpage
 }
 
 // MeshNode class constructor
-MeshNode::MeshNode(){
-    // Seed the random number generator
-    std::srand(static_cast<unsigned>(time(nullptr)));
-
-    uint32_t ID = std::rand() % 10000 + 1; // Random number between 1 and 10,000
+MeshNode::MeshNode() {
+    // Use hardware-based entropy sources if possible
+    uint32_t ID = 0;
+    
+    // Generate a seed using multiple entropy sources
+    uint64_t seed = time(nullptr);
+    seed ^= (uint64_t)this;  // Add pointer address as entropy
+    
+    // Mix in hardware-specific entropy if available
+    #if defined(PICO_UNIQUE_BOARD_ID_SIZE_BYTES)
+    pico_unique_board_id_t board_id;
+    pico_get_unique_board_id(&board_id);
+    for (int i = 0; i < PICO_UNIQUE_BOARD_ID_SIZE_BYTES; i++) {
+        seed = seed * 33 + board_id.id[i];
+    }
+    #endif
+    
+    // Use a better random generator
+    std::mt19937 rng(seed);
+    std::uniform_int_distribution<uint32_t> dist(1, 0xFFFFFFFF);
+    
+    ID = dist(rng);
+    
     // set the NodeID variable
     set_NodeID(ID);
+    
+    printf("Generated NodeID: %u\n", ID);
 }
 
 // MeshNode deconstructor
@@ -188,7 +208,7 @@ void APNode::set_node_id(int ID){
 }
 
 // MeshNode base class function to set NodeID
-void MeshNode::set_NodeID(int ID){
+void MeshNode::set_NodeID(uint32_t ID){
     // Assign ID to NodeID
     NodeID = ID; // Random number between 1 and 10,000
 }
@@ -199,7 +219,7 @@ int APNode::get_node_id(){
 }
 
 // MeshNode class function for getting Node ID
-int MeshNode::get_NodeID(){
+uint32_t MeshNode::get_NodeID(){
     return NodeID;
 }
 
@@ -238,9 +258,6 @@ bool APNode::init_ap_mode() {
         DEBUG_printf("failed to initialize cyw43 driver\n");
         return false;
     }
-    
-    // Get notified if the user presses a key
-    stdio_set_chars_available_callback(key_pressed_func, state);
     
     return true;
 }
@@ -368,24 +385,65 @@ static err_t tcp_server_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err
     }
     assert(con_state && con_state->pcb == pcb);
     if (p->tot_len > 0) {
-        DEBUG_printf("tcp_server_recv %d err %d\n", p->tot_len, err);
+        DEBUG_printf("Server Receive Length %d Error Number %d\n", p->tot_len, err);
         
         // Copy the request into the buffer
         pbuf_copy_partial(p, con_state->headers, p->tot_len > sizeof(con_state->headers) - 1 ? sizeof(con_state->headers) - 1 : p->tot_len, 0);
         
         // Print received data to serial
-        printf("Received data from client: %.*s\n", p->tot_len, con_state->headers);
+        // printf("Received data from client: %.*s\n", p->tot_len, con_state->headers);
 
         // Place data in client_data_buffer with NULL terminator ending
         size_t copy_len = p->tot_len > sizeof(client_data_buffer) - 1 ? sizeof(client_data_buffer) - 1 : p->tot_len;
         memcpy(client_data_buffer, con_state->headers, copy_len);
         client_data_buffer[copy_len] = '\0';
 
-        // set the result flag for the corresponding GatorGrid ID node you are receiving from
+        // Extract client IP address and port
+        char client_ip[16];
+        ipaddr_ntoa_r(&pcb->remote_ip, client_ip, sizeof(client_ip));
+        uint16_t client_port = pcb->remote_port;
 
-        // Put the result buffer into the corresponding GatorGrid ID node you are receiving from into the receive map
-        //int ID;
-        //ap_node->client_results.emplace(ID, client_data_buffer);
+        // Print connection information
+        printf("Client IP %s:%d\n", client_ip, client_port);
+
+        // Obtain the client ID and data 
+        char* id_prefix = strstr(client_data_buffer, "ID:");
+        if (id_prefix) {
+            // Move past "ID:" prefix
+            id_prefix += 3; 
+            
+            // Find the delimiter between ID and data
+            char* data_start = strstr(id_prefix, ";DATA:");
+            
+            if (data_start) {
+                // Temporarily null-terminate the ID part
+                *data_start = '\0';
+                
+                // Extract the client ID
+                int client_id = atoi(id_prefix);
+                
+                // Restore the separator
+                *data_start = ';';
+                
+                // Move data_start pointer to the actual data content
+                data_start += 6; // Skip ";DATA:"
+                
+                // Print extracted information
+                printf("Extracted - Client ID: %d, Data: %s\n", client_id, data_start);
+                
+                // Store the data in the client_results map
+                ap_node->client_results[client_id] = std::string(data_start);
+                
+                // Set the result flag for this client ID
+                ap_node->client_results_flag[client_id] = true;
+                
+                printf("Stored data for node ID: %d\n", client_id);
+            } else {
+                printf("Invalid data format: Missing DATA section\n");
+            }
+        } else {
+            printf("Invalid data format: Missing ID section\n");
+        }
 
         // Handle GET request if webpage is enabled
         if (ap_node->webpage_enabled && strncmp(HTTP_GET, con_state->headers, sizeof(HTTP_GET) - 1) == 0) {
@@ -448,16 +506,16 @@ static err_t tcp_server_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err
         } else {
             // For non-GET requests or when webpage is disabled, just acknowledge the data
             // Send a simple response back to the client
-            const char *response = "Data received";
-            con_state->sent_len = 0;
-            con_state->header_len = snprintf(con_state->headers, sizeof(con_state->headers), 
-                "HTTP/1.1 200 OK\nContent-Length: %d\nContent-Type: text/plain\nConnection: close\n\n", 
-                strlen(response));
+            // const char *response = "Data received";
+            // con_state->sent_len = 0;
+            // con_state->header_len = snprintf(con_state->headers, sizeof(con_state->headers), 
+            //     "HTTP/1.1 200 OK\nContent-Length: %d\nContent-Type: text/plain\nConnection: close\n\n", 
+            //     strlen(response));
             
-            err_t write_err = tcp_write(pcb, con_state->headers, con_state->header_len, 0);
-            if (write_err == ERR_OK) {
-                tcp_write(pcb, response, strlen(response), 0);
-            }
+            // err_t write_err = tcp_write(pcb, con_state->headers, con_state->header_len, 0);
+            // if (write_err == ERR_OK) {
+            //     tcp_write(pcb, response, strlen(response), 0);
+            // }
         }
         
         tcp_recved(pcb, p->tot_len);
@@ -543,4 +601,44 @@ bool APNode::start_ap_mode() {
     
     running = true;
     return true;
+}
+
+// Get the data from the incoming client
+char* APNode::get_client_data(int ID) {
+    // Check if the client ID exists in the map
+    if (client_results.find(ID) != client_results.end()) {
+        // Return the data as a c-string
+        return const_cast<char*>(client_results[ID].c_str());
+    }
+    else {
+        printf("Client %d not found!\n", ID);
+        return nullptr;
+    }
+}
+// Check for incoming data from a client
+bool APNode::has_client_data(int ID) {
+    // Look in the map for the client ID
+    if (client_results.find(ID) != client_results.end()) {
+        // Check if there's a flag indicating new data
+        if (client_results_flag.find(ID) != client_results_flag.end()) {
+            return client_results_flag[ID];
+        }
+        return false;
+    }
+    else {
+        printf("Client %d not connected!\n", ID);
+        return false;
+    }
+}
+// Check data incoming data from all connected clients and return a bool if any have data available
+bool APNode::check_all_client_data() {
+    // Iterate through all client flags
+    for (const auto& pair : client_results_flag) {
+        // If any client has data available, return true
+        if (pair.second) {
+            return true;
+        }
+    }
+    // No client has data available
+    return false;
 }

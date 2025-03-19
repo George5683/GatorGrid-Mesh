@@ -22,8 +22,8 @@ public:
     virtual ~MeshNode();
 
     // Base class functions for get/set NodeID
-    void set_NodeID(int ID);
-    int get_NodeID();
+    void set_NodeID(uint32_t ID);
+    uint32_t get_NodeID();
 };
 
 class APNode : public MeshNode{   
@@ -57,10 +57,11 @@ public:
     void poll(unsigned int timeout_ms = 1000);
 
     // Get the data from the incoming client
-
+    char* get_client_data(int ID);
     // Check for incoming data from a client
-    bool has_client_data();
+    bool has_client_data(int ID);
     // Check data incoming from all connected clients
+    bool check_all_client_data();
 
     // Getters/setters for AP configuration
     void set_ap_credentials(char name[32], const char* pwd);
@@ -83,6 +84,8 @@ public:
 
     std::map<int, cyw43_ev_scan_result_t*> known_nodes;
     TCP_CLIENT_T* state;
+
+    std::string AP_CONNECTED_IP;
   
     STANode();
     ~STANode();
@@ -91,6 +94,7 @@ public:
     bool start_sta_mode();
     bool scan_for_nodes();
     bool connect_to_node(uint32_t id);
+    bool send_string_data(const char* data_string);
 
     static int scan_result(void* env, const cyw43_ev_scan_result_t* result);
 };
