@@ -35,6 +35,9 @@ public:
     TCP_SERVER_T* state;
     bool running;
     char ap_name[32];
+    uint8_t **buffers;
+    ssize_t num_buffers;
+    ssize_t number_of_filled_buffers;
     const char* password;
 
     APNode();
@@ -57,6 +60,9 @@ public:
     
     int get_node_id();
     void set_node_id(int ID);
+
+    bool digest_recv_buffer(uint8_t *buf);
+    ssize_t recv_buffer_queue_len();
 
     // REACH MILESTONES
 

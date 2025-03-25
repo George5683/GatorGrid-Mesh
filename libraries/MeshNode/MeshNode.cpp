@@ -114,6 +114,14 @@ bool APNode::init_ap_mode() {
         printf("failed to initialize cyw43 driver\n");
         return false;
     }
+
+    num_buffers = 8;
+
+    buffers = (uint8_t**)malloc(sizeof(uint8_t*)*num_buffers);
+
+    for (int i = 0; i < num_buffers; i++) {
+        buffers[i] = (uint8_t*)malloc(BUF_SIZE);
+    }
     
     return true;
 }
@@ -166,6 +174,20 @@ void APNode::stop_ap_mode() {
 
 void APNode::server_test() {
     run_tcp_server_test(state);
+}
+
+void APNode::server_test() {
+    run_tcp_server_test(state);
+}
+
+bool APNode::digest_recv_buffer(uint8_t *buf) {
+    number_of_filled_buffers--;
+    memcpy(buf, buffers[number_of_filled_buffers], BUF_SIZE);
+    return true;
+}
+
+ssize_t APNode::recv_buffer_queue_len() {
+    return number_of_filled_buffers;
 }
 
 bool APNode::start_ap_mode() {

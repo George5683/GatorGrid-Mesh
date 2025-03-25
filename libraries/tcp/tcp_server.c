@@ -125,7 +125,7 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
             }
             tcp_server_send_data(arg, state->client_pcb);
 
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 4; i++) {
                 printf("recv buff[%d] == %02x\n", i, state->buffer_recv[i]);
                 printf("sent buff[%d] == %02x\n", i, state->buffer_sent[i]);
             }
