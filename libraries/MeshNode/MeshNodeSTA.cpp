@@ -152,7 +152,7 @@ static void tcp_client_err(void *arg, err_t err) {
     }
 }
 
-err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err) {
+static err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err) {
     STANode* node = (STANode*)arg;
     TCP_CLIENT_T *state = node->state;
     if (!p) {
@@ -164,11 +164,6 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
     // cyw43_arch_lwip_begin IS needed
     cyw43_arch_lwip_check();
     if (p->tot_len > 0) {
-        //printf("recv %d err %d\n", p->tot_len, err);
-        // for (struct pbuf *q = p; q != NULL; q = q->next) {
-        //     DUMP_BYTES(q->payload, q->len);
-        // }
-        //Receive the buffer
         const uint16_t buffer_left = BUF_SIZE - state->buffer_len;
         state->buffer_len += pbuf_copy_partial(p, state->buffer + state->buffer_len,
                                                p->tot_len > buffer_left ? buffer_left : p->tot_len, 0);
@@ -179,7 +174,6 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 
     if (state->buffer_len == BUF_SIZE) {
         printf("\n\tReceived full %d buffer:\n", BUF_SIZE);
-        // DUMP_BYTES(state->buffer, state->buffer_len);
         if (state->buffer[1] == 0x00) {
             printf("Message priority: %02X\n", state->buffer[0]);
             uint32_t node_id = *reinterpret_cast<uint32_t*>(state->buffer + 2);
@@ -191,24 +185,8 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         }
     }
 
-    // If we have received the whole buffer, send it back to the server
-    // if (state->buffer_len == BUF_SIZE) {
-    //     printf("Writing %d bytes to server\n", state->buffer_len);
-    //     cyw43_arch_lwip_begin();
-    //     err_t err = tcp_write(tpcb, state->buffer, state->buffer_len, TCP_WRITE_FLAG_COPY);
-    //     cyw43_arch_lwip_end();
-    //     if (err != ERR_OK) {
-    //         printf("Failed to write data %d\n", err);
-    //         return tcp_result(arg, -1);
-    //     }
-    // }
     return ERR_OK;
 }
-
-// err_t STANode::tcp_client_recved(struct tcp_pcb *tpcb, u16_t len) {
-//     printf("Bytes recieved: %d. Bytes written to buffer: %d\n.", len, len+recieved_bytes);
-//     return ERR_OK;
-// }
 
 bool tcp_client_open(void *arg) {
     STANode* node = (STANode*)arg;
@@ -429,24 +407,9 @@ bool STANode::tcp_init() {
 
     uint8_t buffer[BUF_SIZE] = {};
     create_join_message(BUF_SIZE, buffer, this);
-    bool flag = false;
+    
+    return send_tcp_data(buffer, BUF_SIZE);
 
-    cyw43_arch_lwip_begin();
-    err_t err = tcp_write(state->tcp_pcb, (void*)buffer, BUF_SIZE, TCP_WRITE_FLAG_COPY);
-    err_t err2 = tcp_output(state->tcp_pcb);
-    if (err != ERR_OK) {
-        printf("Init message failed to be queued\n");
-        flag = true;
-    }
-    if (err2 != ERR_OK) {
-        printf("Init message failed to be sent\n");
-        flag = true;
-    }
-    cyw43_arch_lwip_end();
-    if (flag)
-      return false;
-    printf("Successfully queued init message\n");
-    return true;
 }
 
 bool STANode::send_tcp_data(uint8_t* data, uint32_t size) {
@@ -463,17 +426,17 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size) {
 
     cyw43_arch_lwip_begin();
     //printf("Space used in the buffer %d\n", tcp_sndbuf(state->tcp_pcb));
-    while (tcp_write(state->tcp_pcb, (void*)buffer, BUF_SIZE, TCP_WRITE_FLAG_COPY) == -1) {
-        printf("attempting to write\n");
-        sleep_ms(2);
-    }
-    //err_t err = tcp_write(state->tcp_pcb, (void*)buffer, BUF_SIZE, TCP_WRITE_FLAG_COPY);
-    err_t err2 = tcp_output(state->tcp_pcb);
-    // if (err != ERR_OK) {
-    //     printf("Message failed to write\n");
-    //     printf("ERR: %d\n", err);
-    //     flag = true;
+    // while (tcp_write(state->tcp_pcb, (void*)buffer, BUF_SIZE, TCP_WRITE_FLAG_COPY) == -1) {
+    //     printf("attempting to write\n");
+    //     sleep_ms(2);
     // }
+    err_t err = tcp_write(state->tcp_pcb, (void*)buffer, BUF_SIZE, TCP_WRITE_FLAG_COPY);
+    err_t err2 = tcp_output(state->tcp_pcb);
+    if (err != ERR_OK) {
+        printf("Message failed to write\n");
+        printf("ERR: %d\n", err);
+        flag = true;
+    }
     if (err2 != ERR_OK) {
         printf("Message failed to be sent\n");
         flag = true;
