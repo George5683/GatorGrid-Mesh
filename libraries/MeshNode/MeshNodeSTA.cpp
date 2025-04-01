@@ -305,7 +305,7 @@ int STANode::scan_result(void* env, const cyw43_ev_scan_result_t* result) {
         // Add to known nodes if not already present
         
         if (self->known_nodes.find(id) == self->known_nodes.end()) {
-            printf("New node ID: %d\n", id);
+            printf("New node ID: %u\n", id);
             printf("SSID: %-32s\n", result_copy->ssid);
             self->known_nodes[id] = result_copy;
         }

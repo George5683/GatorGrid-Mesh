@@ -43,6 +43,7 @@ int main() {
     stdio_init_all();
     // initial delay to allow user to look at the serial monitor
     sleep_ms(10000);
+    printf("This is jack's\n");
 
     // initiate everything
     
@@ -70,16 +71,11 @@ int main() {
 
     for (int i = 0; i < 10; i++)
     {
-        uint8_t* data;
-        data = new uint8_t[2048];
-        data[0] = 0x7F;
-        data[1] = 0x01;
-        data[2] = i;
-        if (!node.send_tcp_data(data, 2048)) {
-            printf("Failed to send data\n");
-            return 0;
-        }
-        delete[] data;
+        TCP_DATA_MSG msg(node.get_NodeID(), 0x12345678);
+        uint8_t arr[] = "hello, this is message:  ";
+        arr[24] = i;
+        msg.add_message(25, arr);
+        node.send_tcp_data(msg.get_msg(), 2048);
         sleep_ms(500);
     }
 
