@@ -505,17 +505,19 @@ static err_t tcp_server_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err
             }
         } else {
             // For non-GET requests or when webpage is disabled, just acknowledge the data
-            // Send a simple response back to the client
-            // const char *response = "Data received";
-            // con_state->sent_len = 0;
-            // con_state->header_len = snprintf(con_state->headers, sizeof(con_state->headers), 
-            //     "HTTP/1.1 200 OK\nContent-Length: %d\nContent-Type: text/plain\nConnection: close\n\n", 
-            //     strlen(response));
+            // Send a simple response back to the client that includes the node ID
+            const char *response = "Data received";
+            uint32_t node_id = ap_node->get_node_id();
+
+            con_state->sent_len = 0;
+            con_state->header_len = snprintf(con_state->headers, sizeof(con_state->headers), 
+                "HTTP/1.1 200 OK\nNode-ID: %u\nContent-Length: %d\nContent-Type: text/plain\n", 
+                node_id, strlen(response));
             
-            // err_t write_err = tcp_write(pcb, con_state->headers, con_state->header_len, 0);
-            // if (write_err == ERR_OK) {
-            //     tcp_write(pcb, response, strlen(response), 0);
-            // }
+            err_t write_err = tcp_write(pcb, con_state->headers, con_state->header_len, 0);
+            if (write_err == ERR_OK) {
+                tcp_write(pcb, response, strlen(response), 0);
+            }
         }
         
         tcp_recved(pcb, p->tot_len);

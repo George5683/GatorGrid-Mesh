@@ -142,35 +142,41 @@ static void tcp_client_err(void *arg, err_t err) {
 
 err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err) {
     TCP_CLIENT_T *state = (TCP_CLIENT_T*)arg;
+    
+    // Check for connection closed or error
     if (!p) {
-        return tcp_result(arg, -1);
+        DEBUG_printf("Connection closed or error\n");
+        return tcp_result(arg, 0); // Consider this a success as we've got a response
     }
-    // this method is callback from lwIP, so cyw43_arch_lwip_begin is not required, however you
-    // can use this method to cause an assertion in debug mode, if this method is called when
-    // cyw43_arch_lwip_begin IS needed
+    
+    // This method is callback from lwIP, so cyw43_arch_lwip_begin is not required
     cyw43_arch_lwip_check();
+    
     if (p->tot_len > 0) {
-        DEBUG_printf("recv %d err %d\n", p->tot_len, err);
-        for (struct pbuf *q = p; q != NULL; q = q->next) {
-            DUMP_BYTES(q->payload, q->len);
-        }
-        // Receive the buffer
+        DEBUG_printf("Received %d bytes, err %d\n", p->tot_len, err);
+        
+        // Copy data from pbuf to our buffer
         const uint16_t buffer_left = BUF_SIZE - state->buffer_len;
-        state->buffer_len += pbuf_copy_partial(p, state->buffer + state->buffer_len,
-                                               p->tot_len > buffer_left ? buffer_left : p->tot_len, 0);
+        uint16_t copy_len = p->tot_len > buffer_left ? buffer_left : p->tot_len;
+        
+        state->buffer_len += pbuf_copy_partial(p, state->buffer + state->buffer_len, copy_len, 0);
+        
+        // Print the received data for debugging
+        char received_data[256] = {0}; // Small buffer for displaying part of response
+        pbuf_copy_partial(p, received_data, p->tot_len > 255 ? 255 : p->tot_len, 0);
+        DEBUG_printf("Response: %s\n", received_data);
+        
+        // Acknowledge receipt of the data
         tcp_recved(tpcb, p->tot_len);
-    }
-    pbuf_free(p);
-
-    // If we have received the whole buffer, send it back to the server
-    if (state->buffer_len == BUF_SIZE) {
-        DEBUG_printf("Writing %d bytes to server\n", state->buffer_len);
-        err_t err = tcp_write(tpcb, state->buffer, state->buffer_len, TCP_WRITE_FLAG_COPY);
-        if (err != ERR_OK) {
-            DEBUG_printf("Failed to write data %d\n", err);
-            return tcp_result(arg, -1);
+        
+        // Consider this a success - we got a response
+        if (p->tot_len > 0) {
+            pbuf_free(p);
+            return tcp_result(arg, 0);
         }
     }
+    
+    pbuf_free(p);
     return ERR_OK;
 }
 
@@ -387,10 +393,19 @@ bool STANode::send_string_data(const char* data_string) {
         return false;
     }
 
-    // Wait for the connection to be established
+    // Wait for the connection to be established with timeout
+    absolute_time_t connect_timeout = make_timeout_time_ms(5000); // 5 second timeout
     while (!state->connected) {
+        if (absolute_time_diff_us(get_absolute_time(), connect_timeout) < 0) {
+            printf("Connection timeout\n");
+            tcp_client_close(state);
+            free(state);
+            return false;
+        }
+        
         #if PICO_CYW43_ARCH_POLL
             cyw43_arch_poll();
+            cyw43_arch_wait_for_work_until(connect_timeout);
         #else
             sleep_ms(100);
         #endif
@@ -413,10 +428,7 @@ bool STANode::send_string_data(const char* data_string) {
     strcpy(buffer + header_len, data_string);
     
     // Use the combined buffer instead of the original data_string
-    data_string = buffer;
-
-    // Prepare the data to be sent
-    size_t data_len = strlen(data_string);
+    size_t data_len = strlen(buffer);
     if (data_len > BUF_SIZE) {
         printf("Data string is too long\n");
         tcp_client_close(state);
@@ -425,28 +437,55 @@ bool STANode::send_string_data(const char* data_string) {
     }
 
     // Copy the data into the buffer
-    memcpy(state->buffer, data_string, data_len);
+    memcpy(state->buffer, buffer, data_len);
     state->buffer_len = data_len;
 
+    printf("Sending data: %s (length: %d)\n", buffer, data_len);
+
     // Send the data
+    cyw43_arch_lwip_begin();
     err_t err = tcp_write(state->tcp_pcb, state->buffer, state->buffer_len, TCP_WRITE_FLAG_COPY);
+    
     if (err != ERR_OK) {
         printf("Failed to write data %d\n", err);
+        cyw43_arch_lwip_end();
         tcp_client_close(state);
         free(state);
         return false;
     }
+    
+    // Force data to be sent immediately
+    err = tcp_output(state->tcp_pcb);
+    if (err != ERR_OK) {
+        printf("Failed to output data %d\n", err);
+        cyw43_arch_lwip_end();
+        tcp_client_close(state);
+        free(state);
+        return false;
+    }
+    cyw43_arch_lwip_end();
 
-    // Wait for the data to be sent
+    // Wait for the data to be sent or timeout
+    absolute_time_t send_timeout = make_timeout_time_ms(15000); // 15 second timeout
     while (!state->complete) {
+        if (absolute_time_diff_us(get_absolute_time(), send_timeout) < 0) {
+            printf("Send timeout\n");
+            tcp_client_close(state);
+            free(state);
+            return false;
+        }
+        
         #if PICO_CYW43_ARCH_POLL
             cyw43_arch_poll();
+            cyw43_arch_wait_for_work_until(send_timeout);
         #else
             sleep_ms(100);
         #endif
     }
 
-    // Close the TCP connection
+    //printf("Data transmission completed successfully\n");
+    
+    // Clean up
     tcp_client_close(state);
     free(state);
     return true;
