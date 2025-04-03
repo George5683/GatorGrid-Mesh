@@ -3,6 +3,7 @@
 #include <cstdio>
 #include "pico/cyw43_arch.h"
 #include "pico/multicore.h"
+#include "libraries/MeshNode/Messages.hpp"
 
 void core1_entry() {
 
