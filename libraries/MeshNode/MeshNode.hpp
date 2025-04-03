@@ -69,13 +69,7 @@ public:
     int get_node_id();
     void set_node_id(int ID);
 
-    // REACH MILESTONES
-
-    // function to enable a webpage on the access point
-    void enable_webpage();
-
-    // function to disable a webpage on the access point
-    void disable_webpage();
+    void server_test();
 
 };
 

@@ -6,6 +6,12 @@
 #include <cstring>
 #include <sstream>
 
+#define TCP_PORT 4242
+#define DEBUG_printf printf
+#define BUF_SIZE 2048
+#define TEST_ITERATIONS 10
+#define POLL_TIME_S 5
+
 extern "C" {
     #include "pico/cyw43_arch.h"
     #include "pico/stdlib.h"
@@ -19,18 +25,6 @@ extern "C" {
     #include "hardware/vreg.h"
     #include "hardware/clocks.h"
 }
-
-// TCP Server definitions
-#define TCP_PORT 80
-#define DEBUG_printf printf
-#define POLL_TIME_S 5
-#define HTTP_GET "GET"
-#define HTTP_RESPONSE_HEADERS "HTTP/1.1 %d OK\nContent-Length: %d\nContent-Type: text/html; charset=utf-8\nConnection: close\n\n"
-#define LED_TEST_BODY "<html><body><h1>Hello from Pico.</h1><p>Led is %s</p><p><a href=\"?led=%d\">Turn led %s</a></body></html>"
-#define LED_PARAM "led=%d"
-#define LED_TEST "/ledtest"
-#define LED_GPIO 0
-#define HTTP_RESPONSE_REDIRECT "HTTP/1.1 302 Redirect\nLocation: http://%s" LED_TEST "\n\n"
 
 // TCP Server state structures
 typedef struct TCP_CONNECT_STATE_T_ {
@@ -46,119 +40,252 @@ typedef struct TCP_CONNECT_STATE_T_ {
 
 typedef struct TCP_SERVER_T_ {
     struct tcp_pcb *server_pcb;
+    struct tcp_pcb *client_pcb;
     bool complete;
+    uint8_t buffer_sent[BUF_SIZE];
+    uint8_t buffer_recv[BUF_SIZE];
+    int sent_len;
+    int recv_len;
+    int run_count;
     ip_addr_t gw;
     void* ap_node;
     dhcp_server_t dhcp_server;
     dns_server_t dns_server;
 } TCP_SERVER_T;
+ 
 
-// Forward declarations for server functions
-static err_t tcp_close_client_connection(TCP_CONNECT_STATE_T *con_state, struct tcp_pcb *client_pcb, err_t close_err);
-static void tcp_server_close(TCP_SERVER_T *state);
-static err_t tcp_server_sent(void *arg, struct tcp_pcb *pcb, u16_t len);
-static int test_server_content(const char *request, const char *params, char *result, size_t max_result_len);
-static err_t tcp_server_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err);
-static err_t tcp_server_poll(void *arg, struct tcp_pcb *pcb);
-static void tcp_server_err(void *arg, err_t err);
-static err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err);
-static bool tcp_server_open(void *arg, const char *ap_name);
-static void key_pressed_func(void *param);
 
-// Implementation of these functions (same as in your original code)
-static err_t tcp_close_client_connection(TCP_CONNECT_STATE_T *con_state, struct tcp_pcb *client_pcb, err_t close_err) {
-    if (client_pcb) {
-        assert(con_state && con_state->pcb == client_pcb);
-        tcp_arg(client_pcb, NULL);
-        tcp_poll(client_pcb, NULL, 0);
-        tcp_sent(client_pcb, NULL);
-        tcp_recv(client_pcb, NULL);
-        tcp_err(client_pcb, NULL);
-        err_t err = tcp_close(client_pcb);
-        if (err != ERR_OK) {
-            DEBUG_printf("close failed %d, calling abort\n", err);
-            tcp_abort(client_pcb);
-            close_err = ERR_ABRT;
-        }
-        if (con_state) {
-            free(con_state);
-        }
+TCP_SERVER_T* tcp_server_init(void) {
+    TCP_SERVER_T *state = (TCP_SERVER_T*)calloc(1, sizeof(TCP_SERVER_T));
+    if (!state) {
+        DEBUG_printf("failed to allocate state\n");
+        return NULL;
     }
-    return close_err;
+    return state;
 }
 
-static void tcp_server_close(TCP_SERVER_T *state) {
+err_t tcp_server_close(void *arg) {
+    TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
+    err_t err = ERR_OK;
+    if (state->client_pcb != NULL) {
+        tcp_arg(state->client_pcb, NULL);
+        tcp_poll(state->client_pcb, NULL, 0);
+        tcp_sent(state->client_pcb, NULL);
+        tcp_recv(state->client_pcb, NULL);
+        tcp_err(state->client_pcb, NULL);
+        err = tcp_close(state->client_pcb);
+        if (err != ERR_OK) {
+            DEBUG_printf("close failed %d, calling abort\n", err);
+            tcp_abort(state->client_pcb);
+            err = ERR_ABRT;
+        }
+        state->client_pcb = NULL;
+    }
     if (state->server_pcb) {
         tcp_arg(state->server_pcb, NULL);
         tcp_close(state->server_pcb);
         state->server_pcb = NULL;
     }
+    return err;
 }
 
-static err_t tcp_server_sent(void *arg, struct tcp_pcb *pcb, u16_t len) {
-    TCP_CONNECT_STATE_T *con_state = (TCP_CONNECT_STATE_T*)arg;
+err_t tcp_server_result(void *arg, int status) {
+    TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
+    if (status == 0) {
+        DEBUG_printf("test success\n");
+    } else {
+        DEBUG_printf("test failed %d\n", status);
+    }
+    state->complete = true;
+    return tcp_server_close(arg);
+}
+
+err_t tcp_server_sent(void *arg, struct tcp_pcb *tpcb, u16_t len) {
+    TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
     DEBUG_printf("tcp_server_sent %u\n", len);
-    con_state->sent_len += len;
-    if (con_state->sent_len >= con_state->header_len + con_state->result_len) {
-        //DEBUG_printf("all done\n");
-        return tcp_close_client_connection(con_state, pcb, ERR_OK);
+    state->sent_len += len;
+
+    if (state->sent_len >= BUF_SIZE) {
+
+        // We should get the data back from the client
+        state->recv_len = 0;
+        DEBUG_printf("Waiting for buffer from client\n");
+    }
+
+    return ERR_OK;
+}
+
+err_t tcp_server_send_data(void *arg, struct tcp_pcb *tpcb)
+{
+    TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
+    /*for(int i=0; i< BUF_SIZE; i++) {
+        state->buffer_sent[i] = rand();
+    }*/
+
+    state->sent_len = 0;
+    DEBUG_printf("Writing %ld bytes to client\n", BUF_SIZE);
+    // this method is callback from lwIP, so cyw43_arch_lwip_begin is not required, however you
+    // can use this method to cause an assertion in debug mode, if this method is called when
+    // cyw43_arch_lwip_begin IS needed
+    cyw43_arch_lwip_check();
+    err_t err = tcp_write(tpcb, state->buffer_sent, BUF_SIZE, TCP_WRITE_FLAG_COPY);
+    if (err != ERR_OK) {
+        DEBUG_printf("Failed to write data %d\n", err);
+        return tcp_server_result(arg, -1);
     }
     return ERR_OK;
 }
 
-static err_t tcp_server_poll(void *arg, struct tcp_pcb *pcb) {
-    TCP_CONNECT_STATE_T *con_state = (TCP_CONNECT_STATE_T*)arg;
-    DEBUG_printf("tcp_server_poll_fn\n");
-    return tcp_close_client_connection(con_state, pcb, ERR_OK); // Just disconnect client?
+err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err) {
+    TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
+    if (!p) {
+        return tcp_server_result(arg, -1);
+    }
+    // this method is callback from lwIP, so cyw43_arch_lwip_begin is not required, however you
+    // can use this method to cause an assertion in debug mode, if this method is called when
+    // cyw43_arch_lwip_begin IS needed
+    cyw43_arch_lwip_check();
+    if (p->tot_len > 0) {
+        DEBUG_printf("tcp_server_recv %d/%d err %d\n", p->tot_len, state->recv_len, err);
+
+        // Receive the buffer
+        const uint16_t buffer_left = BUF_SIZE - state->recv_len;
+        state->recv_len += pbuf_copy_partial(p, state->buffer_recv + state->recv_len,
+                                             p->tot_len > buffer_left ? buffer_left : p->tot_len, 0);
+        tcp_recved(tpcb, p->tot_len);
+
+        if(state->recv_len == 2048) {
+            printf("SERVER DEBUG: GOT 2048\n");
+            for(int i=0; i < BUF_SIZE; i++) {
+                state->buffer_sent[i] = state->buffer_recv[i];
+            }
+            tcp_server_send_data(arg, state->client_pcb);
+
+            for (int i = 0; i < 4; i++) {
+                printf("recv buff[%d] == %02x\n", i, state->buffer_recv[i]);
+                printf("sent buff[%d] == %02x\n", i, state->buffer_sent[i]);
+            }
+
+        } else {
+            printf("SERVER DEBUG: Currently recv %d\n", state->recv_len);
+        }
+    }
+    pbuf_free(p);
+
+    // Have we have received the whole buffer
+    if (state->recv_len == BUF_SIZE) {
+
+        // check it matches
+        if (memcmp(state->buffer_sent, state->buffer_recv, BUF_SIZE) != 0) {
+            DEBUG_printf("buffer mismatch\n");
+            return tcp_server_result(arg, -1);
+        }
+        DEBUG_printf("tcp_server_recv buffer ok\n");
+
+        // Test complete?
+        //state->run_count++;
+        /*if (state->run_count >= TEST_ITERATIONS) {
+            tcp_server_result(arg, 0);
+            return ERR_OK;
+        }*/
+
+        // Send another buffer
+        return ERR_OK;
+        //return tcp_server_send_data(arg, state->client_pcb);
+    }
+    return ERR_OK;
 }
 
-static void tcp_server_err(void *arg, err_t err) {
-    TCP_CONNECT_STATE_T *con_state = (TCP_CONNECT_STATE_T*)arg;
+err_t tcp_server_poll(void *arg, struct tcp_pcb *tpcb) {
+    DEBUG_printf("tcp_server_poll_fn\n");
+    return ERR_OK;
+    //return tcp_server_result(arg, -1); // no response is an error?
+}
+
+void tcp_server_err(void *arg, err_t err) {
     if (err != ERR_ABRT) {
         DEBUG_printf("tcp_client_err_fn %d\n", err);
-        tcp_close_client_connection(con_state, con_state->pcb, err);
+        tcp_server_result(arg, err);
     }
 }
 
-static err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
+err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
     TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
     if (err != ERR_OK || client_pcb == NULL) {
-        DEBUG_printf("failure in accept\n");
+        DEBUG_printf("Failure in accept\n");
+        tcp_server_result(arg, err);
         return ERR_VAL;
     }
-    //DEBUG_printf("client connected\n");
+    DEBUG_printf("Client connected\n");
 
-    // Create the state for the connection
-    TCP_CONNECT_STATE_T *con_state = (TCP_CONNECT_STATE_T*)calloc(1, sizeof(TCP_CONNECT_STATE_T));
-    if (!con_state) {
-        DEBUG_printf("failed to allocate connect state\n");
-        return ERR_MEM;
-    }
-    con_state->pcb = client_pcb; // for checking
-    con_state->gw = &state->gw;
-    con_state->ap_node = state->ap_node;  // Store pointer to APNode instance
-
-    // setup connection to client
-    tcp_arg(client_pcb, con_state);
+    state->client_pcb = client_pcb;
+    tcp_arg(client_pcb, state);
     tcp_sent(client_pcb, tcp_server_sent);
     tcp_recv(client_pcb, tcp_server_recv);
     tcp_poll(client_pcb, tcp_server_poll, POLL_TIME_S * 2);
     tcp_err(client_pcb, tcp_server_err);
 
+    //return tcp_server_send_data(arg, state->client_pcb);
     return ERR_OK;
 }
 
-static void key_pressed_func(void *param) {
-    assert(param);
-    TCP_SERVER_T *state = (TCP_SERVER_T*)param;
-    int key = getchar_timeout_us(0); // get any pending key press but don't wait
-    if (key == 'd' || key == 'D') {
-        cyw43_arch_lwip_begin();
-        cyw43_arch_disable_ap_mode();
-        cyw43_arch_lwip_end();
-        state->complete = true;
+bool tcp_server_open(void *arg) {
+    TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
+    DEBUG_printf("Starting server at %s on port %u\n", ip4addr_ntoa(netif_ip4_addr(netif_list)), TCP_PORT);
+
+    struct tcp_pcb *pcb = tcp_new_ip_type(IPADDR_TYPE_ANY);
+    if (!pcb) {
+        DEBUG_printf("failed to create pcb\n");
+        return false;
     }
+
+    err_t err = tcp_bind(pcb, NULL, TCP_PORT);
+    if (err) {
+        DEBUG_printf("failed to bind to port %u\n", TCP_PORT);
+        return false;
+    }
+
+    state->server_pcb = tcp_listen_with_backlog(pcb, 1);
+    if (!state->server_pcb) {
+        DEBUG_printf("failed to listen\n");
+        if (pcb) {
+            tcp_close(pcb);
+        }
+        return false;
+    }
+
+    tcp_arg(state->server_pcb, state);
+    tcp_accept(state->server_pcb, tcp_server_accept);
+
+    return true;
 }
+
+void run_tcp_server_test(TCP_SERVER_T *state) {
+
+    if (!tcp_server_open(state)) {
+        tcp_server_result(state, -1);
+        return;
+    }
+    while(!state->complete) {
+        // the following #ifdef is only here so this same example can be used in multiple modes;
+        // you do not need it in your code
+#if PICO_CYW43_ARCH_POLL
+        // if you are using pico_cyw43_arch_poll, then you must poll periodically from your
+        // main loop (not from a timer) to check for Wi-Fi driver or lwIP work that needs to be done.
+        cyw43_arch_poll();
+        // you can poll as often as you like, however if you have nothing else to do you can
+        // choose to sleep until either a specified time, or cyw43_arch_poll() has work to do:
+        cyw43_arch_wait_for_work_until(make_timeout_time_ms(1000));
+#else
+        // if you are not using pico_cyw43_arch_poll, then WiFI driver and lwIP work
+        // is done via interrupt in the background. This sleep is just an example of some (blocking)
+        // work you might be doing.
+        sleep_ms(1000);
+#endif
+    }
+    free(state);
+}
+
 
 // APNode class constructor
 APNode::APNode() : state(nullptr), running(false), password("password"), webpage_enabled(false) {
@@ -166,40 +293,7 @@ APNode::APNode() : state(nullptr), running(false), password("password"), webpage
     
 }
 
-// MeshNode class constructor
-MeshNode::MeshNode() {
-    // Use hardware-based entropy sources if possible
-    uint32_t ID = 0;
-    
-    // Generate a seed using multiple entropy sources
-    uint64_t seed = time(nullptr);
-    seed ^= (uint64_t)this;  // Add pointer address as entropy
-    
-    // Mix in hardware-specific entropy if available
-    #if defined(PICO_UNIQUE_BOARD_ID_SIZE_BYTES)
-    pico_unique_board_id_t board_id;
-    pico_get_unique_board_id(&board_id);
-    for (int i = 0; i < PICO_UNIQUE_BOARD_ID_SIZE_BYTES; i++) {
-        seed = seed * 33 + board_id.id[i];
-    }
-    #endif
-    
-    // Use a better random generator
-    std::mt19937 rng(seed);
-    std::uniform_int_distribution<uint32_t> dist(1, 0xFFFFFFFF);
-    
-    ID = dist(rng);
-    
-    // set the NodeID variable
-    set_NodeID(ID);
-    
-    printf("Generated NodeID: %u\n", ID);
-}
 
-// MeshNode deconstructor
-MeshNode::~MeshNode(){
-    NodeID = 0;
-}
 
 // set node ID from the APNode class
 void APNode::set_node_id(int ID){
@@ -308,339 +402,73 @@ void APNode::stop_ap_mode() {
     running = false;
 }
 
-// Function to enable a webpage on the access point
-void APNode::enable_webpage() {
-    if (!running || !state) {
-        DEBUG_printf("AP not running, cannot enable webpage\n");
-        return;
-    }
-    
-    webpage_enabled = true;
-    printf("Webpage enabled on the access point\n");
-}
-
-// Function to disable a webpage on the access point
-void APNode::disable_webpage() {
-    if (!running || !state) {
-        DEBUG_printf("AP not running, cannot disable webpage\n");
-        return;
-    }
-    
-    webpage_enabled = false;
-    printf("Webpage disabled on the access point\n");
-}
-
-// Modified HTTP response handler to only process data when webpage is enabled
-static int test_server_content(APNode* ap_node, const char *request, const char *params, char *result, size_t max_result_len) {
-    int len = 0;
-    
-    // Only process webpage requests if webpage is enabled
-    if (!ap_node->webpage_enabled) {
-        // Return minimal response when webpage is disabled
-        len = snprintf(result, max_result_len, "<html><body><h1>Data Mode Only</h1><p>Web interface is disabled.</p></body></html>");
-        return len;
-    }
-    
-    if (strncmp(request, LED_TEST, sizeof(LED_TEST) - 1) == 0) {
-        // Get the state of the led
-        bool value;
-        cyw43_gpio_get(&cyw43_state, LED_GPIO, &value);
-        int led_state = value;
-
-        // See if the user changed it
-        if (params) {
-            int led_param = sscanf(params, LED_PARAM, &led_state);
-            if (led_param == 1) {
-                if (led_state) {
-                    // Turn led on
-                    cyw43_gpio_set(&cyw43_state, LED_GPIO, true);
-                } else {
-                    // Turn led off
-                    cyw43_gpio_set(&cyw43_state, LED_GPIO, false);
-                }
-            }
-        }
-        // Generate result
-        if (led_state) {
-            len = snprintf(result, max_result_len, LED_TEST_BODY, "ON", 0, "OFF");
-        } else {
-            len = snprintf(result, max_result_len, LED_TEST_BODY, "OFF", 1, "ON");
-        }
-    }
-    return len;
-}
-
-// Modified TCP server receive function to print received data to serial
-static err_t tcp_server_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err) {
-    // buffer for the client data
-    char client_data_buffer[512];
-
-    TCP_CONNECT_STATE_T *con_state = (TCP_CONNECT_STATE_T*)arg;
-
-    APNode* ap_node = (APNode*)con_state->ap_node;
-    
-    if (!p) {
-        DEBUG_printf("connection closed\n");
-        return tcp_close_client_connection(con_state, pcb, ERR_OK);
-    }
-    assert(con_state && con_state->pcb == pcb);
-    if (p->tot_len > 0) {
-        DEBUG_printf("Server Receive Length %d Error Number %d\n", p->tot_len, err);
-        
-        // Copy the request into the buffer
-        pbuf_copy_partial(p, con_state->headers, p->tot_len > sizeof(con_state->headers) - 1 ? sizeof(con_state->headers) - 1 : p->tot_len, 0);
-        
-        // Print received data to serial
-        // printf("Received data from client: %.*s\n", p->tot_len, con_state->headers);
-
-        // Place data in client_data_buffer with NULL terminator ending
-        size_t copy_len = p->tot_len > sizeof(client_data_buffer) - 1 ? sizeof(client_data_buffer) - 1 : p->tot_len;
-        memcpy(client_data_buffer, con_state->headers, copy_len);
-        client_data_buffer[copy_len] = '\0';
-
-        // Extract client IP address and port
-        char client_ip[16];
-        ipaddr_ntoa_r(&pcb->remote_ip, client_ip, sizeof(client_ip));
-        uint16_t client_port = pcb->remote_port;
-
-        // Print connection information
-        printf("Client IP %s:%d\n", client_ip, client_port);
-
-        // Obtain the client ID and data 
-        char* id_prefix = strstr(client_data_buffer, "ID:");
-        if (id_prefix) {
-            // Move past "ID:" prefix
-            id_prefix += 3; 
-            
-            // Find the delimiter between ID and data
-            char* data_start = strstr(id_prefix, ";DATA:");
-            
-            if (data_start) {
-                // Temporarily null-terminate the ID part
-                *data_start = '\0';
-                
-                // Extract the client ID
-                int client_id = atoi(id_prefix);
-                
-                // Restore the separator
-                *data_start = ';';
-                
-                // Move data_start pointer to the actual data content
-                data_start += 6; // Skip ";DATA:"
-                
-                // Print extracted information
-                printf("Extracted - Client ID: %d, Data: %s\n", client_id, data_start);
-                
-                // Store the data in the client_results map
-                ap_node->client_results[client_id] = std::string(data_start);
-                
-                // Set the result flag for this client ID
-                ap_node->client_results_flag[client_id] = true;
-                
-                printf("Stored data for node ID: %d\n", client_id);
-            } else {
-                printf("Invalid data format: Missing DATA section\n");
-            }
-        } else {
-            printf("Invalid data format: Missing ID section\n");
-        }
-
-        // Handle GET request if webpage is enabled
-        if (ap_node->webpage_enabled && strncmp(HTTP_GET, con_state->headers, sizeof(HTTP_GET) - 1) == 0) {
-            char *request = con_state->headers + sizeof(HTTP_GET); // + space
-            char *params = strchr(request, '?');
-            if (params) {
-                if (*params) {
-                    char *space = strchr(request, ' ');
-                    *params++ = 0;
-                    if (space) {
-                        *space = 0;
-                    }
-                } else {
-                    params = NULL;
-                }
-            }
-
-            // Generate content
-            con_state->result_len = test_server_content(ap_node, request, params, con_state->result, sizeof(con_state->result));
-            DEBUG_printf("Request: %s?%s\n", request, params);
-            DEBUG_printf("Result: %d\n", con_state->result_len);
-
-            // Check we had enough buffer space
-            if (con_state->result_len > sizeof(con_state->result) - 1) {
-                DEBUG_printf("Too much result data %d\n", con_state->result_len);
-                return tcp_close_client_connection(con_state, pcb, ERR_CLSD);
-            }
-
-            // Generate web page
-            if (con_state->result_len > 0) {
-                con_state->header_len = snprintf(con_state->headers, sizeof(con_state->headers), HTTP_RESPONSE_HEADERS,
-                    200, con_state->result_len);
-                if (con_state->header_len > sizeof(con_state->headers) - 1) {
-                    DEBUG_printf("Too much header data %d\n", con_state->header_len);
-                    return tcp_close_client_connection(con_state, pcb, ERR_CLSD);
-                }
-            } else {
-                // Send redirect
-                con_state->header_len = snprintf(con_state->headers, sizeof(con_state->headers), HTTP_RESPONSE_REDIRECT,
-                    ipaddr_ntoa(con_state->gw));
-                DEBUG_printf("Sending redirect %s", con_state->headers);
-            }
-
-            // Send the headers to the client
-            con_state->sent_len = 0;
-            err_t err = tcp_write(pcb, con_state->headers, con_state->header_len, 0);
-            if (err != ERR_OK) {
-                DEBUG_printf("failed to write header data %d\n", err);
-                return tcp_close_client_connection(con_state, pcb, err);
-            }
-
-            // Send the body to the client
-            if (con_state->result_len) {
-                err = tcp_write(pcb, con_state->result, con_state->result_len, 0);
-                if (err != ERR_OK) {
-                    DEBUG_printf("failed to write result data %d\n", err);
-                    return tcp_close_client_connection(con_state, pcb, err);
-                }
-            }
-        } else {
-            // For non-GET requests or when webpage is disabled, just acknowledge the data
-            // Send a simple response back to the client that includes the node ID
-            const char *response = "Data received";
-            uint32_t node_id = ap_node->get_node_id();
-
-            con_state->sent_len = 0;
-            con_state->header_len = snprintf(con_state->headers, sizeof(con_state->headers), 
-                "HTTP/1.1 200 OK\nNode-ID: %u\nContent-Length: %d\nContent-Type: text/plain\n", 
-                node_id, strlen(response));
-            
-            err_t write_err = tcp_write(pcb, con_state->headers, con_state->header_len, 0);
-            if (write_err == ERR_OK) {
-                tcp_write(pcb, response, strlen(response), 0);
-            }
-        }
-        
-        tcp_recved(pcb, p->tot_len);
-    }
-    pbuf_free(p);
-    return ERR_OK;
-}
-
-// Simplified TCP server open function
-static bool tcp_server_open(void *arg, const char *ap_name) {
-    TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
-    DEBUG_printf("starting server on port %d\n", TCP_PORT);
-
-    struct tcp_pcb *pcb = tcp_new_ip_type(IPADDR_TYPE_ANY);
-    if (!pcb) {
-        DEBUG_printf("failed to create pcb\n");
-        return false;
-    }
-
-    err_t err = tcp_bind(pcb, IP_ANY_TYPE, TCP_PORT);
-    if (err) {
-        DEBUG_printf("failed to bind to port %d\n",TCP_PORT);
-        return false;
-    }
-
-    state->server_pcb = tcp_listen_with_backlog(pcb, 1);
-    if (!state->server_pcb) {
-        DEBUG_printf("failed to listen\n");
-        if (pcb) {
-            tcp_close(pcb);
-        }
-        return false;
-    }
-
-    tcp_arg(state->server_pcb, state);
-    tcp_accept(state->server_pcb, tcp_server_accept);
-
-    printf("Access point '%s' started. Waiting for client data...\n", ap_name);
-    return true;
-}
-
-// Modified start_ap_mode to initialize with webpage disabled by default
 bool APNode::start_ap_mode() {
-    if (!state) {
-        DEBUG_printf("APNode not initialized\n");
-        return false;
-    }
-    
+
     // Enable the AP mode on the driver
     cyw43_arch_enable_ap_mode(ap_name, password, CYW43_AUTH_WPA2_AES_PSK);
-    
-    // Check if an IPV6 was assigned
-    #if LWIP_IPV6
-    // Get the union of the IPV4 and IPV6
-    #define IP(x) ((x).u_addr.ip4)
-    #else
-    // if no IP is established, return x
-    #define IP(x) (x)
-    #endif
-    
-    // Set the mask and IP address of the access point
-    ip4_addr_t mask;
-    IP(state->gw).addr = PP_HTONL(CYW43_DEFAULT_IP_AP_ADDRESS);
-    IP(mask).addr = PP_HTONL(CYW43_DEFAULT_IP_MASK);
-    
-    #undef IP
-    
-    // Start the DHCP server
-    dhcp_server_init(&state->dhcp_server, &state->gw, &mask);
-    
-    // Start the DNS server
-    dns_server_init(&state->dns_server, &state->gw);
-    
-    // Open the TCP server
-    if (!tcp_server_open(state, ap_name)) {
-        DEBUG_printf("failed to open server\n");
+
+    state = tcp_server_init();
+    if (!state) {
         return false;
     }
-    
-    // Webpage is disabled by default
-    webpage_enabled = false;
-    printf("AP mode started with webpage disabled. Use enable_webpage() to enable it.\n");
+
+    #if LWIP_IPV6
+     #define IP(x) ((x).u_addr.ip4)
+     #else
+     #define IP(x) (x)
+     #endif
+ \
+     ip4_addr_t mask;
+     IP(state->gw).addr = PP_HTONL(CYW43_DEFAULT_IP_AP_ADDRESS);
+     IP(mask).addr = PP_HTONL(CYW43_DEFAULT_IP_MASK);
+ 
+     #undef IP
+
+    // Start the DHCP server
+    dhcp_server_t dhcp_server;
+    dhcp_server_init(&dhcp_server, &state->gw, &mask);
+
+    server_test();
     
     running = true;
     return true;
 }
 
-// Get the data from the incoming client
-char* APNode::get_client_data(int ID) {
-    // Check if the client ID exists in the map
-    if (client_results.find(ID) != client_results.end()) {
-        // Return the data as a c-string
-        return const_cast<char*>(client_results[ID].c_str());
-    }
-    else {
-        printf("Client %d not found!\n", ID);
-        return nullptr;
-    }
+void APNode::server_test() {
+    run_tcp_server_test(state);
 }
-// Check for incoming data from a client
-bool APNode::has_client_data(int ID) {
-    // Look in the map for the client ID
-    if (client_results.find(ID) != client_results.end()) {
-        // Check if there's a flag indicating new data
-        if (client_results_flag.find(ID) != client_results_flag.end()) {
-            return client_results_flag[ID];
-        }
-        return false;
+
+// MeshNode class constructor
+MeshNode::MeshNode() {
+    // Use hardware-based entropy sources if possible
+    uint32_t ID = 0;
+    
+    // Generate a seed using multiple entropy sources
+    uint64_t seed = time(nullptr);
+    seed ^= (uint64_t)this;  // Add pointer address as entropy
+    
+    // Mix in hardware-specific entropy if available
+    #if defined(PICO_UNIQUE_BOARD_ID_SIZE_BYTES)
+    pico_unique_board_id_t board_id;
+    pico_get_unique_board_id(&board_id);
+    for (int i = 0; i < PICO_UNIQUE_BOARD_ID_SIZE_BYTES; i++) {
+        seed = seed * 33 + board_id.id[i];
     }
-    else {
-        printf("Client %d not connected!\n", ID);
-        return false;
-    }
+    #endif
+    
+    // Use a better random generator
+    std::mt19937 rng(seed);
+    std::uniform_int_distribution<uint32_t> dist(1, 0xFFFFFFFF);
+    
+    ID = dist(rng);
+    
+    // set the NodeID variable
+    set_NodeID(ID);
+    
+    printf("Generated NodeID: %u\n", ID);
 }
-// Check data incoming data from all connected clients and return a bool if any have data available
-bool APNode::check_all_client_data() {
-    // Iterate through all client flags
-    for (const auto& pair : client_results_flag) {
-        // If any client has data available, return true
-        if (pair.second) {
-            return true;
-        }
-    }
-    // No client has data available
-    return false;
+
+// MeshNode deconstructor
+MeshNode::~MeshNode(){
+    NodeID = 0;
 }
