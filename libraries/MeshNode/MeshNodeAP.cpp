@@ -162,12 +162,7 @@ static void key_pressed_func(void *param) {
 
 // APNode class constructor
 APNode::APNode() : state(nullptr), running(false), password("password"), webpage_enabled(false) {
-    snprintf(ap_name, sizeof(ap_name), "GatorGrid_Node:%08X", get_NodeID());
-    
-}
 
-// MeshNode class constructor
-MeshNode::MeshNode() {
     // Use hardware-based entropy sources if possible
     uint32_t ID = 0;
     
@@ -192,8 +187,15 @@ MeshNode::MeshNode() {
     
     // set the NodeID variable
     set_NodeID(ID);
+
+    snprintf(ap_name, sizeof(ap_name), "GatorGrid_Node:%08X", get_NodeID());
     
-    printf("Generated NodeID: %u\n", ID);
+}
+
+// MeshNode class constructor
+MeshNode::MeshNode() {
+    
+    //printf("Generated NodeID: %u\n", ID);
 }
 
 // MeshNode deconstructor

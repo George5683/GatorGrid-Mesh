@@ -14,7 +14,7 @@
 SPI::SPI(){};
 
 // Initiate for the master
-void SPI::SPI_init(bool mode){
+bool SPI::SPI_init(bool mode){
     is_master = mode;
     if(mode == true){
         // Setting up the Master
@@ -39,6 +39,7 @@ void SPI::SPI_init(bool mode){
         gpio_set_function(PIN_SCK, GPIO_FUNC_SPI);
         gpio_set_function(PIN_CS, GPIO_FUNC_SPI);
     }
+    return true;
 };
 
 int SPI::SPI_send_message(uint8_t *message, size_t length){

@@ -6,7 +6,7 @@ class SPI{
         // Default constructor
         SPI();
         // function to initiate SPI (true for master | false for slave)
-        void SPI_init(bool mode);
+        bool SPI_init(bool mode);
 
         // function to send a message 
         int SPI_send_message(uint8_t *message, size_t length);
