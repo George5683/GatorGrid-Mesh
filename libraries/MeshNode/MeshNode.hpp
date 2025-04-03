@@ -5,6 +5,7 @@
 #include <set>
 #include <string>
 #include <map>
+#include <vector>
 #include "pico/cyw43_arch.h"
 
 // Forward declarations
@@ -32,6 +33,8 @@ public:
     bool running;
     char ap_name[32];
     const char* password;
+
+    std::vector<void*> connections;
 
     // map for results/results_flag from clients
     std::map<int, std::string> client_results;
