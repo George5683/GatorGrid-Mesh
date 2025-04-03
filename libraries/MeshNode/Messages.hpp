@@ -92,6 +92,7 @@ public:
 
     void add_message(uint8_t msg_len, uint8_t* msg_i) {
         memcpy(msg.msg, msg_i, msg_len > 2034 ? 2034 : msg_len);
+        msg.msg_len = msg_len;
         msg.len += msg_len > 2034 ? 2034 : msg_len;
     }
 
@@ -166,7 +167,7 @@ public:
         msg.priority = priority;
         msg.msg_id = 0x04;
         msg.len = 14;
-        msg.source = id;
+        msg.source = src_id;
         msg.dest = dest_id;
         msg.bytes_received = bytes_received;
     }

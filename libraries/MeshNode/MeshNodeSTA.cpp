@@ -1,4 +1,5 @@
 #include "MeshNode.hpp"
+#include "Messages.hpp"
 #include <lwip/tcpbase.h>
 #include <stdio.h>
 #include <random>
@@ -229,23 +230,23 @@ static TCP_CLIENT_T* tcp_client_init(void) {
 }
 
 
-static void create_join_message(size_t buff_size, uint8_t* buff, STANode* node) {
-  buff[0] = 0xFF; // Highest priority message signaling incoming connection
-  buff[1] = 0x00; // Init message
+// static void create_join_message(size_t buff_size, uint8_t* buff, STANode* node) {
+//   buff[0] = 0xFF; // Highest priority message signaling incoming connection
+//   buff[1] = 0x00; // Init message
 
-  *reinterpret_cast<uint32_t*>(buff + 2) = node->get_NodeID();
+//   *reinterpret_cast<uint32_t*>(buff + 2) = node->get_NodeID();
   
-  // send current downstream nodes connected to our hardware connected AP 
-  int connected_nodes = 0;
-  buff[6] = connected_nodes; // connected nodes
-  for (int i = 0; i < connected_nodes; i++)
-  {
-    buff[7+(i*4)] = 0;
-    buff[8+(i*4)] = 0;
-    buff[9+(i*4)] = 0;
-    buff[10+(i*4)] = 0;
-  }
-}
+//   // send current downstream nodes connected to our hardware connected AP 
+//   int connected_nodes = 0;
+//   buff[6] = connected_nodes; // connected nodes
+//   for (int i = 0; i < connected_nodes; i++)
+//   {
+//     buff[7+(i*4)] = 0;
+//     buff[8+(i*4)] = 0;
+//     buff[9+(i*4)] = 0;
+//     buff[10+(i*4)] = 0;
+//   }
+// }
 
 
 
@@ -406,9 +407,10 @@ bool STANode::tcp_init() {
     printf("Opened tcp client connection\n");
 
     uint8_t buffer[BUF_SIZE] = {};
-    create_join_message(BUF_SIZE, buffer, this);
-    
-    return send_tcp_data(buffer, BUF_SIZE);
+    //create_join_message(BUF_SIZE, buffer, this);
+    TCP_INIT_MESSAGE init_msg(get_NodeID());
+    DUMP_BYTES(init_msg.get_msg(), init_msg.get_len());
+    return send_tcp_data(init_msg.get_msg(), init_msg.get_len());
 
 }
 
