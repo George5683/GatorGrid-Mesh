@@ -1,6 +1,9 @@
 #ifndef MESSAGES_HPP
 #define MESSAGES_HPP
 
+#include <cstdint>
+#include <cstring>
+
 class TCP_MESSAGE {
 protected:
     uint8_t priority;
@@ -9,6 +12,7 @@ public:
     ~TCP_MESSAGE() { }
     virtual uint8_t* get_msg() = 0;
     virtual uint16_t get_len() = 0;
+    virtual void set_msg(void* msg) = 0;
 
     typedef struct __attribute__((__packed__)) {
         uint8_t priority;
@@ -77,6 +81,10 @@ public:
     uint16_t get_len() override {
         return msg.len;
     }
+
+    void set_msg(void* msg) override {
+        this->msg = *(reinterpret_cast<tcp_init_msg_t*>(msg));
+    }
 };
 
 class TCP_DATA_MSG : public TCP_MESSAGE {
@@ -101,6 +109,9 @@ public:
     }
     uint16_t get_len() override {
         return msg.len;
+    }
+    void set_msg(void* msg) override {
+        this->msg = *(reinterpret_cast<tcp_data_msg_t*>(msg));
     }
 };
 
@@ -133,6 +144,9 @@ public:
     uint16_t get_len() override {
         return msg.len;
     }
+    void set_msg(void* msg) override {
+        this->msg = *(reinterpret_cast<tcp_disconnect_msg_t*>(msg));
+    }
 };
 
 class TCP_UPDATE_MESSAGE : public TCP_MESSAGE {
@@ -158,6 +172,9 @@ public:
     uint16_t get_len() override {
         return msg.len;
     }
+    void set_msg(void* msg) override {
+        this->msg = *(reinterpret_cast<tcp_update_msg_t*>(msg));
+    }
 };
     
 class TCP_ACK_MESSAGE : public TCP_MESSAGE {
@@ -180,6 +197,17 @@ public:
     uint16_t get_len() override {
         return msg.len;
     }
+    void set_msg(void* msg) override {
+        this->msg = *(reinterpret_cast<tcp_acknowledge_msg_t*>(msg));
+    }
 };
+
+/**
+ * @brief Takes in some tcp message buffer and returns a pointer to a new TCP_MESSAGE
+ * 
+ * @param data buffer recieved over tcp
+ * @return TCP_MESSAGE*  !!USER MUST DELETE!!
+ */
+TCP_MESSAGE* parseMessage(const uint8_t* data);
 
 #endif // MESSAGES_HPP

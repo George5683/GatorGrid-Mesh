@@ -41,6 +41,7 @@ add_executable(sta_background
         libraries/dnsserver/dnsserver.c
         libraries/MeshNode/MeshNodeAP.cpp
         libraries/MeshNode/MeshNodeSTA.cpp
+        libraries/MeshNode/Messages.cpp
         )
 
 target_include_directories(sta_background PRIVATE
