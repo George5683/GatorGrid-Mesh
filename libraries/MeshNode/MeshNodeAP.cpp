@@ -1,4 +1,5 @@
 #include "MeshNode.hpp"
+#include "Messages.hpp"
 #include <random>
 #include <ctime>
 #include <cstdio>
@@ -42,8 +43,6 @@ typedef struct TCP_SERVER_T_ {
     struct tcp_pcb *server_pcb;
     struct tcp_pcb *client_pcb;
     bool complete;
-    uint8_t buffer_sent[BUF_SIZE];
-    uint8_t buffer_recv[BUF_SIZE];
     int sent_len;
     int recv_len;
     int run_count;
@@ -51,9 +50,18 @@ typedef struct TCP_SERVER_T_ {
     void* ap_node;
     dhcp_server_t dhcp_server;
     dns_server_t dns_server;
+    uint8_t buffer_sent[BUF_SIZE];
+    uint8_t buffer_recv[BUF_SIZE];
 } TCP_SERVER_T;
- 
 
+struct ClientConnection {
+    struct tcp_pcb *pcb;
+    bool id_recved = false;
+    uint32_t id = 0;
+};
+ 
+std::vector<ClientConnection> clients;
+std::map<tcp_pcb *, ClientConnection> clients_map;
 
 TCP_SERVER_T* tcp_server_init(void) {
     TCP_SERVER_T *state = (TCP_SERVER_T*)calloc(1, sizeof(TCP_SERVER_T));
@@ -144,6 +152,9 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
     // this method is callback from lwIP, so cyw43_arch_lwip_begin is not required, however you
     // can use this method to cause an assertion in debug mode, if this method is called when
     // cyw43_arch_lwip_begin IS needed
+
+    
+
     cyw43_arch_lwip_check();
     if (p->tot_len > 0) {
         DEBUG_printf("tcp_server_recv %d/%d err %d\n", p->tot_len, state->recv_len, err);
@@ -156,14 +167,35 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 
         if(state->recv_len == 2048) {
             printf("SERVER DEBUG: GOT 2048\n");
+
+            if(clients_map.find(tpcb) != clients_map.end()) {
+                printf("PCB FOUND\n");
+            } else {
+                printf("MAJOR ERROR CLIENT PCB NOT FOUND\n");
+            }
+
+            if(clients_map[tpcb].id_recved == false) {
+                clients_map[tpcb].id_recved = true;
+                tcp_init_msg_t *init_msg = reinterpret_cast <tcp_init_msg_t *>(state->buffer_recv);
+                clients_map[tpcb].id = init_msg->source;
+                printf("ID RECV: %08X\n", clients_map[tpcb].id);
+            }
+
+            // copy buff data back to user
             for(int i=0; i < BUF_SIZE; i++) {
                 state->buffer_sent[i] = state->buffer_recv[i];
             }
+
+            
+
+
             tcp_server_send_data(arg, state->client_pcb);
 
-            for (int i = 0; i < 4; i++) {
+            
+
+            for (int i = 0; i < 20; i++) {
                 printf("recv buff[%d] == %02x\n", i, state->buffer_recv[i]);
-                printf("sent buff[%d] == %02x\n", i, state->buffer_sent[i]);
+               
             }
 
         } else {
@@ -218,6 +250,14 @@ err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
     }
     DEBUG_printf("Client connected\n");
 
+    struct ClientConnection client;
+
+    client.pcb = client_pcb;
+
+    clients.push_back({client});
+
+    clients_map.insert({client_pcb, client});
+
     state->client_pcb = client_pcb;
     tcp_arg(client_pcb, state);
     tcp_sent(client_pcb, tcp_server_sent);
@@ -266,6 +306,9 @@ void run_tcp_server_test(TCP_SERVER_T *state) {
         tcp_server_result(state, -1);
         return;
     }
+
+    uint8_t tmp[] = {0xff, 0xff, 0xff, 0xff,0xff, 0xff, 0xff, 0xff,0xff, 0xff, 0xff, 0xff,0xff, 0xff, 0xff, 0xff,0xff, 0xff, 0xff, 0xff,0xff, 0xff, 0xff, 0xff,0xff, 0xff, 0xff, 0xff,0xff, 0xff, 0xff, 0xff};
+
     while(!state->complete) {
         // the following #ifdef is only here so this same example can be used in multiple modes;
         // you do not need it in your code
@@ -280,6 +323,12 @@ void run_tcp_server_test(TCP_SERVER_T *state) {
         // if you are not using pico_cyw43_arch_poll, then WiFI driver and lwIP work
         // is done via interrupt in the background. This sleep is just an example of some (blocking)
         // work you might be doing.
+
+        for(auto i : clients ) {
+            printf("port con: %d\n", i.pcb->local_port);
+            tcp_write(i.pcb,tmp, sizeof(tmp), TCP_WRITE_FLAG_COPY);
+        }
+
         sleep_ms(1000);
 #endif
     }
@@ -288,9 +337,8 @@ void run_tcp_server_test(TCP_SERVER_T *state) {
 
 
 // APNode class constructor
-APNode::APNode() : state(nullptr), running(false), password("password"), webpage_enabled(false) {
+APNode::APNode() : state(nullptr), running(false), password("password") {
     snprintf(ap_name, sizeof(ap_name), "GatorGrid_Node:%08X", get_NodeID());
-    
 }
 
 

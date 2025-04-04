@@ -40,9 +40,6 @@ public:
     std::map<int, std::string> client_results;
     std::map<int, bool> client_results_flag;
 
-    // Flag to track if the webpage is enabled
-    bool webpage_enabled;
-
     // CONSTRUCTOR/DECONSTRUCTOR
     APNode();
     ~APNode();
