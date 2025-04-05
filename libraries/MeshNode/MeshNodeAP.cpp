@@ -7,6 +7,9 @@
 #include <cstring>
 #include <sstream>
 
+#include "hardware/regs/rosc.h"
+#include "hardware/regs/addressmap.h"
+
 #define TCP_PORT 4242
 #define DEBUG_printf printf
 #define BUF_SIZE 2048
@@ -62,6 +65,25 @@ struct ClientConnection {
  
 std::vector<ClientConnection> clients;
 std::map<tcp_pcb *, ClientConnection> clients_map;
+
+// https://forums.raspberrypi.com/viewtopic.php?t=302960
+void MeshNode::seed_rand() {
+
+    uint32_t random = 0x811c9dc5;
+    uint8_t next_byte = 0;
+    volatile uint32_t *rnd_reg = (uint32_t *)(ROSC_BASE + ROSC_RANDOMBIT_OFFSET);
+  
+    for (int i = 0; i < 16; i++) {
+      for (int k = 0; k < 8; k++) {
+        next_byte = (next_byte << 1) | (*rnd_reg & 1);
+      }
+  
+      random ^= next_byte;
+      random *= 0x01000193;
+    }
+  
+    srand(random);
+  }
 
 TCP_SERVER_T* tcp_server_init(void) {
     TCP_SERVER_T *state = (TCP_SERVER_T*)calloc(1, sizeof(TCP_SERVER_T));
@@ -176,22 +198,18 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 
             if(clients_map[tpcb].id_recved == false) {
                 clients_map[tpcb].id_recved = true;
-                tcp_init_msg_t *init_msg = reinterpret_cast <tcp_init_msg_t *>(state->buffer_recv);
-                clients_map[tpcb].id = init_msg->source;
-                printf("ID RECV: %08X\n", clients_map[tpcb].id);
-            }
+                tcp_init_msg_t *init_msg_str = reinterpret_cast <tcp_init_msg_t *>(state->buffer_recv);
+                clients_map[tpcb].id = init_msg_str->source;
+                printf("ID RECV FROM INIT MESSAGE: %08X\n", clients_map[tpcb].id);
+                uint32_t test = ((APNode*)(state->ap_node))->get_NodeID();
+                printf("CURRENT NODE ID: %08X\n", test);
 
-            // copy buff data back to user
-            for(int i=0; i < BUF_SIZE; i++) {
-                state->buffer_sent[i] = state->buffer_recv[i];
+                TCP_INIT_MESSAGE init_msg(((APNode*)(state->ap_node))->get_NodeID());  
             }
 
             
-
 
             tcp_server_send_data(arg, state->client_pcb);
-
-            
 
             for (int i = 0; i < 20; i++) {
                 printf("recv buff[%d] == %02x\n", i, state->buffer_recv[i]);
@@ -488,32 +506,10 @@ void APNode::server_test() {
 
 // MeshNode class constructor
 MeshNode::MeshNode() {
-    // Use hardware-based entropy sources if possible
-    uint32_t ID = 0;
-    
-    // Generate a seed using multiple entropy sources
-    uint64_t seed = time(nullptr);
-    seed ^= (uint64_t)this;  // Add pointer address as entropy
-    
-    // Mix in hardware-specific entropy if available
-    #if defined(PICO_UNIQUE_BOARD_ID_SIZE_BYTES)
-    pico_unique_board_id_t board_id;
-    pico_get_unique_board_id(&board_id);
-    for (int i = 0; i < PICO_UNIQUE_BOARD_ID_SIZE_BYTES; i++) {
-        seed = seed * 33 + board_id.id[i];
-    }
-    #endif
-    
-    // Use a better random generator
-    std::mt19937 rng(seed);
-    std::uniform_int_distribution<uint32_t> dist(1, 0xFFFFFFFF);
-    
-    ID = dist(rng);
+    seed_rand();
     
     // set the NodeID variable
-    set_NodeID(ID);
-    
-    printf("Generated NodeID: %u\n", ID);
+    set_NodeID(rand());
 }
 
 // MeshNode deconstructor

@@ -25,6 +25,7 @@ public:
     // Base class functions for get/set NodeID
     void set_NodeID(uint32_t ID);
     uint32_t get_NodeID();
+    void seed_rand();
 };
 
 class APNode : public MeshNode{   

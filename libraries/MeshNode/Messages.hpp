@@ -1,12 +1,53 @@
 #ifndef MESSAGES_HPP
 #define MESSAGES_HPP
 
+
 typedef struct __attribute__((__packed__)) {
     uint8_t priority;
     uint8_t msg_id;
     uint16_t len;
     uint32_t source;
 }tcp_init_msg_t;
+
+typedef struct __attribute__((__packed__)) {
+    uint8_t priority;
+    uint8_t msg_id;
+    uint16_t len;
+    uint32_t source;
+    uint8_t child_count;
+    uint32_t children_IDs[4]; //max 4
+}tcp_update_msg_t;
+
+typedef struct __attribute__((__packed__)) {
+    uint8_t priority;
+    uint8_t msg_id;
+    uint16_t len;
+    uint32_t source;
+    uint32_t dest;
+    uint16_t msg_len;
+    uint8_t msg[2034]; //max message len left for 2048 bytes
+}tcp_data_msg_t;
+
+typedef struct __attribute__((__packed__)) {
+    uint8_t priority;
+    uint8_t msg_id;
+    uint16_t len;
+    uint32_t source;
+    uint8_t cause; //0 if purposeful, 1-127 (0x7F) personal errors, 128-255 (0x80-0xFF)
+    // for other nodes losing child node
+    uint32_t lost_node; // ignored if 0-127 cause
+    uint8_t child_count;
+    uint32_t children_IDs[4]; //max 4
+}tcp_disconnect_msg_t;
+
+typedef struct __attribute__((__packed__)) {
+    uint8_t priority;
+    uint8_t msg_id;
+    uint16_t len;
+    uint32_t source;
+    uint32_t dest;
+    uint16_t bytes_received; // TODO:: add error check val in future
+}tcp_acknowledge_msg_t;
 
 class TCP_MESSAGE {
 protected:
@@ -16,46 +57,6 @@ public:
     ~TCP_MESSAGE() { }
     virtual uint8_t* get_msg() = 0;
     virtual uint16_t get_len() = 0;
-
-    typedef struct __attribute__((__packed__)) {
-        uint8_t priority;
-        uint8_t msg_id;
-        uint16_t len;
-        uint32_t source;
-        uint8_t child_count;
-        uint32_t children_IDs[4]; //max 4
-    }tcp_update_msg_t;
-
-    typedef struct __attribute__((__packed__)) {
-        uint8_t priority;
-        uint8_t msg_id;
-        uint16_t len;
-        uint32_t source;
-        uint32_t dest;
-        uint16_t msg_len;
-        uint8_t msg[2034]; //max message len left for 2048 bytes
-    }tcp_data_msg_t;
-
-    typedef struct __attribute__((__packed__)) {
-        uint8_t priority;
-        uint8_t msg_id;
-        uint16_t len;
-        uint32_t source;
-        uint8_t cause; //0 if purposeful, 1-127 (0x7F) personal errors, 128-255 (0x80-0xFF)
-        // for other nodes losing child node
-        uint32_t lost_node; // ignored if 0-127 cause
-        uint8_t child_count;
-        uint32_t children_IDs[4]; //max 4
-    }tcp_disconnect_msg_t;
-
-    typedef struct __attribute__((__packed__)) {
-        uint8_t priority;
-        uint8_t msg_id;
-        uint16_t len;
-        uint32_t source;
-        uint32_t dest;
-        uint16_t bytes_received; // TODO:: add error check val in future
-    }tcp_acknowledge_msg_t;
 };
 
 
