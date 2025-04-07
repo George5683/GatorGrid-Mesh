@@ -344,23 +344,29 @@ int STANode::scan_result(void* env, const cyw43_ev_scan_result_t* result) {
         unsigned int id; // Changed to unsigned int for hexadecimal
         if (sscanf(ssid_str, "GatorGrid_Node:%x", &id) == 1) { // Changed format to %x for hexadecimal
             // Add to known nodes if not already present
-            if (self->known_nodes.find(id) == self->known_nodes.end()) {
+            if (self->get_NodeID() == id) {
+                goto free_mem;
+            } else if (self->known_nodes.find(id) == self->known_nodes.end()) {
                 printf("New node ID: 0x%x\n", id); // Changed format to 0x%x for hexadecimal output
                 printf("New node ID: 0x%x, SSID: %s, Signal strength: %d dBm\n", id, (char*)&(result->ssid), result->rssi);
                 self->known_nodes[id] = result_copy;
             } else {
                 // Free if node is already known
-                free(result_copy);
+                goto free_mem;
             }
         } else {
             // Free if parsing fails
-            free(result_copy);
+            goto free_mem;
         }
     } else {
         // Free if SSID doesn't match prefix
-        free(result_copy);
+        goto free_mem;
     }
      
+    return 0;
+
+free_mem:
+    free(result_copy);
     return 0;
 }
 
@@ -453,7 +459,7 @@ bool STANode::tcp_init() {
     }
     printf("Opened tcp client connection\n");
 
-    uint8_t buffer[BUF_SIZE] = {};
+    //uint8_t buffer[BUF_SIZE] = {};
     //create_join_message(BUF_SIZE, buffer, this);
     TCP_INIT_MESSAGE init_msg(get_NodeID());
     DUMP_BYTES(init_msg.get_msg(), init_msg.get_len());
@@ -463,9 +469,9 @@ bool STANode::tcp_init() {
 
 bool STANode::send_tcp_data(uint8_t* data, uint32_t size) {
 
-    uint8_t buffer[size] = {};
+    // uint8_t buffer[size] = {};
     // if (size > BUF_SIZE) { size = size; }
-    memcpy(buffer, data, size);
+    // memcpy(buffer, data, size);
 
     bool flag = false;
 
@@ -479,7 +485,7 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size) {
     //     printf("attempting to write\n");
     //     sleep_ms(2);
     // }
-    err_t err = tcp_write(state->tcp_pcb, (void*)buffer, size, TCP_WRITE_FLAG_COPY);
+    err_t err = tcp_write(state->tcp_pcb, (void*)data, size, TCP_WRITE_FLAG_COPY);
     err_t err2 = tcp_output(state->tcp_pcb);
     if (err != ERR_OK) {
         printf("Message failed to write\n");
