@@ -168,18 +168,65 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         state->buffer_len += pbuf_copy_partial(p, state->buffer + state->buffer_len, copy_len, 0);
         
         // Print the received data for debugging
-        char received_data[256] = {0}; // Small buffer for displaying part of response
-        pbuf_copy_partial(p, received_data, p->tot_len > 255 ? 255 : p->tot_len, 0);
-        DEBUG_printf("Response: %s\n", received_data);
+        // char received_data[256] = {0}; // Small buffer for displaying part of response
+        // pbuf_copy_partial(p, received_data, p->tot_len > 255 ? 255 : p->tot_len, 0);
+        // DEBUG_printf("Response: %s\n", received_data);
         
         // Acknowledge receipt of the data
         tcp_recved(tpcb, p->tot_len);
         
         // Consider this a success - we got a response
-        if (p->tot_len > 0) {
-            pbuf_free(p);
-            return tcp_result(arg, 0);
+        // if (p->tot_len > 0) {
+        //     pbuf_free(p);
+        //     return tcp_result(arg, 0);
+        // }
+        TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(state->buffer));
+        if (!msg) {
+            printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
+            return false;
         }
+
+        uint8_t msg_id = state->buffer[1];
+        switch (msg_id) {
+            case 0x00: {
+                TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(msg);
+                //does stuff
+                printf("Received initialization message from node %u", initMsg->msg.source);
+                break;
+            }
+            case 0x01: {
+                TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
+                //does stuff
+                break;
+            }
+            case 0x02: {
+                TCP_DISCONNECT_MSG* discMsg = static_cast<TCP_DISCONNECT_MSG*>(msg);
+                //does stuff
+                break;
+            }
+            case 0x03: {
+                TCP_UPDATE_MESSAGE* updMsg = static_cast<TCP_UPDATE_MESSAGE*>(msg);
+                //does stuff
+                break;
+            }
+            case 0x04: {
+                TCP_ACK_MESSAGE* ackMsg = static_cast<TCP_ACK_MESSAGE*>(msg);
+                //does stuff
+                break;
+            }
+            case 0x05: {
+                TCP_NAK_MESSAGE* nakMsg = static_cast<TCP_NAK_MESSAGE*>(msg);
+                //does stuff
+                break;
+            }
+            default:
+                printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
+                // SEND NAK message
+                TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), msg_id ? msg_id : 0, 0);
+                break;
+        }
+        delete msg;
+    
     }
     
     pbuf_free(p);
@@ -416,8 +463,8 @@ bool STANode::tcp_init() {
 
 bool STANode::send_tcp_data(uint8_t* data, uint32_t size) {
 
-    uint8_t buffer[BUF_SIZE] = {};
-    if (size > BUF_SIZE) { size = BUF_SIZE; }
+    uint8_t buffer[size] = {};
+    // if (size > BUF_SIZE) { size = size; }
     memcpy(buffer, data, size);
 
     bool flag = false;
@@ -432,7 +479,7 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size) {
     //     printf("attempting to write\n");
     //     sleep_ms(2);
     // }
-    err_t err = tcp_write(state->tcp_pcb, (void*)buffer, BUF_SIZE, TCP_WRITE_FLAG_COPY);
+    err_t err = tcp_write(state->tcp_pcb, (void*)buffer, size, TCP_WRITE_FLAG_COPY);
     err_t err2 = tcp_output(state->tcp_pcb);
     if (err != ERR_OK) {
         printf("Message failed to write\n");

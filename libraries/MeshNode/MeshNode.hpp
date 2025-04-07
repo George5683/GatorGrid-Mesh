@@ -72,6 +72,8 @@ public:
 
     void server_test();
 
+    bool send_tcp_data(uint8_t* data, uint32_t size);
+
 };
 
 class STANode : public MeshNode{

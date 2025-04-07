@@ -195,104 +195,115 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         if(state->recv_len == 2048) {
             printf("SERVER DEBUG: GOT 2048\n");
 
-            if(clients_map.find(tpcb) != clients_map.end()) {
-                printf("PCB FOUND\n");
-            } else {
-                printf("MAJOR ERROR CLIENT PCB NOT FOUND\n");
-            }
-
-            if(clients_map[tpcb].id_recved == false) {
-                clients_map[tpcb].id_recved = true;
-                // tcp_init_msg_t *init_msg_str = reinterpret_cast <tcp_init_msg_t *>(state->buffer_recv);
-                // clients_map[tpcb].id = init_msg_str->source;
-                // printf("ID RECV FROM INIT MESSAGE: %08X\n", clients_map[tpcb].id);
-                // uint32_t test = ((APNode*)(state->ap_node))->get_NodeID();
-                // printf("CURRENT NODE ID: %08X\n", test);
-
-                // TCP_INIT_MESSAGE init_msg(((APNode*)(state->ap_node))->get_NodeID());  
-                TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(state->buffer_recv));
-                if (!msg) {
-                    printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
-                    return false;
-                }
-
-                uint8_t msg_id = state->buffer_recv[1];
-                switch (msg_id) {
-                    case 0x00: {
-                        TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(msg);
-                        //does stuff
-                        break;
-                    }
-                    case 0x01: {
-                        TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
-                        //does stuff
-                        break;
-                    }
-                    case 0x02: {
-                        TCP_DISCONNECT_MSG* discMsg = static_cast<TCP_DISCONNECT_MSG*>(msg);
-                        //does stuff
-                        break;
-                    }
-                    case 0x03: {
-                        TCP_UPDATE_MESSAGE* updMsg = static_cast<TCP_UPDATE_MESSAGE*>(msg);
-                        //does stuff
-                        break;
-                    }
-                    case 0x04: {
-                        TCP_ACK_MESSAGE* ackMsg = static_cast<TCP_ACK_MESSAGE*>(msg);
-                        //does stuff
-                        break;
-                    }
-                    case 0x05: {
-                        TCP_NAK_MESSAGE* nakMsg = static_cast<TCP_NAK_MESSAGE*>(msg);
-                        //does stuff
-                        break;
-                    }
-                    default:
-                        printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
-                        // SEND NAK message
-                        TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), msg_id ? msg_id : 0, 0);
-                        break;
-                }
-                delete msg;
-            }
-
-            
-
-            tcp_server_send_data(arg, state->client_pcb);
-
-            for (int i = 0; i < 20; i++) {
-                printf("recv buff[%d] == %02x\n", i, state->buffer_recv[i]);
-               
-            }
-
         } else {
             printf("SERVER DEBUG: Currently recv %d\n", state->recv_len);
         }
+
+        if(clients_map.find(tpcb) != clients_map.end()) {
+            printf("PCB FOUND\n");
+        } else {
+            printf("MAJOR ERROR CLIENT PCB NOT FOUND\n");
+            return ERR_OK; // TODO: Change error handling
+        }
+
+        if(clients_map[tpcb].id_recved == false) {
+            bool ACK_flag = false;
+            clients_map[tpcb].id_recved = true;
+            // tcp_init_msg_t *init_msg_str = reinterpret_cast <tcp_init_msg_t *>(state->buffer_recv);
+            // clients_map[tpcb].id = init_msg_str->source;
+            // printf("ID RECV FROM INIT MESSAGE: %08X\n", clients_map[tpcb].id);
+            // uint32_t test = ((APNode*)(state->ap_node))->get_NodeID();
+            // printf("CURRENT NODE ID: %08X\n", test);
+
+            // TCP_INIT_MESSAGE init_msg(((APNode*)(state->ap_node))->get_NodeID());  
+            TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(state->buffer_recv));
+            if (!msg) {
+                printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
+                return false;
+            }
+
+            uint8_t msg_id = state->buffer_recv[1];
+            switch (msg_id) {
+                case 0x00: {
+                    TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(msg);
+                    printf("Received initialization message from node %u", initMsg->msg.source);
+                    ACK_flag = true;
+                    //does stuff
+                    break;
+                }
+                case 0x01: {
+                    TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
+                    //does stuff
+                    break;
+                }
+                case 0x02: {
+                    TCP_DISCONNECT_MSG* discMsg = static_cast<TCP_DISCONNECT_MSG*>(msg);
+                    //does stuff
+                    break;
+                }
+                case 0x03: {
+                    TCP_UPDATE_MESSAGE* updMsg = static_cast<TCP_UPDATE_MESSAGE*>(msg);
+                    //does stuff
+                    break;
+                }
+                case 0x04: {
+                    TCP_ACK_MESSAGE* ackMsg = static_cast<TCP_ACK_MESSAGE*>(msg);
+                    //does stuff
+                    break;
+                }
+                case 0x05: {
+                    TCP_NAK_MESSAGE* nakMsg = static_cast<TCP_NAK_MESSAGE*>(msg);
+                    //does stuff
+                    break;
+                }
+                default:
+                    printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
+                    break;
+            }
+
+            if (ACK_flag){
+                TCP_ACK_MESSAGE ackMsg(node->get_NodeID(), msg_id ? msg_id : 0, ackMsg.msg.len);
+                node->send_tcp_data(ackMsg.get_msg(), ackMsg.get_len());
+            } else {
+                // TODO: Update for error handling
+                TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), msg_id ? msg_id : 0, 0);
+                node->send_tcp_data(nakMsg.get_msg(), nakMsg.get_len());
+            }
+
+            delete msg;
+        }
+
+        
+
+        //tcp_server_send_data(arg, state->client_pcb);
+        // for (int i = 0; i < 20; i++) {
+        //     printf("recv buff[%d] == %02x\n", i, state->buffer_recv[i]);
+           
+        // }
     }
     pbuf_free(p);
 
     // Have we have received the whole buffer
-    if (state->recv_len == BUF_SIZE) {
+    // if (state->recv_len == BUF_SIZE) {
 
-        // check it matches
-        if (memcmp(state->buffer_sent, state->buffer_recv, BUF_SIZE) != 0) {
-            DEBUG_printf("buffer mismatch\n");
-            return tcp_server_result(arg, -1);
-        }
-        DEBUG_printf("tcp_server_recv buffer ok\n");
+    //     // check it matches
+    //     if (memcmp(state->buffer_sent, state->buffer_recv, BUF_SIZE) != 0) {
+    //         DEBUG_printf("buffer mismatch\n");
+    //         return tcp_server_result(arg, -1);
+    //     }
+    //     DEBUG_printf("tcp_server_recv buffer ok\n");
 
-        // Test complete?
-        //state->run_count++;
-        /*if (state->run_count >= TEST_ITERATIONS) {
-            tcp_server_result(arg, 0);
-            return ERR_OK;
-        }*/
+    //     // Test complete?
+    //     //state->run_count++;
+    //     /*if (state->run_count >= TEST_ITERATIONS) {
+    //         tcp_server_result(arg, 0);
+    //         return ERR_OK;
+    //     }*/
 
-        // Send another buffer
-        return ERR_OK;
-        //return tcp_server_send_data(arg, state->client_pcb);
-    }
+    //     // Send another buffer
+    //     return ERR_OK;
+    //     //return tcp_server_send_data(arg, state->client_pcb);
+    // }
     return ERR_OK;
 }
 
@@ -567,4 +578,33 @@ MeshNode::MeshNode() {
 // MeshNode deconstructor
 MeshNode::~MeshNode(){
     NodeID = 0;
+}
+
+bool APNode::send_tcp_data(uint8_t* data, uint32_t size) {
+
+    uint8_t buffer[size] = {};
+    // if (size > BUF_SIZE) { size = BUF_SIZE; }
+    memcpy(buffer, data, size);
+
+    bool flag = false;
+
+    cyw43_arch_lwip_begin();
+
+    // not entirely sure its supposed to be client_pcb
+    err_t err = tcp_write(state->client_pcb, (void*)buffer, size, TCP_WRITE_FLAG_COPY);
+    err_t err2 = tcp_output(state->client_pcb);
+    if (err != ERR_OK) {
+        printf("Message failed to write\n");
+        printf("ERR: %d\n", err);
+        flag = true;
+    }
+    if (err2 != ERR_OK) {
+        printf("Message failed to be sent\n");
+        flag = true;
+    }
+    cyw43_arch_lwip_end();
+    if (flag)
+      return false;
+    printf("Successfully queued message\n");
+    return true;
 }

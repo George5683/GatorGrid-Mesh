@@ -74,6 +74,7 @@ public:
 
 
 class TCP_INIT_MESSAGE : public TCP_MESSAGE {
+public:
     tcp_init_msg_t msg = {0};
 public:
     TCP_INIT_MESSAGE(uint32_t id) : TCP_MESSAGE(0xFF) { 
@@ -97,6 +98,7 @@ public:
 };
 
 class TCP_DATA_MSG : public TCP_MESSAGE {
+public:
     tcp_data_msg_t msg = {0};
 public:
     TCP_DATA_MSG(uint32_t src_id, uint32_t dest_id) : TCP_MESSAGE(0x7F) {
@@ -126,6 +128,7 @@ public:
 
 
 class TCP_DISCONNECT_MSG : public TCP_MESSAGE {
+public:
     tcp_disconnect_msg_t msg = {0};
 public:
     TCP_DISCONNECT_MSG(uint32_t src_id) : TCP_MESSAGE(0xFF) {
@@ -159,6 +162,7 @@ public:
 };
 
 class TCP_UPDATE_MESSAGE : public TCP_MESSAGE {
+public:
     tcp_update_msg_t msg = {0};
 public:
     TCP_UPDATE_MESSAGE(uint32_t id) : TCP_MESSAGE(0xFF) { 
@@ -187,6 +191,7 @@ public:
 };
     
 class TCP_ACK_MESSAGE : public TCP_MESSAGE {
+public:
     tcp_acknowledge_msg_t msg = {0};
 public:
     TCP_ACK_MESSAGE(uint32_t src_id, uint32_t dest_id, uint16_t bytes_received) : TCP_MESSAGE(0xFF) { 
@@ -212,6 +217,7 @@ public:
 };
 
 class TCP_NAK_MESSAGE : public TCP_MESSAGE {
+public:
     tcp_failed_msg_t msg = {0};
 public:
     TCP_NAK_MESSAGE(uint32_t src_id, uint32_t dest_id, uint16_t bytes_received) : TCP_MESSAGE(0xFF) { 
