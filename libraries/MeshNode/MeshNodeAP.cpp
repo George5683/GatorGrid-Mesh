@@ -95,7 +95,8 @@ TCP_SERVER_T* tcp_server_init(void) {
 }
 
 err_t tcp_server_close(void *arg) {
-    TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
+    APNode* node = (APNode*)arg;
+    TCP_SERVER_T *state = node->state;
     err_t err = ERR_OK;
     if (state->client_pcb != NULL) {
         tcp_arg(state->client_pcb, NULL);
@@ -120,7 +121,8 @@ err_t tcp_server_close(void *arg) {
 }
 
 err_t tcp_server_result(void *arg, int status) {
-    TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
+    APNode* node = (APNode*)arg;
+    TCP_SERVER_T *state = node->state;
     if (status == 0) {
         DEBUG_printf("test success\n");
     } else {
@@ -131,7 +133,8 @@ err_t tcp_server_result(void *arg, int status) {
 }
 
 err_t tcp_server_sent(void *arg, struct tcp_pcb *tpcb, u16_t len) {
-    TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
+    APNode* node = (APNode*)arg;
+    TCP_SERVER_T *state = node->state;
     DEBUG_printf("tcp_server_sent %u\n", len);
     state->sent_len += len;
 
@@ -147,7 +150,8 @@ err_t tcp_server_sent(void *arg, struct tcp_pcb *tpcb, u16_t len) {
 
 err_t tcp_server_send_data(void *arg, struct tcp_pcb *tpcb)
 {
-    TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
+    APNode* node = (APNode*)arg;
+    TCP_SERVER_T *state = node->state;
     /*for(int i=0; i< BUF_SIZE; i++) {
         state->buffer_sent[i] = rand();
     }*/
@@ -167,7 +171,8 @@ err_t tcp_server_send_data(void *arg, struct tcp_pcb *tpcb)
 }
 
 err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err) {
-    TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
+    APNode* node = (APNode*)arg;
+    TCP_SERVER_T *state = node->state;
     if (!p) {
         return tcp_server_result(arg, -1);
     }
@@ -198,13 +203,58 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 
             if(clients_map[tpcb].id_recved == false) {
                 clients_map[tpcb].id_recved = true;
-                tcp_init_msg_t *init_msg_str = reinterpret_cast <tcp_init_msg_t *>(state->buffer_recv);
-                clients_map[tpcb].id = init_msg_str->source;
-                printf("ID RECV FROM INIT MESSAGE: %08X\n", clients_map[tpcb].id);
-                uint32_t test = ((APNode*)(state->ap_node))->get_NodeID();
-                printf("CURRENT NODE ID: %08X\n", test);
+                // tcp_init_msg_t *init_msg_str = reinterpret_cast <tcp_init_msg_t *>(state->buffer_recv);
+                // clients_map[tpcb].id = init_msg_str->source;
+                // printf("ID RECV FROM INIT MESSAGE: %08X\n", clients_map[tpcb].id);
+                // uint32_t test = ((APNode*)(state->ap_node))->get_NodeID();
+                // printf("CURRENT NODE ID: %08X\n", test);
 
-                TCP_INIT_MESSAGE init_msg(((APNode*)(state->ap_node))->get_NodeID());  
+                // TCP_INIT_MESSAGE init_msg(((APNode*)(state->ap_node))->get_NodeID());  
+                TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(state->buffer_recv));
+                if (!msg) {
+                    printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
+                    return false;
+                }
+
+                uint8_t msg_id = state->buffer_recv[1];
+                switch (msg_id) {
+                    case 0x00: {
+                        TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(msg);
+                        //does stuff
+                        break;
+                    }
+                    case 0x01: {
+                        TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
+                        //does stuff
+                        break;
+                    }
+                    case 0x02: {
+                        TCP_DISCONNECT_MSG* discMsg = static_cast<TCP_DISCONNECT_MSG*>(msg);
+                        //does stuff
+                        break;
+                    }
+                    case 0x03: {
+                        TCP_UPDATE_MESSAGE* updMsg = static_cast<TCP_UPDATE_MESSAGE*>(msg);
+                        //does stuff
+                        break;
+                    }
+                    case 0x04: {
+                        TCP_ACK_MESSAGE* ackMsg = static_cast<TCP_ACK_MESSAGE*>(msg);
+                        //does stuff
+                        break;
+                    }
+                    case 0x05: {
+                        TCP_NAK_MESSAGE* nakMsg = static_cast<TCP_NAK_MESSAGE*>(msg);
+                        //does stuff
+                        break;
+                    }
+                    default:
+                        printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
+                        // SEND NAK message
+                        TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), msg_id ? msg_id : 0, 0);
+                        break;
+                }
+                delete msg;
             }
 
             
@@ -260,7 +310,8 @@ void tcp_server_err(void *arg, err_t err) {
 }
 
 err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
-    TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
+    APNode* node = (APNode*)arg;
+    TCP_SERVER_T *state = node->state;
     if (err != ERR_OK || client_pcb == NULL) {
         DEBUG_printf("Failure in accept\n");
         tcp_server_result(arg, err);
@@ -277,7 +328,7 @@ err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
     clients_map.insert({client_pcb, client});
 
     state->client_pcb = client_pcb;
-    tcp_arg(client_pcb, state);
+    tcp_arg(client_pcb, node);
     tcp_sent(client_pcb, tcp_server_sent);
     tcp_recv(client_pcb, tcp_server_recv);
     tcp_poll(client_pcb, tcp_server_poll, POLL_TIME_S * 2);
@@ -288,7 +339,8 @@ err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
 }
 
 bool tcp_server_open(void *arg) {
-    TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
+    APNode* node = (APNode*)arg;
+    TCP_SERVER_T *state = node->state;
     DEBUG_printf("Starting server at %s on port %u\n", ip4addr_ntoa(netif_ip4_addr(netif_list)), TCP_PORT);
 
     struct tcp_pcb *pcb = tcp_new_ip_type(IPADDR_TYPE_ANY);

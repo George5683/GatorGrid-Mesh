@@ -35,13 +35,14 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-# Cmake for STA_testing
+# Cmake for sta_testing
 add_executable(sta_background
-        Tests/STA_Test.cpp
+        Tests/sta_test.cpp
         libraries/dhcpserver/dhcpserver.c
         libraries/dnsserver/dnsserver.c
         libraries/MeshNode/MeshNodeAP.cpp
         libraries/MeshNode/MeshNodeSTA.cpp
+        libraries/MeshNode/Messages.cpp
         libraries/SPI/SPI.cpp
         )
 
@@ -74,6 +75,7 @@ add_executable(ap_background
         libraries/dnsserver/dnsserver.c
         libraries/MeshNode/MeshNodeAP.cpp
         libraries/MeshNode/MeshNodeSTA.cpp
+        libraries/MeshNode/Messages.cpp
         libraries/SPI/SPI.cpp
         )
 
@@ -107,6 +109,7 @@ add_executable(picow_access_point_background
         libraries/dnsserver/dnsserver.c
         libraries/MeshNode/MeshNodeAP.cpp
         libraries/MeshNode/MeshNodeSTA.cpp
+        libraries/MeshNode/Messages.cpp
         )
 
 target_include_directories(picow_access_point_background PRIVATE
@@ -133,6 +136,7 @@ add_executable(picow_access_point_poll
         libraries/dnsserver/dnsserver.c
         libraries/MeshNode/MeshNodeAP.cpp
         libraries/MeshNode/MeshNodeSTA.cpp
+        libraries/MeshNode/Messages.cpp
         )
 
 # Modify the below lines to enable/disable output over UART/USB
