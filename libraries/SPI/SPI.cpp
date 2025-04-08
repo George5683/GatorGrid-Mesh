@@ -17,6 +17,7 @@ SPI::SPI(){};
 bool SPI::SPI_init(bool mode){
     is_master = mode;
     if(mode == true){
+        printf("Setting up SPI Master\n");
         // Setting up the Master
         spi_init(SPI_PORT, 1000 * 1000);
         spi_set_slave(SPI_PORT, false);
@@ -30,6 +31,7 @@ bool SPI::SPI_init(bool mode){
         gpio_put(PIN_CS, 1);
     }
     else{
+        printf("Setting up SPI Slave\n");
         // Set as slave
         spi_init(SPI_PORT, 1000 * 1000);
         spi_set_slave(SPI_PORT, true);
@@ -39,6 +41,7 @@ bool SPI::SPI_init(bool mode){
         gpio_set_function(PIN_SCK, GPIO_FUNC_SPI);
         gpio_set_function(PIN_CS, GPIO_FUNC_SPI);
     }
+    printf("SPI initialized successfully\n");
     return true;
 };
 
