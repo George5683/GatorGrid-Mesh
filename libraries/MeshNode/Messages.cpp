@@ -1,10 +1,11 @@
 #include <cstdint>
 #include <cstring>
+#include <cstdio>
 #include "Messages.hpp"
 
 
 TCP_MESSAGE* parseMessage(uint8_t* data) {
-
+    printf("Called parseMessage()");
     uint8_t msg_id = data[1];
     size_t data_len = *(reinterpret_cast<uint16_t*>(data+2));
 

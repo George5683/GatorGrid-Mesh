@@ -189,9 +189,12 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 
         // Receive the buffer
         const uint16_t buffer_left = BUF_SIZE - state->recv_len;
+        printf("before pbuf copy partial\n");
         state->recv_len += pbuf_copy_partial(p, state->buffer_recv + state->recv_len,
                                              p->tot_len > buffer_left ? buffer_left : p->tot_len, 0);
+        printf("after pbuf copy partial\n");
         tcp_recved(tpcb, p->tot_len);
+        printf("before tcp_recved\n");
 
         if(state->recv_len == 2048) {
             printf("SERVER DEBUG: GOT 2048\n");
@@ -346,6 +349,14 @@ err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
     }
     DEBUG_printf("Client connected\n");
 
+    struct ClientConnection client;
+
+    client.pcb = client_pcb;
+
+    clients.push_back({client});
+
+    clients_map.insert({client_pcb, client});
+
     state->client_pcb = client_pcb;
     tcp_arg(client_pcb, state);
     tcp_sent(client_pcb, tcp_server_sent);
@@ -486,6 +497,8 @@ bool APNode::init_ap_mode() {
     state->complete = false;
     state->server_pcb = nullptr;
     state->ap_node = this;
+
+    state->recv_len = 0;
     
     // Initialize the driver
     if (cyw43_arch_init()) {
@@ -573,7 +586,10 @@ bool APNode::start_ap_mode() {
     //     DEBUG_printf("failed to open server\n");
     //     return false;
     // }
-    server_start();
+    if (!tcp_server_open(state)) {
+        tcp_server_result(state, -1);
+        return false;
+    }
     
     running = true;
     return true;
