@@ -1,42 +1,27 @@
+//Example for Master
 #include "libraries/SPI/SPI.hpp"
-#include "pico/stdlib.h"
 #include <stdio.h>
-#include <string.h>
-#include "pico/binary_info.h"
-
-#define BUF_LEN         0x100
 
 int main() {
     stdio_init_all();
-    
-    // Give time for serial console to connect
-    sleep_ms(10000);
-    
-    printf("Starting master device...\n");
-    
-    uint8_t send_string[] = "Fortnite!";
-    uint8_t recv_buffer[2048] = {0};
 
-    // initialize spi 
+    // Delay to allow time to view serial monitor
+    sleep_ms(10000);
+
+    // Delay to wait for Slave to turn on and initialize
+    sleep_ms(2000);
+
     SPI Master_Pico;
+    
+    // set as the master 
     Master_Pico.SPI_init(true);
     
-    uint8_t out_buf[BUF_LEN], in_buf[BUF_LEN];
+    uint8_t send_string[] = "Fortnite!";
+    uint8_t recv_buffer[sizeof(send_string)] = {0};
     
-    for (size_t i = 0; i < BUF_LEN; ++i) {
-        out_buf[i] = ~i;
+    for (int i = 0; i<2 ;i++) {
+        Master_Pico.SPI_send_message(send_string, sizeof(send_string));
+        Master_Pico.SPI_read_message(recv_buffer, sizeof(recv_buffer));
+        sleep_ms(1000);  // Wait before next transmission
     }
-
-    Master_Pico.SPI_send_message(out_buf, BUF_LEN);
-    Master_Pico.SPI_read_message(in_buf, BUF_LEN);
-
-    for (size_t j = 0; j < BUF_LEN; ++j) {
-        printf("%02x ", in_buf[j]);
-        if ((j + 1) % 16 == 0) {
-            printf("\n");
-        }
-    }
-    printf("\n");
-    
-    sleep_ms(1000);
 }
