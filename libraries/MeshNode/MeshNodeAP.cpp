@@ -565,9 +565,7 @@ bool APNode::start_ap_mode() {
      #undef IP
 
     // Start the DHCP server
-    // dhcp_server_t dhcp_server;
-    // dhcp_server_init(&dhcp_server, &state->gw, &mask);
-
+    //dhcp_server_t dhcp_server;
     dhcp_server_init(&state->dhcp_server, &state->gw, &mask);
     //dns_server_init(&state->dns_server, &state->gw);
 

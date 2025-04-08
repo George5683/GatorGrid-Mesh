@@ -35,7 +35,7 @@ public:
     TCP_SERVER_T* state;
     bool running;
     char ap_name[32];
-    const char* password;
+    const char* password = "password";
 
     RingBuffer rb;
 
