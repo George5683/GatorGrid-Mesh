@@ -213,6 +213,7 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         }
 
         bool ACK_flag = true;
+        bool NAK_flag = false;
         // tcp_init_msg_t *init_msg_str = reinterpret_cast <tcp_init_msg_t *>(state->buffer_recv);
         // clients_map[tpcb].id = init_msg_str->source;
         // printf("ID RECV FROM INIT MESSAGE: %08X\n", clients_map[tpcb].id);
@@ -247,10 +248,7 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
                 }
                 case 0x01: {
                     TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
-                    
                     // Store messages in a ring buffer
-
-                    
 
 
                     break;
@@ -268,6 +266,10 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
                 case 0x04: {
                     TCP_ACK_MESSAGE* ackMsg = static_cast<TCP_ACK_MESSAGE*>(msg);
                     //does stuff
+                    // Do not need to respond to acks
+                    ACK_flag = false;
+
+
                     break;
                 }
                 case 0x05: {
@@ -283,12 +285,14 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         }
 
         if (ACK_flag){
-            TCP_ACK_MESSAGE ackMsg(node->get_NodeID(), msg_id ? msg_id : 0, ackMsg.msg.len);
+            // Assumption: clients_map[tpcb].id implies that any message worth acking isn't being forwarded and is originating from the intended node
+            TCP_ACK_MESSAGE ackMsg(node->get_NodeID(), clients_map[tpcb].id, ackMsg.msg.len);
             node->send_tcp_data(ackMsg.get_msg(), ackMsg.get_len());
-        } else {
+            
+        } else if (NAK_flag) {
             // TODO: Update for error handling
             // identify the source from clients_map and send back?
-            TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), msg_id ? msg_id : 0, 0);
+            TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), clients_map[tpcb].id, 0);
             node->send_tcp_data(nakMsg.get_msg(), nakMsg.get_len());
         }
 

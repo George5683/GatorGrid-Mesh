@@ -180,7 +180,10 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         //     pbuf_free(p);
         //     return tcp_result(arg, 0);
         // }
+
+        uint32_t source_id = 0;
         bool ACK_flag = true;
+        bool NAK_flag = false;
         bool self_reply = false;
         TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(state->buffer));
         if (!msg) {
@@ -194,6 +197,8 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
                     TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(msg);
                     //does stuff
                     printf("Received initialization message from node %u", initMsg->msg.source);
+                    source_id =  initMsg->msg.source;
+
                     break;
                 }
                 case 0x01: {
@@ -212,9 +217,15 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
                     break;
                 }
                 case 0x04: {
+                    puts("Got ACK");
                     TCP_ACK_MESSAGE* ackMsg = static_cast<TCP_ACK_MESSAGE*>(msg);
+
+                    source_id = ackMsg->msg.source;
+
+                    printf("Ack is from %08x and for %08x\n", ackMsg->msg.source, ackMsg->msg.dest);
                     if (ackMsg->msg.dest == node->get_NodeID()) {
                         self_reply = true;
+                        puts("ACK is for me");
                     }
                     //does stuff
                     break;
@@ -222,6 +233,9 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
                 case 0x05: {
                     TCP_NAK_MESSAGE* nakMsg = static_cast<TCP_NAK_MESSAGE*>(msg);
                     //does stuff
+                    puts("Got NAK");
+                    self_reply = true;
+
                     break;
                 }
                 default:
@@ -234,9 +248,9 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         }
 
         if (ACK_flag && !self_reply){
-            TCP_ACK_MESSAGE ackMsg(node->get_NodeID(), ackMsg.msg.msg_id, ackMsg.msg.len);
+            TCP_ACK_MESSAGE ackMsg(node->get_NodeID(), source_id, ackMsg.msg.len);
             node->send_tcp_data(ackMsg.get_msg(), ackMsg.get_len());
-        } else {
+        } else if (NAK_flag) {
             // TODO: Update for error handling
             // identify the source from sender and send back?
             TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), 0, 0);
