@@ -216,13 +216,14 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 
         // TCP_INIT_MESSAGE init_msg(((APNode*)(state->ap_node))->get_NodeID());  
         TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(state->buffer_recv));
+        uint8_t msg_id = NULL;
         if (!msg) {
             printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
             ACK_flag = false;
         } else {
 
             // TODO: Handle error checks for messages
-            uint8_t msg_id = state->buffer_recv[1];
+            msg_id = state->buffer_recv[1];
 
             switch (msg_id) {
                 case 0x00: {
@@ -232,7 +233,7 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 
                     // Set init node ID
                     if(clients_map[tpcb].id_recved == false) {
-                        bool ACK_flag = true;
+                        ACK_flag = true;
                         clients_map[tpcb].id_recved = true;
                         clients_map[tpcb].id = initMsg->msg.source;
                     }
@@ -277,12 +278,12 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         }
 
         if (ACK_flag){
-            TCP_ACK_MESSAGE ackMsg(node->get_NodeID(), ackMsg.msg.msg_id, ackMsg.msg.len);
+            TCP_ACK_MESSAGE ackMsg(node->get_NodeID(), msg_id ? msg_id : 0, ackMsg.msg.len);
             node->send_tcp_data(ackMsg.get_msg(), ackMsg.get_len());
         } else {
             // TODO: Update for error handling
             // identify the source from clients_map and send back?
-            TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), 0, 0);
+            TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), msg_id ? msg_id : 0, 0);
             node->send_tcp_data(nakMsg.get_msg(), nakMsg.get_len());
         }
 
@@ -337,8 +338,7 @@ void tcp_server_err(void *arg, err_t err) {
 }
 
 err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
-    APNode* node = (APNode*)arg;
-    TCP_SERVER_T *state = node->state;
+    TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
     if (err != ERR_OK || client_pcb == NULL) {
         DEBUG_printf("Failure in accept\n");
         tcp_server_result(arg, err);
@@ -346,16 +346,8 @@ err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
     }
     DEBUG_printf("Client connected\n");
 
-    struct ClientConnection client;
-
-    client.pcb = client_pcb;
-
-    clients.push_back({client});
-
-    clients_map.insert({client_pcb, client});
-
     state->client_pcb = client_pcb;
-    tcp_arg(client_pcb, node);
+    tcp_arg(client_pcb, state);
     tcp_sent(client_pcb, tcp_server_sent);
     tcp_recv(client_pcb, tcp_server_recv);
     tcp_poll(client_pcb, tcp_server_poll, POLL_TIME_S * 2);
@@ -366,8 +358,7 @@ err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
 }
 
 bool tcp_server_open(void *arg) {
-    APNode* node = (APNode*)arg;
-    TCP_SERVER_T *state = node->state;
+    TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
     DEBUG_printf("Starting server at %s on port %u\n", ip4addr_ntoa(netif_ip4_addr(netif_list)), TCP_PORT);
 
     struct tcp_pcb *pcb = tcp_new_ip_type(IPADDR_TYPE_ANY);
@@ -401,15 +392,12 @@ bool APNode::server_running() {
     return !this->state->complete;
 }
 
-void run_tcp_server(TCP_SERVER_T *state) {
-
+void run_tcp_server(void * arg) {
+    TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
     if (!tcp_server_open(state)) {
         tcp_server_result(state, -1);
         return;
     }
-
-    /*
-
     while(!state->complete) {
         // the following #ifdef is only here so this same example can be used in multiple modes;
         // you do not need it in your code
@@ -424,17 +412,12 @@ void run_tcp_server(TCP_SERVER_T *state) {
         // if you are not using pico_cyw43_arch_poll, then WiFI driver and lwIP work
         // is done via interrupt in the background. This sleep is just an example of some (blocking)
         // work you might be doing.
-
-        for(auto i : clients ) {
-            printf("port con: %d\n", i.pcb->local_port);
-            tcp_write(i.pcb,tmp, sizeof(tmp), TCP_WRITE_FLAG_COPY);
-        }
-
         sleep_ms(1000);
 #endif
     }
+    printf("Now freeing state\n");
     free(state);
-    */
+    
 }
 
 // APNode class constructor
@@ -586,8 +569,12 @@ bool APNode::start_ap_mode() {
     // dhcp_server_init(&dhcp_server, &state->gw, &mask);
 
     dhcp_server_init(&state->dhcp_server, &state->gw, &mask);
+    //dns_server_init(&state->dns_server, &state->gw);
 
-
+    // if (!tcp_server_open(state)) {
+    //     DEBUG_printf("failed to open server\n");
+    //     return false;
+    // }
     server_start();
     
     running = true;

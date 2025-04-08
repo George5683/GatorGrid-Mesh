@@ -32,7 +32,7 @@ extern "C" {
 #define TEST_ITERATIONS 10
 #define POLL_TIME_S 5
 
-#if 0
+#if 1
  static void dump_bytes(const uint8_t *bptr, uint32_t len) {
      unsigned int i = 0;
  
@@ -482,7 +482,6 @@ bool STANode::tcp_init() {
     //uint8_t buffer[BUF_SIZE] = {};
     //create_join_message(BUF_SIZE, buffer, this);
     TCP_INIT_MESSAGE init_msg(get_NodeID());
-    DUMP_BYTES(init_msg.get_msg(), init_msg.get_len());
     return send_tcp_data(init_msg.get_msg(), init_msg.get_len());
 
 }

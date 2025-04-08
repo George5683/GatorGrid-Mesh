@@ -57,12 +57,17 @@ int main() {
     uint8_t id[4];
     uint32_t node_id = node.get_NodeID();
     *id = *reinterpret_cast<uint8_t*>(&node_id);
-    printf("Now sending for SPI message");
+    printf("Now sending for SPI message\n");
     // if(spi.SPI_send_message(id, 4) != 1) {
     //     for (;;) { sleep_ms(1000); }
     // }
     bool toggle = true;
     for (;;) {
+        cyw43_arch_poll();
+        // you can poll as often as you like, however if you have nothing else to do you can
+        // choose to sleep until either a specified time, or cyw43_arch_poll() has work to do:
+        cyw43_arch_wait_for_work_until(make_timeout_time_ms(1000));
+
         cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
         toggle = !toggle;
         //printf("core print...");
