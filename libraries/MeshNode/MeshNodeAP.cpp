@@ -206,76 +206,82 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
             return ERR_OK; // TODO: Change error handling
         }
 
-        if(clients_map[tpcb].id_recved == false) {
-            bool ACK_flag = true;
-            clients_map[tpcb].id_recved = true;
-            // tcp_init_msg_t *init_msg_str = reinterpret_cast <tcp_init_msg_t *>(state->buffer_recv);
-            // clients_map[tpcb].id = init_msg_str->source;
-            // printf("ID RECV FROM INIT MESSAGE: %08X\n", clients_map[tpcb].id);
-            // uint32_t test = ((APNode*)(state->ap_node))->get_NodeID();
-            // printf("CURRENT NODE ID: %08X\n", test);
+        bool ACK_flag = true;
+        // tcp_init_msg_t *init_msg_str = reinterpret_cast <tcp_init_msg_t *>(state->buffer_recv);
+        // clients_map[tpcb].id = init_msg_str->source;
+        // printf("ID RECV FROM INIT MESSAGE: %08X\n", clients_map[tpcb].id);
+        // uint32_t test = ((APNode*)(state->ap_node))->get_NodeID();
+        // printf("CURRENT NODE ID: %08X\n", test);
 
-            // TCP_INIT_MESSAGE init_msg(((APNode*)(state->ap_node))->get_NodeID());  
-            TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(state->buffer_recv));
-            if (!msg) {
-                printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
-                ACK_flag = false;
-            } else {
+        // TCP_INIT_MESSAGE init_msg(((APNode*)(state->ap_node))->get_NodeID());  
+        TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(state->buffer_recv));
+        if (!msg) {
+            printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
+            ACK_flag = false;
+        } else {
 
-                // TODO: Handle error checks for messages
-                uint8_t msg_id = state->buffer_recv[1];
+            // TODO: Handle error checks for messages
+            uint8_t msg_id = state->buffer_recv[1];
 
-                switch (msg_id) {
-                    case 0x00: {
-                        TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(msg);
-                        printf("Received initialization message from node %u", initMsg->msg.source);
-                        //does stuff
-                        break;
+            switch (msg_id) {
+                case 0x00: {
+                    TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(msg);
+                    printf("Received initialization message from node %u", initMsg->msg.source);
+                    //does stuff
+
+                    // Set init node ID
+                    if(clients_map[tpcb].id_recved == false) {
+                        bool ACK_flag = true;
+                        clients_map[tpcb].id_recved = true;
+                        clients_map[tpcb].id = initMsg->msg.source;
                     }
-                    case 0x01: {
-                        TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
-                        //does stuff
-                        break;
-                    }
-                    case 0x02: {
-                        TCP_DISCONNECT_MSG* discMsg = static_cast<TCP_DISCONNECT_MSG*>(msg);
-                        //does stuff
-                        break;
-                    }
-                    case 0x03: {
-                        TCP_UPDATE_MESSAGE* updMsg = static_cast<TCP_UPDATE_MESSAGE*>(msg);
-                        //does stuff
-                        break;
-                    }
-                    case 0x04: {
-                        TCP_ACK_MESSAGE* ackMsg = static_cast<TCP_ACK_MESSAGE*>(msg);
-                        //does stuff
-                        break;
-                    }
-                    case 0x05: {
-                        TCP_NAK_MESSAGE* nakMsg = static_cast<TCP_NAK_MESSAGE*>(msg);
-                        //does stuff
-                        break;
-                    }
-                    default:
-                        printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
-                        ACK_flag = false;
-                        break;
+
+                    break;
                 }
+                case 0x01: {
+                    TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
+                    //does stuff
+                    break;
+                }
+                case 0x02: {
+                    TCP_DISCONNECT_MSG* discMsg = static_cast<TCP_DISCONNECT_MSG*>(msg);
+                    //does stuff
+                    break;
+                }
+                case 0x03: {
+                    TCP_UPDATE_MESSAGE* updMsg = static_cast<TCP_UPDATE_MESSAGE*>(msg);
+                    //does stuff
+                    break;
+                }
+                case 0x04: {
+                    TCP_ACK_MESSAGE* ackMsg = static_cast<TCP_ACK_MESSAGE*>(msg);
+                    //does stuff
+                    break;
+                }
+                case 0x05: {
+                    TCP_NAK_MESSAGE* nakMsg = static_cast<TCP_NAK_MESSAGE*>(msg);
+                    //does stuff
+                    break;
+                }
+                default:
+                    printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
+                    ACK_flag = false;
+                    break;
             }
-
-            if (ACK_flag){
-                TCP_ACK_MESSAGE ackMsg(node->get_NodeID(), ackMsg.msg.msg_id, ackMsg.msg.len);
-                node->send_tcp_data(ackMsg.get_msg(), ackMsg.get_len());
-            } else {
-                // TODO: Update for error handling
-                // identify the source from clients_map and send back?
-                TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), 0, 0);
-                node->send_tcp_data(nakMsg.get_msg(), nakMsg.get_len());
-            }
-
-            delete msg;
         }
+
+        if (ACK_flag){
+            TCP_ACK_MESSAGE ackMsg(node->get_NodeID(), ackMsg.msg.msg_id, ackMsg.msg.len);
+            node->send_tcp_data(ackMsg.get_msg(), ackMsg.get_len());
+        } else {
+            // TODO: Update for error handling
+            // identify the source from clients_map and send back?
+            TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), 0, 0);
+            node->send_tcp_data(nakMsg.get_msg(), nakMsg.get_len());
+        }
+
+        delete msg;
+    
 
         
 
