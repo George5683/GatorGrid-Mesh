@@ -74,7 +74,8 @@ public:
     int get_node_id();
     void set_node_id(int ID);
 
-    void server_test();
+    void server_start();
+    bool server_running();
 
     bool send_tcp_data(uint8_t* data, uint32_t size);
 

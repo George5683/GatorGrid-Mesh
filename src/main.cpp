@@ -14,8 +14,6 @@ int main() {
     //node.set_node_id(2);
 
     sleep_ms(5000);
-    char ssid[] = "GatorGrid_Node:0000172E";
-    char pass[] = "password";
         /*
     printf("Starting STA Mode\n");
     node.init_sta_mode();
@@ -63,7 +61,11 @@ int main() {
 
     printf("Starting server test\n");
 
-    node.server_test();
+    node.server_start();
+
+    while(node.server_running()) {
+        printf("Server running, doing stuff...\n");
+    }
 
     sleep_ms(5000);
     

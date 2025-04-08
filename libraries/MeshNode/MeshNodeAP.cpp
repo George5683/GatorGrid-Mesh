@@ -396,14 +396,17 @@ bool tcp_server_open(void *arg) {
     return true;
 }
 
-void run_tcp_server_test(TCP_SERVER_T *state) {
+bool APNode::server_running() {
+    return !this->state->complete;
+}
+
+void run_tcp_server(TCP_SERVER_T *state) {
 
     if (!tcp_server_open(state)) {
         tcp_server_result(state, -1);
         return;
     }
-
-    uint8_t tmp[] = {0xff, 0xff, 0xff, 0xff,0xff, 0xff, 0xff, 0xff,0xff, 0xff, 0xff, 0xff,0xff, 0xff, 0xff, 0xff,0xff, 0xff, 0xff, 0xff,0xff, 0xff, 0xff, 0xff,0xff, 0xff, 0xff, 0xff,0xff, 0xff, 0xff, 0xff};
+    /*
 
     while(!state->complete) {
         // the following #ifdef is only here so this same example can be used in multiple modes;
@@ -429,6 +432,7 @@ void run_tcp_server_test(TCP_SERVER_T *state) {
 #endif
     }
     free(state);
+    */
 }
 
 
@@ -576,14 +580,14 @@ bool APNode::start_ap_mode() {
     dhcp_server_t dhcp_server;
     dhcp_server_init(&dhcp_server, &state->gw, &mask);
 
-    server_test();
+    server_start();
     
     running = true;
     return true;
 }
 
-void APNode::server_test() {
-    run_tcp_server_test(state);
+void APNode::server_start() {
+    run_tcp_server(state);
 }
 
 // MeshNode class constructor
