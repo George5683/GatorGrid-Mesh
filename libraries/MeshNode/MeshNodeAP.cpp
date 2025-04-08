@@ -406,6 +406,7 @@ void run_tcp_server(TCP_SERVER_T *state) {
         tcp_server_result(state, -1);
         return;
     }
+
     /*
 
     while(!state->complete) {
@@ -435,7 +436,6 @@ void run_tcp_server(TCP_SERVER_T *state) {
     */
 }
 
-
 // APNode class constructor
 APNode::APNode() : state(nullptr), running(false), password("password"), rb(5) {
     snprintf(ap_name, sizeof(ap_name), "GatorGrid_Node:%08X", get_NodeID());
@@ -443,6 +443,10 @@ APNode::APNode() : state(nullptr), running(false), password("password"), rb(5) {
 
 struct data APNode::digest_data() {
     return this->rb.digest();
+}
+
+int APNode::number_of_messages() {
+    return this->rb.get_size();
 }
 
 

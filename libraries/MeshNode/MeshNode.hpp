@@ -77,6 +77,8 @@ public:
     void server_start();
     bool server_running();
 
+    int number_of_messages();
+
     bool send_tcp_data(uint8_t* data, uint32_t size);
 
     struct data digest_data();

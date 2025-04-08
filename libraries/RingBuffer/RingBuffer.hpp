@@ -14,11 +14,12 @@ class RingBuffer {
     vector<struct data> buf;
     int index;
     int size;
+    int number_of_messages;
 
     RingBuffer(int size);
 
     void insert(uint8_t *data, ssize_t len);
-
+    int get_size();
     struct data digest();
 
 };
