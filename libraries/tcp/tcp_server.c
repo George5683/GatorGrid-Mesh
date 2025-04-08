@@ -208,6 +208,7 @@ bool tcp_server_open(void *arg) {
         DEBUG_printf("failed to bind to port %u\n", TCP_PORT);
         return false;
     }
+    //
 
     state->server_pcb = tcp_listen_with_backlog(pcb, 1);
     if (!state->server_pcb) {

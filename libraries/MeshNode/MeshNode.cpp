@@ -176,10 +176,6 @@ void APNode::server_test() {
     run_tcp_server_test(state);
 }
 
-void APNode::server_test() {
-    run_tcp_server_test(state);
-}
-
 bool APNode::digest_recv_buffer(uint8_t *buf) {
     number_of_filled_buffers--;
     memcpy(buf, buffers[number_of_filled_buffers], BUF_SIZE);

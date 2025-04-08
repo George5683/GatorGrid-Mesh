@@ -34,7 +34,7 @@ void core1_entry() {
 int main() {
     stdio_init_all();
 
-    multicore_launch_core1(core1_entry);
+    //multicore_launch_core1(core1_entry);
 
     for (;;) {
         sleep_ms(1000);
