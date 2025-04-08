@@ -181,6 +181,7 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         //     return tcp_result(arg, 0);
         // }
         bool ACK_flag = true;
+        bool self_reply = false;
         TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(state->buffer));
         if (!msg) {
             printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
@@ -212,6 +213,9 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
                 }
                 case 0x04: {
                     TCP_ACK_MESSAGE* ackMsg = static_cast<TCP_ACK_MESSAGE*>(msg);
+                    if (ackMsg->msg.dest == node->get_NodeID()) {
+                        self_reply = true;
+                    }
                     //does stuff
                     break;
                 }
@@ -229,7 +233,7 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
             }
         }
 
-        if (ACK_flag){
+        if (ACK_flag && !self_reply){
             TCP_ACK_MESSAGE ackMsg(node->get_NodeID(), ackMsg.msg.msg_id, ackMsg.msg.len);
             node->send_tcp_data(ackMsg.get_msg(), ackMsg.get_len());
         } else {
