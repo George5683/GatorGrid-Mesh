@@ -13,4 +13,8 @@ class SPI{
 
         // function to read a message
         int SPI_read_message(uint8_t *buffer, size_t buffer_size);
+
+        bool SPI_is_write_available();
+
+        bool SPI_is_read_available();
 };

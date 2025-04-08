@@ -101,11 +101,6 @@ int SPI::SPI_read_message(uint8_t *buffer, size_t buffer_size){
 
             spi_write_read_blocking(SPI_PORT, &tempOutBuffer, &tempInBuffer, 1);
             buffer[i] = tempInBuffer;
-
-            // Break if we received a null terminator (end of string)
-            if (tempInBuffer == 0) {
-                break;
-            }
         }
         // Ensure null-termination
         buffer[buffer_size - 1] = 0;
@@ -113,6 +108,31 @@ int SPI::SPI_read_message(uint8_t *buffer, size_t buffer_size){
     }
     return 1;
 };
+
+bool SPI::SPI_is_read_available(){
+    // If the master, check if CS can be asserted (indicating bus is free)
+    if(is_master){
+        return gpio_get(PIN_CS) == 1; // CS high means bus is available
+    }
+    else{
+        // For slave, check if the CS line is low (indicating master wants to communicate)
+        return gpio_get(PIN_CS) == 0; // CS low means master is selecting this slave
+    }
+    return false;
+}
+
+bool SPI::SPI_is_write_available(){
+    // For master, check if the SPI bus is idle and ready for transmission
+    if(is_master){
+        // Check if not busy and CS is high (not currently communicating)
+        return !spi_is_busy(SPI_PORT) && gpio_get(PIN_CS) == 1;
+    }
+    else{
+        // For slave, check if selected by master (CS low) and not currently busy
+        return !spi_is_busy(SPI_PORT) && gpio_get(PIN_CS) == 0;
+    }
+    return false;
+}
 
 // ____________________________________ Examples Below for Main _______________________________________
 

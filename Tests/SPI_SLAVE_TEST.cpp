@@ -17,8 +17,12 @@ int main() {
     uint8_t recv_buffer[sizeof(send_string)] = {0};
     
     for (int i = 0; i < 2; i++) {
-        Slave_Pico.SPI_read_message(recv_buffer, sizeof(recv_buffer));
+        while(!Slave_Pico.SPI_is_read_available());
+        if(Slave_Pico.SPI_is_read_available()){
+            printf("Read available\n");
+            Slave_Pico.SPI_read_message(recv_buffer, sizeof(recv_buffer));
+        }
         Slave_Pico.SPI_send_message(send_string, sizeof(send_string));
-        sleep_ms(500);  // Wait before next transmission
+        }
+        sleep_ms(1000);  // Wait before next transmission
     }
-}
