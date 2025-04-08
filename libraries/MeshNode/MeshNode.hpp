@@ -8,6 +8,8 @@
 #include <vector>
 #include "pico/cyw43_arch.h"
 
+#include "../RingBuffer/RingBuffer.hpp"
+
 // Forward declarations
 struct TCP_SERVER_T_;
 typedef struct TCP_SERVER_T_ TCP_SERVER_T;
@@ -35,13 +37,15 @@ public:
     char ap_name[32];
     const char* password;
 
+    RingBuffer rb;
+
     std::vector<void*> connections;
 
     // map for results/results_flag from clients
     std::map<int, std::string> client_results;
     std::map<int, bool> client_results_flag;
 
-    // CONSTRUCTOR/DECONSTRUCTOR
+    //lp9 CONSTRUCTOR/DECONSTRUCTOR
     APNode();
     ~APNode();
 
@@ -73,6 +77,8 @@ public:
     void server_test();
 
     bool send_tcp_data(uint8_t* data, uint32_t size);
+
+    struct data digest_data();
 
 };
 

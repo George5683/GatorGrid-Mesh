@@ -44,6 +44,7 @@ add_executable(sta_background
         libraries/MeshNode/MeshNodeSTA.cpp
         libraries/MeshNode/Messages.cpp
         libraries/SPI/SPI.cpp
+        libraries/RingBuffer/RingBuffer.cpp
         )
 
 target_include_directories(sta_background PRIVATE
@@ -53,6 +54,7 @@ target_include_directories(sta_background PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/libraries/dnsserver
         ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
         ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/RingBuffer
         )
 
 target_link_libraries(sta_background
@@ -77,6 +79,7 @@ add_executable(ap_background
         libraries/MeshNode/MeshNodeSTA.cpp
         libraries/MeshNode/Messages.cpp
         libraries/SPI/SPI.cpp
+        libraries/RingBuffer/RingBuffer.cpp
         )
 
 target_include_directories(ap_background PRIVATE
@@ -86,6 +89,7 @@ target_include_directories(ap_background PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/libraries/dnsserver
         ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
         ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/RingBuffer
         )
 
 target_link_libraries(ap_background
@@ -110,6 +114,7 @@ add_executable(picow_access_point_background
         libraries/MeshNode/MeshNodeAP.cpp
         libraries/MeshNode/MeshNodeSTA.cpp
         libraries/MeshNode/Messages.cpp
+        libraries/RingBuffer/RingBuffer.cpp
         )
 
 target_include_directories(picow_access_point_background PRIVATE
@@ -137,6 +142,8 @@ add_executable(picow_access_point_poll
         libraries/MeshNode/MeshNodeAP.cpp
         libraries/MeshNode/MeshNodeSTA.cpp
         libraries/MeshNode/Messages.cpp
+        libraries/RingBuffer/RingBuffer.cpp
+        
         )
 
 # Modify the below lines to enable/disable output over UART/USB

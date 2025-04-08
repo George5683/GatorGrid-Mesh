@@ -240,7 +240,12 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
                 }
                 case 0x01: {
                     TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
-                    //does stuff
+                    
+                    // Store messages in a ring buffer
+
+                    
+
+
                     break;
                 }
                 case 0x02: {
@@ -428,10 +433,13 @@ void run_tcp_server_test(TCP_SERVER_T *state) {
 
 
 // APNode class constructor
-APNode::APNode() : state(nullptr), running(false), password("password") {
+APNode::APNode() : state(nullptr), running(false), password("password"), rb(5) {
     snprintf(ap_name, sizeof(ap_name), "GatorGrid_Node:%08X", get_NodeID());
 }
 
+struct data APNode::digest_data() {
+    return this->rb.digest();
+}
 
 
 // set node ID from the APNode class
@@ -472,6 +480,7 @@ APNode::~APNode(){
 }
 
 bool APNode::init_ap_mode() {
+
     // Allocate the state of the TCP server if not already allocated
     if (!state) {
         state = (TCP_SERVER_T*)calloc(1, sizeof(TCP_SERVER_T));
