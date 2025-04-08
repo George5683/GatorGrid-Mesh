@@ -58,9 +58,9 @@ int main() {
     uint32_t node_id = node.get_NodeID();
     *id = *reinterpret_cast<uint8_t*>(&node_id);
     printf("Now sending for SPI message");
-    if(spi.SPI_send_message(id, 4) != 1) {
-        for (;;) { sleep_ms(1000); }
-    }
+    // if(spi.SPI_send_message(id, 4) != 1) {
+    //     for (;;) { sleep_ms(1000); }
+    // }
     bool toggle = true;
     for (;;) {
         cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);

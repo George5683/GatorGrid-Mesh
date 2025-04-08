@@ -173,6 +173,7 @@ err_t tcp_server_send_data(void *arg, struct tcp_pcb *tpcb)
 err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err) {
     APNode* node = (APNode*)arg;
     TCP_SERVER_T *state = node->state;
+    printf("Recv called\n");
     if (!p) {
         return tcp_server_result(arg, -1);
     }
@@ -181,7 +182,7 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
     // cyw43_arch_lwip_begin IS needed
 
     
-
+    
     cyw43_arch_lwip_check();
     if (p->tot_len > 0) {
         DEBUG_printf("tcp_server_recv %d/%d err %d\n", p->tot_len, state->recv_len, err);
@@ -581,8 +582,11 @@ bool APNode::start_ap_mode() {
      #undef IP
 
     // Start the DHCP server
-    dhcp_server_t dhcp_server;
-    dhcp_server_init(&dhcp_server, &state->gw, &mask);
+    // dhcp_server_t dhcp_server;
+    // dhcp_server_init(&dhcp_server, &state->gw, &mask);
+
+    dhcp_server_init(&state->dhcp_server, &state->gw, &mask);
+
 
     server_start();
     

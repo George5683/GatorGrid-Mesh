@@ -83,10 +83,10 @@ int main() {
     STANode node;
     uint8_t id[4];
     printf("Now looking for SPI message");
-    if (spi.SPI_read_message(id, 4) != 1) {
-        for (;;) { sleep_ms(1000); }
-    }
-    node.set_NodeID(*reinterpret_cast<uint32_t*>(id));
+    // if (spi.SPI_read_message(id, 4) != 1) {
+    //     for (;;) { sleep_ms(1000); }
+    // }
+    // node.set_NodeID(*reinterpret_cast<uint32_t*>(id));
     node.init_sta_mode();
     node.start_sta_mode();
 
