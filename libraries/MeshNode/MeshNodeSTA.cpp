@@ -180,54 +180,70 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         //     pbuf_free(p);
         //     return tcp_result(arg, 0);
         // }
+        bool ACK_flag = true;
         TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(state->buffer));
         if (!msg) {
             printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
-            return false;
+            ACK_flag = false;
+        } else {
+
+            uint8_t msg_id = state->buffer[1];
+            switch (msg_id) {
+                case 0x00: {
+                    TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(msg);
+                    //does stuff
+                    printf("Received initialization message from node %u", initMsg->msg.source);
+                    break;
+                }
+                case 0x01: {
+                    TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
+                    //does stuff
+                    break;
+                }
+                case 0x02: {
+                    TCP_DISCONNECT_MSG* discMsg = static_cast<TCP_DISCONNECT_MSG*>(msg);
+                    //does stuff
+                    break;
+                }
+                case 0x03: {
+                    TCP_UPDATE_MESSAGE* updMsg = static_cast<TCP_UPDATE_MESSAGE*>(msg);
+                    //does stuff
+                    break;
+                }
+                case 0x04: {
+                    TCP_ACK_MESSAGE* ackMsg = static_cast<TCP_ACK_MESSAGE*>(msg);
+                    //does stuff
+                    break;
+                }
+                case 0x05: {
+                    TCP_NAK_MESSAGE* nakMsg = static_cast<TCP_NAK_MESSAGE*>(msg);
+                    //does stuff
+                    break;
+                }
+                default:
+                    printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
+                    ACK_flag = false;
+                    // SEND NAK message
+                    //TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), msg_id ? msg_id : 0, 0);
+                    break;
+            }
         }
 
-        uint8_t msg_id = state->buffer[1];
-        switch (msg_id) {
-            case 0x00: {
-                TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(msg);
-                //does stuff
-                printf("Received initialization message from node %u", initMsg->msg.source);
-                break;
-            }
-            case 0x01: {
-                TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
-                //does stuff
-                break;
-            }
-            case 0x02: {
-                TCP_DISCONNECT_MSG* discMsg = static_cast<TCP_DISCONNECT_MSG*>(msg);
-                //does stuff
-                break;
-            }
-            case 0x03: {
-                TCP_UPDATE_MESSAGE* updMsg = static_cast<TCP_UPDATE_MESSAGE*>(msg);
-                //does stuff
-                break;
-            }
-            case 0x04: {
-                TCP_ACK_MESSAGE* ackMsg = static_cast<TCP_ACK_MESSAGE*>(msg);
-                //does stuff
-                break;
-            }
-            case 0x05: {
-                TCP_NAK_MESSAGE* nakMsg = static_cast<TCP_NAK_MESSAGE*>(msg);
-                //does stuff
-                break;
-            }
-            default:
-                printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
-                // SEND NAK message
-                TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), msg_id ? msg_id : 0, 0);
-                break;
+        if (ACK_flag){
+            TCP_ACK_MESSAGE ackMsg(node->get_NodeID(), ackMsg.msg.msg_id, ackMsg.msg.len);
+            node->send_tcp_data(ackMsg.get_msg(), ackMsg.get_len());
+        } else {
+            // TODO: Update for error handling
+            // identify the source from sender and send back?
+            TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), 0, 0);
+            node->send_tcp_data(nakMsg.get_msg(), nakMsg.get_len());
         }
+
         delete msg;
+        
     
     }
+
     
     pbuf_free(p);
     return ERR_OK;
