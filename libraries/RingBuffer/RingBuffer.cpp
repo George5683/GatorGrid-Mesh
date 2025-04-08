@@ -43,5 +43,5 @@ struct data RingBuffer::digest() {
 }
 
 int RingBuffer::get_size(){
-    return size;
+    return number_of_messages;
 }
