@@ -36,6 +36,8 @@ int main() {
     
     // Initial delay for serial monitor
     sleep_ms(10000);
+
+    
     
     STANode Node;
     if (!Node.init_sta_mode()) {

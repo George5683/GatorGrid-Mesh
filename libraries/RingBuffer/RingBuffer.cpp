@@ -13,7 +13,7 @@ RingBuffer::RingBuffer(int size) {
     }
 };
 
-void RingBuffer::insert(uint8_t *data, ssize_t len) {
+void RingBuffer::insert(uint8_t *data, ssize_t len, uint32_t source, uint32_t dest) {
     number_of_messages++;
 
     if(buf[index].data != nullptr)
@@ -21,6 +21,9 @@ void RingBuffer::insert(uint8_t *data, ssize_t len) {
 
     buf[index].data = data;
     buf[index].size = len;
+    buf[index].source = source;
+    buf[index].dest = dest;
+
 
     index = (index + 1) % size;
 }

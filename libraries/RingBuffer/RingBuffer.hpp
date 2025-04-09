@@ -7,6 +7,8 @@ using namespace std;
 struct data {
     uint8_t *data;
     ssize_t size;
+    uint32_t source;
+    uint32_t dest;
 };
 
 class RingBuffer {
@@ -18,7 +20,7 @@ class RingBuffer {
 
     RingBuffer(int size);
 
-    void insert(uint8_t *data, ssize_t len);
+    void insert(uint8_t *data, ssize_t len, uint32_t source, uint32_t dest);
     int get_size();
     struct data digest();
 

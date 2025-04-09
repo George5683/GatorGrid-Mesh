@@ -250,6 +250,7 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
                     TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
                     // Store messages in a ring buffer
 
+                    node->rb.insert(dataMsg->msg.msg,dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
 
                     break;
                 }
@@ -438,7 +439,7 @@ void run_tcp_server(void * arg) {
 }
 
 // APNode class constructor
-APNode::APNode() : state(nullptr), running(false), password("password"), rb(5) {
+APNode::APNode() : state(nullptr), running(false), password("password"), rb(10) {
     snprintf(ap_name, sizeof(ap_name), "GatorGrid_Node:%08X", get_NodeID());
 }
 

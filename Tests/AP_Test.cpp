@@ -7,30 +7,6 @@
 
 bool is_wifi_connected = false;
 
-void core1_entry() {
-
-    APNode node;
-
-    if (!node.init_ap_mode())
-    {
-        return;
-    }
-
-    if (!node.start_ap_mode()) {
-        return;
-    }
-
-    bool toggle = true;
-    for (;;) {
-        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
-        toggle = !toggle;
-        //printf("core print...");
-        sleep_ms(1000);
-    }
-
-
-}
-
 int main() {
 
     // initiate everything
@@ -62,11 +38,19 @@ int main() {
     //     for (;;) { sleep_ms(1000); }
     // }
     bool toggle = true;
-    for (;;) {
-        cyw43_arch_poll();
+    while (node.server_running()) {
+        //cyw43_arch_poll();
         // you can poll as often as you like, however if you have nothing else to do you can
         // choose to sleep until either a specified time, or cyw43_arch_poll() has work to do:
-        cyw43_arch_wait_for_work_until(make_timeout_time_ms(1000));
+        //cyw43_arch_wait_for_work_until(make_timeout_time_ms(1000));
+
+        if(node.number_of_messages() > 0) {
+            puts("You got mail!");
+            while(node.number_of_messages() != 0) {
+                struct data tmp = node.digest_data();
+                printf("Source %08x, Data %s\n", tmp.source, tmp.data);
+            }
+        }
 
         cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
         toggle = !toggle;
