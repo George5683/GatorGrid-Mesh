@@ -472,7 +472,6 @@ void run_tcp_server(void * arg) {
 
 // APNode class constructor
 APNode::APNode() : state(nullptr), running(false), password("password"), rb(10) {
-    SPI Master_Pico;
     Master_Pico.SPI_init(true);
     snprintf(ap_name, sizeof(ap_name), "GatorGrid_Node:%08X", get_NodeID());
 }

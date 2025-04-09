@@ -8,6 +8,7 @@
 #include <vector>
 #include "pico/cyw43_arch.h"
 
+#include "../SPI/SPI.hpp"
 #include "../RingBuffer/RingBuffer.hpp"
 
 // Forward declarations
@@ -36,8 +37,10 @@ public:
     bool running;
     char ap_name[32];
     const char* password = "password";
-
+    
     RingBuffer rb;
+
+    SPI Master_Pico;
 
     std::vector<void*> connections;
 
