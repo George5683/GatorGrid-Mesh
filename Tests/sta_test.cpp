@@ -9,6 +9,7 @@
 void core1_entry() {
     //stdio_init_all(); // Initialize stdio only once
     
+    // Initialize the STA node
     STANode node;
 
     // Initialize STA mode
@@ -25,6 +26,19 @@ void core1_entry() {
 
     bool toggle_led = true;
     bool wifi_connected = false;
+
+    // Initialize the SPI slave
+    SPI Slave_Pico;
+    Slave_Pico.SPI_init(false);
+    
+    uint8_t send_string[] = "ID-Received";
+    uint8_t recv_buffer[2048] = {0};
+
+    // Get the NodeID from the AP node through SPI
+    printf("Reading message received through SPI\n");
+    Slave_Pico.SPI_read_message(recv_buffer, sizeof(recv_buffer));
+    printf("Sending message through SPI\n");
+    Slave_Pico.SPI_send_message(send_string, sizeof(send_string));
 
     // Continue the loop until connected to a node
     while (!wifi_connected) {

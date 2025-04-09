@@ -60,6 +60,7 @@ int main() {
 
 
     for (;;) {
+        puts("Exited");
         sleep_ms(1000);
     }
 

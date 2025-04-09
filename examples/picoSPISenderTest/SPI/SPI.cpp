@@ -14,9 +14,10 @@
 SPI::SPI(){};
 
 // Initiate for the master
-void SPI::SPI_init(bool mode){
+bool SPI::SPI_init(bool mode){
     is_master = mode;
     if(mode == true){
+        printf("Initializing SPI for Master\n");
         // Setting up the Master
         spi_init(SPI_PORT, 1000 * 1000);
         spi_set_slave(SPI_PORT, false);
@@ -24,12 +25,13 @@ void SPI::SPI_init(bool mode){
         gpio_set_function(PIN_SCK, GPIO_FUNC_SPI);
         gpio_set_function(PIN_MOSI, GPIO_FUNC_SPI);
         gpio_set_function(PIN_MISO, GPIO_FUNC_SPI);
-
         gpio_set_function(PIN_CS, GPIO_FUNC_SIO);
+        
         gpio_set_dir(PIN_CS, GPIO_OUT);
         gpio_put(PIN_CS, 1);
     }
     else{
+        printf("Initializing SPI for Slave\n");
         // Set as slave
         spi_init(SPI_PORT, 1000 * 1000);
         spi_set_slave(SPI_PORT, true);
@@ -39,6 +41,7 @@ void SPI::SPI_init(bool mode){
         gpio_set_function(PIN_SCK, GPIO_FUNC_SPI);
         gpio_set_function(PIN_CS, GPIO_FUNC_SPI);
     }
+    return true;
 };
 
 int SPI::SPI_send_message(uint8_t *message, size_t length){
