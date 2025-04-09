@@ -1,3 +1,4 @@
+#include "libraries/SPI/SPI.hpp"
 #include "MeshNode.hpp"
 #include "Messages.hpp"
 #include <random>
@@ -315,6 +316,11 @@ STANode::STANode() {
     set_NodeID(ID);
 
     printf("Node ID is initially set to 0!\n");
+
+    // Initialize SPI
+    SPI Slave_Pico;
+    // Set SPI to be a slave 
+    Slave_Pico.SPI_init(false);
 }
 
 STANode::~STANode() {
