@@ -639,7 +639,7 @@ bool APNode::start_ap_mode() {
 
     uint32_t ID = this->get_node_id();
 
-    Master_Pico.SPI_send_message((uint8_t*) &ID, 5);
+    Master_Pico.SPI_send_message((uint8_t*) &ID, sizeof(ID));
     
     running = true;
     return true;
