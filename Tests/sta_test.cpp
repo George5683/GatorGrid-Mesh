@@ -1,5 +1,6 @@
 #include "pico/stdlib.h"
 #include "libraries/MeshNode/MeshNode.hpp"
+#include "libraries/MeshNode/Messages.hpp"
 #include "libraries/SPI/SPI.hpp"
 #include <cstdio>
 #include "pico/cyw43_arch.h"
@@ -83,17 +84,68 @@ void core1_entry() {
 }
 
 int main() {
-    stdio_init_all(); // Initialize stdio only once
-
-    // Wait for 10 seconds (optional)
+    stdio_init_all();
+    // initial delay to allow user to look at the serial monitor
     sleep_ms(10000);
 
-    // Launch core1_entry on Core 1
-    multicore_launch_core1(core1_entry);
+    // initiate everything
+    
 
-    // Core 0 main loop
+    // multicore_launch_core1(core1_entry);
+
+    SPI spi;
+    STANode node;
+    uint8_t id[4];
+    printf("Now looking for SPI message");
+    // if (spi.SPI_read_message(id, 4) != 1) {
+    //     for (;;) { sleep_ms(1000); }
+    // }
+    // node.set_NodeID(*reinterpret_cast<uint32_t*>(id));
+    node.init_sta_mode();
+    node.start_sta_mode();
+
+    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
+
+
+    // TCP_DATA_MSG msg(node.get_NodeID(), 0x12345678);
+    // uint8_t arr[] = {1,2,3,4,5,6,7,8,9};
+    // msg.add_message(9, arr);
+    // DUMP_BYTES(msg.get_msg(), msg.get_len());
+
+    while (node.known_nodes.size() <= 0) {
+        if (!node.scan_for_nodes()) {
+            return 0;
+        }
+    }
+
+    if (node.connect_to_node(node.known_nodes.begin()->first)) {
+        node.tcp_init();
+    }
+
+    sleep_ms(1000);
+
+    for (int i = 0; i < 10; i++)
+    {
+        TCP_DATA_MSG msg(node.get_NodeID(), 0x12345678);
+        uint8_t arr[] = "hello, this is message:  ";
+        arr[24] = 48 + i;
+        msg.add_message(25, arr);
+        node.send_tcp_data(msg.get_msg(), msg.get_len());
+        sleep_ms(500);
+    }
+
+    bool toggle = true;
     for (;;) {
-        sleep_ms(1000); // Core 0 can perform other tasks here
+        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
+        toggle = !toggle;
+        // for (auto it = node.known_nodes.begin(); it != node.known_nodes.end(); it++)
+        // {
+        //     printf("Knows node: %d\n", it->first);
+        // }
+        if(!node.is_connected()) {
+            printf("Not connected!\n");
+        }
+        sleep_ms(5000);
     }
 
     return 0;

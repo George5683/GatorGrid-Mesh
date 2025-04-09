@@ -5,7 +5,10 @@
 #include <set>
 #include <string>
 #include <map>
+#include <vector>
 #include "pico/cyw43_arch.h"
+
+#include "../RingBuffer/RingBuffer.hpp"
 
 // Forward declarations
 struct TCP_SERVER_T_;
@@ -24,6 +27,7 @@ public:
     // Base class functions for get/set NodeID
     void set_NodeID(uint32_t ID);
     uint32_t get_NodeID();
+    void seed_rand();
 };
 
 class APNode : public MeshNode{   
@@ -31,16 +35,17 @@ public:
     TCP_SERVER_T* state;
     bool running;
     char ap_name[32];
-    const char* password;
+    const char* password = "password";
+
+    RingBuffer rb;
+
+    std::vector<void*> connections;
 
     // map for results/results_flag from clients
     std::map<int, std::string> client_results;
     std::map<int, bool> client_results_flag;
 
-    // Flag to track if the webpage is enabled
-    bool webpage_enabled;
-
-    // CONSTRUCTOR/DECONSTRUCTOR
+    //lp9 CONSTRUCTOR/DECONSTRUCTOR
     APNode();
     ~APNode();
 
@@ -69,13 +74,14 @@ public:
     int get_node_id();
     void set_node_id(int ID);
 
-    // REACH MILESTONES
+    void server_start();
+    bool server_running();
 
-    // function to enable a webpage on the access point
-    void enable_webpage();
+    int number_of_messages();
 
-    // function to disable a webpage on the access point
-    void disable_webpage();
+    bool send_tcp_data(uint8_t* data, uint32_t size);
+
+    struct data digest_data();
 
 };
 
@@ -94,6 +100,10 @@ public:
     bool start_sta_mode();
     bool scan_for_nodes();
     bool connect_to_node(uint32_t id);
+    bool is_connected();
+    bool tcp_init();
+
+    bool send_tcp_data(uint8_t* data, uint32_t size);
     bool send_string_data(const char* data_string);
 
     static int scan_result(void* env, const cyw43_ev_scan_result_t* result);
