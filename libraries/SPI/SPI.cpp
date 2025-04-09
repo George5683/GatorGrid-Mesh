@@ -14,9 +14,10 @@
 SPI::SPI(){};
 
 // Initiate for the master
-void SPI::SPI_init(bool mode){
+bool SPI::SPI_init(bool mode){
     is_master = mode;
     if(mode == true){
+        printf("Setting up SPI Master\n");
         // Setting up the Master
         spi_init(SPI_PORT, 1000 * 1000);
         spi_set_slave(SPI_PORT, false);
@@ -30,6 +31,7 @@ void SPI::SPI_init(bool mode){
         gpio_put(PIN_CS, 1);
     }
     else{
+        printf("Setting up SPI Slave\n");
         // Set as slave
         spi_init(SPI_PORT, 1000 * 1000);
         spi_set_slave(SPI_PORT, true);
@@ -39,6 +41,8 @@ void SPI::SPI_init(bool mode){
         gpio_set_function(PIN_SCK, GPIO_FUNC_SPI);
         gpio_set_function(PIN_CS, GPIO_FUNC_SPI);
     }
+    printf("SPI initialized successfully\n");
+    return true;
 };
 
 int SPI::SPI_send_message(uint8_t *message, size_t length){
@@ -97,11 +101,6 @@ int SPI::SPI_read_message(uint8_t *buffer, size_t buffer_size){
 
             spi_write_read_blocking(SPI_PORT, &tempOutBuffer, &tempInBuffer, 1);
             buffer[i] = tempInBuffer;
-
-            // Break if we received a null terminator (end of string)
-            if (tempInBuffer == 0) {
-                break;
-            }
         }
         // Ensure null-termination
         buffer[buffer_size - 1] = 0;
@@ -109,6 +108,31 @@ int SPI::SPI_read_message(uint8_t *buffer, size_t buffer_size){
     }
     return 1;
 };
+
+bool SPI::SPI_is_read_available(){
+    // If the master, check if CS can be asserted (indicating bus is free)
+    if(is_master){
+        return gpio_get(PIN_CS) == 1; // CS high means bus is available
+    }
+    else{
+        // For slave, check if the CS line is low (indicating master wants to communicate)
+        return gpio_get(PIN_CS) == 0; // CS low means master is selecting this slave
+    }
+    return false;
+}
+
+bool SPI::SPI_is_write_available(){
+    // For master, check if the SPI bus is idle and ready for transmission
+    if(is_master){
+        // Check if not busy and CS is high (not currently communicating)
+        return !spi_is_busy(SPI_PORT) && gpio_get(PIN_CS) == 1;
+    }
+    else{
+        // For slave, check if selected by master (CS low) and not currently busy
+        return !spi_is_busy(SPI_PORT) && gpio_get(PIN_CS) == 0;
+    }
+    return false;
+}
 
 // ____________________________________ Examples Below for Main _______________________________________
 

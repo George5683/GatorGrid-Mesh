@@ -311,7 +311,13 @@ static TCP_CLIENT_T* tcp_client_init(void) {
 }
 
 STANode::STANode() {
+    // Use hardware-based entropy sources if possible
+    uint32_t ID = 0;
     
+    // set the NodeID variable
+    set_NodeID(ID);
+
+    printf("Node ID is initially set to 0!\n");
 }
 
 STANode::~STANode() {

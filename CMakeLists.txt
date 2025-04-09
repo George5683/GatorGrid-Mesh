@@ -105,6 +105,70 @@ pico_enable_stdio_usb(ap_background 1)
 
 pico_add_extra_outputs(ap_background)
 
+# Cmake for SPI MASTER
+add_executable(SPI_MASTER
+        Tests/SPI_MASTER_TEST.cpp
+        libraries/dhcpserver/dhcpserver.c
+        libraries/dnsserver/dnsserver.c
+        libraries/MeshNode/MeshNodeAP.cpp
+        libraries/MeshNode/MeshNodeSTA.cpp
+        libraries/SPI/SPI.cpp
+        )
+
+target_include_directories(SPI_MASTER PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/dhcpserver
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/dnsserver
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
+        )
+
+target_link_libraries(SPI_MASTER
+        pico_cyw43_arch_lwip_threadsafe_background
+        pico_stdlib
+        pico_multicore
+        hardware_spi
+        )
+
+pico_enable_stdio_uart(SPI_MASTER 0)
+pico_enable_stdio_usb(SPI_MASTER 1)
+        
+
+pico_add_extra_outputs(SPI_MASTER)
+
+# Cmake for SPI SLAVE
+add_executable(SPI_SLAVE
+        Tests/SPI_SLAVE_TEST.cpp
+        libraries/dhcpserver/dhcpserver.c
+        libraries/dnsserver/dnsserver.c
+        libraries/MeshNode/MeshNodeAP.cpp
+        libraries/MeshNode/MeshNodeSTA.cpp
+        libraries/SPI/SPI.cpp
+        )
+
+target_include_directories(SPI_SLAVE PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/dhcpserver
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/dnsserver
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
+        )
+
+target_link_libraries(SPI_SLAVE
+        pico_cyw43_arch_lwip_threadsafe_background
+        pico_stdlib
+        pico_multicore
+        hardware_spi
+        )
+
+pico_enable_stdio_uart(SPI_SLAVE 0)
+pico_enable_stdio_usb(SPI_SLAVE 1)
+        
+
+pico_add_extra_outputs(SPI_SLAVE)
+
 # Cmake for AccessPoint Example
 
 add_executable(picow_access_point_background

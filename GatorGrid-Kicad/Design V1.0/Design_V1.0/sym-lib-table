@@ -1,0 +1,5 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "TP4056")(type "KiCad")(uri "M:/GitHub/University_of_Florida/CEN3907C/GatorGrid-Kicad/Design V1.0/Resources/TP4056/TP4056.kicad_sym")(options "")(descr ""))
+  (lib (name "PICO W")(type "KiCad")(uri "M:/GitHub/University_of_Florida/CEN3907C/GatorGrid-Kicad/Design V1.0/Resources/RASPBERRY_PI_PICO_W/RASPBERRY_PI_PICO_W.kicad_sym")(options "")(descr ""))
+)
