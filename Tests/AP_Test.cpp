@@ -30,10 +30,9 @@ int main() {
         sleep_ms(1000);
     }
 
-    uint8_t id[4];
-    uint32_t node_id = node.get_NodeID();
-    *id = *reinterpret_cast<uint8_t*>(&node_id);
-    printf("Now sending for SPI message\n");
+    printf("AP ID: %08x\n", node.get_NodeID());
+
+    
     // if(spi.SPI_send_message(id, 4) != 1) {
     //     for (;;) { sleep_ms(1000); }
     // }

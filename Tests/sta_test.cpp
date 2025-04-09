@@ -18,6 +18,8 @@ void core1_entry() {
         return;
     }
 
+    printf("STA ID: %08x\n", node.get_NodeID());
+
     // Start STA mode
     if (!node.start_sta_mode()) {
         printf("Failed to start STA mode\n");

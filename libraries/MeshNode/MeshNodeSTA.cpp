@@ -317,8 +317,6 @@ STANode::STANode() {
 
     printf("Node ID is initially set to 0!\n");
 
-    // Initialize SPI
-    SPI Slave_Pico;
     // Set SPI to be a slave 
     Slave_Pico.SPI_init(false);
 }
@@ -333,6 +331,16 @@ STANode::~STANode() {
 
 bool STANode::init_sta_mode() {
     //stdio_init_all();
+
+    uint32_t AP_ID = 0;
+
+    while(!Slave_Pico.SPI_is_read_available());
+
+    Slave_Pico.SPI_read_message((uint8_t*)&AP_ID, 5);
+
+    this->set_NodeID(AP_ID);
+
+    printf("STA new ID is: %08x\n", get_NodeID());
 
     if (cyw43_arch_init()) {
         printf("failed to initialise\n");

@@ -95,7 +95,10 @@ public:
     TCP_CLIENT_T* state;
 
     std::string AP_CONNECTED_IP;
-  
+
+    SPI Slave_Pico;
+
+
     STANode();
     ~STANode();
 

@@ -257,7 +257,7 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
             // TODO: Handle error checks for messages
             msg_id = state->buffer_recv[1];
 
-            DUMP_BYTES(state->buffer_recv, 2048);
+            //DUMP_BYTES(state->buffer_recv, 2048);
 
             switch (msg_id) {
                 case 0x00: {
@@ -472,7 +472,6 @@ void run_tcp_server(void * arg) {
 
 // APNode class constructor
 APNode::APNode() : state(nullptr), running(false), password("password"), rb(10) {
-    Master_Pico.SPI_init(true);
     snprintf(ap_name, sizeof(ap_name), "GatorGrid_Node:%08X", get_NodeID());
 }
 
@@ -597,6 +596,10 @@ void APNode::stop_ap_mode() {
 
 bool APNode::start_ap_mode() {
 
+    // Delay to ensure the masters starts after the slave
+    sleep_ms(2000);
+    Master_Pico.SPI_init(true);
+
     // Enable the AP mode on the driver
     cyw43_arch_enable_ap_mode(ap_name, password, CYW43_AUTH_WPA2_AES_PSK);
 
@@ -630,6 +633,13 @@ bool APNode::start_ap_mode() {
         tcp_server_result(state, -1);
         return false;
     }
+
+    // Send over node ID to STA
+    while(!Master_Pico.SPI_is_write_available());
+
+    uint32_t ID = this->get_node_id();
+
+    Master_Pico.SPI_send_message((uint8_t*) &ID, 5);
     
     running = true;
     return true;
