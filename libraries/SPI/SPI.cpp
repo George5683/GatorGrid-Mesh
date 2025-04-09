@@ -1,3 +1,5 @@
+#pragma once
+
 #include "SPI.hpp"
 #include <stdio.h>
 #include <string>

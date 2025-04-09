@@ -8,6 +8,7 @@
 #include <vector>
 #include "pico/cyw43_arch.h"
 
+#include "../SPI/SPI.hpp"
 #include "../RingBuffer/RingBuffer.hpp"
 
 // Forward declarations
@@ -38,6 +39,8 @@ public:
     const char* password = "password";
 
     RingBuffer rb;
+
+    SPI Master_Pico;
 
     std::vector<void*> connections;
 
