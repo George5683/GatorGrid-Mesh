@@ -3,6 +3,7 @@ using namespace std;
 #include <stdlib.h>
 #include <stdint.h>
 #include <sys/types.h>
+#include <cstdio>
 
 struct data {
     uint8_t *data;
