@@ -532,7 +532,8 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size) {
     cyw43_arch_lwip_end();
     if (flag)
       return false;
-    //printf("Successfully queued message\n");
+    
+    printf("SENDING BYTES BELOW: \n");
     DUMP_BYTES(data, size);
     return true;
 }

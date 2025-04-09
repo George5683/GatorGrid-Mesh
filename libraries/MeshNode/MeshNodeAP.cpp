@@ -16,6 +16,26 @@
 #define TEST_ITERATIONS 10
 #define POLL_TIME_S 5
 
+#if 1
+ static void dump_bytes(const uint8_t *bptr, uint32_t len) {
+     unsigned int i = 0;
+ 
+     printf("dump_bytes %d", len);
+     for (i = 0; i < len;) {
+         if ((i & 0x0f) == 0) {
+             printf("\n");
+         } else if ((i & 0x07) == 0) {
+             printf(" ");
+         }
+         printf("%02x ", bptr[i++]);
+     }
+     printf("\n");
+ }
+ #define DUMP_BYTES dump_bytes
+ #else
+ #define DUMP_BYTES(A,B)
+ #endif
+
 extern "C" {
     #include "pico/cyw43_arch.h"
     #include "pico/stdlib.h"
@@ -175,6 +195,9 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
     TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
 
     APNode* node = (APNode*)state->ap_node;
+
+    bool got_full_message = false;
+
     printf("Recv called\n");
     if (!p) {
         return tcp_server_result(arg, -1);
@@ -200,6 +223,7 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 
         if(state->recv_len == 2048) {
             printf("SERVER DEBUG: GOT 2048\n");
+            //got_full_message = true;
 
         } else {
             printf("SERVER DEBUG: Currently recv %d\n", state->recv_len);
@@ -223,6 +247,7 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         // TCP_INIT_MESSAGE init_msg(((APNode*)(state->ap_node))->get_NodeID());  
         TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(state->buffer_recv));
         uint8_t msg_id = NULL;
+
         if (!msg) {
             printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
             ACK_flag = false;
@@ -230,6 +255,8 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 
             // TODO: Handle error checks for messages
             msg_id = state->buffer_recv[1];
+
+            DUMP_BYTES(state->buffer_recv, 2048);
 
             switch (msg_id) {
                 case 0x00: {
@@ -249,7 +276,7 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
                 case 0x01: {
                     TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
                     // Store messages in a ring buffer
-
+                    puts("Got data message");
                     node->rb.insert(dataMsg->msg.msg,dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
 
                     break;
@@ -308,6 +335,10 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
            
         // }
     }
+
+    // Reset the TCP buffer state or else data will just be appened to the state recv buffer
+    state->recv_len = 0;
+
     pbuf_free(p);
 
     // Have we have received the whole buffer
