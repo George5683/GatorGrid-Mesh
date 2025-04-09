@@ -92,9 +92,21 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a04904a1963bae5da866eef69595887e5"><td class="memItemLeft" align="right" valign="top"><a id="a04904a1963bae5da866eef69595887e5" name="a04904a1963bae5da866eef69595887e5"></a>
 struct tcp_pcb *&#160;</td><td class="memItemRight" valign="bottom"><b>server_pcb</b></td></tr>
 <tr class="separator:a04904a1963bae5da866eef69595887e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a797e29e5352a72995a43cc4b004630f3"><td class="memItemLeft" align="right" valign="top"><a id="a797e29e5352a72995a43cc4b004630f3" name="a797e29e5352a72995a43cc4b004630f3"></a>
+struct tcp_pcb *&#160;</td><td class="memItemRight" valign="bottom"><b>client_pcb</b></td></tr>
+<tr class="separator:a797e29e5352a72995a43cc4b004630f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a467dcc70f5fe27afca66459f1e5899c5"><td class="memItemLeft" align="right" valign="top"><a id="a467dcc70f5fe27afca66459f1e5899c5" name="a467dcc70f5fe27afca66459f1e5899c5"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>complete</b></td></tr>
 <tr class="separator:a467dcc70f5fe27afca66459f1e5899c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfba695a04f7fa61ee81ad6a63e34df7"><td class="memItemLeft" align="right" valign="top"><a id="adfba695a04f7fa61ee81ad6a63e34df7" name="adfba695a04f7fa61ee81ad6a63e34df7"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>sent_len</b></td></tr>
+<tr class="separator:adfba695a04f7fa61ee81ad6a63e34df7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8334d24569297b3576154b09baf20642"><td class="memItemLeft" align="right" valign="top"><a id="a8334d24569297b3576154b09baf20642" name="a8334d24569297b3576154b09baf20642"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>recv_len</b></td></tr>
+<tr class="separator:a8334d24569297b3576154b09baf20642"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0008a5803999497c640e05bc82fb7662"><td class="memItemLeft" align="right" valign="top"><a id="a0008a5803999497c640e05bc82fb7662" name="a0008a5803999497c640e05bc82fb7662"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>run_count</b></td></tr>
+<tr class="separator:a0008a5803999497c640e05bc82fb7662"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01476886348d11f11f6ea17a8099b15a"><td class="memItemLeft" align="right" valign="top"><a id="a01476886348d11f11f6ea17a8099b15a" name="a01476886348d11f11f6ea17a8099b15a"></a>
 ip_addr_t&#160;</td><td class="memItemRight" valign="bottom"><b>gw</b></td></tr>
 <tr class="separator:a01476886348d11f11f6ea17a8099b15a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -107,6 +119,12 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>ap_node</b></td></t
 <tr class="memitem:ace20e38cf2ba7dbe1ed13c0ff1dc9de4"><td class="memItemLeft" align="right" valign="top"><a id="ace20e38cf2ba7dbe1ed13c0ff1dc9de4" name="ace20e38cf2ba7dbe1ed13c0ff1dc9de4"></a>
 <a class="el" href="structdns__server__t__.html">dns_server_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dns_server</b></td></tr>
 <tr class="separator:ace20e38cf2ba7dbe1ed13c0ff1dc9de4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a783d2447ab4ef207341856b04d532a0d"><td class="memItemLeft" align="right" valign="top"><a id="a783d2447ab4ef207341856b04d532a0d" name="a783d2447ab4ef207341856b04d532a0d"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_sent</b> [BUF_SIZE]</td></tr>
+<tr class="separator:a783d2447ab4ef207341856b04d532a0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1ed039fe3ef2265ae3515ac667c1a0f"><td class="memItemLeft" align="right" valign="top"><a id="aa1ed039fe3ef2265ae3515ac667c1a0f" name="aa1ed039fe3ef2265ae3515ac667c1a0f"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_recv</b> [BUF_SIZE]</td></tr>
+<tr class="separator:aa1ed039fe3ef2265ae3515ac667c1a0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>libraries/MeshNode/MeshNodeAP.cpp</li>
