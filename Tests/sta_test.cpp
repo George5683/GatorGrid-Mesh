@@ -131,7 +131,7 @@ int main() {
         uint8_t arr[] = "hello, this is message:  ";
         arr[24] = 48 + i;
         msg.add_message(25, arr);
-        node.send_tcp_data(msg.get_msg(), msg.get_len());
+        node.send_tcp_data(msg.get_msg(), msg.get_len(), false);
         sleep_ms(500);
     }
 

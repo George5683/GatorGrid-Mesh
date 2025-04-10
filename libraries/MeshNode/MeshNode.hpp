@@ -106,7 +106,7 @@ public:
     bool is_connected();
     bool tcp_init();
 
-    bool send_tcp_data(uint8_t* data, uint32_t size);
+    bool send_tcp_data(uint8_t* data, uint32_t size, bool forward);
     bool send_string_data(const char* data_string);
 
     static int scan_result(void* env, const cyw43_ev_scan_result_t* result);
