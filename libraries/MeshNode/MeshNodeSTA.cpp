@@ -63,6 +63,7 @@ typedef struct TCP_CLIENT_T_ {
     bool complete;
     int run_count;
     bool connected;
+    bool waiting_for_ack;
 } TCP_CLIENT_T;
 
 static err_t tcp_client_close(void *arg) {
@@ -227,6 +228,7 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
                     if (ackMsg->msg.dest == node->get_NodeID()) {
                         self_reply = true;
                         puts("ACK is for me");
+                        state->waiting_for_ack = false;
                     }
                     //does stuff
                     break;
@@ -236,7 +238,7 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
                     //does stuff
                     puts("Got NAK");
                     self_reply = true;
-
+                    state->waiting_for_ack = false;
                     break;
                 }
                 default:
@@ -250,12 +252,13 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 
         if (ACK_flag && !self_reply){
             TCP_ACK_MESSAGE ackMsg(node->get_NodeID(), source_id, ackMsg.msg.len);
-            node->send_tcp_data(ackMsg.get_msg(), ackMsg.get_len());
+            node->send_tcp_data(ackMsg.get_msg(), ackMsg.get_len(), false);
+            state->waiting_for_ack = true;
         } else if (NAK_flag) {
             // TODO: Update for error handling
             // identify the source from sender and send back?
             TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), 0, 0);
-            node->send_tcp_data(nakMsg.get_msg(), nakMsg.get_len());
+            node->send_tcp_data(nakMsg.get_msg(), nakMsg.get_len(), false);
         }
 
         delete msg;
@@ -516,11 +519,11 @@ bool STANode::tcp_init() {
     //uint8_t buffer[BUF_SIZE] = {};
     //create_join_message(BUF_SIZE, buffer, this);
     TCP_INIT_MESSAGE init_msg(get_NodeID());
-    return send_tcp_data(init_msg.get_msg(), init_msg.get_len());
+    return send_tcp_data(init_msg.get_msg(), init_msg.get_len(), false);
 
 }
 
-bool STANode::send_tcp_data(uint8_t* data, uint32_t size) {
+bool STANode::send_tcp_data(uint8_t* data, uint32_t size, bool forward) {
 
     // uint8_t buffer[size] = {};
     // if (size > BUF_SIZE) { size = size; }
@@ -538,6 +541,7 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size) {
     //     printf("attempting to write\n");
     //     sleep_ms(2);
     // }
+    while(state->waiting_for_ack) {sleep_ms(5);}
     err_t err = tcp_write(state->tcp_pcb, (void*)data, size, TCP_WRITE_FLAG_COPY);
     err_t err2 = tcp_output(state->tcp_pcb);
     if (err != ERR_OK) {
@@ -554,6 +558,7 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size) {
       return false;
     
     printf("SENDING BYTES BELOW: \n");
+    state->waiting_for_ack = !forward;
     DUMP_BYTES(data, size);
     return true;
 }

@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <sstream>
+
 #include "../SPI/SPI.hpp"
 
 #include "hardware/regs/rosc.h"
@@ -215,12 +216,12 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 
         // Receive the buffer
         const uint16_t buffer_left = BUF_SIZE - state->recv_len;
-        printf("before pbuf copy partial\n");
+        //printf("before pbuf copy partial\n");
         state->recv_len += pbuf_copy_partial(p, state->buffer_recv + state->recv_len,
                                              p->tot_len > buffer_left ? buffer_left : p->tot_len, 0);
-        printf("after pbuf copy partial\n");
+        //printf("after pbuf copy partial\n");
         tcp_recved(tpcb, p->tot_len);
-        printf("before tcp_recved\n");
+        //printf("before tcp_recved\n");
 
         if(state->recv_len == 2048) {
             printf("SERVER DEBUG: GOT 2048\n");
@@ -247,7 +248,7 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 
         // TCP_INIT_MESSAGE init_msg(((APNode*)(state->ap_node))->get_NodeID());  
         TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(state->buffer_recv));
-        uint8_t msg_id = NULL;
+        uint8_t msg_id = 0xFF;
 
         if (!msg) {
             printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
@@ -278,8 +279,9 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
                     TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
                     // Store messages in a ring buffer
                     puts("Got data message");
+                    printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
                     node->rb.insert(dataMsg->msg.msg,dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
-
+                    printf("Successfully inserted into ring buffer\n");
                     break;
                 }
                 case 0x02: {
@@ -315,13 +317,14 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 
         if (ACK_flag){
             // Assumption: clients_map[tpcb].id implies that any message worth acking isn't being forwarded and is originating from the intended node
-            TCP_ACK_MESSAGE ackMsg(node->get_NodeID(), clients_map[tpcb].id, ackMsg.msg.len);
+            TCP_ACK_MESSAGE ackMsg(node->get_NodeID(), clients_map[tpcb].id, p->tot_len);
             node->send_tcp_data(ackMsg.get_msg(), ackMsg.get_len());
+            printf("Sent ACK message to client %u", clients_map[tpcb].id);
             
         } else if (NAK_flag) {
             // TODO: Update for error handling
             // identify the source from clients_map and send back?
-            TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), clients_map[tpcb].id, 0);
+            TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), clients_map[tpcb].id, p->tot_len);
             node->send_tcp_data(nakMsg.get_msg(), nakMsg.get_len());
         }
 
@@ -471,8 +474,9 @@ void run_tcp_server(void * arg) {
 }
 
 // APNode class constructor
-APNode::APNode() : state(nullptr), running(false), password("password"), rb(10) {
+APNode::APNode() : state(nullptr), running(false), password("password"), rb(10), Master_Pico()  {
     snprintf(ap_name, sizeof(ap_name), "GatorGrid_Node:%08X", get_NodeID());
+    Master_Pico.SPI_init(true);
 }
 
 struct data APNode::digest_data() {

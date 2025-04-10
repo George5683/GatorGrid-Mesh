@@ -1,6 +1,5 @@
 #include "pico/stdlib.h"
 #include "libraries/MeshNode/MeshNode.hpp"
-#include "libraries/SPI/SPI.hpp"
 #include <cstdio>
 #include "pico/cyw43_arch.h"
 #include "pico/multicore.h"
@@ -17,7 +16,6 @@ int main() {
 
     //multicore_launch_core1(core1_entry);
     APNode node;
-    SPI spi;
 
     printf("Init AP Mode\n");
     if (!node.init_ap_mode())
@@ -47,7 +45,7 @@ int main() {
             puts("You got mail!");
             while(node.number_of_messages() != 0) {
                 struct data tmp = node.digest_data();
-                printf("Source %08x, Data %s\n", tmp.source, tmp.data);
+                printf("Source: %08x\nData: \"%s\"\n", tmp.source, tmp.data);
             }
         }
 

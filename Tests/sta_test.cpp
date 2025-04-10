@@ -1,11 +1,11 @@
 #include "pico/stdlib.h"
 #include "libraries/MeshNode/MeshNode.hpp"
 #include "libraries/MeshNode/Messages.hpp"
-#include "libraries/SPI/SPI.hpp"
 #include <cstdio>
 #include "pico/cyw43_arch.h"
 #include "pico/multicore.h"
 
+/*
 void core1_entry() {
     //stdio_init_all(); // Initialize stdio only once
     
@@ -84,6 +84,7 @@ void core1_entry() {
     // Keep the LED on to indicate successful connection
     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
 }
+    */
 
 int main() {
     stdio_init_all();
@@ -95,7 +96,7 @@ int main() {
 
     // multicore_launch_core1(core1_entry);
 
-    SPI spi;
+    //SPI spi;
     STANode node;
     uint8_t id[4];
     printf("Now looking for SPI message");
@@ -132,7 +133,7 @@ int main() {
         uint8_t arr[] = "hello, this is message:  ";
         arr[24] = 48 + i;
         msg.add_message(25, arr);
-        node.send_tcp_data(msg.get_msg(), msg.get_len());
+        node.send_tcp_data(msg.get_msg(), msg.get_len(), false);
         sleep_ms(500);
     }
 
