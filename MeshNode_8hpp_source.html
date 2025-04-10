@@ -187,7 +187,7 @@ $(function() {
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="keywordtype">bool</span> is_connected();</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keywordtype">bool</span> tcp_init();</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keywordtype">bool</span> send_tcp_data(uint8_t* <a class="code hl_struct" href="structdata.html">data</a>, uint32_t size);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keywordtype">bool</span> send_tcp_data(uint8_t* <a class="code hl_struct" href="structdata.html">data</a>, uint32_t size, <span class="keywordtype">bool</span> forward);</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordtype">bool</span> send_string_data(<span class="keyword">const</span> <span class="keywordtype">char</span>* data_string);</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keyword">static</span> <span class="keywordtype">int</span> scan_result(<span class="keywordtype">void</span>* env, <span class="keyword">const</span> cyw43_ev_scan_result_t* result);</div>
@@ -196,12 +196,12 @@ $(function() {
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="preprocessor">#endif </span><span class="comment">// MESH_NODE_HPP</span></div>
 <div class="ttc" id="aclassAPNode_html"><div class="ttname"><a href="classAPNode.html">APNode</a></div><div class="ttdef"><b>Definition:</b> MeshNode.hpp:34</div></div>
 <div class="ttc" id="aclassMeshNode_html"><div class="ttname"><a href="classMeshNode.html">MeshNode</a></div><div class="ttdef"><b>Definition:</b> MeshNode.hpp:21</div></div>
-<div class="ttc" id="aclassRingBuffer_html"><div class="ttname"><a href="classRingBuffer.html">RingBuffer</a></div><div class="ttdef"><b>Definition:</b> RingBuffer.hpp:17</div></div>
+<div class="ttc" id="aclassRingBuffer_html"><div class="ttname"><a href="classRingBuffer.html">RingBuffer</a></div><div class="ttdef"><b>Definition:</b> RingBuffer.hpp:18</div></div>
 <div class="ttc" id="aclassSPI_html"><div class="ttname"><a href="classSPI.html">SPI</a></div><div class="ttdef"><b>Definition:</b> SPI.hpp:5</div></div>
 <div class="ttc" id="aclassSTANode_html"><div class="ttname"><a href="classSTANode.html">STANode</a></div><div class="ttdef"><b>Definition:</b> MeshNode.hpp:91</div></div>
 <div class="ttc" id="astructTCP__CLIENT__T___html"><div class="ttname"><a href="structTCP__CLIENT__T__.html">TCP_CLIENT_T_</a></div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:57</div></div>
-<div class="ttc" id="astructTCP__SERVER__T___html"><div class="ttname"><a href="structTCP__SERVER__T__.html">TCP_SERVER_T_</a></div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:66</div></div>
-<div class="ttc" id="astructdata_html"><div class="ttname"><a href="structdata.html">data</a></div><div class="ttdef"><b>Definition:</b> RingBuffer.hpp:10</div></div>
+<div class="ttc" id="astructTCP__SERVER__T___html"><div class="ttname"><a href="structTCP__SERVER__T__.html">TCP_SERVER_T_</a></div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:67</div></div>
+<div class="ttc" id="astructdata_html"><div class="ttname"><a href="structdata.html">data</a></div><div class="ttdef"><b>Definition:</b> RingBuffer.hpp:11</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
