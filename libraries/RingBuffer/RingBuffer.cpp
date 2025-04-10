@@ -14,11 +14,11 @@ RingBuffer::RingBuffer(int size) {
 };
 
 void RingBuffer::insert(uint8_t *data, ssize_t len, uint32_t source, uint32_t dest) {
-    printf("Inserting data with length: %u, from node %u to node %u\n", len, source, dest);
+    //printf("Inserting data with length: %u, from node %u to node %u\n", len, source, dest);
     number_of_messages++;
 
     // Comment this out not sure if this is an issue
-    if(buf[index].data != nullptr)
+    //if(buf[index].data != nullptr)
         //free(buf[index].data);
 
     buf[index].data = data;
