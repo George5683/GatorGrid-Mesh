@@ -92,28 +92,15 @@ int main() {
     sleep_ms(10000);
 
     // initiate everything
-    
 
-    // multicore_launch_core1(core1_entry);
 
     //SPI spi;
     STANode node;
-    uint8_t id[4];
-    printf("Now looking for SPI message");
-    // if (spi.SPI_read_message(id, 4) != 1) {
-    //     for (;;) { sleep_ms(1000); }
-    // }
-    // node.set_NodeID(*reinterpret_cast<uint32_t*>(id));
     node.init_sta_mode();
     node.start_sta_mode();
 
     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
 
-
-    // TCP_DATA_MSG msg(node.get_NodeID(), 0x12345678);
-    // uint8_t arr[] = {1,2,3,4,5,6,7,8,9};
-    // msg.add_message(9, arr);
-    // DUMP_BYTES(msg.get_msg(), msg.get_len());
 
     while (node.known_nodes.size() <= 0) {
         if (!node.scan_for_nodes()) {
@@ -134,17 +121,12 @@ int main() {
         arr[24] = 48 + i;
         msg.add_message(25, arr);
         node.send_tcp_data(msg.get_msg(), msg.get_len(), false);
-        sleep_ms(500);
     }
 
     bool toggle = true;
     for (;;) {
         cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
         toggle = !toggle;
-        // for (auto it = node.known_nodes.begin(); it != node.known_nodes.end(); it++)
-        // {
-        //     printf("Knows node: %d\n", it->first);
-        // }
         if(!node.is_connected()) {
             printf("Not connected!\n");
         }

@@ -45,6 +45,7 @@ add_executable(sta_background
         libraries/MeshNode/Messages.cpp
         libraries/SPI/SPI.cpp
         libraries/RingBuffer/RingBuffer.cpp
+        libraries/ChildrenTree/ChildrenTree.cpp
         )
 
 target_include_directories(sta_background PRIVATE
@@ -55,6 +56,7 @@ target_include_directories(sta_background PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
         ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
         ${CMAKE_CURRENT_LIST_DIR}/libraries/RingBuffer
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
         )
 
 target_link_libraries(sta_background
@@ -80,6 +82,7 @@ add_executable(ap_background
         libraries/MeshNode/Messages.cpp
         libraries/SPI/SPI.cpp
         libraries/RingBuffer/RingBuffer.cpp
+        libraries/ChildrenTree/ChildrenTree.cpp
         )
 
 target_include_directories(ap_background PRIVATE
@@ -90,6 +93,7 @@ target_include_directories(ap_background PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
         ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
         ${CMAKE_CURRENT_LIST_DIR}/libraries/RingBuffer
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
         )
 
 target_link_libraries(ap_background
@@ -114,6 +118,7 @@ add_executable(SPI_MASTER
         libraries/MeshNode/MeshNodeSTA.cpp
         libraries/SPI/SPI.cpp
         libraries/RingBuffer/RingBuffer.cpp
+        libraries/ChildrenTree/ChildrenTree.cpp
         )
 
 target_include_directories(SPI_MASTER PRIVATE
@@ -124,6 +129,7 @@ target_include_directories(SPI_MASTER PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
         ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
         ${CMAKE_CURRENT_LIST_DIR}/libraries/RingBuffer
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
         )
 
 target_link_libraries(SPI_MASTER
@@ -148,6 +154,7 @@ add_executable(SPI_SLAVE
         libraries/MeshNode/MeshNodeSTA.cpp
         libraries/SPI/SPI.cpp
         libraries/RingBuffer/RingBuffer.cpp
+        libraries/ChildrenTree/ChildrenTree.cpp
         )
 
 target_include_directories(SPI_SLAVE PRIVATE
@@ -157,6 +164,7 @@ target_include_directories(SPI_SLAVE PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/libraries/dnsserver
         ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
         ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
         )
 
 target_link_libraries(SPI_SLAVE
@@ -184,6 +192,7 @@ add_executable(picow_access_point_background
         libraries/SPI/SPI.cpp
         libraries/RingBuffer/RingBuffer.cpp
         libraries/SPI/SPI.cpp
+        libraries/ChildrenTree/ChildrenTree.cpp
         )
 
 target_include_directories(picow_access_point_background PRIVATE
@@ -194,6 +203,7 @@ target_include_directories(picow_access_point_background PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
         ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
         ${CMAKE_CURRENT_LIST_DIR}/libraries/RingBuffer
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
         )
 
 target_link_libraries(picow_access_point_background
@@ -219,6 +229,7 @@ add_executable(picow_access_point_poll
         libraries/SPI/SPI.cpp
         libraries/RingBuffer/RingBuffer.cpp
         libraries/SPI/SPI.cpp
+        libraries/ChildrenTree/ChildrenTree.cpp
         )
 
 # Modify the below lines to enable/disable output over UART/USB
@@ -237,6 +248,7 @@ target_include_directories(picow_access_point_poll PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
         ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
         ${CMAKE_CURRENT_LIST_DIR}/libraries/RingBuffer
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
         )
 target_link_libraries(picow_access_point_poll
         pico_cyw43_arch_lwip_threadsafe_background

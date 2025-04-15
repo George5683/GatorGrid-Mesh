@@ -479,6 +479,12 @@ APNode::APNode() : state(nullptr), running(false), password("password"), rb(10),
     Master_Pico.SPI_init(true);
 }
 
+APNode::APNode(uint32_t id) : state(nullptr), running(false), password("password"), rb(10), Master_Pico()  {
+    set_NodeID(id);
+    snprintf(ap_name, sizeof(ap_name), "GatorGrid_Node:%08X", get_NodeID());
+    Master_Pico.SPI_init(true);
+}
+
 struct data APNode::digest_data() {
     return this->rb.digest();
 }

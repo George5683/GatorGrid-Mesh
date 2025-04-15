@@ -10,6 +10,8 @@
 
 #include "../SPI/SPI.hpp"
 #include "../RingBuffer/RingBuffer.hpp"
+#include "Messages.hpp"
+#include "../ChildrenTree/ChildrenTree.hpp"
 
 // Forward declarations
 struct TCP_SERVER_T_;
@@ -50,6 +52,7 @@ public:
 
     //lp9 CONSTRUCTOR/DECONSTRUCTOR
     APNode();
+    APNode(uint32_t id);
     ~APNode();
 
     // Initialize hardware and allocate resources
@@ -86,6 +89,8 @@ public:
 
     struct data digest_data();
 
+    bool handle_incoming_data(unsigned char* buffer);
+
 };
 
 class STANode : public MeshNode{
@@ -110,9 +115,11 @@ public:
     bool tcp_init();
 
     bool send_tcp_data(uint8_t* data, uint32_t size, bool forward);
-    bool send_string_data(const char* data_string);
+    bool send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward);
+
 
     static int scan_result(void* env, const cyw43_ev_scan_result_t* result);
+    bool handle_incoming_data(unsigned char* buffer);
 };
 
 #endif // MESH_NODE_HPP

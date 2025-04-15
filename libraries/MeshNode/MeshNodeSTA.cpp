@@ -176,93 +176,8 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         
         // Acknowledge receipt of the data
         tcp_recved(tpcb, p->tot_len);
-        
-        // Consider this a success - we got a response
-        // if (p->tot_len > 0) {
-        //     pbuf_free(p);
-        //     return tcp_result(arg, 0);
-        // }
-
-        uint32_t source_id = 0;
-        bool ACK_flag = true;
-        bool NAK_flag = false;
-        bool self_reply = false;
-        TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(state->buffer));
-        if (!msg) {
-            printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
-            ACK_flag = false;
-        } else {
-
-            uint8_t msg_id = state->buffer[1];
-            switch (msg_id) {
-                case 0x00: {
-                    TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(msg);
-                    //does stuff
-                    printf("Received initialization message from node %u", initMsg->msg.source);
-                    source_id =  initMsg->msg.source;
-
-                    break;
-                }
-                case 0x01: {
-                    TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
-                    //does stuff
-                    break;
-                }
-                case 0x02: {
-                    TCP_DISCONNECT_MSG* discMsg = static_cast<TCP_DISCONNECT_MSG*>(msg);
-                    //does stuff
-                    break;
-                }
-                case 0x03: {
-                    TCP_UPDATE_MESSAGE* updMsg = static_cast<TCP_UPDATE_MESSAGE*>(msg);
-                    //does stuff
-                    break;
-                }
-                case 0x04: {
-                    puts("Got ACK");
-                    TCP_ACK_MESSAGE* ackMsg = static_cast<TCP_ACK_MESSAGE*>(msg);
-
-                    source_id = ackMsg->msg.source;
-
-                    printf("Ack is from %08x and for %08x\n", ackMsg->msg.source, ackMsg->msg.dest);
-                    if (ackMsg->msg.dest == node->get_NodeID()) {
-                        self_reply = true;
-                        puts("ACK is for me");
-                        state->waiting_for_ack = false;
-                    }
-                    //does stuff
-                    break;
-                }
-                case 0x05: {
-                    TCP_NAK_MESSAGE* nakMsg = static_cast<TCP_NAK_MESSAGE*>(msg);
-                    //does stuff
-                    puts("Got NAK");
-                    self_reply = true;
-                    state->waiting_for_ack = false;
-                    break;
-                }
-                default:
-                    printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
-                    ACK_flag = false;
-                    // SEND NAK message
-                    //TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), msg_id ? msg_id : 0, 0);
-                    break;
-            }
-        }
-
-        if (ACK_flag && !self_reply){
-            TCP_ACK_MESSAGE ackMsg(node->get_NodeID(), source_id, ackMsg.msg.len);
-            node->send_tcp_data(ackMsg.get_msg(), ackMsg.get_len(), false);
-            state->waiting_for_ack = true;
-        } else if (NAK_flag) {
-            // TODO: Update for error handling
-            // identify the source from sender and send back?
-            TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), 0, 0);
-            node->send_tcp_data(nakMsg.get_msg(), nakMsg.get_len(), false);
-        }
-
-        delete msg;
-        
+               
+        node->handle_incoming_data(state->buffer);
     
     }
 
@@ -561,119 +476,129 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size, bool forward) {
     state->waiting_for_ack = !forward;
     DUMP_BYTES(data, size);
     return true;
-}
+}/**
+ * @brief Will wait until availble to send tcp, then will wait for an ACK response before releasing
+ * 
+ * @param data 
+ * @param size 
+ * @param forward 
+ * @return true - message successfully sent
+ * @return false - message failed to send
+ */
 
+bool STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward) {
 
-bool STANode::send_string_data(const char* data_string) {
-    // Initialize the TCP client
-    TCP_CLIENT_T *state = tcp_client_init();
-    if (!state) {
-        printf("Failed to initialize TCP client\n");
-        return false;
-    }
+    bool flag = false;
 
-    // Open the TCP connection
-    if (!tcp_client_open(state)) {
-        printf("Failed to open TCP connection\n");
-        tcp_client_close(state);
-        free(state);
-        return false;
-    }
-
-    // Wait for the connection to be established with timeout
-    absolute_time_t connect_timeout = make_timeout_time_ms(5000); // 5 second timeout
-    while (!state->connected) {
-        if (absolute_time_diff_us(get_absolute_time(), connect_timeout) < 0) {
-            printf("Connection timeout\n");
-            tcp_client_close(state);
-            free(state);
-            return false;
-        }
-        
-        #if PICO_CYW43_ARCH_POLL
-            cyw43_arch_poll();
-            cyw43_arch_wait_for_work_until(connect_timeout);
-        #else
-            sleep_ms(100);
-        #endif
-    }
-
-    // Add the ID to the string data 
-    char buffer[BUF_SIZE];
-    uint32_t node_id = get_NodeID();
-    int header_len = snprintf(buffer, BUF_SIZE, "ID:%u;DATA:", node_id);
-    
-    // Check if we have enough space for the header and data
-    if (header_len < 0 || header_len + strlen(data_string) >= BUF_SIZE) {
-        printf("Buffer too small for data with ID header\n");
-        tcp_client_close(state);
-        free(state);
-        return false;
-    }
-    
-    // Append the actual data after the ID header
-    strcpy(buffer + header_len, data_string);
-    
-    // Use the combined buffer instead of the original data_string
-    size_t data_len = strlen(buffer);
-    if (data_len > BUF_SIZE) {
-        printf("Data string is too long\n");
-        tcp_client_close(state);
-        free(state);
-        return false;
-    }
-
-    // Copy the data into the buffer
-    memcpy(state->buffer, buffer, data_len);
-    state->buffer_len = data_len;
-
-    printf("Sending data: %s (length: %d)\n", buffer, data_len);
-
-    // Send the data
     cyw43_arch_lwip_begin();
-    err_t err = tcp_write(state->tcp_pcb, state->buffer, state->buffer_len, TCP_WRITE_FLAG_COPY);
-    
+
+    while(state->waiting_for_ack) {sleep_ms(5);}
+    err_t err = tcp_write(state->tcp_pcb, (void*)data, size, TCP_WRITE_FLAG_COPY);
+    err_t err2 = tcp_output(state->tcp_pcb);
     if (err != ERR_OK) {
-        printf("Failed to write data %d\n", err);
-        cyw43_arch_lwip_end();
-        tcp_client_close(state);
-        free(state);
-        return false;
+        printf("Message failed to write\n");
+        printf("ERR: %d\n", err);
+        flag = true;
     }
-    
-    // Force data to be sent immediately
-    err = tcp_output(state->tcp_pcb);
-    if (err != ERR_OK) {
-        printf("Failed to output data %d\n", err);
-        cyw43_arch_lwip_end();
-        tcp_client_close(state);
-        free(state);
-        return false;
+    if (err2 != ERR_OK) {
+        printf("Message failed to be sent\n");
+        flag = true;
     }
     cyw43_arch_lwip_end();
+    if (flag)
+      return false;
+    
+    printf("SENDING BYTES BELOW: \n");
+    state->waiting_for_ack = !forward;
+    DUMP_BYTES(data, size);
+    while(state->waiting_for_ack)
+    {
+        sleep_ms(20);
+    }
+    return true;
+}
 
-    // Wait for the data to be sent or timeout
-    absolute_time_t send_timeout = make_timeout_time_ms(15000); // 15 second timeout
-    while (!state->complete) {
-        if (absolute_time_diff_us(get_absolute_time(), send_timeout) < 0) {
-            printf("Send timeout\n");
-            tcp_client_close(state);
-            free(state);
-            return false;
+bool STANode::handle_incoming_data(unsigned char* buffer) {
+    uint32_t source_id = 0;
+    bool ACK_flag = true;
+    bool NAK_flag = false;
+    bool self_reply = false;
+    TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(buffer));
+    if (!msg) {
+        printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
+        ACK_flag = false;
+    } else {
+
+        uint8_t msg_id = buffer[1];
+        switch (msg_id) {
+            case 0x00: {
+                TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(msg);
+                //does stuff
+                printf("Received initialization message from node %u", initMsg->msg.source);
+                source_id =  initMsg->msg.source;
+
+                break;
+            }
+            case 0x01: {
+                TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
+                //does stuff
+                break;
+            }
+            case 0x02: {
+                TCP_DISCONNECT_MSG* discMsg = static_cast<TCP_DISCONNECT_MSG*>(msg);
+                //does stuff
+                break;
+            }
+            case 0x03: {
+                TCP_UPDATE_MESSAGE* updMsg = static_cast<TCP_UPDATE_MESSAGE*>(msg);
+                //does stuff
+                break;
+            }
+            case 0x04: {
+                puts("Got ACK");
+                TCP_ACK_MESSAGE* ackMsg = static_cast<TCP_ACK_MESSAGE*>(msg);
+
+                source_id = ackMsg->msg.source;
+
+                printf("Ack is from %08x and for %08x\n", ackMsg->msg.source, ackMsg->msg.dest);
+                if (ackMsg->msg.dest == get_NodeID()) {
+                    self_reply = true;
+                    puts("ACK is for me");
+                    state->waiting_for_ack = false;
+                }
+                //does stuff
+                break;
+            }
+            case 0x05: {
+                TCP_NAK_MESSAGE* nakMsg = static_cast<TCP_NAK_MESSAGE*>(msg);
+                //does stuff
+                puts("Got NAK");
+                self_reply = true;
+                state->waiting_for_ack = false;
+                break;
+            }
+            default:
+                printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
+                ACK_flag = false;
+                // SEND NAK message
+                //TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), msg_id ? msg_id : 0, 0);
+                break;
         }
-        
-        #if PICO_CYW43_ARCH_POLL
-            cyw43_arch_poll();
-            cyw43_arch_wait_for_work_until(send_timeout);
-        #else
-            sleep_ms(100);
-        #endif
     }
 
-    //printf("Data transmission completed successfully\n");
-    
-    // Clean up
-    tcp_client_close(state);
-    free(state);
+    if (ACK_flag && !self_reply){
+        TCP_ACK_MESSAGE ackMsg(get_NodeID(), source_id, ackMsg.msg.len);
+        send_tcp_data(ackMsg.get_msg(), ackMsg.get_len(), false);
+        state->waiting_for_ack = true;
+    } else if (NAK_flag) {
+        // TODO: Update for error handling
+        // identify the source from sender and send back?
+        TCP_NAK_MESSAGE nakMsg(get_NodeID(), 0, 0);
+        send_tcp_data(nakMsg.get_msg(), nakMsg.get_len(), false);
+        delete msg;
+        return false;
+    }
+
+    delete msg;
     return true;
 }
