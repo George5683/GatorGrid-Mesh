@@ -23,11 +23,11 @@ public:
     } 
     ~ChildrenTree();
     bool add_child(uint32_t parent_id, uint32_t child_id);
-    bool remove_child(uint32_t id);
+    void remove_children(Node* node);
 
     Node* find_node(uint32_t id, Node* head);
     bool node_exists(uint32_t id);
-    uint32_t find_path(uint32_t id);
+    bool find_path_parent(uint32_t id, uint32_t* parent);
 };
 
 #endif
