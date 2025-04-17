@@ -15,6 +15,9 @@ SPI::SPI(){};
 
 // Initiate for the master
 bool SPI::SPI_init(bool mode){
+    /**
+    * spi_init contents
+    */
     is_master = mode;
     if(mode == true){
         printf("Setting up SPI Master\n");
