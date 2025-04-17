@@ -8,15 +8,27 @@ The MeshNode library is meant to be used on the cyw43 driver. It allows for func
 
 ## Functions Overview
 
-### **MeshNode**
+### MeshNode
 
-### `void MeshNode(void)`
+### virtual ~MeshNode()
 Default constructor for each Node and initializing a Node-ID
 
-### **Access Point Mode**
+### void set_NodeID(uint32_t ID)
+Assigns ID to the NodeID
 
-### `bool init_ap_mode()`
+### uint32_t get_NodeID()
+Returns the node id
+
+### void seed_rand()
+Generates random seed for node
+
+### Access Point Mode
+
+### bool init_ap_mode()
 Constructor that initializes the x, y, and z values to 0
 
-## Author
+### bool start_ap_mode()
+Starts AP mode and server
+
+## Authors
 George Salomon, Cole Smith, Jonathon Brown, Mateo Slivka, Maxwell Evans
