@@ -82,17 +82,29 @@ Features</h1>
 <h1><a class="anchor" id="autotoc_md2"></a>
 Functions Overview</h1>
 <h2><a class="anchor" id="autotoc_md3"></a>
-&lt;strong&gt;MeshNode&lt;/strong&gt;</h2>
+MeshNode</h2>
 <h2><a class="anchor" id="autotoc_md4"></a>
-&lt;tt&gt;void MeshNode(void)&lt;/tt&gt;</h2>
+virtual ~MeshNode()</h2>
 <p>Default constructor for each Node and initializing a Node-ID</p>
 <h2><a class="anchor" id="autotoc_md5"></a>
-&lt;strong&gt;Access Point Mode&lt;/strong&gt;</h2>
+void set_NodeID(uint32_t ID)</h2>
+<p>Assigns ID to the NodeID</p>
 <h2><a class="anchor" id="autotoc_md6"></a>
-&lt;tt&gt;bool init_ap_mode()&lt;/tt&gt;</h2>
+uint32_t get_NodeID()</h2>
+<p>Returns the node id</p>
+<h2><a class="anchor" id="autotoc_md7"></a>
+void seed_rand()</h2>
+<p>Generates random seed for node</p>
+<h2><a class="anchor" id="autotoc_md8"></a>
+Access Point Mode</h2>
+<h2><a class="anchor" id="autotoc_md9"></a>
+bool init_ap_mode()</h2>
 <p>Constructor that initializes the x, y, and z values to 0</p>
-<h1><a class="anchor" id="autotoc_md7"></a>
-Author</h1>
+<h2><a class="anchor" id="autotoc_md10"></a>
+bool start_ap_mode()</h2>
+<p>Starts AP mode and server</p>
+<h1><a class="anchor" id="autotoc_md11"></a>
+Authors</h1>
 <p>George Salomon, Cole Smith, Jonathon Brown, Mateo Slivka, Maxwell Evans </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
