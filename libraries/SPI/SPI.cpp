@@ -55,7 +55,7 @@ int SPI::SPI_send_message(uint8_t *message, size_t length){
     uint8_t tempOutBuffer = 0;
     uint8_t tempInBuffer = 0;
 
-    printf("Sending Data: %s\n", message);
+    printf("Sending Data: %08x\n", message);
 
     if(is_master == true){
         for(int i = 0; i < length; i++){
