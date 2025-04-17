@@ -560,6 +560,11 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
             }
             case 0x03: {
                 TCP_UPDATE_MESSAGE* updMsg = static_cast<TCP_UPDATE_MESSAGE*>(msg);
+
+                puts("Update packet recieved");
+
+                //updMsg.
+
                 //does stuff
                 break;
             }

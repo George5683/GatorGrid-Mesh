@@ -705,7 +705,8 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
     }
 
     if (update_flag) {
-        puts("Broadcasting all connected nodes to each other");
+        puts("Update nodes called");
+        /*puts("Broadcasting all connected nodes to each other");
         uint32_t ids[4] = {0};
         int j = 0;
 
@@ -722,8 +723,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
             sleep_ms(20);
             send_tcp_data(i.first, i.second, updateMsg.get_msg(), updateMsg.get_len());
             printf("Sent update message to %08x\n", i.first);
-        }
-
+        }*/
     }
 
     if (ACK_flag){
