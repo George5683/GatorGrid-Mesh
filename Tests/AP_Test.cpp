@@ -15,7 +15,9 @@ int main() {
     sleep_ms(10000);
 
     //multicore_launch_core1(core1_entry);
-    APNode node;
+    APNode node(1);
+
+    //node.set_node_id(1);
 
     printf("Init AP Mode\n");
     if (!node.init_ap_mode())
