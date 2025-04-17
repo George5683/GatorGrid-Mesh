@@ -669,6 +669,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                     }*/
                 }
                 printf("Successfully inserted into ring buffer\n");
+                ACK_flag = true;
                 break;
             }
             case 0x02: {
@@ -692,6 +693,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
             }
             case 0x05: {
                 TCP_NAK_MESSAGE* nakMsg = static_cast<TCP_NAK_MESSAGE*>(msg);
+                ACK_flag = false;
                 //does stuff
                 break;
             }
@@ -713,12 +715,14 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
             j++;
         }
 
-        //TCP_UPDATE_MESSAGE TCP_UPDATE_MESSAGE()
+        TCP_UPDATE_MESSAGE updateMsg(get_NodeID());
+        updateMsg.add_children(j, ids);
 
-        //TCP_ACK_MESSAGE ackMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
-        //send_tcp_data(clients_map[tpcb].id, tpcb, ackMsg.get_msg(), ackMsg.get_len());
-
-
+        for(auto i : client_tpcbs) {
+            sleep_ms(20);
+            send_tcp_data(i.first, i.second, updateMsg.get_msg(), updateMsg.get_len());
+            printf("Sent update message to %08x\n", i.first);
+        }
 
     }
 
