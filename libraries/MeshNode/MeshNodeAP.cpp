@@ -607,6 +607,7 @@ bool APNode::send_tcp_data(uint32_t id, tcp_pcb *client_pcb, uint8_t* data, uint
 bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct pbuf *p) {
     bool ACK_flag = true;
     bool NAK_flag = false;
+    bool update_flag = false;
     // tcp_init_msg_t *init_msg_str = reinterpret_cast <tcp_init_msg_t *>(state->buffer_recv);
     // clients_map[tpcb].id = init_msg_str->source;
     // printf("ID RECV FROM INIT MESSAGE: %08X\n", clients_map[tpcb].id);
@@ -645,18 +646,8 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                 // Insert into map of IDs to TPCB
                 client_tpcbs.insert({clients_map[tpcb].id, tpcb});
 
-
-                uint32_t ids[4] = {0};
-                int j = 0;
-
-                // Because this is a new node, resend the list of connected nodes to everyone
-                for(auto i : client_tpcbs) {
-                    ids[j] = i.first;
-                    j++;
-                }
-
-                // TODO - Send clients connected msg
-
+                update_flag = true;
+                
                 break;
             }
             case 0x01: {
@@ -667,12 +658,13 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                 if (dataMsg->msg.dest == get_NodeID()) {
                     rb.insert(dataMsg->msg.msg,dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
                 } else {
-                    uint32_t dest;
-                    if(!tree.find_path_parent(dataMsg->msg.dest, &dest)) {
+                    //uint32_t dest;
+                    printf("Message was not for me, was for dest:%08x\n", dataMsg->msg.dest);
+                    /*if(!tree.find_path_parent(dataMsg->msg.dest, &dest)) {
                         ACK_flag = false;
                         NAK_flag = true;
                         break;
-                    }
+                    }*/
                 }
                 printf("Successfully inserted into ring buffer\n");
                 break;
@@ -708,6 +700,26 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
         }
     }
 
+    if (update_flag) {
+        puts("Broadcasting all connected nodes to each other");
+        uint32_t ids[4] = {0};
+        int j = 0;
+
+        // Because this is a new node, resend the list of connected nodes to everyone
+        for(auto i : client_tpcbs) {
+            ids[j] = i.first;
+            j++;
+        }
+
+        //TCP_UPDATE_MESSAGE TCP_UPDATE_MESSAGE()
+
+        //TCP_ACK_MESSAGE ackMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
+        //send_tcp_data(clients_map[tpcb].id, tpcb, ackMsg.get_msg(), ackMsg.get_len());
+
+
+
+    }
+
     if (ACK_flag){
         // Assumption: clients_map[tpcb].id implies that any message worth acking isn't being forwarded and is originating from the intended node
         TCP_ACK_MESSAGE ackMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
@@ -722,7 +734,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
         send_tcp_data(clients_map[tpcb].id, tpcb, nakMsg.get_msg(), nakMsg.get_len());
         //send_tcp_data(nakMsg.get_msg(), nakMsg.get_len());
         return false;
-    }
+    } 
 
     delete msg;
     return true;
