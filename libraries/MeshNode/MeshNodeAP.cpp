@@ -584,6 +584,8 @@ bool APNode::send_tcp_data(uint32_t id, tcp_pcb *client_pcb, uint8_t* data, uint
     //err_t err = tcp_write(state->client_pcb, (void*)buffer, size, TCP_WRITE_FLAG_COPY);
     //err_t err2 = tcp_output(state->client_pcb);
 
+    printf("send_tcp_data: Source ID %08x\n", id);
+
     err_t err = tcp_write(client_pcb, (void*)buffer, size, TCP_WRITE_FLAG_COPY);
     err_t err2 = tcp_output(client_pcb);
 
@@ -721,11 +723,12 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
     }
 
     if (ACK_flag){
+        printf("Sending ACK message to client %08x\n", clients_map[tpcb].id);
         // Assumption: clients_map[tpcb].id implies that any message worth acking isn't being forwarded and is originating from the intended node
         TCP_ACK_MESSAGE ackMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
         send_tcp_data(clients_map[tpcb].id, tpcb, ackMsg.get_msg(), ackMsg.get_len());
         //send_tcp_data(ackMsg.get_msg(), ackMsg.get_len());
-        printf("Sent ACK message to client %u", clients_map[tpcb].id);
+        printf("Sent ACK message to client %08x\n", clients_map[tpcb].id);
         
     } else if (NAK_flag) {
         // TODO: Update for error handling
@@ -736,6 +739,6 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
         return false;
     } 
 
-    delete msg;
+    //delete msg;
     return true;
 }
