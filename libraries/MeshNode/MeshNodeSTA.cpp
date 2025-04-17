@@ -465,8 +465,7 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size, bool forward) {
 
     // Not getting an ack message back for some reason
     //sleep_ms(5);
-    int count = 0;
-    while(state->waiting_for_ack) {sleep_ms(5); count++; if (count>=25) break; }
+    while(state->waiting_for_ack); //{sleep_ms(5);}
     err_t err = tcp_write(state->tcp_pcb, (void*)data, size, TCP_WRITE_FLAG_COPY);
     err_t err2 = tcp_output(state->tcp_pcb);
     if (err != ERR_OK) {
