@@ -1,5 +1,7 @@
 <map id="libraries/MeshNode/Messages.hpp" name="libraries/MeshNode/Messages.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="10,5,158,45"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,93,72,119"/>
-<area shape="rect" id="node3" title=" " alt="" coords="96,93,163,119"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="10,5,158,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,72,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,47,55,83,50,80,71,44"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="96,93,163,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="97,44,118,80,113,83,93,47"/>
 </map>

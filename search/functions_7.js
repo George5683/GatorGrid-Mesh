@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['handle_5fincoming_5fdata_0',['handle_incoming_data',['../classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1',1,'APNode::handle_incoming_data()'],['../classSTANode.html#a07f1bd97bed2342b18886377eab36ace',1,'STANode::handle_incoming_data()']]],
-  ['handleoperation_1',['handleOperation',['../classpicoNodeVector.html#a3d7bf0d6356962b22d9cb6f21a622f17',1,'picoNodeVector']]],
-  ['has_5fclient_5fdata_2',['has_client_data',['../classAPNode.html#af1c02af9da183625721288410c565f66',1,'APNode']]]
+  ['init_5fap_5fmode_0',['init_ap_mode',['../classAPNode.html#a18d893cc18ed0b777328f2206b5e2219',1,'APNode']]],
+  ['init_5fsta_5fmode_1',['init_sta_mode',['../classSTANode.html#afa7df9532e1f864c077148c3fc8295bc',1,'STANode']]],
+  ['insert_2',['insert',['../classRingBuffer.html#a26f24ba18ecad8fc3df4b848f35724c5',1,'RingBuffer']]],
+  ['is_5fconnected_3',['is_connected',['../classSTANode.html#aede68dcdc66ff3fbb7323d73acd3eb94',1,'STANode']]]
 ];

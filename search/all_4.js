@@ -1,7 +1,7 @@
 var searchData=
 [
   ['data_0',['data',['../structdata.html',1,'data'],['../structdata.html#a0648d84788090dbc63fb7fbd105b312c',1,'data::data()']]],
-  ['debug_5fprintf_1',['DEBUG_printf',['../MeshNodeSTA_8cpp.html#a8b87c1c0e005df58ffe11a9384065502',1,'DEBUG_printf():&#160;MeshNodeSTA.cpp'],['../MeshNodeAP_8cpp.html#a8b87c1c0e005df58ffe11a9384065502',1,'DEBUG_printf():&#160;MeshNodeAP.cpp'],['../dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3',1,'DEBUG_printf():&#160;dnsserver.c']]],
+  ['debug_5fprintf_1',['debug_printf',['../MeshNodeSTA_8cpp.html#a8b87c1c0e005df58ffe11a9384065502',1,'DEBUG_printf:&#160;MeshNodeSTA.cpp'],['../MeshNodeAP_8cpp.html#a8b87c1c0e005df58ffe11a9384065502',1,'DEBUG_printf:&#160;MeshNodeAP.cpp'],['../dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3',1,'DEBUG_printf:&#160;dnsserver.c']]],
   ['default_5flease_5ftime_5fs_2',['DEFAULT_LEASE_TIME_S',['../dhcpserver_8c.html#a60469053d22ff7787a431363392f1417',1,'dhcpserver.c']]],
   ['dest_3',['dest',['../structdata.html#ad776c7765e4e637eb6e1a68c17eb10f0',1,'data']]],
   ['dhcp_5fmin_5fsize_4',['DHCP_MIN_SIZE',['../dhcpserver_8c.html#a1a8978b035276e2d6601bd55cdf35d53',1,'dhcpserver.c']]],
@@ -58,7 +58,6 @@ var searchData=
   ['dns_5fsocket_5fsendto_55',['dns_socket_sendto',['../dnsserver_8c.html#a1b81dd89d9eeec549b88b2ca6594d15d',1,'dnsserver.c']]],
   ['dnsserver_2ec_56',['dnsserver.c',['../dnsserver_8c.html',1,'']]],
   ['dnsserver_2eh_57',['dnsserver.h',['../dnsserver_8h.html',1,'']]],
-  ['dump_5fbytes_58',['dump_bytes',['../MeshNodeAP_8cpp.html#ae70b51ff799fc5dec2d46dfda9e08a12',1,'dump_bytes(const uint8_t *bptr, uint32_t len):&#160;MeshNodeAP.cpp'],['../MeshNodeSTA_8cpp.html#ae70b51ff799fc5dec2d46dfda9e08a12',1,'dump_bytes(const uint8_t *bptr, uint32_t len):&#160;MeshNodeSTA.cpp']]],
-  ['dump_5fbytes_59',['DUMP_BYTES',['../MeshNodeAP_8cpp.html#a08bc1ee60cebdc4189bc44ede1245a24',1,'DUMP_BYTES():&#160;MeshNodeAP.cpp'],['../MeshNodeSTA_8cpp.html#a08bc1ee60cebdc4189bc44ede1245a24',1,'DUMP_BYTES():&#160;MeshNodeSTA.cpp']]],
-  ['dump_5fdata_60',['DUMP_DATA',['../dnsserver_8c.html#a5f4a9ee8152a0634fa531070c07cc179',1,'dnsserver.c']]]
+  ['dump_5fbytes_58',['dump_bytes',['../MeshNodeAP_8cpp.html#a08bc1ee60cebdc4189bc44ede1245a24',1,'DUMP_BYTES:&#160;MeshNodeAP.cpp'],['../MeshNodeSTA_8cpp.html#a08bc1ee60cebdc4189bc44ede1245a24',1,'DUMP_BYTES:&#160;MeshNodeSTA.cpp'],['../MeshNodeAP_8cpp.html#ae70b51ff799fc5dec2d46dfda9e08a12',1,'dump_bytes(const uint8_t *bptr, uint32_t len):&#160;MeshNodeAP.cpp'],['../MeshNodeSTA_8cpp.html#ae70b51ff799fc5dec2d46dfda9e08a12',1,'dump_bytes(const uint8_t *bptr, uint32_t len):&#160;MeshNodeSTA.cpp']]],
+  ['dump_5fdata_59',['DUMP_DATA',['../dnsserver_8c.html#a5f4a9ee8152a0634fa531070c07cc179',1,'dnsserver.c']]]
 ];

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['debug_5fprintf_0',['DEBUG_printf',['../MeshNodeAP_8cpp.html#a8b87c1c0e005df58ffe11a9384065502',1,'DEBUG_printf():&#160;MeshNodeAP.cpp'],['../dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3',1,'DEBUG_printf():&#160;dnsserver.c'],['../MeshNodeSTA_8cpp.html#a8b87c1c0e005df58ffe11a9384065502',1,'DEBUG_printf():&#160;MeshNodeSTA.cpp']]],
+  ['debug_5fprintf_0',['debug_printf',['../MeshNodeAP_8cpp.html#a8b87c1c0e005df58ffe11a9384065502',1,'DEBUG_printf:&#160;MeshNodeAP.cpp'],['../dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3',1,'DEBUG_printf:&#160;dnsserver.c'],['../MeshNodeSTA_8cpp.html#a8b87c1c0e005df58ffe11a9384065502',1,'DEBUG_printf:&#160;MeshNodeSTA.cpp']]],
   ['default_5flease_5ftime_5fs_1',['DEFAULT_LEASE_TIME_S',['../dhcpserver_8c.html#a60469053d22ff7787a431363392f1417',1,'dhcpserver.c']]],
   ['dhcp_5fmin_5fsize_2',['DHCP_MIN_SIZE',['../dhcpserver_8c.html#a1a8978b035276e2d6601bd55cdf35d53',1,'dhcpserver.c']]],
   ['dhcp_5fopt_5fclient_5fid_3',['DHCP_OPT_CLIENT_ID',['../dhcpserver_8c.html#a9a5b256f8e6b3434de961bb23c9e8315',1,'dhcpserver.c']]],
@@ -27,6 +27,6 @@ var searchData=
   ['dhcprequest_24',['DHCPREQUEST',['../dhcpserver_8c.html#a0cd47b14d8040e76932488eadbc0091e',1,'dhcpserver.c']]],
   ['dhcps_5fbase_5fip_25',['DHCPS_BASE_IP',['../dhcpserver_8h.html#a5edfa1c872a49ac1f41081f3a500fd8e',1,'dhcpserver.h']]],
   ['dhcps_5fmax_5fip_26',['DHCPS_MAX_IP',['../dhcpserver_8h.html#a2f201a39731dd0f19b16f45a406f9849',1,'dhcpserver.h']]],
-  ['dump_5fbytes_27',['DUMP_BYTES',['../MeshNodeAP_8cpp.html#a08bc1ee60cebdc4189bc44ede1245a24',1,'DUMP_BYTES():&#160;MeshNodeAP.cpp'],['../MeshNodeSTA_8cpp.html#a08bc1ee60cebdc4189bc44ede1245a24',1,'DUMP_BYTES():&#160;MeshNodeSTA.cpp']]],
+  ['dump_5fbytes_27',['dump_bytes',['../MeshNodeAP_8cpp.html#a08bc1ee60cebdc4189bc44ede1245a24',1,'DUMP_BYTES:&#160;MeshNodeAP.cpp'],['../MeshNodeSTA_8cpp.html#a08bc1ee60cebdc4189bc44ede1245a24',1,'DUMP_BYTES:&#160;MeshNodeSTA.cpp']]],
   ['dump_5fdata_28',['DUMP_DATA',['../dnsserver_8c.html#a5f4a9ee8152a0634fa531070c07cc179',1,'dnsserver.c']]]
 ];

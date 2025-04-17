@@ -1,9 +1,15 @@
 <map id="TCP_MESSAGE" name="TCP_MESSAGE">
-<area shape="rect" id="node1" title=" " alt="" coords="487,5,684,347"/>
-<area shape="rect" id="node2" href="$classTCP__ACK__MESSAGE.html" title=" " alt="" coords="5,409,181,531"/>
-<area shape="rect" id="node3" href="$classTCP__DATA__MSG.html" title=" " alt="" coords="205,402,355,538"/>
-<area shape="rect" id="node4" href="$classTCP__DISCONNECT__MSG.html" title=" " alt="" coords="379,395,581,545"/>
-<area shape="rect" id="node5" href="$classTCP__INIT__MESSAGE.html" title=" " alt="" coords="605,409,779,531"/>
-<area shape="rect" id="node6" href="$classTCP__NAK__MESSAGE.html" title=" " alt="" coords="803,409,981,531"/>
-<area shape="rect" id="node7" href="$classTCP__UPDATE__MESSAGE.html" title=" " alt="" coords="1005,402,1206,538"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="467,5,656,391"/>
+<area shape="rect" id="Node000002" href="$classTCP__ACK__MESSAGE.html" title=" " alt="" coords="5,459,173,584"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="456,264,326,345,187,441,161,461,158,456,184,437,323,341,454,259"/>
+<area shape="rect" id="Node000003" href="$classTCP__DATA__MSG.html" title=" " alt="" coords="197,449,339,594"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="459,315,335,450,331,447,455,311"/>
+<area shape="rect" id="Node000004" href="$classTCP__DISCONNECT__MSG.html" title=" " alt="" coords="363,439,557,604"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="499,404,488,439,483,438,494,403"/>
+<area shape="rect" id="Node000005" href="$classTCP__INIT__MESSAGE.html" title=" " alt="" coords="581,459,747,584"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="629,403,647,458,642,459,624,405"/>
+<area shape="rect" id="Node000006" href="$classTCP__NAK__MESSAGE.html" title=" " alt="" coords="771,459,941,584"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="668,311,802,457,798,460,664,315"/>
+<area shape="rect" id="Node000007" href="$classTCP__UPDATE__MESSAGE.html" title=" " alt="" coords="965,449,1158,594"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="669,258,806,341,955,436,969,446,966,451,952,441,804,345,666,263"/>
 </map>
