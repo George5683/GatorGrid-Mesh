@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['clientconnection_0',['ClientConnection',['../structClientConnection.html',1,'']]]
+  ['childrentree_0',['ChildrenTree',['../classChildrenTree.html',1,'']]],
+  ['clientconnection_1',['ClientConnection',['../structClientConnection.html',1,'']]]
 ];
