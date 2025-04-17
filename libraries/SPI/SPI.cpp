@@ -16,7 +16,7 @@ SPI::SPI(){};
 // Initiate for the master
 bool SPI::SPI_init(bool mode){
     /**
-    * spi_init contents
+    * Initialize the SPI module by passing in whether the node is a slave (false) or master (true)
     */
     is_master = mode;
     if(mode == true){
@@ -49,6 +49,9 @@ bool SPI::SPI_init(bool mode){
 };
 
 int SPI::SPI_send_message(uint8_t *message, size_t length){
+    /**
+    * Function to send a message by passing in the message as a byte pointer and its size
+    */
     uint8_t tempOutBuffer = 0;
     uint8_t tempInBuffer = 0;
 
@@ -75,6 +78,9 @@ int SPI::SPI_send_message(uint8_t *message, size_t length){
 };
 
 int SPI::SPI_read_message(uint8_t *buffer, size_t buffer_size){
+    /**
+    * Function to read a message that was sent from SPI by passing in a byte pointer and its size to store result. 
+    */
     uint8_t tempOutBuffer = 0;
     uint8_t tempInBuffer = 0;
 
@@ -113,6 +119,9 @@ int SPI::SPI_read_message(uint8_t *buffer, size_t buffer_size){
 };
 
 bool SPI::SPI_is_read_available(){
+/**
+* Function to check if the bus is idle for reading a message, for master checks if the CS pin is High and the spi is not busy. For slave chekcs if the CS pin is Low and the spi is not busy.
+*/
     // If the master, check if CS can be asserted (indicating bus is free)
     if(is_master){
         return gpio_get(PIN_CS) == 1; // CS high means bus is available
@@ -125,7 +134,7 @@ bool SPI::SPI_is_read_available(){
 }
 
 bool SPI::SPI_is_write_available(){
-    // For master, check if the SPI bus is idle and ready for transmission
+    // Function to check if the bus is free for writing a message, for master checks if the CS pin is High to indicate it is available. For slave chekcs if the CS pin is Low to indicate it is available.
     if(is_master){
         // Check if not busy and CS is high (not currently communicating)
         return !spi_is_busy(SPI_PORT) && gpio_get(PIN_CS) == 1;
