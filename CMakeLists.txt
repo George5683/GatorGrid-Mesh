@@ -109,81 +109,9 @@ pico_enable_stdio_usb(ap_background 1)
 
 pico_add_extra_outputs(ap_background)
 
-# Cmake for SPI MASTER
-add_executable(SPI_MASTER
-        Tests/SPI_MASTER_TEST.cpp
-        libraries/dhcpserver/dhcpserver.c
-        libraries/dnsserver/dnsserver.c
-        libraries/MeshNode/MeshNodeAP.cpp
-        libraries/MeshNode/MeshNodeSTA.cpp
-        libraries/SPI/SPI.cpp
-        libraries/RingBuffer/RingBuffer.cpp
-        libraries/ChildrenTree/ChildrenTree.cpp
-        )
 
-target_include_directories(SPI_MASTER PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}
-        ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/dhcpserver
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/dnsserver
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/RingBuffer
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
-        )
-
-target_link_libraries(SPI_MASTER
-        pico_cyw43_arch_lwip_threadsafe_background
-        pico_stdlib
-        pico_multicore
-        hardware_spi
-        )
-
-pico_enable_stdio_uart(SPI_MASTER 0)
-pico_enable_stdio_usb(SPI_MASTER 1)
-        
-
-pico_add_extra_outputs(SPI_MASTER)
-
-# Cmake for SPI SLAVE
-add_executable(SPI_SLAVE
-        Tests/SPI_SLAVE_TEST.cpp
-        libraries/dhcpserver/dhcpserver.c
-        libraries/dnsserver/dnsserver.c
-        libraries/MeshNode/MeshNodeAP.cpp
-        libraries/MeshNode/MeshNodeSTA.cpp
-        libraries/SPI/SPI.cpp
-        libraries/RingBuffer/RingBuffer.cpp
-        libraries/ChildrenTree/ChildrenTree.cpp
-        )
-
-target_include_directories(SPI_SLAVE PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}
-        ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/dhcpserver
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/dnsserver
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
-        )
-
-target_link_libraries(SPI_SLAVE
-        pico_cyw43_arch_lwip_threadsafe_background
-        pico_stdlib
-        pico_multicore
-        hardware_spi
-        )
-
-pico_enable_stdio_uart(SPI_SLAVE 0)
-pico_enable_stdio_usb(SPI_SLAVE 1)
-        
-
-pico_add_extra_outputs(SPI_SLAVE)
-
-# Cmake for AccessPoint Example
-
-add_executable(picow_access_point_background
-        src/main.cpp
+add_executable(sta_root
+        Tests/root_sta.cpp
         libraries/dhcpserver/dhcpserver.c
         libraries/dnsserver/dnsserver.c
         libraries/MeshNode/MeshNodeAP.cpp
@@ -191,11 +119,10 @@ add_executable(picow_access_point_background
         libraries/MeshNode/Messages.cpp
         libraries/SPI/SPI.cpp
         libraries/RingBuffer/RingBuffer.cpp
-        libraries/SPI/SPI.cpp
         libraries/ChildrenTree/ChildrenTree.cpp
         )
 
-target_include_directories(picow_access_point_background PRIVATE
+target_include_directories(sta_root PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
         ${CMAKE_CURRENT_LIST_DIR}/libraries/dhcpserver
@@ -206,21 +133,21 @@ target_include_directories(picow_access_point_background PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
         )
 
-target_link_libraries(picow_access_point_background
+target_link_libraries(sta_root
         pico_cyw43_arch_lwip_threadsafe_background
         pico_stdlib
         pico_multicore
         hardware_spi
         )
 
-# You can change the address below to change the address of the access point
-pico_configure_ip4_address(picow_access_point_background PRIVATE
-        CYW43_DEFAULT_IP_AP_ADDRESS 192.168.4.1
-        )
-pico_add_extra_outputs(picow_access_point_background)
+pico_enable_stdio_uart(sta_root 0)
+pico_enable_stdio_usb(sta_root 1)
+        
 
-add_executable(picow_access_point_poll
-        src/main.cpp
+pico_add_extra_outputs(sta_root)
+
+add_executable(ap_root
+        Tests/ap_root.cpp
         libraries/dhcpserver/dhcpserver.c
         libraries/dnsserver/dnsserver.c
         libraries/MeshNode/MeshNodeAP.cpp
@@ -228,19 +155,10 @@ add_executable(picow_access_point_poll
         libraries/MeshNode/Messages.cpp
         libraries/SPI/SPI.cpp
         libraries/RingBuffer/RingBuffer.cpp
-        libraries/SPI/SPI.cpp
         libraries/ChildrenTree/ChildrenTree.cpp
         )
 
-# Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(picow_access_point_poll 1)
-pico_enable_stdio_usb(picow_access_point_poll 0)
-
-# Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(picow_access_point_background 0)
-pico_enable_stdio_usb(picow_access_point_background 1)
-
-target_include_directories(picow_access_point_poll PRIVATE
+target_include_directories(ap_root PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
         ${CMAKE_CURRENT_LIST_DIR}/libraries/dhcpserver
@@ -250,14 +168,16 @@ target_include_directories(picow_access_point_poll PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/libraries/RingBuffer
         ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
         )
-target_link_libraries(picow_access_point_poll
+
+target_link_libraries(ap_root
         pico_cyw43_arch_lwip_threadsafe_background
         pico_stdlib
         pico_multicore
         hardware_spi
         )
-# You can change the address below to change the address of the access point
-pico_configure_ip4_address(picow_access_point_poll PRIVATE
-        CYW43_DEFAULT_IP_AP_ADDRESS 192.168.4.1
-        )
-pico_add_extra_outputs(picow_access_point_poll)
+
+pico_enable_stdio_uart(ap_root 0)
+pico_enable_stdio_usb(ap_root 1)
+        
+
+pico_add_extra_outputs(ap_root)
