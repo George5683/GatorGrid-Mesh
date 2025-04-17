@@ -11,6 +11,20 @@
 #include "../SPI/SPI.hpp"
 #include "../RingBuffer/RingBuffer.hpp"
 
+extern "C" {
+    #include "pico/cyw43_arch.h"
+    #include "pico/stdlib.h"
+    
+    #include "lwip/pbuf.h"
+    #include "lwip/tcp.h"
+    
+    #include "dhcpserver.h"
+    #include "dnsserver.h"
+
+    #include "hardware/vreg.h"
+    #include "hardware/clocks.h"
+}
+
 // Forward declarations
 struct TCP_SERVER_T_;
 typedef struct TCP_SERVER_T_ TCP_SERVER_T;
@@ -82,7 +96,7 @@ public:
 
     int number_of_messages();
 
-    bool send_tcp_data(uint8_t* data, uint32_t size);
+    bool send_tcp_data(uint32_t id, tcp_pcb *client_pcb, uint8_t* data, uint32_t size);
 
     struct data digest_data();
 
