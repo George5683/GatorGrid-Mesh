@@ -13,6 +13,20 @@
 #include "Messages.hpp"
 #include "../ChildrenTree/ChildrenTree.hpp"
 
+extern "C" {
+    #include "pico/cyw43_arch.h"
+    #include "pico/stdlib.h"
+    
+    #include "lwip/pbuf.h"
+    #include "lwip/tcp.h"
+    
+    #include "dhcpserver.h"
+    #include "dnsserver.h"
+
+    #include "hardware/vreg.h"
+    #include "hardware/clocks.h"
+}
+
 // Forward declarations
 struct TCP_SERVER_T_;
 typedef struct TCP_SERVER_T_ TCP_SERVER_T;
@@ -41,6 +55,7 @@ public:
     const char* password = "password";
     
     RingBuffer rb;
+    ChildrenTree tree;
 
     SPI Master_Pico;
 
@@ -89,7 +104,7 @@ public:
 
     struct data digest_data();
 
-    bool handle_incoming_data(unsigned char* buffer);
+    bool handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct pbuf *p);
 
 };
 
@@ -119,7 +134,7 @@ public:
 
 
     static int scan_result(void* env, const cyw43_ev_scan_result_t* result);
-    bool handle_incoming_data(unsigned char* buffer);
+    bool handle_incoming_data(unsigned char* buffer, struct pbuf *p);
 };
 
 #endif // MESH_NODE_HPP

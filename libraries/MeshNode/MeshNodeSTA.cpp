@@ -177,7 +177,7 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         // Acknowledge receipt of the data
         tcp_recved(tpcb, p->tot_len);
                
-        node->handle_incoming_data(state->buffer);
+        node->handle_incoming_data(state->buffer, p);
     
     }
 
@@ -518,7 +518,7 @@ bool STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward)
     return true;
 }
 
-bool STANode::handle_incoming_data(unsigned char* buffer) {
+bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
     uint32_t source_id = 0;
     bool ACK_flag = true;
     bool NAK_flag = false;
@@ -587,13 +587,13 @@ bool STANode::handle_incoming_data(unsigned char* buffer) {
     }
 
     if (ACK_flag && !self_reply){
-        TCP_ACK_MESSAGE ackMsg(get_NodeID(), source_id, ackMsg.msg.len);
+        TCP_ACK_MESSAGE ackMsg(get_NodeID(), source_id, p->tot_len);
         send_tcp_data(ackMsg.get_msg(), ackMsg.get_len(), false);
         state->waiting_for_ack = true;
     } else if (NAK_flag) {
         // TODO: Update for error handling
         // identify the source from sender and send back?
-        TCP_NAK_MESSAGE nakMsg(get_NodeID(), 0, 0);
+        TCP_NAK_MESSAGE nakMsg(get_NodeID(), 0, p->tot_len);
         send_tcp_data(nakMsg.get_msg(), nakMsg.get_len(), false);
         delete msg;
         return false;

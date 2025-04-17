@@ -20,7 +20,13 @@ void ChildrenTree::remove_children(Node* node) {
     node->number_of_children = 0;
 }
 
-bool ChildrenTree::add_child(uint32_t parent_id, uint32_t child_id) {
+bool ChildrenTree::add_child(uint32_t child_id) {
+    Node* child = new Node(child_id);
+    head->children[head->number_of_children++] = child;
+    return true;
+}
+
+bool ChildrenTree::add_any_child(uint32_t parent_id, uint32_t child_id) {
     bool success = false;
     if (parent_id == id) {
         Node* child = new Node(child_id);

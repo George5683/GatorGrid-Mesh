@@ -22,8 +22,10 @@ public:
         head = new Node(id);
     } 
     ~ChildrenTree();
-    bool add_child(uint32_t parent_id, uint32_t child_id);
+    bool add_child(uint32_t child_id);
+    bool add_any_child(uint32_t parent_id, uint32_t child_id);
     void remove_children(Node* node);
+    bool remove_child(uint32_t id);
 
     Node* find_node(uint32_t id, Node* head);
     bool node_exists(uint32_t id);
