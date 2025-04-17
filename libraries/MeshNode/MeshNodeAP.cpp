@@ -675,6 +675,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                         error = 0x02; // TODO make enum for errors (id not in connected clients)
                         break;
                     }
+                    ACK_flag = false;
                     send_tcp_data(dest, client_tpcbs.at(dest), dataMsg->get_msg(), dataMsg->get_len());
                 }
                 printf("Successfully inserted into ring buffer\n");
@@ -695,7 +696,11 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                 TCP_ACK_MESSAGE* ackMsg = static_cast<TCP_ACK_MESSAGE*>(msg);
                 //does stuff
                 // Do not need to respond to acks
-                ACK_flag = false;
+                if (ackMsg->msg.dest == get_NodeID()) {
+                    //rb.insert(dataMsg->msg.msg,dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
+                    ACK_flag = false;
+                }
+                
 
 
                 break;

@@ -40,6 +40,15 @@ int main() {
 
     sleep_ms(1000);
 
+    for (int i = 0; i < 10; i++)
+    {
+        TCP_DATA_MSG msg(node.get_NodeID(), 2);
+        uint8_t arr[] = "hello, this is message:  ";
+        arr[24] = 48 + i;
+        msg.add_message(25, arr);
+        while (node.send_tcp_data_blocking(msg.get_msg(), msg.get_len(), false));
+    }
+
 
     bool toggle = true;
     for (;;) {
