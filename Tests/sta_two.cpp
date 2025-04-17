@@ -34,11 +34,11 @@ int main() {
         }
     }
     printf("Left searching for nodes\n");
-    if (node.connect_to_node(0)) {
+    if (node.connect_to_node(1)) {
         node.tcp_init();
     }
 
-    sleep_ms(1000);
+   sleep_ms(1000);
 
 
     bool toggle = true;
