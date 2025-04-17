@@ -192,7 +192,7 @@ public:
     uint16_t get_len() override {
         return msg.len;
     }
-    uint8_t get_child_count() override {
+    uint8_t get_child_count() {
         return msg.child_count;
     }
     void set_msg(void* msg) override {
