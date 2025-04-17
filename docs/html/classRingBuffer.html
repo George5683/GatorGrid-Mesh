@@ -134,16 +134,16 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">    9</span>                               {</div>
-<div class="line"><span class="lineno">   10</span>    this-&gt;<a class="code hl_variable" href="classRingBuffer.html#aa3a5a1a10d186c9ed5f129f30ce0d95d">size</a> = <a class="code hl_variable" href="classRingBuffer.html#aa3a5a1a10d186c9ed5f129f30ce0d95d">size</a>;</div>
-<div class="line"><span class="lineno">   11</span>    this-&gt;<a class="code hl_variable" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a> = 0;</div>
-<div class="line"><span class="lineno">   12</span>    <span class="keyword">struct </span><a class="code hl_struct" href="structdata.html">data</a> tmp = {0};</div>
-<div class="line"><span class="lineno">   13</span>    this-&gt;<a class="code hl_variable" href="classRingBuffer.html#a5615e24d141b5b58c335b31b355e2483">number_of_messages</a> = 0;</div>
-<div class="line"><span class="lineno">   14</span> </div>
-<div class="line"><span class="lineno">   15</span>    <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; 5; i++) {</div>
-<div class="line"><span class="lineno">   16</span>        <a class="code hl_variable" href="classRingBuffer.html#ad9c51381e81aa6cac3a08e530ff6ec03">buf</a>.push_back(tmp);</div>
-<div class="line"><span class="lineno">   17</span>    }</div>
-<div class="line"><span class="lineno">   18</span>};</div>
+<div class="fragment"><div class="line"><span class="lineno">    5</span>                               {</div>
+<div class="line"><span class="lineno">    6</span>    this-&gt;<a class="code hl_variable" href="classRingBuffer.html#aa3a5a1a10d186c9ed5f129f30ce0d95d">size</a> = <a class="code hl_variable" href="classRingBuffer.html#aa3a5a1a10d186c9ed5f129f30ce0d95d">size</a>;</div>
+<div class="line"><span class="lineno">    7</span>    this-&gt;<a class="code hl_variable" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a> = 0;</div>
+<div class="line"><span class="lineno">    8</span>    <span class="keyword">struct </span><a class="code hl_struct" href="structdata.html">data</a> tmp = {0};</div>
+<div class="line"><span class="lineno">    9</span>    this-&gt;<a class="code hl_variable" href="classRingBuffer.html#a5615e24d141b5b58c335b31b355e2483">number_of_messages</a> = 0;</div>
+<div class="line"><span class="lineno">   10</span> </div>
+<div class="line"><span class="lineno">   11</span>    <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; 5; i++) {</div>
+<div class="line"><span class="lineno">   12</span>        <a class="code hl_variable" href="classRingBuffer.html#ad9c51381e81aa6cac3a08e530ff6ec03">buf</a>.push_back(tmp);</div>
+<div class="line"><span class="lineno">   13</span>    }</div>
+<div class="line"><span class="lineno">   14</span>};</div>
 <div class="ttc" id="aclassRingBuffer_html_a5615e24d141b5b58c335b31b355e2483"><div class="ttname"><a href="classRingBuffer.html#a5615e24d141b5b58c335b31b355e2483">RingBuffer::number_of_messages</a></div><div class="ttdeci">int number_of_messages</div><div class="ttdef"><b>Definition</b> RingBuffer.hpp:23</div></div>
 <div class="ttc" id="aclassRingBuffer_html_aa3a5a1a10d186c9ed5f129f30ce0d95d"><div class="ttname"><a href="classRingBuffer.html#aa3a5a1a10d186c9ed5f129f30ce0d95d">RingBuffer::size</a></div><div class="ttdeci">int size</div><div class="ttdef"><b>Definition</b> RingBuffer.hpp:22</div></div>
 <div class="ttc" id="aclassRingBuffer_html_ad9c51381e81aa6cac3a08e530ff6ec03"><div class="ttname"><a href="classRingBuffer.html#ad9c51381e81aa6cac3a08e530ff6ec03">RingBuffer::buf</a></div><div class="ttdeci">vector&lt; struct data &gt; buf</div><div class="ttdef"><b>Definition</b> RingBuffer.hpp:20</div></div>
@@ -169,22 +169,22 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">   37</span>                               {</div>
-<div class="line"><span class="lineno">   38</span>    <span class="keyword">struct </span><a class="code hl_struct" href="structdata.html">data</a> ret = {0};</div>
-<div class="line"><span class="lineno">   39</span> </div>
-<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">if</span>(<a class="code hl_variable" href="classRingBuffer.html#a5615e24d141b5b58c335b31b355e2483">number_of_messages</a> == 0) {</div>
-<div class="line"><span class="lineno">   41</span>        <span class="keywordflow">return</span> ret;</div>
-<div class="line"><span class="lineno">   42</span>    }</div>
-<div class="line"><span class="lineno">   43</span>    </div>
-<div class="line"><span class="lineno">   44</span>    <a class="code hl_variable" href="classRingBuffer.html#a5615e24d141b5b58c335b31b355e2483">number_of_messages</a>--;</div>
-<div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">if</span>(this-&gt;<a class="code hl_variable" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a> != 0)</div>
-<div class="line"><span class="lineno">   47</span>        this-&gt;<a class="code hl_variable" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a>--;</div>
-<div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span>    ret = this-&gt;<a class="code hl_variable" href="classRingBuffer.html#ad9c51381e81aa6cac3a08e530ff6ec03">buf</a>[this-&gt;<a class="code hl_variable" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a>];</div>
-<div class="line"><span class="lineno">   50</span> </div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">return</span> ret;</div>
-<div class="line"><span class="lineno">   52</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">   33</span>                               {</div>
+<div class="line"><span class="lineno">   34</span>    <span class="keyword">struct </span><a class="code hl_struct" href="structdata.html">data</a> ret = {0};</div>
+<div class="line"><span class="lineno">   35</span> </div>
+<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">if</span>(<a class="code hl_variable" href="classRingBuffer.html#a5615e24d141b5b58c335b31b355e2483">number_of_messages</a> == 0) {</div>
+<div class="line"><span class="lineno">   37</span>        <span class="keywordflow">return</span> ret;</div>
+<div class="line"><span class="lineno">   38</span>    }</div>
+<div class="line"><span class="lineno">   39</span>    </div>
+<div class="line"><span class="lineno">   40</span>    <a class="code hl_variable" href="classRingBuffer.html#a5615e24d141b5b58c335b31b355e2483">number_of_messages</a>--;</div>
+<div class="line"><span class="lineno">   41</span> </div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">if</span>(this-&gt;<a class="code hl_variable" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a> != 0)</div>
+<div class="line"><span class="lineno">   43</span>        this-&gt;<a class="code hl_variable" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a>--;</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   45</span>    ret = this-&gt;<a class="code hl_variable" href="classRingBuffer.html#ad9c51381e81aa6cac3a08e530ff6ec03">buf</a>[this-&gt;<a class="code hl_variable" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a>];</div>
+<div class="line"><span class="lineno">   46</span> </div>
+<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">return</span> ret;</div>
+<div class="line"><span class="lineno">   48</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -202,9 +202,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">   54</span>                        {</div>
-<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classRingBuffer.html#a5615e24d141b5b58c335b31b355e2483">number_of_messages</a>;</div>
-<div class="line"><span class="lineno">   56</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>                        {</div>
+<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classRingBuffer.html#a5615e24d141b5b58c335b31b355e2483">number_of_messages</a>;</div>
+<div class="line"><span class="lineno">   52</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classRingBuffer.html#a5615e24d141b5b58c335b31b355e2483">number_of_messages</a>.</p>
 
@@ -249,22 +249,22 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">   20</span>                                                                                  {</div>
-<div class="line"><span class="lineno">   21</span>    <span class="comment">//printf(&quot;Inserting data with length: %u, from node %u to node %u\n&quot;, len, source, dest);</span></div>
-<div class="line"><span class="lineno">   22</span>    <a class="code hl_variable" href="classRingBuffer.html#a5615e24d141b5b58c335b31b355e2483">number_of_messages</a>++;</div>
+<div class="fragment"><div class="line"><span class="lineno">   16</span>                                                                                  {</div>
+<div class="line"><span class="lineno">   17</span>    <span class="comment">//printf(&quot;Inserting data with length: %u, from node %u to node %u\n&quot;, len, source, dest);</span></div>
+<div class="line"><span class="lineno">   18</span>    <a class="code hl_variable" href="classRingBuffer.html#a5615e24d141b5b58c335b31b355e2483">number_of_messages</a>++;</div>
+<div class="line"><span class="lineno">   19</span> </div>
+<div class="line"><span class="lineno">   20</span>    <span class="comment">// Comment this out not sure if this is an issue</span></div>
+<div class="line"><span class="lineno">   21</span>    <span class="comment">//if(buf[index].data != nullptr)</span></div>
+<div class="line"><span class="lineno">   22</span>        <span class="comment">//free(buf[index].data);</span></div>
 <div class="line"><span class="lineno">   23</span> </div>
-<div class="line"><span class="lineno">   24</span>    <span class="comment">// Comment this out not sure if this is an issue</span></div>
-<div class="line"><span class="lineno">   25</span>    <span class="comment">//if(buf[index].data != nullptr)</span></div>
-<div class="line"><span class="lineno">   26</span>        <span class="comment">//free(buf[index].data);</span></div>
-<div class="line"><span class="lineno">   27</span> </div>
-<div class="line"><span class="lineno">   28</span>    <a class="code hl_variable" href="classRingBuffer.html#ad9c51381e81aa6cac3a08e530ff6ec03">buf</a>[<a class="code hl_variable" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a>].data = <a class="code hl_struct" href="structdata.html">data</a>;</div>
-<div class="line"><span class="lineno">   29</span>    <a class="code hl_variable" href="classRingBuffer.html#ad9c51381e81aa6cac3a08e530ff6ec03">buf</a>[<a class="code hl_variable" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a>].<a class="code hl_variable" href="structdata.html#af2778e4f080302b7808f3e432474923b">size</a> = len;</div>
-<div class="line"><span class="lineno">   30</span>    <a class="code hl_variable" href="classRingBuffer.html#ad9c51381e81aa6cac3a08e530ff6ec03">buf</a>[<a class="code hl_variable" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a>].source = source;</div>
-<div class="line"><span class="lineno">   31</span>    <a class="code hl_variable" href="classRingBuffer.html#ad9c51381e81aa6cac3a08e530ff6ec03">buf</a>[<a class="code hl_variable" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a>].dest = dest;</div>
-<div class="line"><span class="lineno">   32</span> </div>
-<div class="line"><span class="lineno">   33</span> </div>
-<div class="line"><span class="lineno">   34</span>    <a class="code hl_variable" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a> = (<a class="code hl_variable" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a> + 1) % <a class="code hl_variable" href="classRingBuffer.html#aa3a5a1a10d186c9ed5f129f30ce0d95d">size</a>;</div>
-<div class="line"><span class="lineno">   35</span>}</div>
+<div class="line"><span class="lineno">   24</span>    <a class="code hl_variable" href="classRingBuffer.html#ad9c51381e81aa6cac3a08e530ff6ec03">buf</a>[<a class="code hl_variable" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a>].data = <a class="code hl_struct" href="structdata.html">data</a>;</div>
+<div class="line"><span class="lineno">   25</span>    <a class="code hl_variable" href="classRingBuffer.html#ad9c51381e81aa6cac3a08e530ff6ec03">buf</a>[<a class="code hl_variable" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a>].<a class="code hl_variable" href="structdata.html#af2778e4f080302b7808f3e432474923b">size</a> = len;</div>
+<div class="line"><span class="lineno">   26</span>    <a class="code hl_variable" href="classRingBuffer.html#ad9c51381e81aa6cac3a08e530ff6ec03">buf</a>[<a class="code hl_variable" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a>].source = source;</div>
+<div class="line"><span class="lineno">   27</span>    <a class="code hl_variable" href="classRingBuffer.html#ad9c51381e81aa6cac3a08e530ff6ec03">buf</a>[<a class="code hl_variable" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a>].dest = dest;</div>
+<div class="line"><span class="lineno">   28</span> </div>
+<div class="line"><span class="lineno">   29</span> </div>
+<div class="line"><span class="lineno">   30</span>    <a class="code hl_variable" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a> = (<a class="code hl_variable" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a> + 1) % <a class="code hl_variable" href="classRingBuffer.html#aa3a5a1a10d186c9ed5f129f30ce0d95d">size</a>;</div>
+<div class="line"><span class="lineno">   31</span>}</div>
 <div class="ttc" id="astructdata_html_af2778e4f080302b7808f3e432474923b"><div class="ttname"><a href="structdata.html#af2778e4f080302b7808f3e432474923b">data::size</a></div><div class="ttdeci">ssize_t size</div><div class="ttdef"><b>Definition</b> RingBuffer.hpp:13</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classRingBuffer.html#ad9c51381e81aa6cac3a08e530ff6ec03">buf</a>, <a class="el" href="structdata.html#a0648d84788090dbc63fb7fbd105b312c">data::data</a>, <a class="el" href="classRingBuffer.html#ae524123ae8bc4d8239495cb3d56798fc">index</a>, <a class="el" href="classRingBuffer.html#a5615e24d141b5b58c335b31b355e2483">number_of_messages</a>, <a class="el" href="structdata.html#af2778e4f080302b7808f3e432474923b">data::size</a>, and <a class="el" href="classRingBuffer.html#aa3a5a1a10d186c9ed5f129f30ce0d95d">size</a>.</p>
