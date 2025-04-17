@@ -699,6 +699,23 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                 if (ackMsg->msg.dest == get_NodeID()) {
                     //rb.insert(dataMsg->msg.msg,dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
                     ACK_flag = false;
+                } else {
+                    uint32_t dest;
+                    printf("Message was not for me, was for dest:%08x\n", ackMsg->msg.dest);
+                    if(!tree.find_path_parent(ackMsg->msg.dest, &dest)) {
+                        ACK_flag = false;
+                        NAK_flag = true;
+                        error = 0x01; // TODO make enum for errors (no node in tree)
+                        break;
+                    }
+                    if (client_tpcbs.find(dest) == client_tpcbs.end()) {
+                        ACK_flag = false;
+                        NAK_flag = true;
+                        error = 0x02; // TODO make enum for errors (id not in connected clients)
+                        break;
+                    }
+                    ACK_flag = false;
+                    send_tcp_data(dest, client_tpcbs.at(dest), ackMsg->get_msg(), ackMsg->get_len());
                 }
                 
 

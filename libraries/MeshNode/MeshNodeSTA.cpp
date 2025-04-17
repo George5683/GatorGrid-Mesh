@@ -561,10 +561,12 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
             case 0x01: {
                 TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
                 puts("Got data message");
-                printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
                 if (dataMsg->msg.dest == get_NodeID()) {
-                    rb.insert(dataMsg->msg.msg,dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
-                } 
+                    printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
+                    break;
+                } else {
+                    // TODO pass msg to AP
+                }
                 //does stuff
                 break;
             }
