@@ -77,6 +77,7 @@ struct ClientConnection {
 std::vector<ClientConnection> clients;
 std::map<tcp_pcb *, ClientConnection> clients_map;
 
+
 // https://forums.raspberrypi.com/viewtopic.php?t=302960
 void MeshNode::seed_rand() {
 
@@ -568,7 +569,7 @@ MeshNode::~MeshNode(){
     NodeID = 0;
 }
 
-bool APNode::send_tcp_data(uint8_t* data, uint32_t size) {
+bool APNode::send_tcp_data(uint32_t id, tcp_pcb *client_pcb, uint8_t* data, uint32_t size) {
 
     uint8_t buffer[size] = {};
     // if (size > BUF_SIZE) { size = BUF_SIZE; }
@@ -579,8 +580,13 @@ bool APNode::send_tcp_data(uint8_t* data, uint32_t size) {
     cyw43_arch_lwip_begin();
 
     // not entirely sure its supposed to be client_pcb
-    err_t err = tcp_write(state->client_pcb, (void*)buffer, size, TCP_WRITE_FLAG_COPY);
-    err_t err2 = tcp_output(state->client_pcb);
+    
+    //err_t err = tcp_write(state->client_pcb, (void*)buffer, size, TCP_WRITE_FLAG_COPY);
+    //err_t err2 = tcp_output(state->client_pcb);
+
+    err_t err = tcp_write(client_pcb, (void*)buffer, size, TCP_WRITE_FLAG_COPY);
+    err_t err2 = tcp_output(client_pcb);
+
     if (err != ERR_OK) {
         printf("Message failed to write\n");
         printf("ERR: %d\n", err);
@@ -636,6 +642,23 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
 
                 tree.add_child(initMsg->msg.source);
 
+
+                uint32_t ids[4] = {0};
+                int j = 0;
+
+                // Because this is a new node, resend the list of connected nodes to everyone
+                for(auto i : clients_map) {
+                    ids[j] = i.second.id;
+                    j++;
+                }
+
+                for(auto i : clients_map) {
+                    ids[j] = i.second.id;
+                    j++;
+                }
+
+                
+
                 break;
             }
             case 0x01: {
@@ -689,14 +712,16 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
     if (ACK_flag){
         // Assumption: clients_map[tpcb].id implies that any message worth acking isn't being forwarded and is originating from the intended node
         TCP_ACK_MESSAGE ackMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
-        send_tcp_data(ackMsg.get_msg(), ackMsg.get_len());
+        send_tcp_data(clients_map[tpcb].id, tpcb, ackMsg.get_msg(), ackMsg.get_len());
+        //send_tcp_data(ackMsg.get_msg(), ackMsg.get_len());
         printf("Sent ACK message to client %u", clients_map[tpcb].id);
         
     } else if (NAK_flag) {
         // TODO: Update for error handling
         // identify the source from clients_map and send back?
         TCP_NAK_MESSAGE nakMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
-        send_tcp_data(nakMsg.get_msg(), nakMsg.get_len());
+        send_tcp_data(clients_map[tpcb].id, tpcb, nakMsg.get_msg(), nakMsg.get_len());
+        //send_tcp_data(nakMsg.get_msg(), nakMsg.get_len());
         return false;
     }
 

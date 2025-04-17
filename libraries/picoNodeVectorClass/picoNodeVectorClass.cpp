@@ -1,4 +1,4 @@
-#include "picoNodeVectorClass.h"
+#include "picoNodeVectorClass.hpp"
 
 picoNodeVector::picoNodeVector(int picoID = 0){
 
