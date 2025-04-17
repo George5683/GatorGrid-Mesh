@@ -122,7 +122,7 @@ int main() {
 
     for (int i = 0; i < 10; i++)
     {
-        TCP_DATA_MSG msg(node.get_NodeID(), 0x12345678);
+        TCP_DATA_MSG msg(node.get_NodeID(), node.parent);
         uint8_t arr[] = "hello, this is message:  ";
         arr[24] = 48 + i;
         msg.add_message(25, arr);

@@ -238,6 +238,7 @@ STANode::STANode() {
     // Set SPI to be a slave 
     Slave_Pico.SPI_init(false);
     known_nodes.clear();
+    parent = 0xFFFFFFFF;
 }
 
 STANode::~STANode() {
@@ -410,6 +411,7 @@ bool STANode::connect_to_node(uint32_t id) {
     }
 
     printf("Connected successfully.\n");
+    parent = id;
     return true;
 }
 

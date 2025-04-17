@@ -128,6 +128,7 @@ class STANode : public MeshNode{
 public:
 
     std::map<int, cyw43_ev_scan_result_t*> known_nodes;
+    uint32_t parent;
     TCP_CLIENT_T* state;
 
     std::string AP_CONNECTED_IP;

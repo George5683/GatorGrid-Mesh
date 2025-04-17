@@ -668,11 +668,11 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                     rb.insert(dataMsg->msg.msg,dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
                 } else {
                     uint32_t dest;
-                    if(!tree.find_path_parent(dataMsg->msg.dest, &dest)) {
+                    /*if(!tree.find_path_parent(dataMsg->msg.dest, &dest)) {
                         ACK_flag = false;
                         NAK_flag = true;
                         break;
-                    }
+                    }*/
                 }
                 printf("Successfully inserted into ring buffer\n");
                 break;
