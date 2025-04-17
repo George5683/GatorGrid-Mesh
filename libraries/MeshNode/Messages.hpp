@@ -176,6 +176,7 @@ public:
         msg.msg_id = 0x03;
         msg.len = 25;
         msg.source = id;
+        msg.child_count = 0;
     }
 
     void add_children(uint8_t children_count, uint32_t* children) {
@@ -190,6 +191,9 @@ public:
     }
     uint16_t get_len() override {
         return msg.len;
+    }
+    uint8_t get_child_count() override {
+        return msg.child_count;
     }
     void set_msg(void* msg) override {
         this->msg = *(reinterpret_cast<tcp_update_msg_t*>(msg));
