@@ -455,7 +455,7 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size, bool forward) {
     // while(state->tcp_pcb->snd_buf != 0) {
     //   printf("tcp buffer has %d bytes in it\n", state->tcp_pcb->snd_buf);
     // }
-
+    while(state->waiting_for_ack); //{sleep_ms(5);}
     cyw43_arch_lwip_begin();
     //printf("Space used in the buffer %d\n", tcp_sndbuf(state->tcp_pcb));
     // while (tcp_write(state->tcp_pcb, (void*)buffer, BUF_SIZE, TCP_WRITE_FLAG_COPY) == -1) {
@@ -464,8 +464,8 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size, bool forward) {
     // }
 
     // Not getting an ack message back for some reason
-    //sleep_ms(5);
-    while(state->waiting_for_ack); //{sleep_ms(5);}
+    sleep_ms(125);
+    
     err_t err = tcp_write(state->tcp_pcb, (void*)data, size, TCP_WRITE_FLAG_COPY);
     err_t err2 = tcp_output(state->tcp_pcb);
     if (err != ERR_OK) {
