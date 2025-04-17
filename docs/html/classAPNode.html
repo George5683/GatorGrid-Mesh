@@ -221,18 +221,18 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  481</span>               : <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a>(<span class="keyword">false</span>), <a class="code hl_variable" href="classAPNode.html#af24f7284d8a7f02f73b98e20a0ce69d2">password</a>(<span class="stringliteral">&quot;password&quot;</span>), <a class="code hl_variable" href="classAPNode.html#a76a4d88449c2a5ab205ab8eff9d73cec">rb</a>(10), <a class="code hl_variable" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>()  {</div>
-<div class="line"><span class="lineno">  482</span>    snprintf(<a class="code hl_variable" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>, <span class="keyword">sizeof</span>(<a class="code hl_variable" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>), <span class="stringliteral">&quot;GatorGrid_Node:%08X&quot;</span>, <a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>());</div>
-<div class="line"><span class="lineno">  483</span>    <a class="code hl_variable" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>.<a class="code hl_function" href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI_init</a>(<span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  484</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  477</span>               : <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a>(<span class="keyword">false</span>), <a class="code hl_variable" href="classAPNode.html#af24f7284d8a7f02f73b98e20a0ce69d2">password</a>(<span class="stringliteral">&quot;password&quot;</span>), <a class="code hl_variable" href="classAPNode.html#a76a4d88449c2a5ab205ab8eff9d73cec">rb</a>(10), <a class="code hl_variable" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>()  {</div>
+<div class="line"><span class="lineno">  478</span>    snprintf(<a class="code hl_variable" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>, <span class="keyword">sizeof</span>(<a class="code hl_variable" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>), <span class="stringliteral">&quot;GatorGrid_Node:%08X&quot;</span>, <a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>());</div>
+<div class="line"><span class="lineno">  479</span>    <a class="code hl_variable" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>.<a class="code hl_function" href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI_init</a>(<span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">  480</span>}</div>
 <div class="ttc" id="aclassAPNode_html_a121221cf5fdde7e45b87e81e3ede857d"><div class="ttname"><a href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">APNode::running</a></div><div class="ttdeci">bool running</div><div class="ttdef"><b>Definition</b> MeshNode.hpp:37</div></div>
 <div class="ttc" id="aclassAPNode_html_a33f42f6bd11523a7d53d337d84766808"><div class="ttname"><a href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">APNode::Master_Pico</a></div><div class="ttdeci">SPI Master_Pico</div><div class="ttdef"><b>Definition</b> MeshNode.hpp:43</div></div>
 <div class="ttc" id="aclassAPNode_html_a76a4d88449c2a5ab205ab8eff9d73cec"><div class="ttname"><a href="classAPNode.html#a76a4d88449c2a5ab205ab8eff9d73cec">APNode::rb</a></div><div class="ttdeci">RingBuffer rb</div><div class="ttdef"><b>Definition</b> MeshNode.hpp:41</div></div>
 <div class="ttc" id="aclassAPNode_html_a88f8012cf5851db724dcef1322829bac"><div class="ttname"><a href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">APNode::state</a></div><div class="ttdeci">TCP_SERVER_T * state</div><div class="ttdef"><b>Definition</b> MeshNode.hpp:36</div></div>
 <div class="ttc" id="aclassAPNode_html_ad1f2d4fd7748e6020201e0305bbe793b"><div class="ttname"><a href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">APNode::ap_name</a></div><div class="ttdeci">char ap_name[32]</div><div class="ttdef"><b>Definition</b> MeshNode.hpp:38</div></div>
 <div class="ttc" id="aclassAPNode_html_af24f7284d8a7f02f73b98e20a0ce69d2"><div class="ttname"><a href="classAPNode.html#af24f7284d8a7f02f73b98e20a0ce69d2">APNode::password</a></div><div class="ttdeci">const char * password</div><div class="ttdef"><b>Definition</b> MeshNode.hpp:39</div></div>
-<div class="ttc" id="aclassMeshNode_html_adc8f29a44d7baf4a56ca6f20cec861e8"><div class="ttname"><a href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">MeshNode::get_NodeID</a></div><div class="ttdeci">uint32_t get_NodeID()</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:513</div></div>
-<div class="ttc" id="aclassSPI_html_ab72f8834e97185f2f5ec4ca06f51dbfd"><div class="ttname"><a href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI::SPI_init</a></div><div class="ttdeci">bool SPI_init(bool mode)</div><div class="ttdef"><b>Definition</b> SPI.cpp:19</div></div>
+<div class="ttc" id="aclassMeshNode_html_adc8f29a44d7baf4a56ca6f20cec861e8"><div class="ttname"><a href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">MeshNode::get_NodeID</a></div><div class="ttdeci">uint32_t get_NodeID()</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:509</div></div>
+<div class="ttc" id="aclassSPI_html_ab72f8834e97185f2f5ec4ca06f51dbfd"><div class="ttname"><a href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI::SPI_init</a></div><div class="ttdeci">bool SPI_init(bool mode)</div><div class="ttdef"><b>Definition</b> SPI.cpp:17</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>, <a class="el" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">MeshNode::get_NodeID()</a>, <a class="el" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>, and <a class="el" href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI::SPI_init()</a>.</p>
 
@@ -252,20 +252,20 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  518</span>               {</div>
-<div class="line"><span class="lineno">  519</span>    <span class="comment">// Make sure AP mode is stopped</span></div>
-<div class="line"><span class="lineno">  520</span>    <a class="code hl_function" href="classAPNode.html#a2d1b86fff1bbfe9baef8704c09fa08b4">stop_ap_mode</a>();</div>
-<div class="line"><span class="lineno">  521</span>    </div>
-<div class="line"><span class="lineno">  522</span>    <span class="comment">// Free the state if it exists</span></div>
-<div class="line"><span class="lineno">  523</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>) {</div>
-<div class="line"><span class="lineno">  524</span>        free(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>);</div>
-<div class="line"><span class="lineno">  525</span>        <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a> = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  526</span>    }</div>
-<div class="line"><span class="lineno">  527</span>    </div>
-<div class="line"><span class="lineno">  528</span>    <span class="comment">// Deinitialize the driver</span></div>
-<div class="line"><span class="lineno">  529</span>    cyw43_arch_deinit();</div>
-<div class="line"><span class="lineno">  530</span>}</div>
-<div class="ttc" id="aclassAPNode_html_a2d1b86fff1bbfe9baef8704c09fa08b4"><div class="ttname"><a href="classAPNode.html#a2d1b86fff1bbfe9baef8704c09fa08b4">APNode::stop_ap_mode</a></div><div class="ttdeci">void stop_ap_mode()</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:587</div></div>
+<div class="fragment"><div class="line"><span class="lineno">  514</span>               {</div>
+<div class="line"><span class="lineno">  515</span>    <span class="comment">// Make sure AP mode is stopped</span></div>
+<div class="line"><span class="lineno">  516</span>    <a class="code hl_function" href="classAPNode.html#a2d1b86fff1bbfe9baef8704c09fa08b4">stop_ap_mode</a>();</div>
+<div class="line"><span class="lineno">  517</span>    </div>
+<div class="line"><span class="lineno">  518</span>    <span class="comment">// Free the state if it exists</span></div>
+<div class="line"><span class="lineno">  519</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>) {</div>
+<div class="line"><span class="lineno">  520</span>        free(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>);</div>
+<div class="line"><span class="lineno">  521</span>        <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  522</span>    }</div>
+<div class="line"><span class="lineno">  523</span>    </div>
+<div class="line"><span class="lineno">  524</span>    <span class="comment">// Deinitialize the driver</span></div>
+<div class="line"><span class="lineno">  525</span>    cyw43_arch_deinit();</div>
+<div class="line"><span class="lineno">  526</span>}</div>
+<div class="ttc" id="aclassAPNode_html_a2d1b86fff1bbfe9baef8704c09fa08b4"><div class="ttname"><a href="classAPNode.html#a2d1b86fff1bbfe9baef8704c09fa08b4">APNode::stop_ap_mode</a></div><div class="ttdeci">void stop_ap_mode()</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:583</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>, and <a class="el" href="classAPNode.html#a2d1b86fff1bbfe9baef8704c09fa08b4">stop_ap_mode()</a>.</p>
 
@@ -303,10 +303,10 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  486</span>                                {</div>
-<div class="line"><span class="lineno">  487</span>    <span class="keywordflow">return</span> this-&gt;<a class="code hl_variable" href="classAPNode.html#a76a4d88449c2a5ab205ab8eff9d73cec">rb</a>.<a class="code hl_function" href="classRingBuffer.html#ac68abd2ecd02bea9e99c3195694723c0">digest</a>();</div>
-<div class="line"><span class="lineno">  488</span>}</div>
-<div class="ttc" id="aclassRingBuffer_html_ac68abd2ecd02bea9e99c3195694723c0"><div class="ttname"><a href="classRingBuffer.html#ac68abd2ecd02bea9e99c3195694723c0">RingBuffer::digest</a></div><div class="ttdeci">struct data digest()</div><div class="ttdef"><b>Definition</b> RingBuffer.cpp:37</div></div>
+<div class="fragment"><div class="line"><span class="lineno">  482</span>                                {</div>
+<div class="line"><span class="lineno">  483</span>    <span class="keywordflow">return</span> this-&gt;<a class="code hl_variable" href="classAPNode.html#a76a4d88449c2a5ab205ab8eff9d73cec">rb</a>.<a class="code hl_function" href="classRingBuffer.html#ac68abd2ecd02bea9e99c3195694723c0">digest</a>();</div>
+<div class="line"><span class="lineno">  484</span>}</div>
+<div class="ttc" id="aclassRingBuffer_html_ac68abd2ecd02bea9e99c3195694723c0"><div class="ttname"><a href="classRingBuffer.html#ac68abd2ecd02bea9e99c3195694723c0">RingBuffer::digest</a></div><div class="ttdeci">struct data digest()</div><div class="ttdef"><b>Definition</b> RingBuffer.cpp:33</div></div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="AP__Test_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>.</p>
 
@@ -344,9 +344,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  508</span>                       {</div>
-<div class="line"><span class="lineno">  509</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>();</div>
-<div class="line"><span class="lineno">  510</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  504</span>                       {</div>
+<div class="line"><span class="lineno">  505</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>();</div>
+<div class="line"><span class="lineno">  506</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">MeshNode::get_NodeID()</a>.</p>
 
@@ -386,38 +386,38 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  532</span>                          {</div>
-<div class="line"><span class="lineno">  533</span> </div>
-<div class="line"><span class="lineno">  534</span>    <span class="comment">// Allocate the state of the TCP server if not already allocated</span></div>
-<div class="line"><span class="lineno">  535</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>) {</div>
-<div class="line"><span class="lineno">  536</span>        <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a> = (<a class="code hl_struct" href="structTCP__SERVER__T__.html">TCP_SERVER_T</a>*)calloc(1, <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structTCP__SERVER__T__.html">TCP_SERVER_T</a>));</div>
-<div class="line"><span class="lineno">  537</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>) {</div>
-<div class="line"><span class="lineno">  538</span>            <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;failed to allocate state\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  539</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  540</span>        }</div>
-<div class="line"><span class="lineno">  541</span>    }</div>
-<div class="line"><span class="lineno">  542</span>    </div>
-<div class="line"><span class="lineno">  543</span>    <span class="comment">// Initialize the state</span></div>
-<div class="line"><span class="lineno">  544</span>    <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a467dcc70f5fe27afca66459f1e5899c5">complete</a> = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  545</span>    <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a04904a1963bae5da866eef69595887e5">server_pcb</a> = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  546</span>    <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a471164dea770f3d28d4bab8105497319">ap_node</a> = <span class="keyword">this</span>;</div>
-<div class="line"><span class="lineno">  547</span> </div>
-<div class="line"><span class="lineno">  548</span>    <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a8334d24569297b3576154b09baf20642">recv_len</a> = 0;</div>
-<div class="line"><span class="lineno">  549</span>    </div>
-<div class="line"><span class="lineno">  550</span>    <span class="comment">// Initialize the driver</span></div>
-<div class="line"><span class="lineno">  551</span>    <span class="keywordflow">if</span> (cyw43_arch_init()) {</div>
-<div class="line"><span class="lineno">  552</span>        <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;failed to initialize cyw43 driver\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  553</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  554</span>    }</div>
-<div class="line"><span class="lineno">  555</span>    </div>
-<div class="line"><span class="lineno">  556</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  557</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  528</span>                          {</div>
+<div class="line"><span class="lineno">  529</span> </div>
+<div class="line"><span class="lineno">  530</span>    <span class="comment">// Allocate the state of the TCP server if not already allocated</span></div>
+<div class="line"><span class="lineno">  531</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>) {</div>
+<div class="line"><span class="lineno">  532</span>        <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a> = (<a class="code hl_struct" href="structTCP__SERVER__T__.html">TCP_SERVER_T</a>*)calloc(1, <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structTCP__SERVER__T__.html">TCP_SERVER_T</a>));</div>
+<div class="line"><span class="lineno">  533</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>) {</div>
+<div class="line"><span class="lineno">  534</span>            <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;failed to allocate state\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  535</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  536</span>        }</div>
+<div class="line"><span class="lineno">  537</span>    }</div>
+<div class="line"><span class="lineno">  538</span>    </div>
+<div class="line"><span class="lineno">  539</span>    <span class="comment">// Initialize the state</span></div>
+<div class="line"><span class="lineno">  540</span>    <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a467dcc70f5fe27afca66459f1e5899c5">complete</a> = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  541</span>    <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a04904a1963bae5da866eef69595887e5">server_pcb</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  542</span>    <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a471164dea770f3d28d4bab8105497319">ap_node</a> = <span class="keyword">this</span>;</div>
+<div class="line"><span class="lineno">  543</span> </div>
+<div class="line"><span class="lineno">  544</span>    <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a8334d24569297b3576154b09baf20642">recv_len</a> = 0;</div>
+<div class="line"><span class="lineno">  545</span>    </div>
+<div class="line"><span class="lineno">  546</span>    <span class="comment">// Initialize the driver</span></div>
+<div class="line"><span class="lineno">  547</span>    <span class="keywordflow">if</span> (cyw43_arch_init()) {</div>
+<div class="line"><span class="lineno">  548</span>        <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;failed to initialize cyw43 driver\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  549</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  550</span>    }</div>
+<div class="line"><span class="lineno">  551</span>    </div>
+<div class="line"><span class="lineno">  552</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  553</span>}</div>
 <div class="ttc" id="adnsserver_8c_html_ac89417d7938b9539c92a9ad3c36b5dd3"><div class="ttname"><a href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a></div><div class="ttdeci">#define DEBUG_printf(...)</div><div class="ttdef"><b>Definition</b> dnsserver.c:19</div></div>
-<div class="ttc" id="astructTCP__SERVER__T___html"><div class="ttname"><a href="structTCP__SERVER__T__.html">TCP_SERVER_T_</a></div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:71</div></div>
-<div class="ttc" id="astructTCP__SERVER__T___html_a04904a1963bae5da866eef69595887e5"><div class="ttname"><a href="structTCP__SERVER__T__.html#a04904a1963bae5da866eef69595887e5">TCP_SERVER_T_::server_pcb</a></div><div class="ttdeci">struct tcp_pcb * server_pcb</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:72</div></div>
-<div class="ttc" id="astructTCP__SERVER__T___html_a467dcc70f5fe27afca66459f1e5899c5"><div class="ttname"><a href="structTCP__SERVER__T__.html#a467dcc70f5fe27afca66459f1e5899c5">TCP_SERVER_T_::complete</a></div><div class="ttdeci">bool complete</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:74</div></div>
-<div class="ttc" id="astructTCP__SERVER__T___html_a471164dea770f3d28d4bab8105497319"><div class="ttname"><a href="structTCP__SERVER__T__.html#a471164dea770f3d28d4bab8105497319">TCP_SERVER_T_::ap_node</a></div><div class="ttdeci">void * ap_node</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:79</div></div>
-<div class="ttc" id="astructTCP__SERVER__T___html_a8334d24569297b3576154b09baf20642"><div class="ttname"><a href="structTCP__SERVER__T__.html#a8334d24569297b3576154b09baf20642">TCP_SERVER_T_::recv_len</a></div><div class="ttdeci">int recv_len</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:76</div></div>
+<div class="ttc" id="astructTCP__SERVER__T___html"><div class="ttname"><a href="structTCP__SERVER__T__.html">TCP_SERVER_T_</a></div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:67</div></div>
+<div class="ttc" id="astructTCP__SERVER__T___html_a04904a1963bae5da866eef69595887e5"><div class="ttname"><a href="structTCP__SERVER__T__.html#a04904a1963bae5da866eef69595887e5">TCP_SERVER_T_::server_pcb</a></div><div class="ttdeci">struct tcp_pcb * server_pcb</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:68</div></div>
+<div class="ttc" id="astructTCP__SERVER__T___html_a467dcc70f5fe27afca66459f1e5899c5"><div class="ttname"><a href="structTCP__SERVER__T__.html#a467dcc70f5fe27afca66459f1e5899c5">TCP_SERVER_T_::complete</a></div><div class="ttdeci">bool complete</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:70</div></div>
+<div class="ttc" id="astructTCP__SERVER__T___html_a471164dea770f3d28d4bab8105497319"><div class="ttname"><a href="structTCP__SERVER__T__.html#a471164dea770f3d28d4bab8105497319">TCP_SERVER_T_::ap_node</a></div><div class="ttdeci">void * ap_node</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:75</div></div>
+<div class="ttc" id="astructTCP__SERVER__T___html_a8334d24569297b3576154b09baf20642"><div class="ttname"><a href="structTCP__SERVER__T__.html#a8334d24569297b3576154b09baf20642">TCP_SERVER_T_::recv_len</a></div><div class="ttdeci">int recv_len</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:72</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="structTCP__SERVER__T__.html#a471164dea770f3d28d4bab8105497319">TCP_SERVER_T_::ap_node</a>, <a class="el" href="structTCP__SERVER__T__.html#a467dcc70f5fe27afca66459f1e5899c5">TCP_SERVER_T_::complete</a>, <a class="el" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>, <a class="el" href="structTCP__SERVER__T__.html#a8334d24569297b3576154b09baf20642">TCP_SERVER_T_::recv_len</a>, <a class="el" href="structTCP__SERVER__T__.html#a04904a1963bae5da866eef69595887e5">TCP_SERVER_T_::server_pcb</a>, and <a class="el" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>.</p>
 
@@ -439,10 +439,10 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  490</span>                               {</div>
-<div class="line"><span class="lineno">  491</span>    <span class="keywordflow">return</span> this-&gt;<a class="code hl_variable" href="classAPNode.html#a76a4d88449c2a5ab205ab8eff9d73cec">rb</a>.<a class="code hl_function" href="classRingBuffer.html#aabd4823f01b3502c5cd5da535308ae39">get_size</a>();</div>
-<div class="line"><span class="lineno">  492</span>}</div>
-<div class="ttc" id="aclassRingBuffer_html_aabd4823f01b3502c5cd5da535308ae39"><div class="ttname"><a href="classRingBuffer.html#aabd4823f01b3502c5cd5da535308ae39">RingBuffer::get_size</a></div><div class="ttdeci">int get_size()</div><div class="ttdef"><b>Definition</b> RingBuffer.cpp:54</div></div>
+<div class="fragment"><div class="line"><span class="lineno">  486</span>                               {</div>
+<div class="line"><span class="lineno">  487</span>    <span class="keywordflow">return</span> this-&gt;<a class="code hl_variable" href="classAPNode.html#a76a4d88449c2a5ab205ab8eff9d73cec">rb</a>.<a class="code hl_function" href="classRingBuffer.html#aabd4823f01b3502c5cd5da535308ae39">get_size</a>();</div>
+<div class="line"><span class="lineno">  488</span>}</div>
+<div class="ttc" id="aclassRingBuffer_html_aabd4823f01b3502c5cd5da535308ae39"><div class="ttname"><a href="classRingBuffer.html#aabd4823f01b3502c5cd5da535308ae39">RingBuffer::get_size</a></div><div class="ttdeci">int get_size()</div><div class="ttdef"><b>Definition</b> RingBuffer.cpp:50</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classRingBuffer.html#aabd4823f01b3502c5cd5da535308ae39">RingBuffer::get_size()</a>, and <a class="el" href="classAPNode.html#a76a4d88449c2a5ab205ab8eff9d73cec">rb</a>.</p>
 
@@ -465,28 +465,28 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  564</span>                                         {</div>
-<div class="line"><span class="lineno">  565</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a> || !<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>) {</div>
-<div class="line"><span class="lineno">  566</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  567</span>    }</div>
-<div class="line"><span class="lineno">  568</span>    </div>
-<div class="line"><span class="lineno">  569</span>    <span class="comment">// Check if we should stop</span></div>
-<div class="line"><span class="lineno">  570</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a467dcc70f5fe27afca66459f1e5899c5">complete</a>) {</div>
-<div class="line"><span class="lineno">  571</span>        <a class="code hl_variable" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a> = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  572</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  573</span>    }</div>
-<div class="line"><span class="lineno">  574</span>    </div>
-<div class="line"><span class="lineno">  575</span>    <span class="comment">// Handle polling operations based on the architecture</span></div>
-<div class="line"><span class="lineno">  576</span><span class="preprocessor">    #if PICO_CYW43_ARCH_POLL</span></div>
-<div class="line"><span class="lineno">  577</span>    <span class="comment">// If using poll architecture, check for work</span></div>
-<div class="line"><span class="lineno">  578</span>    cyw43_arch_poll();</div>
-<div class="line"><span class="lineno">  579</span>    <span class="comment">// Wait for work or timeout</span></div>
-<div class="line"><span class="lineno">  580</span>    cyw43_arch_wait_for_work_until(make_timeout_time_ms(timeout_ms));</div>
-<div class="line"><span class="lineno">  581</span><span class="preprocessor">    #else</span></div>
-<div class="line"><span class="lineno">  582</span>    <span class="comment">// If using interrupt architecture, just sleep</span></div>
-<div class="line"><span class="lineno">  583</span>    sleep_ms(timeout_ms);</div>
-<div class="line"><span class="lineno">  584</span><span class="preprocessor">    #endif</span></div>
-<div class="line"><span class="lineno">  585</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  560</span>                                         {</div>
+<div class="line"><span class="lineno">  561</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a> || !<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>) {</div>
+<div class="line"><span class="lineno">  562</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  563</span>    }</div>
+<div class="line"><span class="lineno">  564</span>    </div>
+<div class="line"><span class="lineno">  565</span>    <span class="comment">// Check if we should stop</span></div>
+<div class="line"><span class="lineno">  566</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a467dcc70f5fe27afca66459f1e5899c5">complete</a>) {</div>
+<div class="line"><span class="lineno">  567</span>        <a class="code hl_variable" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a> = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  568</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  569</span>    }</div>
+<div class="line"><span class="lineno">  570</span>    </div>
+<div class="line"><span class="lineno">  571</span>    <span class="comment">// Handle polling operations based on the architecture</span></div>
+<div class="line"><span class="lineno">  572</span><span class="preprocessor">    #if PICO_CYW43_ARCH_POLL</span></div>
+<div class="line"><span class="lineno">  573</span>    <span class="comment">// If using poll architecture, check for work</span></div>
+<div class="line"><span class="lineno">  574</span>    cyw43_arch_poll();</div>
+<div class="line"><span class="lineno">  575</span>    <span class="comment">// Wait for work or timeout</span></div>
+<div class="line"><span class="lineno">  576</span>    cyw43_arch_wait_for_work_until(make_timeout_time_ms(timeout_ms));</div>
+<div class="line"><span class="lineno">  577</span><span class="preprocessor">    #else</span></div>
+<div class="line"><span class="lineno">  578</span>    <span class="comment">// If using interrupt architecture, just sleep</span></div>
+<div class="line"><span class="lineno">  579</span>    sleep_ms(timeout_ms);</div>
+<div class="line"><span class="lineno">  580</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><span class="lineno">  581</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="structTCP__SERVER__T__.html#a467dcc70f5fe27afca66459f1e5899c5">TCP_SERVER_T_::complete</a>, <a class="el" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a>, and <a class="el" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>.</p>
 
@@ -517,35 +517,35 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  673</span>                                                       {</div>
+<div class="fragment"><div class="line"><span class="lineno">  669</span>                                                       {</div>
+<div class="line"><span class="lineno">  670</span> </div>
+<div class="line"><span class="lineno">  671</span>    uint8_t buffer[size] = {};</div>
+<div class="line"><span class="lineno">  672</span>    <span class="comment">// if (size &gt; BUF_SIZE) { size = BUF_SIZE; }</span></div>
+<div class="line"><span class="lineno">  673</span>    memcpy(buffer, <a class="code hl_struct" href="structdata.html">data</a>, size);</div>
 <div class="line"><span class="lineno">  674</span> </div>
-<div class="line"><span class="lineno">  675</span>    uint8_t buffer[size] = {};</div>
-<div class="line"><span class="lineno">  676</span>    <span class="comment">// if (size &gt; BUF_SIZE) { size = BUF_SIZE; }</span></div>
-<div class="line"><span class="lineno">  677</span>    memcpy(buffer, <a class="code hl_struct" href="structdata.html">data</a>, size);</div>
+<div class="line"><span class="lineno">  675</span>    <span class="keywordtype">bool</span> flag = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  676</span> </div>
+<div class="line"><span class="lineno">  677</span>    cyw43_arch_lwip_begin();</div>
 <div class="line"><span class="lineno">  678</span> </div>
-<div class="line"><span class="lineno">  679</span>    <span class="keywordtype">bool</span> flag = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  680</span> </div>
-<div class="line"><span class="lineno">  681</span>    cyw43_arch_lwip_begin();</div>
-<div class="line"><span class="lineno">  682</span> </div>
-<div class="line"><span class="lineno">  683</span>    <span class="comment">// not entirely sure its supposed to be client_pcb</span></div>
-<div class="line"><span class="lineno">  684</span>    err_t err = tcp_write(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a797e29e5352a72995a43cc4b004630f3">client_pcb</a>, (<span class="keywordtype">void</span>*)buffer, size, TCP_WRITE_FLAG_COPY);</div>
-<div class="line"><span class="lineno">  685</span>    err_t err2 = tcp_output(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a797e29e5352a72995a43cc4b004630f3">client_pcb</a>);</div>
-<div class="line"><span class="lineno">  686</span>    <span class="keywordflow">if</span> (err != ERR_OK) {</div>
-<div class="line"><span class="lineno">  687</span>        printf(<span class="stringliteral">&quot;Message failed to write\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  688</span>        printf(<span class="stringliteral">&quot;ERR: %d\n&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  679</span>    <span class="comment">// not entirely sure its supposed to be client_pcb</span></div>
+<div class="line"><span class="lineno">  680</span>    err_t err = tcp_write(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a797e29e5352a72995a43cc4b004630f3">client_pcb</a>, (<span class="keywordtype">void</span>*)buffer, size, TCP_WRITE_FLAG_COPY);</div>
+<div class="line"><span class="lineno">  681</span>    err_t err2 = tcp_output(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a797e29e5352a72995a43cc4b004630f3">client_pcb</a>);</div>
+<div class="line"><span class="lineno">  682</span>    <span class="keywordflow">if</span> (err != ERR_OK) {</div>
+<div class="line"><span class="lineno">  683</span>        printf(<span class="stringliteral">&quot;Message failed to write\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  684</span>        printf(<span class="stringliteral">&quot;ERR: %d\n&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  685</span>        flag = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  686</span>    }</div>
+<div class="line"><span class="lineno">  687</span>    <span class="keywordflow">if</span> (err2 != ERR_OK) {</div>
+<div class="line"><span class="lineno">  688</span>        printf(<span class="stringliteral">&quot;Message failed to be sent\n&quot;</span>);</div>
 <div class="line"><span class="lineno">  689</span>        flag = <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  690</span>    }</div>
-<div class="line"><span class="lineno">  691</span>    <span class="keywordflow">if</span> (err2 != ERR_OK) {</div>
-<div class="line"><span class="lineno">  692</span>        printf(<span class="stringliteral">&quot;Message failed to be sent\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  693</span>        flag = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  694</span>    }</div>
-<div class="line"><span class="lineno">  695</span>    cyw43_arch_lwip_end();</div>
-<div class="line"><span class="lineno">  696</span>    <span class="keywordflow">if</span> (flag)</div>
-<div class="line"><span class="lineno">  697</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  698</span>    printf(<span class="stringliteral">&quot;Successfully queued message\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  699</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  700</span>}</div>
-<div class="ttc" id="astructTCP__SERVER__T___html_a797e29e5352a72995a43cc4b004630f3"><div class="ttname"><a href="structTCP__SERVER__T__.html#a797e29e5352a72995a43cc4b004630f3">TCP_SERVER_T_::client_pcb</a></div><div class="ttdeci">struct tcp_pcb * client_pcb</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:73</div></div>
+<div class="line"><span class="lineno">  691</span>    cyw43_arch_lwip_end();</div>
+<div class="line"><span class="lineno">  692</span>    <span class="keywordflow">if</span> (flag)</div>
+<div class="line"><span class="lineno">  693</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  694</span>    printf(<span class="stringliteral">&quot;Successfully queued message\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  695</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  696</span>}</div>
+<div class="ttc" id="astructTCP__SERVER__T___html_a797e29e5352a72995a43cc4b004630f3"><div class="ttname"><a href="structTCP__SERVER__T__.html#a797e29e5352a72995a43cc4b004630f3">TCP_SERVER_T_::client_pcb</a></div><div class="ttdeci">struct tcp_pcb * client_pcb</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:69</div></div>
 <div class="ttc" id="astructdata_html"><div class="ttname"><a href="structdata.html">data</a></div><div class="ttdef"><b>Definition</b> RingBuffer.hpp:11</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="structTCP__SERVER__T__.html#a797e29e5352a72995a43cc4b004630f3">TCP_SERVER_T_::client_pcb</a>, and <a class="el" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>.</p>
@@ -568,9 +568,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  448</span>                            {</div>
-<div class="line"><span class="lineno">  449</span>    <span class="keywordflow">return</span> !this-&gt;<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a467dcc70f5fe27afca66459f1e5899c5">complete</a>;</div>
-<div class="line"><span class="lineno">  450</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  444</span>                            {</div>
+<div class="line"><span class="lineno">  445</span>    <span class="keywordflow">return</span> !this-&gt;<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a467dcc70f5fe27afca66459f1e5899c5">complete</a>;</div>
+<div class="line"><span class="lineno">  446</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="structTCP__SERVER__T__.html#a467dcc70f5fe27afca66459f1e5899c5">TCP_SERVER_T_::complete</a>, and <a class="el" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>.</p>
 
@@ -592,10 +592,10 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  656</span>                          {</div>
-<div class="line"><span class="lineno">  657</span>    <a class="code hl_function" href="MeshNodeAP_8cpp.html#a012bff17b060f420fb99523abed970b0">run_tcp_server</a>(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>);</div>
-<div class="line"><span class="lineno">  658</span>}</div>
-<div class="ttc" id="aMeshNodeAP_8cpp_html_a012bff17b060f420fb99523abed970b0"><div class="ttname"><a href="MeshNodeAP_8cpp.html#a012bff17b060f420fb99523abed970b0">run_tcp_server</a></div><div class="ttdeci">void run_tcp_server(void *arg)</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:452</div></div>
+<div class="fragment"><div class="line"><span class="lineno">  652</span>                          {</div>
+<div class="line"><span class="lineno">  653</span>    <a class="code hl_function" href="MeshNodeAP_8cpp.html#a012bff17b060f420fb99523abed970b0">run_tcp_server</a>(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>);</div>
+<div class="line"><span class="lineno">  654</span>}</div>
+<div class="ttc" id="aMeshNodeAP_8cpp_html_a012bff17b060f420fb99523abed970b0"><div class="ttname"><a href="MeshNodeAP_8cpp.html#a012bff17b060f420fb99523abed970b0">run_tcp_server</a></div><div class="ttdeci">void run_tcp_server(void *arg)</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:448</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="MeshNodeAP_8cpp.html#a012bff17b060f420fb99523abed970b0">run_tcp_server()</a>, and <a class="el" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>.</p>
 
@@ -628,10 +628,10 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  559</span>                                                              {</div>
-<div class="line"><span class="lineno">  560</span>    memcpy(<a class="code hl_variable" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>, name, <span class="keyword">sizeof</span>(<a class="code hl_variable" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>));</div>
-<div class="line"><span class="lineno">  561</span>    <a class="code hl_variable" href="classAPNode.html#af24f7284d8a7f02f73b98e20a0ce69d2">password</a> = pwd;</div>
-<div class="line"><span class="lineno">  562</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  555</span>                                                              {</div>
+<div class="line"><span class="lineno">  556</span>    memcpy(<a class="code hl_variable" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>, name, <span class="keyword">sizeof</span>(<a class="code hl_variable" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>));</div>
+<div class="line"><span class="lineno">  557</span>    <a class="code hl_variable" href="classAPNode.html#af24f7284d8a7f02f73b98e20a0ce69d2">password</a> = pwd;</div>
+<div class="line"><span class="lineno">  558</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>, and <a class="el" href="classAPNode.html#af24f7284d8a7f02f73b98e20a0ce69d2">password</a>.</p>
 
@@ -652,11 +652,11 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  496</span>                              {</div>
-<div class="line"><span class="lineno">  497</span>    <span class="comment">// calls the base class function</span></div>
-<div class="line"><span class="lineno">  498</span>    <a class="code hl_function" href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">set_NodeID</a>(ID);</div>
-<div class="line"><span class="lineno">  499</span>}</div>
-<div class="ttc" id="aclassMeshNode_html_af666a6d82e48cbff383d10e93dde8719"><div class="ttname"><a href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">MeshNode::set_NodeID</a></div><div class="ttdeci">void set_NodeID(uint32_t ID)</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:502</div></div>
+<div class="fragment"><div class="line"><span class="lineno">  492</span>                              {</div>
+<div class="line"><span class="lineno">  493</span>    <span class="comment">// calls the base class function</span></div>
+<div class="line"><span class="lineno">  494</span>    <a class="code hl_function" href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">set_NodeID</a>(ID);</div>
+<div class="line"><span class="lineno">  495</span>}</div>
+<div class="ttc" id="aclassMeshNode_html_af666a6d82e48cbff383d10e93dde8719"><div class="ttname"><a href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">MeshNode::set_NodeID</a></div><div class="ttdeci">void set_NodeID(uint32_t ID)</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:498</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">MeshNode::set_NodeID()</a>.</p>
 
@@ -676,65 +676,65 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  605</span>                           {</div>
+<div class="fragment"><div class="line"><span class="lineno">  601</span>                           {</div>
+<div class="line"><span class="lineno">  602</span> </div>
+<div class="line"><span class="lineno">  603</span>    <span class="comment">// Delay to ensure the masters starts after the slave</span></div>
+<div class="line"><span class="lineno">  604</span>    sleep_ms(2000);</div>
+<div class="line"><span class="lineno">  605</span>    <a class="code hl_variable" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>.<a class="code hl_function" href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI_init</a>(<span class="keyword">true</span>);</div>
 <div class="line"><span class="lineno">  606</span> </div>
-<div class="line"><span class="lineno">  607</span>    <span class="comment">// Delay to ensure the masters starts after the slave</span></div>
-<div class="line"><span class="lineno">  608</span>    sleep_ms(2000);</div>
-<div class="line"><span class="lineno">  609</span>    <a class="code hl_variable" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>.<a class="code hl_function" href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI_init</a>(<span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  610</span> </div>
-<div class="line"><span class="lineno">  611</span>    <span class="comment">// Enable the AP mode on the driver</span></div>
-<div class="line"><span class="lineno">  612</span>    cyw43_arch_enable_ap_mode(<a class="code hl_variable" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>, <a class="code hl_variable" href="classAPNode.html#af24f7284d8a7f02f73b98e20a0ce69d2">password</a>, CYW43_AUTH_WPA2_AES_PSK);</div>
-<div class="line"><span class="lineno">  613</span> </div>
-<div class="line"><span class="lineno">  614</span>    <span class="comment">//state = tcp_server_init();</span></div>
-<div class="line"><span class="lineno">  615</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>) {</div>
-<div class="line"><span class="lineno">  616</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  617</span>    }</div>
-<div class="line"><span class="lineno">  618</span> </div>
-<div class="line"><span class="lineno">  619</span><span class="preprocessor">    #if LWIP_IPV6</span></div>
-<div class="line"><span class="lineno">  620</span><span class="preprocessor">     #define IP(x) ((x).u_addr.ip4)</span></div>
-<div class="line"><span class="lineno">  621</span><span class="preprocessor">     #else</span></div>
-<div class="line"><span class="lineno">  622</span><span class="preprocessor">     #define IP(x) (x)</span></div>
-<div class="line"><span class="lineno">  623</span><span class="preprocessor">     #endif</span></div>
-<div class="line"><span class="lineno">  624</span> \</div>
-<div class="line"><span class="lineno">  625</span>     ip4_addr_t mask;</div>
-<div class="line"><span class="lineno">  626</span>     <a class="code hl_define" href="MeshNodeAP_8cpp.html#ab1e9ec157fb9c086690a2ad3f1a5b172">IP</a>(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a01476886348d11f11f6ea17a8099b15a">gw</a>).addr = PP_HTONL(CYW43_DEFAULT_IP_AP_ADDRESS);</div>
-<div class="line"><span class="lineno">  627</span>     <a class="code hl_define" href="MeshNodeAP_8cpp.html#ab1e9ec157fb9c086690a2ad3f1a5b172">IP</a>(mask).addr = PP_HTONL(CYW43_DEFAULT_IP_MASK);</div>
-<div class="line"><span class="lineno">  628</span> </div>
-<div class="line"><span class="lineno">  629</span><span class="preprocessor">     #undef IP</span></div>
-<div class="line"><span class="lineno">  630</span> </div>
-<div class="line"><span class="lineno">  631</span>    <span class="comment">// Start the DHCP server</span></div>
-<div class="line"><span class="lineno">  632</span>    <span class="comment">//dhcp_server_t dhcp_server;</span></div>
-<div class="line"><span class="lineno">  633</span>    <a class="code hl_function" href="dhcpserver_8c.html#a3930af518fd87ebe481a23453ae92512">dhcp_server_init</a>(&amp;<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a96c913acdc8fac8304296bd845a14f2b">dhcp_server</a>, &amp;<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a01476886348d11f11f6ea17a8099b15a">gw</a>, &amp;mask);</div>
-<div class="line"><span class="lineno">  634</span>    <span class="comment">//dns_server_init(&amp;state-&gt;dns_server, &amp;state-&gt;gw);</span></div>
-<div class="line"><span class="lineno">  635</span> </div>
-<div class="line"><span class="lineno">  636</span>    <span class="comment">// if (!tcp_server_open(state)) {</span></div>
-<div class="line"><span class="lineno">  637</span>    <span class="comment">//     DEBUG_printf(&quot;failed to open server\n&quot;);</span></div>
-<div class="line"><span class="lineno">  638</span>    <span class="comment">//     return false;</span></div>
-<div class="line"><span class="lineno">  639</span>    <span class="comment">// }</span></div>
-<div class="line"><span class="lineno">  640</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="MeshNodeAP_8cpp.html#a01ab1a5940d58c4d231b186df2a50294">tcp_server_open</a>(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>)) {</div>
-<div class="line"><span class="lineno">  641</span>        <a class="code hl_function" href="MeshNodeAP_8cpp.html#aa770ff9e047fdd2a26da33220aa9354d">tcp_server_result</a>(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>, -1);</div>
-<div class="line"><span class="lineno">  642</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  643</span>    }</div>
-<div class="line"><span class="lineno">  644</span> </div>
-<div class="line"><span class="lineno">  645</span>    <span class="comment">// Send over node ID to STA</span></div>
-<div class="line"><span class="lineno">  646</span>    <span class="keywordflow">while</span>(!<a class="code hl_variable" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>.<a class="code hl_function" href="classSPI.html#a7ff6c627f5b5176fb9ad371170b3a4af">SPI_is_write_available</a>());</div>
-<div class="line"><span class="lineno">  647</span> </div>
-<div class="line"><span class="lineno">  648</span>    uint32_t ID = this-&gt;<a class="code hl_function" href="classAPNode.html#a901319e21366b2ce2bf8ac779a2bf71d">get_node_id</a>();</div>
-<div class="line"><span class="lineno">  649</span> </div>
-<div class="line"><span class="lineno">  650</span>    <a class="code hl_variable" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>.<a class="code hl_function" href="classSPI.html#a7dafbdd194b14feafa6bc4abf95114ee">SPI_send_message</a>((uint8_t*) &amp;ID, <span class="keyword">sizeof</span>(ID));</div>
-<div class="line"><span class="lineno">  651</span>    </div>
-<div class="line"><span class="lineno">  652</span>    <a class="code hl_variable" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a> = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  653</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  654</span>}</div>
-<div class="ttc" id="aMeshNodeAP_8cpp_html_a01ab1a5940d58c4d231b186df2a50294"><div class="ttname"><a href="MeshNodeAP_8cpp.html#a01ab1a5940d58c4d231b186df2a50294">tcp_server_open</a></div><div class="ttdeci">bool tcp_server_open(void *arg)</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:417</div></div>
-<div class="ttc" id="aMeshNodeAP_8cpp_html_aa770ff9e047fdd2a26da33220aa9354d"><div class="ttname"><a href="MeshNodeAP_8cpp.html#aa770ff9e047fdd2a26da33220aa9354d">tcp_server_result</a></div><div class="ttdeci">err_t tcp_server_result(void *arg, int status)</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:149</div></div>
+<div class="line"><span class="lineno">  607</span>    <span class="comment">// Enable the AP mode on the driver</span></div>
+<div class="line"><span class="lineno">  608</span>    cyw43_arch_enable_ap_mode(<a class="code hl_variable" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>, <a class="code hl_variable" href="classAPNode.html#af24f7284d8a7f02f73b98e20a0ce69d2">password</a>, CYW43_AUTH_WPA2_AES_PSK);</div>
+<div class="line"><span class="lineno">  609</span> </div>
+<div class="line"><span class="lineno">  610</span>    <span class="comment">//state = tcp_server_init();</span></div>
+<div class="line"><span class="lineno">  611</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>) {</div>
+<div class="line"><span class="lineno">  612</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  613</span>    }</div>
+<div class="line"><span class="lineno">  614</span> </div>
+<div class="line"><span class="lineno">  615</span><span class="preprocessor">    #if LWIP_IPV6</span></div>
+<div class="line"><span class="lineno">  616</span><span class="preprocessor">     #define IP(x) ((x).u_addr.ip4)</span></div>
+<div class="line"><span class="lineno">  617</span><span class="preprocessor">     #else</span></div>
+<div class="line"><span class="lineno">  618</span><span class="preprocessor">     #define IP(x) (x)</span></div>
+<div class="line"><span class="lineno">  619</span><span class="preprocessor">     #endif</span></div>
+<div class="line"><span class="lineno">  620</span> \</div>
+<div class="line"><span class="lineno">  621</span>     ip4_addr_t mask;</div>
+<div class="line"><span class="lineno">  622</span>     <a class="code hl_define" href="MeshNodeAP_8cpp.html#ab1e9ec157fb9c086690a2ad3f1a5b172">IP</a>(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a01476886348d11f11f6ea17a8099b15a">gw</a>).addr = PP_HTONL(CYW43_DEFAULT_IP_AP_ADDRESS);</div>
+<div class="line"><span class="lineno">  623</span>     <a class="code hl_define" href="MeshNodeAP_8cpp.html#ab1e9ec157fb9c086690a2ad3f1a5b172">IP</a>(mask).addr = PP_HTONL(CYW43_DEFAULT_IP_MASK);</div>
+<div class="line"><span class="lineno">  624</span> </div>
+<div class="line"><span class="lineno">  625</span><span class="preprocessor">     #undef IP</span></div>
+<div class="line"><span class="lineno">  626</span> </div>
+<div class="line"><span class="lineno">  627</span>    <span class="comment">// Start the DHCP server</span></div>
+<div class="line"><span class="lineno">  628</span>    <span class="comment">//dhcp_server_t dhcp_server;</span></div>
+<div class="line"><span class="lineno">  629</span>    <a class="code hl_function" href="dhcpserver_8c.html#a3930af518fd87ebe481a23453ae92512">dhcp_server_init</a>(&amp;<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a96c913acdc8fac8304296bd845a14f2b">dhcp_server</a>, &amp;<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a01476886348d11f11f6ea17a8099b15a">gw</a>, &amp;mask);</div>
+<div class="line"><span class="lineno">  630</span>    <span class="comment">//dns_server_init(&amp;state-&gt;dns_server, &amp;state-&gt;gw);</span></div>
+<div class="line"><span class="lineno">  631</span> </div>
+<div class="line"><span class="lineno">  632</span>    <span class="comment">// if (!tcp_server_open(state)) {</span></div>
+<div class="line"><span class="lineno">  633</span>    <span class="comment">//     DEBUG_printf(&quot;failed to open server\n&quot;);</span></div>
+<div class="line"><span class="lineno">  634</span>    <span class="comment">//     return false;</span></div>
+<div class="line"><span class="lineno">  635</span>    <span class="comment">// }</span></div>
+<div class="line"><span class="lineno">  636</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="MeshNodeAP_8cpp.html#a01ab1a5940d58c4d231b186df2a50294">tcp_server_open</a>(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>)) {</div>
+<div class="line"><span class="lineno">  637</span>        <a class="code hl_function" href="MeshNodeAP_8cpp.html#aa770ff9e047fdd2a26da33220aa9354d">tcp_server_result</a>(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>, -1);</div>
+<div class="line"><span class="lineno">  638</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  639</span>    }</div>
+<div class="line"><span class="lineno">  640</span> </div>
+<div class="line"><span class="lineno">  641</span>    <span class="comment">// Send over node ID to STA</span></div>
+<div class="line"><span class="lineno">  642</span>    <span class="keywordflow">while</span>(!<a class="code hl_variable" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>.<a class="code hl_function" href="classSPI.html#a7ff6c627f5b5176fb9ad371170b3a4af">SPI_is_write_available</a>());</div>
+<div class="line"><span class="lineno">  643</span> </div>
+<div class="line"><span class="lineno">  644</span>    uint32_t ID = this-&gt;<a class="code hl_function" href="classAPNode.html#a901319e21366b2ce2bf8ac779a2bf71d">get_node_id</a>();</div>
+<div class="line"><span class="lineno">  645</span> </div>
+<div class="line"><span class="lineno">  646</span>    <a class="code hl_variable" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>.<a class="code hl_function" href="classSPI.html#a7dafbdd194b14feafa6bc4abf95114ee">SPI_send_message</a>((uint8_t*) &amp;ID, <span class="keyword">sizeof</span>(ID));</div>
+<div class="line"><span class="lineno">  647</span>    </div>
+<div class="line"><span class="lineno">  648</span>    <a class="code hl_variable" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a> = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  649</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  650</span>}</div>
+<div class="ttc" id="aMeshNodeAP_8cpp_html_a01ab1a5940d58c4d231b186df2a50294"><div class="ttname"><a href="MeshNodeAP_8cpp.html#a01ab1a5940d58c4d231b186df2a50294">tcp_server_open</a></div><div class="ttdeci">bool tcp_server_open(void *arg)</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:413</div></div>
+<div class="ttc" id="aMeshNodeAP_8cpp_html_aa770ff9e047fdd2a26da33220aa9354d"><div class="ttname"><a href="MeshNodeAP_8cpp.html#aa770ff9e047fdd2a26da33220aa9354d">tcp_server_result</a></div><div class="ttdeci">err_t tcp_server_result(void *arg, int status)</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:145</div></div>
 <div class="ttc" id="aMeshNodeAP_8cpp_html_ab1e9ec157fb9c086690a2ad3f1a5b172"><div class="ttname"><a href="MeshNodeAP_8cpp.html#ab1e9ec157fb9c086690a2ad3f1a5b172">IP</a></div><div class="ttdeci">#define IP(x)</div></div>
-<div class="ttc" id="aclassAPNode_html_a901319e21366b2ce2bf8ac779a2bf71d"><div class="ttname"><a href="classAPNode.html#a901319e21366b2ce2bf8ac779a2bf71d">APNode::get_node_id</a></div><div class="ttdeci">int get_node_id()</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:508</div></div>
-<div class="ttc" id="aclassSPI_html_a7dafbdd194b14feafa6bc4abf95114ee"><div class="ttname"><a href="classSPI.html#a7dafbdd194b14feafa6bc4abf95114ee">SPI::SPI_send_message</a></div><div class="ttdeci">int SPI_send_message(uint8_t *message, size_t length)</div><div class="ttdef"><b>Definition</b> SPI.cpp:53</div></div>
-<div class="ttc" id="aclassSPI_html_a7ff6c627f5b5176fb9ad371170b3a4af"><div class="ttname"><a href="classSPI.html#a7ff6c627f5b5176fb9ad371170b3a4af">SPI::SPI_is_write_available</a></div><div class="ttdeci">bool SPI_is_write_available()</div><div class="ttdef"><b>Definition</b> SPI.cpp:129</div></div>
+<div class="ttc" id="aclassAPNode_html_a901319e21366b2ce2bf8ac779a2bf71d"><div class="ttname"><a href="classAPNode.html#a901319e21366b2ce2bf8ac779a2bf71d">APNode::get_node_id</a></div><div class="ttdeci">int get_node_id()</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:504</div></div>
+<div class="ttc" id="aclassSPI_html_a7dafbdd194b14feafa6bc4abf95114ee"><div class="ttname"><a href="classSPI.html#a7dafbdd194b14feafa6bc4abf95114ee">SPI::SPI_send_message</a></div><div class="ttdeci">int SPI_send_message(uint8_t *message, size_t length)</div><div class="ttdef"><b>Definition</b> SPI.cpp:51</div></div>
+<div class="ttc" id="aclassSPI_html_a7ff6c627f5b5176fb9ad371170b3a4af"><div class="ttname"><a href="classSPI.html#a7ff6c627f5b5176fb9ad371170b3a4af">SPI::SPI_is_write_available</a></div><div class="ttdeci">bool SPI_is_write_available()</div><div class="ttdef"><b>Definition</b> SPI.cpp:136</div></div>
 <div class="ttc" id="adhcpserver_8c_html_a3930af518fd87ebe481a23453ae92512"><div class="ttname"><a href="dhcpserver_8c.html#a3930af518fd87ebe481a23453ae92512">dhcp_server_init</a></div><div class="ttdeci">void dhcp_server_init(dhcp_server_t *d, ip_addr_t *ip, ip_addr_t *nm)</div><div class="ttdef"><b>Definition</b> dhcpserver.c:297</div></div>
-<div class="ttc" id="astructTCP__SERVER__T___html_a01476886348d11f11f6ea17a8099b15a"><div class="ttname"><a href="structTCP__SERVER__T__.html#a01476886348d11f11f6ea17a8099b15a">TCP_SERVER_T_::gw</a></div><div class="ttdeci">ip_addr_t gw</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:78</div></div>
-<div class="ttc" id="astructTCP__SERVER__T___html_a96c913acdc8fac8304296bd845a14f2b"><div class="ttname"><a href="structTCP__SERVER__T__.html#a96c913acdc8fac8304296bd845a14f2b">TCP_SERVER_T_::dhcp_server</a></div><div class="ttdeci">dhcp_server_t dhcp_server</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:80</div></div>
+<div class="ttc" id="astructTCP__SERVER__T___html_a01476886348d11f11f6ea17a8099b15a"><div class="ttname"><a href="structTCP__SERVER__T__.html#a01476886348d11f11f6ea17a8099b15a">TCP_SERVER_T_::gw</a></div><div class="ttdeci">ip_addr_t gw</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:74</div></div>
+<div class="ttc" id="astructTCP__SERVER__T___html_a96c913acdc8fac8304296bd845a14f2b"><div class="ttname"><a href="structTCP__SERVER__T__.html#a96c913acdc8fac8304296bd845a14f2b">TCP_SERVER_T_::dhcp_server</a></div><div class="ttdeci">dhcp_server_t dhcp_server</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:76</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>, <a class="el" href="structTCP__SERVER__T__.html#a96c913acdc8fac8304296bd845a14f2b">TCP_SERVER_T_::dhcp_server</a>, <a class="el" href="dhcpserver_8c.html#a3930af518fd87ebe481a23453ae92512">dhcp_server_init()</a>, <a class="el" href="classAPNode.html#a901319e21366b2ce2bf8ac779a2bf71d">get_node_id()</a>, <a class="el" href="structTCP__SERVER__T__.html#a01476886348d11f11f6ea17a8099b15a">TCP_SERVER_T_::gw</a>, <a class="el" href="MeshNodeAP_8cpp.html#ab1e9ec157fb9c086690a2ad3f1a5b172">IP</a>, <a class="el" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>, <a class="el" href="classAPNode.html#af24f7284d8a7f02f73b98e20a0ce69d2">password</a>, <a class="el" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a>, <a class="el" href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI::SPI_init()</a>, <a class="el" href="classSPI.html#a7ff6c627f5b5176fb9ad371170b3a4af">SPI::SPI_is_write_available()</a>, <a class="el" href="classSPI.html#a7dafbdd194b14feafa6bc4abf95114ee">SPI::SPI_send_message()</a>, <a class="el" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>, <a class="el" href="MeshNodeAP_8cpp.html#a01ab1a5940d58c4d231b186df2a50294">tcp_server_open()</a>, and <a class="el" href="MeshNodeAP_8cpp.html#aa770ff9e047fdd2a26da33220aa9354d">tcp_server_result()</a>.</p>
 
@@ -756,24 +756,24 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  587</span>                          {</div>
-<div class="line"><span class="lineno">  588</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a>) {</div>
-<div class="line"><span class="lineno">  589</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  590</span>    }</div>
-<div class="line"><span class="lineno">  591</span>    </div>
-<div class="line"><span class="lineno">  592</span>    <span class="comment">// Disable the AP mode</span></div>
-<div class="line"><span class="lineno">  593</span>    cyw43_arch_lwip_begin();</div>
-<div class="line"><span class="lineno">  594</span>    cyw43_arch_disable_ap_mode();</div>
-<div class="line"><span class="lineno">  595</span>    cyw43_arch_lwip_end();</div>
-<div class="line"><span class="lineno">  596</span>    </div>
-<div class="line"><span class="lineno">  597</span>    <span class="comment">// Close the TCP server</span></div>
-<div class="line"><span class="lineno">  598</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a> &amp;&amp; <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a04904a1963bae5da866eef69595887e5">server_pcb</a>) {</div>
-<div class="line"><span class="lineno">  599</span>        <a class="code hl_function" href="MeshNodeAP_8cpp.html#a46b9f7a16b75932c3df4c486653eb673">tcp_server_close</a>(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>);</div>
-<div class="line"><span class="lineno">  600</span>    }</div>
-<div class="line"><span class="lineno">  601</span>    </div>
-<div class="line"><span class="lineno">  602</span>    <a class="code hl_variable" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a> = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  603</span>}</div>
-<div class="ttc" id="aMeshNodeAP_8cpp_html_a46b9f7a16b75932c3df4c486653eb673"><div class="ttname"><a href="MeshNodeAP_8cpp.html#a46b9f7a16b75932c3df4c486653eb673">tcp_server_close</a></div><div class="ttdeci">err_t tcp_server_close(void *arg)</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:123</div></div>
+<div class="fragment"><div class="line"><span class="lineno">  583</span>                          {</div>
+<div class="line"><span class="lineno">  584</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a>) {</div>
+<div class="line"><span class="lineno">  585</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  586</span>    }</div>
+<div class="line"><span class="lineno">  587</span>    </div>
+<div class="line"><span class="lineno">  588</span>    <span class="comment">// Disable the AP mode</span></div>
+<div class="line"><span class="lineno">  589</span>    cyw43_arch_lwip_begin();</div>
+<div class="line"><span class="lineno">  590</span>    cyw43_arch_disable_ap_mode();</div>
+<div class="line"><span class="lineno">  591</span>    cyw43_arch_lwip_end();</div>
+<div class="line"><span class="lineno">  592</span>    </div>
+<div class="line"><span class="lineno">  593</span>    <span class="comment">// Close the TCP server</span></div>
+<div class="line"><span class="lineno">  594</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a> &amp;&amp; <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a04904a1963bae5da866eef69595887e5">server_pcb</a>) {</div>
+<div class="line"><span class="lineno">  595</span>        <a class="code hl_function" href="MeshNodeAP_8cpp.html#a46b9f7a16b75932c3df4c486653eb673">tcp_server_close</a>(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>);</div>
+<div class="line"><span class="lineno">  596</span>    }</div>
+<div class="line"><span class="lineno">  597</span>    </div>
+<div class="line"><span class="lineno">  598</span>    <a class="code hl_variable" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a> = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  599</span>}</div>
+<div class="ttc" id="aMeshNodeAP_8cpp_html_a46b9f7a16b75932c3df4c486653eb673"><div class="ttname"><a href="MeshNodeAP_8cpp.html#a46b9f7a16b75932c3df4c486653eb673">tcp_server_close</a></div><div class="ttdeci">err_t tcp_server_close(void *arg)</div><div class="ttdef"><b>Definition</b> MeshNodeAP.cpp:119</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a>, <a class="el" href="structTCP__SERVER__T__.html#a04904a1963bae5da866eef69595887e5">TCP_SERVER_T_::server_pcb</a>, <a class="el" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>, and <a class="el" href="MeshNodeAP_8cpp.html#a46b9f7a16b75932c3df4c486653eb673">tcp_server_close()</a>.</p>
 
