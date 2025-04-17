@@ -642,22 +642,20 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
 
                 tree.add_child(initMsg->msg.source);
 
+                // Insert into map of IDs to TPCB
+                client_tpcbs.insert({clients_map[tpcb].id, tpcb});
+
 
                 uint32_t ids[4] = {0};
                 int j = 0;
 
                 // Because this is a new node, resend the list of connected nodes to everyone
-                for(auto i : clients_map) {
-                    ids[j] = i.second.id;
+                for(auto i : client_tpcbs) {
+                    ids[j] = i.first;
                     j++;
                 }
 
-                for(auto i : clients_map) {
-                    ids[j] = i.second.id;
-                    j++;
-                }
-
-                
+                // TODO - Send clients connected msg
 
                 break;
             }
@@ -673,6 +671,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                     if(!tree.find_path_parent(dataMsg->msg.dest, &dest)) {
                         ACK_flag = false;
                         NAK_flag = true;
+                        break;
                     }
                 }
                 printf("Successfully inserted into ring buffer\n");

@@ -79,6 +79,8 @@ public:
     std::map<int, std::string> client_results;
     std::map<int, bool> client_results_flag;
 
+    std::map<uint32_t, tcp_pcb*> client_tpcbs;
+
     //lp9 CONSTRUCTOR/DECONSTRUCTOR
     APNode();
     APNode(uint32_t id);
