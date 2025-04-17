@@ -23,6 +23,7 @@
   <td id="projectalign">
    <div id="projectname">GatorGrid
    </div>
+   <div id="projectbrief">A mesh network implemented on the Raspberry Pi Pico</div>
   </td>
  </tr>
  </tbody>
@@ -76,135 +77,1091 @@ $(function() {
   <div class="headertitle"><div class="title">APNode Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="MeshNode_8hpp_source.html">MeshNode.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for APNode:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAPNode__inherit__graph.png" border="0" usemap="#aAPNode_inherit__map" alt="Inheritance graph"/></div>
 <map name="aAPNode_inherit__map" id="aAPNode_inherit__map">
-<area shape="rect" title=" " alt="" coords="14,79,87,104"/>
-<area shape="rect" href="classMeshNode.html" title=" " alt="" coords="5,5,96,31"/>
+<area shape="rect" title=" " alt="" coords="5,189,200,677"/>
+<area shape="rect" href="classMeshNode.html" title=" " alt="" coords="39,5,166,141"/>
 </map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+</div>
 <div class="dynheader">
 Collaboration diagram for APNode:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAPNode__coll__graph.png" border="0" usemap="#aAPNode_coll__map" alt="Collaboration graph"/></div>
 <map name="aAPNode_coll__map" id="aAPNode_coll__map">
-<area shape="rect" title=" " alt="" coords="281,269,354,295"/>
-<area shape="rect" href="classMeshNode.html" title=" " alt="" coords="5,181,96,207"/>
-<area shape="rect" href="structTCP__SERVER__T__.html" title=" " alt="" coords="121,181,247,207"/>
-<area shape="rect" href="struct__dhcp__server__t.html" title=" " alt="" coords="47,93,167,119"/>
-<area shape="rect" href="struct__dhcp__server__lease__t.html" title=" " alt="" coords="25,5,188,31"/>
-<area shape="rect" href="structdns__server__t__.html" title=" " alt="" coords="191,93,303,119"/>
-<area shape="rect" href="classRingBuffer.html" title=" " alt="" coords="272,181,363,207"/>
-<area shape="rect" href="classChildrenTree.html" title=" " alt="" coords="387,181,490,207"/>
-<area shape="rect" href="classSPI.html" title=" " alt="" coords="515,181,557,207"/>
+<area shape="rect" title=" " alt="" coords="629,833,823,1204"/>
+<area shape="rect" href="classMeshNode.html" title=" " alt="" coords="5,598,132,734"/>
+<area shape="rect" href="structTCP__SERVER__T__.html" title=" " alt="" coords="156,561,283,771"/>
+<area shape="rect" href="struct__dhcp__server__t.html" title=" " alt="" coords="171,329,291,436"/>
+<area shape="rect" href="struct__dhcp__server__lease__t.html" title=" " alt="" coords="150,160,313,252"/>
+<area shape="rect" href="structdns__server__t__.html" title=" " alt="" coords="35,337,147,429"/>
+<area shape="rect" href="classRingBuffer.html" title=" " alt="" coords="452,591,632,741"/>
+<area shape="rect" title=" " alt="" coords="471,337,613,429"/>
+<area shape="rect" href="structdata.html" title=" " alt="" coords="598,145,678,267"/>
+<area shape="rect" title=" " alt="" coords="439,167,568,245"/>
+<area shape="rect" title=" " alt="" coords="321,460,481,537"/>
+<area shape="rect" title=" " alt="" coords="708,5,747,83"/>
+<area shape="rect" title=" " alt="" coords="885,344,1020,421"/>
+<area shape="rect" href="classChildrenTree.html" title=" " alt="" coords="1181,569,1337,763"/>
+<area shape="rect" href="structChildrenTree_1_1Node.html" title=" " alt="" coords="1176,329,1343,436"/>
+<area shape="rect" href="classSPI.html" title=" " alt="" coords="1362,591,1554,741"/>
+<area shape="rect" title=" " alt="" coords="657,620,795,712"/>
+<area shape="rect" title=" " alt="" coords="687,344,773,421"/>
+<area shape="rect" title=" " alt="" coords="702,160,841,252"/>
+<area shape="rect" title=" " alt="" coords="819,620,982,712"/>
+<area shape="rect" title=" " alt="" coords="1007,613,1157,719"/>
+<area shape="rect" title=" " alt="" coords="865,167,904,245"/>
 </map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aec0310fe551a62bbcefba9693f76aab9"><td class="memItemLeft" align="right" valign="top"><a id="aec0310fe551a62bbcefba9693f76aab9" name="aec0310fe551a62bbcefba9693f76aab9"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>APNode</b> (uint32_t id)</td></tr>
+<tr class="memitem:a7520e149cbd1fe92ec81254f60e77254"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#a7520e149cbd1fe92ec81254f60e77254">APNode</a> ()</td></tr>
+<tr class="separator:a7520e149cbd1fe92ec81254f60e77254"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec0310fe551a62bbcefba9693f76aab9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#aec0310fe551a62bbcefba9693f76aab9">APNode</a> (uint32_t id)</td></tr>
 <tr class="separator:aec0310fe551a62bbcefba9693f76aab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18d893cc18ed0b777328f2206b5e2219"><td class="memItemLeft" align="right" valign="top"><a id="a18d893cc18ed0b777328f2206b5e2219" name="a18d893cc18ed0b777328f2206b5e2219"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>init_ap_mode</b> ()</td></tr>
+<tr class="memitem:a655e0cf00805452b7a8c498b18a0514e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#a655e0cf00805452b7a8c498b18a0514e">~APNode</a> ()</td></tr>
+<tr class="separator:a655e0cf00805452b7a8c498b18a0514e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18d893cc18ed0b777328f2206b5e2219"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#a18d893cc18ed0b777328f2206b5e2219">init_ap_mode</a> ()</td></tr>
 <tr class="separator:a18d893cc18ed0b777328f2206b5e2219"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0baffab88dae0ef512726601ee2de82c"><td class="memItemLeft" align="right" valign="top"><a id="a0baffab88dae0ef512726601ee2de82c" name="a0baffab88dae0ef512726601ee2de82c"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>start_ap_mode</b> ()</td></tr>
+<tr class="memitem:a0baffab88dae0ef512726601ee2de82c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#a0baffab88dae0ef512726601ee2de82c">start_ap_mode</a> ()</td></tr>
 <tr class="separator:a0baffab88dae0ef512726601ee2de82c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d1b86fff1bbfe9baef8704c09fa08b4"><td class="memItemLeft" align="right" valign="top"><a id="a2d1b86fff1bbfe9baef8704c09fa08b4" name="a2d1b86fff1bbfe9baef8704c09fa08b4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>stop_ap_mode</b> ()</td></tr>
+<tr class="memitem:a2d1b86fff1bbfe9baef8704c09fa08b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#a2d1b86fff1bbfe9baef8704c09fa08b4">stop_ap_mode</a> ()</td></tr>
 <tr class="separator:a2d1b86fff1bbfe9baef8704c09fa08b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb770e3913b5027d76771517446dcce0"><td class="memItemLeft" align="right" valign="top"><a id="aeb770e3913b5027d76771517446dcce0" name="aeb770e3913b5027d76771517446dcce0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>poll</b> (unsigned int timeout_ms=1000)</td></tr>
+<tr class="memitem:aeb770e3913b5027d76771517446dcce0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#aeb770e3913b5027d76771517446dcce0">poll</a> (unsigned int timeout_ms=1000)</td></tr>
 <tr class="separator:aeb770e3913b5027d76771517446dcce0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a14af1710426ee6a9d097cd8c28f87f"><td class="memItemLeft" align="right" valign="top"><a id="a1a14af1710426ee6a9d097cd8c28f87f" name="a1a14af1710426ee6a9d097cd8c28f87f"></a>
-char *&#160;</td><td class="memItemRight" valign="bottom"><b>get_client_data</b> (int ID)</td></tr>
+<tr class="memitem:a1a14af1710426ee6a9d097cd8c28f87f"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#a1a14af1710426ee6a9d097cd8c28f87f">get_client_data</a> (int ID)</td></tr>
 <tr class="separator:a1a14af1710426ee6a9d097cd8c28f87f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1c02af9da183625721288410c565f66"><td class="memItemLeft" align="right" valign="top"><a id="af1c02af9da183625721288410c565f66" name="af1c02af9da183625721288410c565f66"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>has_client_data</b> (int ID)</td></tr>
+<tr class="memitem:af1c02af9da183625721288410c565f66"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#af1c02af9da183625721288410c565f66">has_client_data</a> (int ID)</td></tr>
 <tr class="separator:af1c02af9da183625721288410c565f66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac150d8ef94717187c4196be4032146dd"><td class="memItemLeft" align="right" valign="top"><a id="ac150d8ef94717187c4196be4032146dd" name="ac150d8ef94717187c4196be4032146dd"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>check_all_client_data</b> ()</td></tr>
+<tr class="memitem:ac150d8ef94717187c4196be4032146dd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#ac150d8ef94717187c4196be4032146dd">check_all_client_data</a> ()</td></tr>
 <tr class="separator:ac150d8ef94717187c4196be4032146dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8e48a111bea8c9f01f592892256ec0f"><td class="memItemLeft" align="right" valign="top"><a id="ac8e48a111bea8c9f01f592892256ec0f" name="ac8e48a111bea8c9f01f592892256ec0f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_ap_credentials</b> (char name[32], const char *pwd)</td></tr>
+<tr class="memitem:ac8e48a111bea8c9f01f592892256ec0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#ac8e48a111bea8c9f01f592892256ec0f">set_ap_credentials</a> (char name[32], const char *pwd)</td></tr>
 <tr class="separator:ac8e48a111bea8c9f01f592892256ec0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a901319e21366b2ce2bf8ac779a2bf71d"><td class="memItemLeft" align="right" valign="top"><a id="a901319e21366b2ce2bf8ac779a2bf71d" name="a901319e21366b2ce2bf8ac779a2bf71d"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>get_node_id</b> ()</td></tr>
+<tr class="memitem:a901319e21366b2ce2bf8ac779a2bf71d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#a901319e21366b2ce2bf8ac779a2bf71d">get_node_id</a> ()</td></tr>
 <tr class="separator:a901319e21366b2ce2bf8ac779a2bf71d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5a41cb6892721ffd8543d5bef39150e"><td class="memItemLeft" align="right" valign="top"><a id="ab5a41cb6892721ffd8543d5bef39150e" name="ab5a41cb6892721ffd8543d5bef39150e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_node_id</b> (int ID)</td></tr>
+<tr class="memitem:ab5a41cb6892721ffd8543d5bef39150e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#ab5a41cb6892721ffd8543d5bef39150e">set_node_id</a> (int ID)</td></tr>
 <tr class="separator:ab5a41cb6892721ffd8543d5bef39150e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a818d713e7937e58df4a0aa1366e63da0"><td class="memItemLeft" align="right" valign="top"><a id="a818d713e7937e58df4a0aa1366e63da0" name="a818d713e7937e58df4a0aa1366e63da0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>server_start</b> ()</td></tr>
+<tr class="memitem:a818d713e7937e58df4a0aa1366e63da0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#a818d713e7937e58df4a0aa1366e63da0">server_start</a> ()</td></tr>
 <tr class="separator:a818d713e7937e58df4a0aa1366e63da0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa02e0b6dcbc9a8f06c769c4277f30482"><td class="memItemLeft" align="right" valign="top"><a id="aa02e0b6dcbc9a8f06c769c4277f30482" name="aa02e0b6dcbc9a8f06c769c4277f30482"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>server_running</b> ()</td></tr>
+<tr class="memitem:aa02e0b6dcbc9a8f06c769c4277f30482"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#aa02e0b6dcbc9a8f06c769c4277f30482">server_running</a> ()</td></tr>
 <tr class="separator:aa02e0b6dcbc9a8f06c769c4277f30482"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1eb8b7163387b293008b3903cc651c90"><td class="memItemLeft" align="right" valign="top"><a id="a1eb8b7163387b293008b3903cc651c90" name="a1eb8b7163387b293008b3903cc651c90"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>number_of_messages</b> ()</td></tr>
+<tr class="memitem:a1eb8b7163387b293008b3903cc651c90"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#a1eb8b7163387b293008b3903cc651c90">number_of_messages</a> ()</td></tr>
 <tr class="separator:a1eb8b7163387b293008b3903cc651c90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33de1a7fccff55203c1f2b92a7fe24e4"><td class="memItemLeft" align="right" valign="top"><a id="a33de1a7fccff55203c1f2b92a7fe24e4" name="a33de1a7fccff55203c1f2b92a7fe24e4"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>send_tcp_data</b> (uint32_t id, tcp_pcb *client_pcb, uint8_t *<a class="el" href="structdata.html">data</a>, uint32_t size)</td></tr>
+<tr class="memitem:a33de1a7fccff55203c1f2b92a7fe24e4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#a33de1a7fccff55203c1f2b92a7fe24e4">send_tcp_data</a> (uint32_t id, tcp_pcb *client_pcb, uint8_t *<a class="el" href="structdata.html">data</a>, uint32_t size)</td></tr>
 <tr class="separator:a33de1a7fccff55203c1f2b92a7fe24e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42fd14dc2a5b4dd37f3675e8db6be39b"><td class="memItemLeft" align="right" valign="top"><a id="a42fd14dc2a5b4dd37f3675e8db6be39b" name="a42fd14dc2a5b4dd37f3675e8db6be39b"></a>
-struct <a class="el" href="structdata.html">data</a>&#160;</td><td class="memItemRight" valign="bottom"><b>digest_data</b> ()</td></tr>
+<tr class="memitem:a42fd14dc2a5b4dd37f3675e8db6be39b"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdata.html">data</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#a42fd14dc2a5b4dd37f3675e8db6be39b">digest_data</a> ()</td></tr>
 <tr class="separator:a42fd14dc2a5b4dd37f3675e8db6be39b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83d69a5b41d1614d64735de23ac6d6b1"><td class="memItemLeft" align="right" valign="top"><a id="a83d69a5b41d1614d64735de23ac6d6b1" name="a83d69a5b41d1614d64735de23ac6d6b1"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>handle_incoming_data</b> (unsigned char *buffer, tcp_pcb *tpcb, struct pbuf *p)</td></tr>
+<tr class="memitem:a83d69a5b41d1614d64735de23ac6d6b1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">handle_incoming_data</a> (unsigned char *buffer, tcp_pcb *tpcb, struct pbuf *p)</td></tr>
 <tr class="separator:a83d69a5b41d1614d64735de23ac6d6b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classMeshNode"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classMeshNode')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classMeshNode.html">MeshNode</a></td></tr>
-<tr class="memitem:af666a6d82e48cbff383d10e93dde8719 inherit pub_methods_classMeshNode"><td class="memItemLeft" align="right" valign="top"><a id="af666a6d82e48cbff383d10e93dde8719" name="af666a6d82e48cbff383d10e93dde8719"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_NodeID</b> (uint32_t ID)</td></tr>
+<tr class="memitem:ab525cdafcb942a4c79eb517b7ef0f5c7 inherit pub_methods_classMeshNode"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeshNode.html#ab525cdafcb942a4c79eb517b7ef0f5c7">MeshNode</a> ()</td></tr>
+<tr class="separator:ab525cdafcb942a4c79eb517b7ef0f5c7 inherit pub_methods_classMeshNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf8b858b11632dc9827b3ffa1cdc8c9b inherit pub_methods_classMeshNode"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeshNode.html#abf8b858b11632dc9827b3ffa1cdc8c9b">~MeshNode</a> ()</td></tr>
+<tr class="separator:abf8b858b11632dc9827b3ffa1cdc8c9b inherit pub_methods_classMeshNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af666a6d82e48cbff383d10e93dde8719 inherit pub_methods_classMeshNode"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">set_NodeID</a> (uint32_t ID)</td></tr>
 <tr class="separator:af666a6d82e48cbff383d10e93dde8719 inherit pub_methods_classMeshNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc8f29a44d7baf4a56ca6f20cec861e8 inherit pub_methods_classMeshNode"><td class="memItemLeft" align="right" valign="top"><a id="adc8f29a44d7baf4a56ca6f20cec861e8" name="adc8f29a44d7baf4a56ca6f20cec861e8"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>get_NodeID</b> ()</td></tr>
+<tr class="memitem:adc8f29a44d7baf4a56ca6f20cec861e8 inherit pub_methods_classMeshNode"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a> ()</td></tr>
 <tr class="separator:adc8f29a44d7baf4a56ca6f20cec861e8 inherit pub_methods_classMeshNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38f289f39af779b21b1918e1da6f352e inherit pub_methods_classMeshNode"><td class="memItemLeft" align="right" valign="top"><a id="a38f289f39af779b21b1918e1da6f352e" name="a38f289f39af779b21b1918e1da6f352e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>seed_rand</b> ()</td></tr>
+<tr class="memitem:a38f289f39af779b21b1918e1da6f352e inherit pub_methods_classMeshNode"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeshNode.html#a38f289f39af779b21b1918e1da6f352e">seed_rand</a> ()</td></tr>
 <tr class="separator:a38f289f39af779b21b1918e1da6f352e inherit pub_methods_classMeshNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a88f8012cf5851db724dcef1322829bac"><td class="memItemLeft" align="right" valign="top"><a id="a88f8012cf5851db724dcef1322829bac" name="a88f8012cf5851db724dcef1322829bac"></a>
-<a class="el" href="structTCP__SERVER__T__.html">TCP_SERVER_T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>state</b></td></tr>
+<tr class="memitem:a88f8012cf5851db724dcef1322829bac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="MeshNode_8hpp.html#af7f4e975a84bf5ac14987f38c5a0bd49">TCP_SERVER_T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a></td></tr>
 <tr class="separator:a88f8012cf5851db724dcef1322829bac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a121221cf5fdde7e45b87e81e3ede857d"><td class="memItemLeft" align="right" valign="top"><a id="a121221cf5fdde7e45b87e81e3ede857d" name="a121221cf5fdde7e45b87e81e3ede857d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>running</b></td></tr>
+<tr class="memitem:a121221cf5fdde7e45b87e81e3ede857d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a></td></tr>
 <tr class="separator:a121221cf5fdde7e45b87e81e3ede857d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1f2d4fd7748e6020201e0305bbe793b"><td class="memItemLeft" align="right" valign="top"><a id="ad1f2d4fd7748e6020201e0305bbe793b" name="ad1f2d4fd7748e6020201e0305bbe793b"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><b>ap_name</b> [32]</td></tr>
+<tr class="memitem:ad1f2d4fd7748e6020201e0305bbe793b"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a> [32]</td></tr>
 <tr class="separator:ad1f2d4fd7748e6020201e0305bbe793b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af24f7284d8a7f02f73b98e20a0ce69d2"><td class="memItemLeft" align="right" valign="top"><a id="af24f7284d8a7f02f73b98e20a0ce69d2" name="af24f7284d8a7f02f73b98e20a0ce69d2"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>password</b> = &quot;password&quot;</td></tr>
+<tr class="memitem:af24f7284d8a7f02f73b98e20a0ce69d2"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#af24f7284d8a7f02f73b98e20a0ce69d2">password</a> = &quot;password&quot;</td></tr>
 <tr class="separator:af24f7284d8a7f02f73b98e20a0ce69d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76a4d88449c2a5ab205ab8eff9d73cec"><td class="memItemLeft" align="right" valign="top"><a id="a76a4d88449c2a5ab205ab8eff9d73cec" name="a76a4d88449c2a5ab205ab8eff9d73cec"></a>
-<a class="el" href="classRingBuffer.html">RingBuffer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>rb</b></td></tr>
+<tr class="memitem:a76a4d88449c2a5ab205ab8eff9d73cec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRingBuffer.html">RingBuffer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#a76a4d88449c2a5ab205ab8eff9d73cec">rb</a></td></tr>
 <tr class="separator:a76a4d88449c2a5ab205ab8eff9d73cec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9b37eb7479f4f685ac096b8d16a75b2"><td class="memItemLeft" align="right" valign="top"><a id="ac9b37eb7479f4f685ac096b8d16a75b2" name="ac9b37eb7479f4f685ac096b8d16a75b2"></a>
-<a class="el" href="classChildrenTree.html">ChildrenTree</a>&#160;</td><td class="memItemRight" valign="bottom"><b>tree</b></td></tr>
+<tr class="memitem:ac9b37eb7479f4f685ac096b8d16a75b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classChildrenTree.html">ChildrenTree</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#ac9b37eb7479f4f685ac096b8d16a75b2">tree</a></td></tr>
 <tr class="separator:ac9b37eb7479f4f685ac096b8d16a75b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33f42f6bd11523a7d53d337d84766808"><td class="memItemLeft" align="right" valign="top"><a id="a33f42f6bd11523a7d53d337d84766808" name="a33f42f6bd11523a7d53d337d84766808"></a>
-<a class="el" href="classSPI.html">SPI</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Master_Pico</b></td></tr>
+<tr class="memitem:a33f42f6bd11523a7d53d337d84766808"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSPI.html">SPI</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a></td></tr>
 <tr class="separator:a33f42f6bd11523a7d53d337d84766808"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35f6712389c12ce194a03bc77b8ba4d7"><td class="memItemLeft" align="right" valign="top"><a id="a35f6712389c12ce194a03bc77b8ba4d7" name="a35f6712389c12ce194a03bc77b8ba4d7"></a>
-std::vector&lt; void * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>connections</b></td></tr>
+<tr class="memitem:a35f6712389c12ce194a03bc77b8ba4d7"><td class="memItemLeft" align="right" valign="top">std::vector&lt; void * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#a35f6712389c12ce194a03bc77b8ba4d7">connections</a></td></tr>
 <tr class="separator:a35f6712389c12ce194a03bc77b8ba4d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a643de62b25972c425e1e1928964dae90"><td class="memItemLeft" align="right" valign="top"><a id="a643de62b25972c425e1e1928964dae90" name="a643de62b25972c425e1e1928964dae90"></a>
-std::map&lt; int, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>client_results</b></td></tr>
+<tr class="memitem:a643de62b25972c425e1e1928964dae90"><td class="memItemLeft" align="right" valign="top">std::map&lt; int, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#a643de62b25972c425e1e1928964dae90">client_results</a></td></tr>
 <tr class="separator:a643de62b25972c425e1e1928964dae90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bf36c3de2719acd75a1db2406c615bf"><td class="memItemLeft" align="right" valign="top"><a id="a1bf36c3de2719acd75a1db2406c615bf" name="a1bf36c3de2719acd75a1db2406c615bf"></a>
-std::map&lt; int, bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>client_results_flag</b></td></tr>
+<tr class="memitem:a1bf36c3de2719acd75a1db2406c615bf"><td class="memItemLeft" align="right" valign="top">std::map&lt; int, bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#a1bf36c3de2719acd75a1db2406c615bf">client_results_flag</a></td></tr>
 <tr class="separator:a1bf36c3de2719acd75a1db2406c615bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1010007862435c32e7b1d207225333c"><td class="memItemLeft" align="right" valign="top"><a id="aa1010007862435c32e7b1d207225333c" name="aa1010007862435c32e7b1d207225333c"></a>
-std::map&lt; uint32_t, tcp_pcb * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>client_tpcbs</b></td></tr>
+<tr class="memitem:aa1010007862435c32e7b1d207225333c"><td class="memItemLeft" align="right" valign="top">std::map&lt; uint32_t, tcp_pcb * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAPNode.html#aa1010007862435c32e7b1d207225333c">client_tpcbs</a></td></tr>
 <tr class="separator:aa1010007862435c32e7b1d207225333c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a7520e149cbd1fe92ec81254f60e77254" name="a7520e149cbd1fe92ec81254f60e77254"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7520e149cbd1fe92ec81254f60e77254">&#9670;&#160;</a></span>APNode() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">APNode::APNode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  374</span>               : <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a>(<span class="keyword">false</span>), <a class="code hl_variable" href="classAPNode.html#af24f7284d8a7f02f73b98e20a0ce69d2">password</a>(<span class="stringliteral">&quot;password&quot;</span>), <a class="code hl_variable" href="classAPNode.html#a76a4d88449c2a5ab205ab8eff9d73cec">rb</a>(10), <a class="code hl_variable" href="classAPNode.html#ac9b37eb7479f4f685ac096b8d16a75b2">tree</a>(<a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>()), <a class="code hl_variable" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>()  {</div>
+<div class="line"><span class="lineno">  375</span>    snprintf(<a class="code hl_variable" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>, <span class="keyword">sizeof</span>(<a class="code hl_variable" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>), <span class="stringliteral">&quot;GatorGrid_Node:%08X&quot;</span>, <a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>());</div>
+<div class="line"><span class="lineno">  376</span>    <a class="code hl_variable" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>.<a class="code hl_function" href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI_init</a>(<span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">  377</span>}</div>
+<div class="ttc" id="aclassAPNode_html_a121221cf5fdde7e45b87e81e3ede857d"><div class="ttname"><a href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">APNode::running</a></div><div class="ttdeci">bool running</div><div class="ttdef"><b>Definition:</b> MeshNode.hpp:67</div></div>
+<div class="ttc" id="aclassAPNode_html_a33f42f6bd11523a7d53d337d84766808"><div class="ttname"><a href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">APNode::Master_Pico</a></div><div class="ttdeci">SPI Master_Pico</div><div class="ttdef"><b>Definition:</b> MeshNode.hpp:74</div></div>
+<div class="ttc" id="aclassAPNode_html_a76a4d88449c2a5ab205ab8eff9d73cec"><div class="ttname"><a href="classAPNode.html#a76a4d88449c2a5ab205ab8eff9d73cec">APNode::rb</a></div><div class="ttdeci">RingBuffer rb</div><div class="ttdef"><b>Definition:</b> MeshNode.hpp:71</div></div>
+<div class="ttc" id="aclassAPNode_html_a88f8012cf5851db724dcef1322829bac"><div class="ttname"><a href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">APNode::state</a></div><div class="ttdeci">TCP_SERVER_T * state</div><div class="ttdef"><b>Definition:</b> MeshNode.hpp:66</div></div>
+<div class="ttc" id="aclassAPNode_html_ac9b37eb7479f4f685ac096b8d16a75b2"><div class="ttname"><a href="classAPNode.html#ac9b37eb7479f4f685ac096b8d16a75b2">APNode::tree</a></div><div class="ttdeci">ChildrenTree tree</div><div class="ttdef"><b>Definition:</b> MeshNode.hpp:72</div></div>
+<div class="ttc" id="aclassAPNode_html_ad1f2d4fd7748e6020201e0305bbe793b"><div class="ttname"><a href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">APNode::ap_name</a></div><div class="ttdeci">char ap_name[32]</div><div class="ttdef"><b>Definition:</b> MeshNode.hpp:68</div></div>
+<div class="ttc" id="aclassAPNode_html_af24f7284d8a7f02f73b98e20a0ce69d2"><div class="ttname"><a href="classAPNode.html#af24f7284d8a7f02f73b98e20a0ce69d2">APNode::password</a></div><div class="ttdeci">const char * password</div><div class="ttdef"><b>Definition:</b> MeshNode.hpp:69</div></div>
+<div class="ttc" id="aclassMeshNode_html_adc8f29a44d7baf4a56ca6f20cec861e8"><div class="ttname"><a href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">MeshNode::get_NodeID</a></div><div class="ttdeci">uint32_t get_NodeID()</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:412</div></div>
+<div class="ttc" id="aclassSPI_html_ab72f8834e97185f2f5ec4ca06f51dbfd"><div class="ttname"><a href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI::SPI_init</a></div><div class="ttdeci">bool SPI_init(bool mode)</div><div class="ttdef"><b>Definition:</b> SPI.cpp:17</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>, <a class="el" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">MeshNode::get_NodeID()</a>, <a class="el" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>, and <a class="el" href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI::SPI_init()</a>.</p>
+
+</div>
+</div>
+<a id="aec0310fe551a62bbcefba9693f76aab9" name="aec0310fe551a62bbcefba9693f76aab9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec0310fe551a62bbcefba9693f76aab9">&#9670;&#160;</a></span>APNode() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">APNode::APNode </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  379</span>                          : <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a>(<span class="keyword">false</span>), <a class="code hl_variable" href="classAPNode.html#af24f7284d8a7f02f73b98e20a0ce69d2">password</a>(<span class="stringliteral">&quot;password&quot;</span>), <a class="code hl_variable" href="classAPNode.html#a76a4d88449c2a5ab205ab8eff9d73cec">rb</a>(10), <a class="code hl_variable" href="classAPNode.html#ac9b37eb7479f4f685ac096b8d16a75b2">tree</a>(<span class="keywordtype">id</span>), <a class="code hl_variable" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>()  {</div>
+<div class="line"><span class="lineno">  380</span>    <a class="code hl_function" href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">set_NodeID</a>(<span class="keywordtype">id</span>);</div>
+<div class="line"><span class="lineno">  381</span>    snprintf(<a class="code hl_variable" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>, <span class="keyword">sizeof</span>(<a class="code hl_variable" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>), <span class="stringliteral">&quot;GatorGrid_Node:%08X&quot;</span>, <a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>());</div>
+<div class="line"><span class="lineno">  382</span>    <a class="code hl_variable" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>.<a class="code hl_function" href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI_init</a>(<span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">  383</span>}</div>
+<div class="ttc" id="aclassMeshNode_html_af666a6d82e48cbff383d10e93dde8719"><div class="ttname"><a href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">MeshNode::set_NodeID</a></div><div class="ttdeci">void set_NodeID(uint32_t ID)</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:401</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>, <a class="el" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">MeshNode::get_NodeID()</a>, <a class="el" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>, <a class="el" href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">MeshNode::set_NodeID()</a>, and <a class="el" href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI::SPI_init()</a>.</p>
+
+</div>
+</div>
+<a id="a655e0cf00805452b7a8c498b18a0514e" name="a655e0cf00805452b7a8c498b18a0514e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a655e0cf00805452b7a8c498b18a0514e">&#9670;&#160;</a></span>~APNode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">APNode::~APNode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  417</span>               {</div>
+<div class="line"><span class="lineno">  418</span>    <span class="comment">// Make sure AP mode is stopped</span></div>
+<div class="line"><span class="lineno">  419</span>    <a class="code hl_function" href="classAPNode.html#a2d1b86fff1bbfe9baef8704c09fa08b4">stop_ap_mode</a>();</div>
+<div class="line"><span class="lineno">  420</span>    </div>
+<div class="line"><span class="lineno">  421</span>    <span class="comment">// Free the state if it exists</span></div>
+<div class="line"><span class="lineno">  422</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>) {</div>
+<div class="line"><span class="lineno">  423</span>        free(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>);</div>
+<div class="line"><span class="lineno">  424</span>        <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  425</span>    }</div>
+<div class="line"><span class="lineno">  426</span>    </div>
+<div class="line"><span class="lineno">  427</span>    <span class="comment">// Deinitialize the driver</span></div>
+<div class="line"><span class="lineno">  428</span>    cyw43_arch_deinit();</div>
+<div class="line"><span class="lineno">  429</span>}</div>
+<div class="ttc" id="aclassAPNode_html_a2d1b86fff1bbfe9baef8704c09fa08b4"><div class="ttname"><a href="classAPNode.html#a2d1b86fff1bbfe9baef8704c09fa08b4">APNode::stop_ap_mode</a></div><div class="ttdeci">void stop_ap_mode()</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:486</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>, and <a class="el" href="classAPNode.html#a2d1b86fff1bbfe9baef8704c09fa08b4">stop_ap_mode()</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac150d8ef94717187c4196be4032146dd" name="ac150d8ef94717187c4196be4032146dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac150d8ef94717187c4196be4032146dd">&#9670;&#160;</a></span>check_all_client_data()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool APNode::check_all_client_data </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a42fd14dc2a5b4dd37f3675e8db6be39b" name="a42fd14dc2a5b4dd37f3675e8db6be39b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42fd14dc2a5b4dd37f3675e8db6be39b">&#9670;&#160;</a></span>digest_data()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdata.html">data</a> APNode::digest_data </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  385</span>                                {</div>
+<div class="line"><span class="lineno">  386</span>    <span class="keywordflow">return</span> this-&gt;<a class="code hl_variable" href="classAPNode.html#a76a4d88449c2a5ab205ab8eff9d73cec">rb</a>.<a class="code hl_function" href="classRingBuffer.html#ac68abd2ecd02bea9e99c3195694723c0">digest</a>();</div>
+<div class="line"><span class="lineno">  387</span>}</div>
+<div class="ttc" id="aclassRingBuffer_html_ac68abd2ecd02bea9e99c3195694723c0"><div class="ttname"><a href="classRingBuffer.html#ac68abd2ecd02bea9e99c3195694723c0">RingBuffer::digest</a></div><div class="ttdeci">struct data digest()</div><div class="ttdef"><b>Definition:</b> RingBuffer.cpp:33</div></div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="AP__Test_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>.</p>
+
+</div>
+</div>
+<a id="a1a14af1710426ee6a9d097cd8c28f87f" name="a1a14af1710426ee6a9d097cd8c28f87f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a14af1710426ee6a9d097cd8c28f87f">&#9670;&#160;</a></span>get_client_data()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char * APNode::get_client_data </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ID</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a901319e21366b2ce2bf8ac779a2bf71d" name="a901319e21366b2ce2bf8ac779a2bf71d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a901319e21366b2ce2bf8ac779a2bf71d">&#9670;&#160;</a></span>get_node_id()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int APNode::get_node_id </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  407</span>                       {</div>
+<div class="line"><span class="lineno">  408</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>();</div>
+<div class="line"><span class="lineno">  409</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">MeshNode::get_NodeID()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="src_2main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>, and <a class="el" href="classAPNode.html#a0baffab88dae0ef512726601ee2de82c">start_ap_mode()</a>.</p>
+
+</div>
+</div>
+<a id="a83d69a5b41d1614d64735de23ac6d6b1" name="a83d69a5b41d1614d64735de23ac6d6b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83d69a5b41d1614d64735de23ac6d6b1">&#9670;&#160;</a></span>handle_incoming_data()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool APNode::handle_incoming_data </td>
+          <td>(</td>
+          <td class="paramtype">unsigned char *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">tcp_pcb *&#160;</td>
+          <td class="paramname"><em>tpcb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct pbuf *&#160;</td>
+          <td class="paramname"><em>p</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  607</span>                                                                                      {</div>
+<div class="line"><span class="lineno">  608</span>    <span class="keywordtype">bool</span> ACK_flag = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  609</span>    <span class="keywordtype">bool</span> NAK_flag = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  610</span>    <span class="comment">// tcp_init_msg_t *init_msg_str = reinterpret_cast &lt;tcp_init_msg_t *&gt;(state-&gt;buffer_recv);</span></div>
+<div class="line"><span class="lineno">  611</span>    <span class="comment">// clients_map[tpcb].id = init_msg_str-&gt;source;</span></div>
+<div class="line"><span class="lineno">  612</span>    <span class="comment">// printf(&quot;ID RECV FROM INIT MESSAGE: %08X\n&quot;, clients_map[tpcb].id);</span></div>
+<div class="line"><span class="lineno">  613</span>    <span class="comment">// uint32_t test = ((APNode*)(state-&gt;ap_node))-&gt;get_NodeID();</span></div>
+<div class="line"><span class="lineno">  614</span>    <span class="comment">// printf(&quot;CURRENT NODE ID: %08X\n&quot;, test);</span></div>
+<div class="line"><span class="lineno">  615</span> </div>
+<div class="line"><span class="lineno">  616</span>    <span class="comment">// TCP_INIT_MESSAGE init_msg(((APNode*)(state-&gt;ap_node))-&gt;get_NodeID());  </span></div>
+<div class="line"><span class="lineno">  617</span>    <a class="code hl_class" href="classTCP__MESSAGE.html">TCP_MESSAGE</a>* msg = <a class="code hl_function" href="Messages_8cpp.html#af38d02b60aa8d13a179c24ca5d9ad8d1">parseMessage</a>(<span class="keyword">reinterpret_cast &lt;</span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#aa1ed039fe3ef2265ae3515ac667c1a0f">buffer_recv</a>));</div>
+<div class="line"><span class="lineno">  618</span>    uint8_t msg_id = 0xFF;</div>
+<div class="line"><span class="lineno">  619</span> </div>
+<div class="line"><span class="lineno">  620</span>    <span class="keywordflow">if</span> (!msg) {</div>
+<div class="line"><span class="lineno">  621</span>        printf(<span class="stringliteral">&quot;Error: Unable to parse message (invalid buffer or unknown msg_id).\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  622</span>        ACK_flag = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  623</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  624</span> </div>
+<div class="line"><span class="lineno">  625</span>        <span class="comment">// TODO: Handle error checks for messages</span></div>
+<div class="line"><span class="lineno">  626</span>        msg_id = buffer[1];</div>
+<div class="line"><span class="lineno">  627</span> </div>
+<div class="line"><span class="lineno">  628</span>        <span class="comment">//DUMP_BYTES(state-&gt;buffer_recv, 2048);</span></div>
+<div class="line"><span class="lineno">  629</span> </div>
+<div class="line"><span class="lineno">  630</span>        <span class="keywordflow">switch</span> (msg_id) {</div>
+<div class="line"><span class="lineno">  631</span>            <span class="keywordflow">case</span> 0x00: {</div>
+<div class="line"><span class="lineno">  632</span>                <a class="code hl_class" href="classTCP__INIT__MESSAGE.html">TCP_INIT_MESSAGE</a>* initMsg = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classTCP__INIT__MESSAGE.html">TCP_INIT_MESSAGE</a>*<span class="keyword">&gt;</span>(msg);</div>
+<div class="line"><span class="lineno">  633</span>                printf(<span class="stringliteral">&quot;Received initialization message from node %u&quot;</span>, initMsg-&gt;<a class="code hl_variable" href="classTCP__INIT__MESSAGE.html#a28eda401f8e48a36fc80e90f03b7dbc3">msg</a>.source);</div>
+<div class="line"><span class="lineno">  634</span>                <span class="comment">//does stuff</span></div>
+<div class="line"><span class="lineno">  635</span> </div>
+<div class="line"><span class="lineno">  636</span>                <span class="comment">// Set init node ID</span></div>
+<div class="line"><span class="lineno">  637</span>                <span class="keywordflow">if</span>(<a class="code hl_variable" href="MeshNodeAP_8cpp.html#a94a45b38b5c69f0fa3c2906cc6edc264">clients_map</a>[tpcb].id_recved == <span class="keyword">false</span>) {</div>
+<div class="line"><span class="lineno">  638</span>                    ACK_flag = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  639</span>                    <a class="code hl_variable" href="MeshNodeAP_8cpp.html#a94a45b38b5c69f0fa3c2906cc6edc264">clients_map</a>[tpcb].id_recved = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  640</span>                    <a class="code hl_variable" href="MeshNodeAP_8cpp.html#a94a45b38b5c69f0fa3c2906cc6edc264">clients_map</a>[tpcb].id = initMsg-&gt;<a class="code hl_variable" href="classTCP__INIT__MESSAGE.html#a28eda401f8e48a36fc80e90f03b7dbc3">msg</a>.source;</div>
+<div class="line"><span class="lineno">  641</span>                }</div>
+<div class="line"><span class="lineno">  642</span> </div>
+<div class="line"><span class="lineno">  643</span>                <a class="code hl_variable" href="classAPNode.html#ac9b37eb7479f4f685ac096b8d16a75b2">tree</a>.<a class="code hl_function" href="classChildrenTree.html#a3523b166ae262b00ad195f5e0a509250">add_child</a>(initMsg-&gt;<a class="code hl_variable" href="classTCP__INIT__MESSAGE.html#a28eda401f8e48a36fc80e90f03b7dbc3">msg</a>.source);</div>
+<div class="line"><span class="lineno">  644</span> </div>
+<div class="line"><span class="lineno">  645</span>                <span class="comment">// Insert into map of IDs to TPCB</span></div>
+<div class="line"><span class="lineno">  646</span>                <a class="code hl_variable" href="classAPNode.html#aa1010007862435c32e7b1d207225333c">client_tpcbs</a>.insert({<a class="code hl_variable" href="MeshNodeAP_8cpp.html#a94a45b38b5c69f0fa3c2906cc6edc264">clients_map</a>[tpcb].id, tpcb});</div>
+<div class="line"><span class="lineno">  647</span> </div>
+<div class="line"><span class="lineno">  648</span> </div>
+<div class="line"><span class="lineno">  649</span>                uint32_t ids[4] = {0};</div>
+<div class="line"><span class="lineno">  650</span>                <span class="keywordtype">int</span> j = 0;</div>
+<div class="line"><span class="lineno">  651</span> </div>
+<div class="line"><span class="lineno">  652</span>                <span class="comment">// Because this is a new node, resend the list of connected nodes to everyone</span></div>
+<div class="line"><span class="lineno">  653</span>                <span class="keywordflow">for</span>(<span class="keyword">auto</span> i : <a class="code hl_variable" href="classAPNode.html#aa1010007862435c32e7b1d207225333c">client_tpcbs</a>) {</div>
+<div class="line"><span class="lineno">  654</span>                    ids[j] = i.first;</div>
+<div class="line"><span class="lineno">  655</span>                    j++;</div>
+<div class="line"><span class="lineno">  656</span>                }</div>
+<div class="line"><span class="lineno">  657</span> </div>
+<div class="line"><span class="lineno">  658</span>                <span class="comment">// TODO - Send clients connected msg</span></div>
+<div class="line"><span class="lineno">  659</span> </div>
+<div class="line"><span class="lineno">  660</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  661</span>            }</div>
+<div class="line"><span class="lineno">  662</span>            <span class="keywordflow">case</span> 0x01: {</div>
+<div class="line"><span class="lineno">  663</span>                <a class="code hl_class" href="classTCP__DATA__MSG.html">TCP_DATA_MSG</a>* dataMsg = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classTCP__DATA__MSG.html">TCP_DATA_MSG</a>*<span class="keyword">&gt;</span>(msg);</div>
+<div class="line"><span class="lineno">  664</span>                <span class="comment">// Store messages in a ring buffer</span></div>
+<div class="line"><span class="lineno">  665</span>                puts(<span class="stringliteral">&quot;Got data message&quot;</span>);</div>
+<div class="line"><span class="lineno">  666</span>                printf(<span class="stringliteral">&quot;Testing dataMsg, len:%u, source:%08x, dest:%08x\n&quot;</span>,dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a69e49fb8a039fd284a2457da25d22494">msg</a>.msg_len, dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a69e49fb8a039fd284a2457da25d22494">msg</a>.source, dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a69e49fb8a039fd284a2457da25d22494">msg</a>.dest);</div>
+<div class="line"><span class="lineno">  667</span>                <span class="keywordflow">if</span> (dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a69e49fb8a039fd284a2457da25d22494">msg</a>.dest == <a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>()) {</div>
+<div class="line"><span class="lineno">  668</span>                    <a class="code hl_variable" href="classAPNode.html#a76a4d88449c2a5ab205ab8eff9d73cec">rb</a>.<a class="code hl_function" href="classRingBuffer.html#a26f24ba18ecad8fc3df4b848f35724c5">insert</a>(dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a69e49fb8a039fd284a2457da25d22494">msg</a>.msg,dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a69e49fb8a039fd284a2457da25d22494">msg</a>.msg_len, dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a69e49fb8a039fd284a2457da25d22494">msg</a>.source, dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a69e49fb8a039fd284a2457da25d22494">msg</a>.dest);</div>
+<div class="line"><span class="lineno">  669</span>                } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  670</span>                    uint32_t dest;</div>
+<div class="line"><span class="lineno">  671</span>                    <span class="keywordflow">if</span>(!<a class="code hl_variable" href="classAPNode.html#ac9b37eb7479f4f685ac096b8d16a75b2">tree</a>.<a class="code hl_function" href="classChildrenTree.html#af6ca6ba5a0ca4b85604af7c002abef9e">find_path_parent</a>(dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a69e49fb8a039fd284a2457da25d22494">msg</a>.dest, &amp;dest)) {</div>
+<div class="line"><span class="lineno">  672</span>                        ACK_flag = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  673</span>                        NAK_flag = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  674</span>                        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  675</span>                    }</div>
+<div class="line"><span class="lineno">  676</span>                }</div>
+<div class="line"><span class="lineno">  677</span>                printf(<span class="stringliteral">&quot;Successfully inserted into ring buffer\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  678</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  679</span>            }</div>
+<div class="line"><span class="lineno">  680</span>            <span class="keywordflow">case</span> 0x02: {</div>
+<div class="line"><span class="lineno">  681</span>                <a class="code hl_class" href="classTCP__DISCONNECT__MSG.html">TCP_DISCONNECT_MSG</a>* discMsg = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classTCP__DISCONNECT__MSG.html">TCP_DISCONNECT_MSG</a>*<span class="keyword">&gt;</span>(msg);</div>
+<div class="line"><span class="lineno">  682</span>                <span class="comment">//does stuff</span></div>
+<div class="line"><span class="lineno">  683</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  684</span>            }</div>
+<div class="line"><span class="lineno">  685</span>            <span class="keywordflow">case</span> 0x03: {</div>
+<div class="line"><span class="lineno">  686</span>                <a class="code hl_class" href="classTCP__UPDATE__MESSAGE.html">TCP_UPDATE_MESSAGE</a>* updMsg = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classTCP__UPDATE__MESSAGE.html">TCP_UPDATE_MESSAGE</a>*<span class="keyword">&gt;</span>(msg);</div>
+<div class="line"><span class="lineno">  687</span>                <span class="comment">//does stuff</span></div>
+<div class="line"><span class="lineno">  688</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  689</span>            }</div>
+<div class="line"><span class="lineno">  690</span>            <span class="keywordflow">case</span> 0x04: {</div>
+<div class="line"><span class="lineno">  691</span>                <a class="code hl_class" href="classTCP__ACK__MESSAGE.html">TCP_ACK_MESSAGE</a>* ackMsg = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classTCP__ACK__MESSAGE.html">TCP_ACK_MESSAGE</a>*<span class="keyword">&gt;</span>(msg);</div>
+<div class="line"><span class="lineno">  692</span>                <span class="comment">//does stuff</span></div>
+<div class="line"><span class="lineno">  693</span>                <span class="comment">// Do not need to respond to acks</span></div>
+<div class="line"><span class="lineno">  694</span>                ACK_flag = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  695</span> </div>
+<div class="line"><span class="lineno">  696</span> </div>
+<div class="line"><span class="lineno">  697</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  698</span>            }</div>
+<div class="line"><span class="lineno">  699</span>            <span class="keywordflow">case</span> 0x05: {</div>
+<div class="line"><span class="lineno">  700</span>                <a class="code hl_class" href="classTCP__NAK__MESSAGE.html">TCP_NAK_MESSAGE</a>* nakMsg = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classTCP__NAK__MESSAGE.html">TCP_NAK_MESSAGE</a>*<span class="keyword">&gt;</span>(msg);</div>
+<div class="line"><span class="lineno">  701</span>                <span class="comment">//does stuff</span></div>
+<div class="line"><span class="lineno">  702</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  703</span>            }</div>
+<div class="line"><span class="lineno">  704</span>            <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  705</span>                printf(<span class="stringliteral">&quot;Error: Unable to parse message (invalid buffer or unknown msg_id).\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  706</span>                ACK_flag = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  707</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  708</span>        }</div>
+<div class="line"><span class="lineno">  709</span>    }</div>
+<div class="line"><span class="lineno">  710</span> </div>
+<div class="line"><span class="lineno">  711</span>    <span class="keywordflow">if</span> (ACK_flag){</div>
+<div class="line"><span class="lineno">  712</span>        <span class="comment">// Assumption: clients_map[tpcb].id implies that any message worth acking isn&#39;t being forwarded and is originating from the intended node</span></div>
+<div class="line"><span class="lineno">  713</span>        <a class="code hl_class" href="classTCP__ACK__MESSAGE.html">TCP_ACK_MESSAGE</a> ackMsg(<a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>(), <a class="code hl_variable" href="MeshNodeAP_8cpp.html#a94a45b38b5c69f0fa3c2906cc6edc264">clients_map</a>[tpcb].<span class="keywordtype">id</span>, p-&gt;tot_len);</div>
+<div class="line"><span class="lineno">  714</span>        <a class="code hl_function" href="classAPNode.html#a33de1a7fccff55203c1f2b92a7fe24e4">send_tcp_data</a>(<a class="code hl_variable" href="MeshNodeAP_8cpp.html#a94a45b38b5c69f0fa3c2906cc6edc264">clients_map</a>[tpcb].<span class="keywordtype">id</span>, tpcb, ackMsg.get_msg(), ackMsg.get_len());</div>
+<div class="line"><span class="lineno">  715</span>        <span class="comment">//send_tcp_data(ackMsg.get_msg(), ackMsg.get_len());</span></div>
+<div class="line"><span class="lineno">  716</span>        printf(<span class="stringliteral">&quot;Sent ACK message to client %u&quot;</span>, <a class="code hl_variable" href="MeshNodeAP_8cpp.html#a94a45b38b5c69f0fa3c2906cc6edc264">clients_map</a>[tpcb].<span class="keywordtype">id</span>);</div>
+<div class="line"><span class="lineno">  717</span>        </div>
+<div class="line"><span class="lineno">  718</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (NAK_flag) {</div>
+<div class="line"><span class="lineno">  719</span>        <span class="comment">// TODO: Update for error handling</span></div>
+<div class="line"><span class="lineno">  720</span>        <span class="comment">// identify the source from clients_map and send back?</span></div>
+<div class="line"><span class="lineno">  721</span>        <a class="code hl_class" href="classTCP__NAK__MESSAGE.html">TCP_NAK_MESSAGE</a> nakMsg(<a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>(), <a class="code hl_variable" href="MeshNodeAP_8cpp.html#a94a45b38b5c69f0fa3c2906cc6edc264">clients_map</a>[tpcb].<span class="keywordtype">id</span>, p-&gt;tot_len);</div>
+<div class="line"><span class="lineno">  722</span>        <a class="code hl_function" href="classAPNode.html#a33de1a7fccff55203c1f2b92a7fe24e4">send_tcp_data</a>(<a class="code hl_variable" href="MeshNodeAP_8cpp.html#a94a45b38b5c69f0fa3c2906cc6edc264">clients_map</a>[tpcb].<span class="keywordtype">id</span>, tpcb, nakMsg.get_msg(), nakMsg.get_len());</div>
+<div class="line"><span class="lineno">  723</span>        <span class="comment">//send_tcp_data(nakMsg.get_msg(), nakMsg.get_len());</span></div>
+<div class="line"><span class="lineno">  724</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  725</span>    }</div>
+<div class="line"><span class="lineno">  726</span> </div>
+<div class="line"><span class="lineno">  727</span>    <span class="keyword">delete</span> msg;</div>
+<div class="line"><span class="lineno">  728</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  729</span>}</div>
+<div class="ttc" id="aMeshNodeAP_8cpp_html_a94a45b38b5c69f0fa3c2906cc6edc264"><div class="ttname"><a href="MeshNodeAP_8cpp.html#a94a45b38b5c69f0fa3c2906cc6edc264">clients_map</a></div><div class="ttdeci">std::map&lt; tcp_pcb *, ClientConnection &gt; clients_map</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:78</div></div>
+<div class="ttc" id="aMessages_8cpp_html_af38d02b60aa8d13a179c24ca5d9ad8d1"><div class="ttname"><a href="Messages_8cpp.html#af38d02b60aa8d13a179c24ca5d9ad8d1">parseMessage</a></div><div class="ttdeci">TCP_MESSAGE * parseMessage(uint8_t *data)</div><div class="ttdoc">Takes in some tcp message buffer and returns a pointer to a new TCP_MESSAGE.</div><div class="ttdef"><b>Definition:</b> Messages.cpp:7</div></div>
+<div class="ttc" id="aclassAPNode_html_a33de1a7fccff55203c1f2b92a7fe24e4"><div class="ttname"><a href="classAPNode.html#a33de1a7fccff55203c1f2b92a7fe24e4">APNode::send_tcp_data</a></div><div class="ttdeci">bool send_tcp_data(uint32_t id, tcp_pcb *client_pcb, uint8_t *data, uint32_t size)</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:572</div></div>
+<div class="ttc" id="aclassAPNode_html_aa1010007862435c32e7b1d207225333c"><div class="ttname"><a href="classAPNode.html#aa1010007862435c32e7b1d207225333c">APNode::client_tpcbs</a></div><div class="ttdeci">std::map&lt; uint32_t, tcp_pcb * &gt; client_tpcbs</div><div class="ttdef"><b>Definition:</b> MeshNode.hpp:82</div></div>
+<div class="ttc" id="aclassChildrenTree_html_a3523b166ae262b00ad195f5e0a509250"><div class="ttname"><a href="classChildrenTree.html#a3523b166ae262b00ad195f5e0a509250">ChildrenTree::add_child</a></div><div class="ttdeci">bool add_child(uint32_t child_id)</div><div class="ttdef"><b>Definition:</b> ChildrenTree.cpp:23</div></div>
+<div class="ttc" id="aclassChildrenTree_html_af6ca6ba5a0ca4b85604af7c002abef9e"><div class="ttname"><a href="classChildrenTree.html#af6ca6ba5a0ca4b85604af7c002abef9e">ChildrenTree::find_path_parent</a></div><div class="ttdeci">bool find_path_parent(uint32_t id, uint32_t *parent)</div><div class="ttdoc">Returns true or false if path exists, and parent is overwritten as the path's parent.</div><div class="ttdef"><b>Definition:</b> ChildrenTree.cpp:80</div></div>
+<div class="ttc" id="aclassRingBuffer_html_a26f24ba18ecad8fc3df4b848f35724c5"><div class="ttname"><a href="classRingBuffer.html#a26f24ba18ecad8fc3df4b848f35724c5">RingBuffer::insert</a></div><div class="ttdeci">void insert(uint8_t *data, ssize_t len, uint32_t source, uint32_t dest)</div><div class="ttdef"><b>Definition:</b> RingBuffer.cpp:16</div></div>
+<div class="ttc" id="aclassTCP__ACK__MESSAGE_html"><div class="ttname"><a href="classTCP__ACK__MESSAGE.html">TCP_ACK_MESSAGE</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:193</div></div>
+<div class="ttc" id="aclassTCP__DATA__MSG_html"><div class="ttname"><a href="classTCP__DATA__MSG.html">TCP_DATA_MSG</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:100</div></div>
+<div class="ttc" id="aclassTCP__DATA__MSG_html_a69e49fb8a039fd284a2457da25d22494"><div class="ttname"><a href="classTCP__DATA__MSG.html#a69e49fb8a039fd284a2457da25d22494">TCP_DATA_MSG::msg</a></div><div class="ttdeci">tcp_data_msg_t msg</div><div class="ttdef"><b>Definition:</b> Messages.hpp:102</div></div>
+<div class="ttc" id="aclassTCP__DISCONNECT__MSG_html"><div class="ttname"><a href="classTCP__DISCONNECT__MSG.html">TCP_DISCONNECT_MSG</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:130</div></div>
+<div class="ttc" id="aclassTCP__INIT__MESSAGE_html"><div class="ttname"><a href="classTCP__INIT__MESSAGE.html">TCP_INIT_MESSAGE</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:76</div></div>
+<div class="ttc" id="aclassTCP__INIT__MESSAGE_html_a28eda401f8e48a36fc80e90f03b7dbc3"><div class="ttname"><a href="classTCP__INIT__MESSAGE.html#a28eda401f8e48a36fc80e90f03b7dbc3">TCP_INIT_MESSAGE::msg</a></div><div class="ttdeci">tcp_init_msg_t msg</div><div class="ttdef"><b>Definition:</b> Messages.hpp:78</div></div>
+<div class="ttc" id="aclassTCP__MESSAGE_html"><div class="ttname"><a href="classTCP__MESSAGE.html">TCP_MESSAGE</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:7</div></div>
+<div class="ttc" id="aclassTCP__NAK__MESSAGE_html"><div class="ttname"><a href="classTCP__NAK__MESSAGE.html">TCP_NAK_MESSAGE</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:219</div></div>
+<div class="ttc" id="aclassTCP__UPDATE__MESSAGE_html"><div class="ttname"><a href="classTCP__UPDATE__MESSAGE.html">TCP_UPDATE_MESSAGE</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:164</div></div>
+<div class="ttc" id="astructTCP__SERVER__T___html_aa1ed039fe3ef2265ae3515ac667c1a0f"><div class="ttname"><a href="structTCP__SERVER__T__.html#aa1ed039fe3ef2265ae3515ac667c1a0f">TCP_SERVER_T_::buffer_recv</a></div><div class="ttdeci">uint8_t buffer_recv[BUF_SIZE]</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:68</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classChildrenTree.html#a3523b166ae262b00ad195f5e0a509250">ChildrenTree::add_child()</a>, <a class="el" href="structTCP__SERVER__T__.html#aa1ed039fe3ef2265ae3515ac667c1a0f">TCP_SERVER_T_::buffer_recv</a>, <a class="el" href="classAPNode.html#aa1010007862435c32e7b1d207225333c">client_tpcbs</a>, <a class="el" href="MeshNodeAP_8cpp.html#a94a45b38b5c69f0fa3c2906cc6edc264">clients_map</a>, <a class="el" href="classChildrenTree.html#af6ca6ba5a0ca4b85604af7c002abef9e">ChildrenTree::find_path_parent()</a>, <a class="el" href="classTCP__ACK__MESSAGE.html#ab4e638ec61a065068e508fc2b90cb030">TCP_ACK_MESSAGE::get_len()</a>, <a class="el" href="classTCP__NAK__MESSAGE.html#a6746520a94996327fdab3dca47e9f16f">TCP_NAK_MESSAGE::get_len()</a>, <a class="el" href="classTCP__ACK__MESSAGE.html#ab05ca4215448fbff136ab1f3350f5a17">TCP_ACK_MESSAGE::get_msg()</a>, <a class="el" href="classTCP__NAK__MESSAGE.html#a20f5c9b1cab26158a334330e5bd6853b">TCP_NAK_MESSAGE::get_msg()</a>, <a class="el" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">MeshNode::get_NodeID()</a>, <a class="el" href="classRingBuffer.html#a26f24ba18ecad8fc3df4b848f35724c5">RingBuffer::insert()</a>, <a class="el" href="classTCP__INIT__MESSAGE.html#a28eda401f8e48a36fc80e90f03b7dbc3">TCP_INIT_MESSAGE::msg</a>, <a class="el" href="classTCP__DATA__MSG.html#a69e49fb8a039fd284a2457da25d22494">TCP_DATA_MSG::msg</a>, <a class="el" href="Messages_8cpp.html#af38d02b60aa8d13a179c24ca5d9ad8d1">parseMessage()</a>, <a class="el" href="classAPNode.html#a76a4d88449c2a5ab205ab8eff9d73cec">rb</a>, <a class="el" href="classAPNode.html#a33de1a7fccff55203c1f2b92a7fe24e4">send_tcp_data()</a>, <a class="el" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>, and <a class="el" href="classAPNode.html#ac9b37eb7479f4f685ac096b8d16a75b2">tree</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="MeshNodeAP_8cpp.html#aeec1738f732fee7feac27d72efee0fa2">tcp_server_recv()</a>.</p>
+
+</div>
+</div>
+<a id="af1c02af9da183625721288410c565f66" name="af1c02af9da183625721288410c565f66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1c02af9da183625721288410c565f66">&#9670;&#160;</a></span>has_client_data()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool APNode::has_client_data </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ID</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a18d893cc18ed0b777328f2206b5e2219" name="a18d893cc18ed0b777328f2206b5e2219"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18d893cc18ed0b777328f2206b5e2219">&#9670;&#160;</a></span>init_ap_mode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool APNode::init_ap_mode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  431</span>                          {</div>
+<div class="line"><span class="lineno">  432</span> </div>
+<div class="line"><span class="lineno">  433</span>    <span class="comment">// Allocate the state of the TCP server if not already allocated</span></div>
+<div class="line"><span class="lineno">  434</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>) {</div>
+<div class="line"><span class="lineno">  435</span>        <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a> = (<a class="code hl_struct" href="structTCP__SERVER__T__.html">TCP_SERVER_T</a>*)calloc(1, <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structTCP__SERVER__T__.html">TCP_SERVER_T</a>));</div>
+<div class="line"><span class="lineno">  436</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>) {</div>
+<div class="line"><span class="lineno">  437</span>            <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;failed to allocate state\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  438</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  439</span>        }</div>
+<div class="line"><span class="lineno">  440</span>    }</div>
+<div class="line"><span class="lineno">  441</span>    </div>
+<div class="line"><span class="lineno">  442</span>    <span class="comment">// Initialize the state</span></div>
+<div class="line"><span class="lineno">  443</span>    <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a467dcc70f5fe27afca66459f1e5899c5">complete</a> = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  444</span>    <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a04904a1963bae5da866eef69595887e5">server_pcb</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  445</span>    <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a471164dea770f3d28d4bab8105497319">ap_node</a> = <span class="keyword">this</span>;</div>
+<div class="line"><span class="lineno">  446</span> </div>
+<div class="line"><span class="lineno">  447</span>    <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a8334d24569297b3576154b09baf20642">recv_len</a> = 0;</div>
+<div class="line"><span class="lineno">  448</span>    </div>
+<div class="line"><span class="lineno">  449</span>    <span class="comment">// Initialize the driver</span></div>
+<div class="line"><span class="lineno">  450</span>    <span class="keywordflow">if</span> (cyw43_arch_init()) {</div>
+<div class="line"><span class="lineno">  451</span>        <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;failed to initialize cyw43 driver\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  452</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  453</span>    }</div>
+<div class="line"><span class="lineno">  454</span>    </div>
+<div class="line"><span class="lineno">  455</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  456</span>}</div>
+<div class="ttc" id="adnsserver_8c_html_ac89417d7938b9539c92a9ad3c36b5dd3"><div class="ttname"><a href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a></div><div class="ttdeci">#define DEBUG_printf(...)</div><div class="ttdef"><b>Definition:</b> dnsserver.c:19</div></div>
+<div class="ttc" id="astructTCP__SERVER__T___html"><div class="ttname"><a href="structTCP__SERVER__T__.html">TCP_SERVER_T_</a></div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:56</div></div>
+<div class="ttc" id="astructTCP__SERVER__T___html_a04904a1963bae5da866eef69595887e5"><div class="ttname"><a href="structTCP__SERVER__T__.html#a04904a1963bae5da866eef69595887e5">TCP_SERVER_T_::server_pcb</a></div><div class="ttdeci">struct tcp_pcb * server_pcb</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:57</div></div>
+<div class="ttc" id="astructTCP__SERVER__T___html_a467dcc70f5fe27afca66459f1e5899c5"><div class="ttname"><a href="structTCP__SERVER__T__.html#a467dcc70f5fe27afca66459f1e5899c5">TCP_SERVER_T_::complete</a></div><div class="ttdeci">bool complete</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:59</div></div>
+<div class="ttc" id="astructTCP__SERVER__T___html_a471164dea770f3d28d4bab8105497319"><div class="ttname"><a href="structTCP__SERVER__T__.html#a471164dea770f3d28d4bab8105497319">TCP_SERVER_T_::ap_node</a></div><div class="ttdeci">void * ap_node</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:64</div></div>
+<div class="ttc" id="astructTCP__SERVER__T___html_a8334d24569297b3576154b09baf20642"><div class="ttname"><a href="structTCP__SERVER__T__.html#a8334d24569297b3576154b09baf20642">TCP_SERVER_T_::recv_len</a></div><div class="ttdeci">int recv_len</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:61</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="structTCP__SERVER__T__.html#a471164dea770f3d28d4bab8105497319">TCP_SERVER_T_::ap_node</a>, <a class="el" href="structTCP__SERVER__T__.html#a467dcc70f5fe27afca66459f1e5899c5">TCP_SERVER_T_::complete</a>, <a class="el" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>, <a class="el" href="structTCP__SERVER__T__.html#a8334d24569297b3576154b09baf20642">TCP_SERVER_T_::recv_len</a>, <a class="el" href="structTCP__SERVER__T__.html#a04904a1963bae5da866eef69595887e5">TCP_SERVER_T_::server_pcb</a>, and <a class="el" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="src_2main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>.</p>
+
+</div>
+</div>
+<a id="a1eb8b7163387b293008b3903cc651c90" name="a1eb8b7163387b293008b3903cc651c90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1eb8b7163387b293008b3903cc651c90">&#9670;&#160;</a></span>number_of_messages()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int APNode::number_of_messages </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  389</span>                               {</div>
+<div class="line"><span class="lineno">  390</span>    <span class="keywordflow">return</span> this-&gt;<a class="code hl_variable" href="classAPNode.html#a76a4d88449c2a5ab205ab8eff9d73cec">rb</a>.<a class="code hl_function" href="classRingBuffer.html#aabd4823f01b3502c5cd5da535308ae39">get_size</a>();</div>
+<div class="line"><span class="lineno">  391</span>}</div>
+<div class="ttc" id="aclassRingBuffer_html_aabd4823f01b3502c5cd5da535308ae39"><div class="ttname"><a href="classRingBuffer.html#aabd4823f01b3502c5cd5da535308ae39">RingBuffer::get_size</a></div><div class="ttdeci">int get_size()</div><div class="ttdef"><b>Definition:</b> RingBuffer.cpp:50</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classRingBuffer.html#aabd4823f01b3502c5cd5da535308ae39">RingBuffer::get_size()</a>, and <a class="el" href="classAPNode.html#a76a4d88449c2a5ab205ab8eff9d73cec">rb</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="AP__Test_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>.</p>
+
+</div>
+</div>
+<a id="aeb770e3913b5027d76771517446dcce0" name="aeb770e3913b5027d76771517446dcce0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb770e3913b5027d76771517446dcce0">&#9670;&#160;</a></span>poll()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void APNode::poll </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>timeout_ms</em> = <code>1000</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  463</span>                                         {</div>
+<div class="line"><span class="lineno">  464</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a> || !<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>) {</div>
+<div class="line"><span class="lineno">  465</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  466</span>    }</div>
+<div class="line"><span class="lineno">  467</span>    </div>
+<div class="line"><span class="lineno">  468</span>    <span class="comment">// Check if we should stop</span></div>
+<div class="line"><span class="lineno">  469</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a467dcc70f5fe27afca66459f1e5899c5">complete</a>) {</div>
+<div class="line"><span class="lineno">  470</span>        <a class="code hl_variable" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a> = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  471</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  472</span>    }</div>
+<div class="line"><span class="lineno">  473</span>    </div>
+<div class="line"><span class="lineno">  474</span>    <span class="comment">// Handle polling operations based on the architecture</span></div>
+<div class="line"><span class="lineno">  475</span><span class="preprocessor">    #if PICO_CYW43_ARCH_POLL</span></div>
+<div class="line"><span class="lineno">  476</span>    <span class="comment">// If using poll architecture, check for work</span></div>
+<div class="line"><span class="lineno">  477</span>    cyw43_arch_poll();</div>
+<div class="line"><span class="lineno">  478</span>    <span class="comment">// Wait for work or timeout</span></div>
+<div class="line"><span class="lineno">  479</span>    cyw43_arch_wait_for_work_until(make_timeout_time_ms(timeout_ms));</div>
+<div class="line"><span class="lineno">  480</span><span class="preprocessor">    #else</span></div>
+<div class="line"><span class="lineno">  481</span>    <span class="comment">// If using interrupt architecture, just sleep</span></div>
+<div class="line"><span class="lineno">  482</span>    sleep_ms(timeout_ms);</div>
+<div class="line"><span class="lineno">  483</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><span class="lineno">  484</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="structTCP__SERVER__T__.html#a467dcc70f5fe27afca66459f1e5899c5">TCP_SERVER_T_::complete</a>, <a class="el" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a>, and <a class="el" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>.</p>
+
+</div>
+</div>
+<a id="a33de1a7fccff55203c1f2b92a7fe24e4" name="a33de1a7fccff55203c1f2b92a7fe24e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33de1a7fccff55203c1f2b92a7fe24e4">&#9670;&#160;</a></span>send_tcp_data()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool APNode::send_tcp_data </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">tcp_pcb *&#160;</td>
+          <td class="paramname"><em>client_pcb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  572</span>                                                                                         {</div>
+<div class="line"><span class="lineno">  573</span> </div>
+<div class="line"><span class="lineno">  574</span>    uint8_t buffer[size] = {};</div>
+<div class="line"><span class="lineno">  575</span>    <span class="comment">// if (size &gt; BUF_SIZE) { size = BUF_SIZE; }</span></div>
+<div class="line"><span class="lineno">  576</span>    memcpy(buffer, <a class="code hl_struct" href="structdata.html">data</a>, size);</div>
+<div class="line"><span class="lineno">  577</span> </div>
+<div class="line"><span class="lineno">  578</span>    <span class="keywordtype">bool</span> flag = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  579</span> </div>
+<div class="line"><span class="lineno">  580</span>    cyw43_arch_lwip_begin();</div>
+<div class="line"><span class="lineno">  581</span> </div>
+<div class="line"><span class="lineno">  582</span>    <span class="comment">// not entirely sure its supposed to be client_pcb</span></div>
+<div class="line"><span class="lineno">  583</span>    </div>
+<div class="line"><span class="lineno">  584</span>    <span class="comment">//err_t err = tcp_write(state-&gt;client_pcb, (void*)buffer, size, TCP_WRITE_FLAG_COPY);</span></div>
+<div class="line"><span class="lineno">  585</span>    <span class="comment">//err_t err2 = tcp_output(state-&gt;client_pcb);</span></div>
+<div class="line"><span class="lineno">  586</span> </div>
+<div class="line"><span class="lineno">  587</span>    err_t err = tcp_write(client_pcb, (<span class="keywordtype">void</span>*)buffer, size, TCP_WRITE_FLAG_COPY);</div>
+<div class="line"><span class="lineno">  588</span>    err_t err2 = tcp_output(client_pcb);</div>
+<div class="line"><span class="lineno">  589</span> </div>
+<div class="line"><span class="lineno">  590</span>    <span class="keywordflow">if</span> (err != ERR_OK) {</div>
+<div class="line"><span class="lineno">  591</span>        printf(<span class="stringliteral">&quot;Message failed to write\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  592</span>        printf(<span class="stringliteral">&quot;ERR: %d\n&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  593</span>        flag = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  594</span>    }</div>
+<div class="line"><span class="lineno">  595</span>    <span class="keywordflow">if</span> (err2 != ERR_OK) {</div>
+<div class="line"><span class="lineno">  596</span>        printf(<span class="stringliteral">&quot;Message failed to be sent\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  597</span>        flag = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  598</span>    }</div>
+<div class="line"><span class="lineno">  599</span>    cyw43_arch_lwip_end();</div>
+<div class="line"><span class="lineno">  600</span>    <span class="keywordflow">if</span> (flag)</div>
+<div class="line"><span class="lineno">  601</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  602</span>    printf(<span class="stringliteral">&quot;Successfully queued message\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  603</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  604</span>}</div>
+<div class="ttc" id="astructdata_html"><div class="ttname"><a href="structdata.html">data</a></div><div class="ttdef"><b>Definition:</b> RingBuffer.hpp:11</div></div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">handle_incoming_data()</a>.</p>
+
+</div>
+</div>
+<a id="aa02e0b6dcbc9a8f06c769c4277f30482" name="aa02e0b6dcbc9a8f06c769c4277f30482"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa02e0b6dcbc9a8f06c769c4277f30482">&#9670;&#160;</a></span>server_running()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool APNode::server_running </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  341</span>                            {</div>
+<div class="line"><span class="lineno">  342</span>    <span class="keywordflow">return</span> !this-&gt;<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a467dcc70f5fe27afca66459f1e5899c5">complete</a>;</div>
+<div class="line"><span class="lineno">  343</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="structTCP__SERVER__T__.html#a467dcc70f5fe27afca66459f1e5899c5">TCP_SERVER_T_::complete</a>, and <a class="el" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="src_2main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>.</p>
+
+</div>
+</div>
+<a id="a818d713e7937e58df4a0aa1366e63da0" name="a818d713e7937e58df4a0aa1366e63da0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a818d713e7937e58df4a0aa1366e63da0">&#9670;&#160;</a></span>server_start()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void APNode::server_start </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  555</span>                          {</div>
+<div class="line"><span class="lineno">  556</span>    <a class="code hl_function" href="MeshNodeAP_8cpp.html#a012bff17b060f420fb99523abed970b0">run_tcp_server</a>(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>);</div>
+<div class="line"><span class="lineno">  557</span>}</div>
+<div class="ttc" id="aMeshNodeAP_8cpp_html_a012bff17b060f420fb99523abed970b0"><div class="ttname"><a href="MeshNodeAP_8cpp.html#a012bff17b060f420fb99523abed970b0">run_tcp_server</a></div><div class="ttdeci">void run_tcp_server(void *arg)</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:345</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="MeshNodeAP_8cpp.html#a012bff17b060f420fb99523abed970b0">run_tcp_server()</a>, and <a class="el" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="src_2main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>.</p>
+
+</div>
+</div>
+<a id="ac8e48a111bea8c9f01f592892256ec0f" name="ac8e48a111bea8c9f01f592892256ec0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8e48a111bea8c9f01f592892256ec0f">&#9670;&#160;</a></span>set_ap_credentials()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void APNode::set_ap_credentials </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>name</em>[32], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>pwd</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  458</span>                                                              {</div>
+<div class="line"><span class="lineno">  459</span>    memcpy(<a class="code hl_variable" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>, name, <span class="keyword">sizeof</span>(<a class="code hl_variable" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>));</div>
+<div class="line"><span class="lineno">  460</span>    <a class="code hl_variable" href="classAPNode.html#af24f7284d8a7f02f73b98e20a0ce69d2">password</a> = pwd;</div>
+<div class="line"><span class="lineno">  461</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>, and <a class="el" href="classAPNode.html#af24f7284d8a7f02f73b98e20a0ce69d2">password</a>.</p>
+
+</div>
+</div>
+<a id="ab5a41cb6892721ffd8543d5bef39150e" name="ab5a41cb6892721ffd8543d5bef39150e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5a41cb6892721ffd8543d5bef39150e">&#9670;&#160;</a></span>set_node_id()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void APNode::set_node_id </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ID</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  395</span>                              {</div>
+<div class="line"><span class="lineno">  396</span>    <span class="comment">// calls the base class function</span></div>
+<div class="line"><span class="lineno">  397</span>    <a class="code hl_function" href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">set_NodeID</a>(ID);</div>
+<div class="line"><span class="lineno">  398</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">MeshNode::set_NodeID()</a>.</p>
+
+</div>
+</div>
+<a id="a0baffab88dae0ef512726601ee2de82c" name="a0baffab88dae0ef512726601ee2de82c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0baffab88dae0ef512726601ee2de82c">&#9670;&#160;</a></span>start_ap_mode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool APNode::start_ap_mode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  504</span>                           {</div>
+<div class="line"><span class="lineno">  505</span> </div>
+<div class="line"><span class="lineno">  506</span>    <span class="comment">// Delay to ensure the masters starts after the slave</span></div>
+<div class="line"><span class="lineno">  507</span>    sleep_ms(2000);</div>
+<div class="line"><span class="lineno">  508</span>    <a class="code hl_variable" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>.<a class="code hl_function" href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI_init</a>(<span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">  509</span> </div>
+<div class="line"><span class="lineno">  510</span>    <span class="comment">// Enable the AP mode on the driver</span></div>
+<div class="line"><span class="lineno">  511</span>    cyw43_arch_enable_ap_mode(<a class="code hl_variable" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>, <a class="code hl_variable" href="classAPNode.html#af24f7284d8a7f02f73b98e20a0ce69d2">password</a>, CYW43_AUTH_WPA2_AES_PSK);</div>
+<div class="line"><span class="lineno">  512</span> </div>
+<div class="line"><span class="lineno">  513</span>    <span class="comment">//state = tcp_server_init();</span></div>
+<div class="line"><span class="lineno">  514</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>) {</div>
+<div class="line"><span class="lineno">  515</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  516</span>    }</div>
+<div class="line"><span class="lineno">  517</span> </div>
+<div class="line"><span class="lineno">  518</span><span class="preprocessor">    #if LWIP_IPV6</span></div>
+<div class="line"><span class="lineno">  519</span><span class="preprocessor">     #define IP(x) ((x).u_addr.ip4)</span></div>
+<div class="line"><span class="lineno">  520</span><span class="preprocessor">     #else</span></div>
+<div class="line"><span class="lineno">  521</span><span class="preprocessor">     #define IP(x) (x)</span></div>
+<div class="line"><span class="lineno">  522</span><span class="preprocessor">     #endif</span></div>
+<div class="line"><span class="lineno">  523</span> \</div>
+<div class="line"><span class="lineno">  524</span>     ip4_addr_t mask;</div>
+<div class="line"><span class="lineno">  525</span>     <a class="code hl_define" href="MeshNodeAP_8cpp.html#ab1e9ec157fb9c086690a2ad3f1a5b172">IP</a>(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a01476886348d11f11f6ea17a8099b15a">gw</a>).addr = PP_HTONL(CYW43_DEFAULT_IP_AP_ADDRESS);</div>
+<div class="line"><span class="lineno">  526</span>     <a class="code hl_define" href="MeshNodeAP_8cpp.html#ab1e9ec157fb9c086690a2ad3f1a5b172">IP</a>(mask).addr = PP_HTONL(CYW43_DEFAULT_IP_MASK);</div>
+<div class="line"><span class="lineno">  527</span> </div>
+<div class="line"><span class="lineno">  528</span><span class="preprocessor">     #undef IP</span></div>
+<div class="line"><span class="lineno">  529</span> </div>
+<div class="line"><span class="lineno">  530</span>    <span class="comment">// Start the DHCP server</span></div>
+<div class="line"><span class="lineno">  531</span>    <span class="comment">//dhcp_server_t dhcp_server;</span></div>
+<div class="line"><span class="lineno">  532</span>    <a class="code hl_function" href="dhcpserver_8c.html#a3930af518fd87ebe481a23453ae92512">dhcp_server_init</a>(&amp;<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a96c913acdc8fac8304296bd845a14f2b">dhcp_server</a>, &amp;<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a01476886348d11f11f6ea17a8099b15a">gw</a>, &amp;mask);</div>
+<div class="line"><span class="lineno">  533</span>    <span class="comment">//dns_server_init(&amp;state-&gt;dns_server, &amp;state-&gt;gw);</span></div>
+<div class="line"><span class="lineno">  534</span> </div>
+<div class="line"><span class="lineno">  535</span>    <span class="comment">// if (!tcp_server_open(state)) {</span></div>
+<div class="line"><span class="lineno">  536</span>    <span class="comment">//     DEBUG_printf(&quot;failed to open server\n&quot;);</span></div>
+<div class="line"><span class="lineno">  537</span>    <span class="comment">//     return false;</span></div>
+<div class="line"><span class="lineno">  538</span>    <span class="comment">// }</span></div>
+<div class="line"><span class="lineno">  539</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="MeshNodeAP_8cpp.html#a01ab1a5940d58c4d231b186df2a50294">tcp_server_open</a>(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>)) {</div>
+<div class="line"><span class="lineno">  540</span>        <a class="code hl_function" href="MeshNodeAP_8cpp.html#aa770ff9e047fdd2a26da33220aa9354d">tcp_server_result</a>(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>, -1);</div>
+<div class="line"><span class="lineno">  541</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  542</span>    }</div>
+<div class="line"><span class="lineno">  543</span> </div>
+<div class="line"><span class="lineno">  544</span>    <span class="comment">// Send over node ID to STA</span></div>
+<div class="line"><span class="lineno">  545</span>    <span class="keywordflow">while</span>(!<a class="code hl_variable" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>.<a class="code hl_function" href="classSPI.html#a7ff6c627f5b5176fb9ad371170b3a4af">SPI_is_write_available</a>());</div>
+<div class="line"><span class="lineno">  546</span> </div>
+<div class="line"><span class="lineno">  547</span>    uint32_t ID = this-&gt;<a class="code hl_function" href="classAPNode.html#a901319e21366b2ce2bf8ac779a2bf71d">get_node_id</a>();</div>
+<div class="line"><span class="lineno">  548</span> </div>
+<div class="line"><span class="lineno">  549</span>    <a class="code hl_variable" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>.<a class="code hl_function" href="classSPI.html#a7dafbdd194b14feafa6bc4abf95114ee">SPI_send_message</a>((uint8_t*) &amp;ID, <span class="keyword">sizeof</span>(ID));</div>
+<div class="line"><span class="lineno">  550</span>    </div>
+<div class="line"><span class="lineno">  551</span>    <a class="code hl_variable" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a> = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  552</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  553</span>}</div>
+<div class="ttc" id="aMeshNodeAP_8cpp_html_a01ab1a5940d58c4d231b186df2a50294"><div class="ttname"><a href="MeshNodeAP_8cpp.html#a01ab1a5940d58c4d231b186df2a50294">tcp_server_open</a></div><div class="ttdeci">bool tcp_server_open(void *arg)</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:310</div></div>
+<div class="ttc" id="aMeshNodeAP_8cpp_html_aa770ff9e047fdd2a26da33220aa9354d"><div class="ttname"><a href="MeshNodeAP_8cpp.html#aa770ff9e047fdd2a26da33220aa9354d">tcp_server_result</a></div><div class="ttdeci">err_t tcp_server_result(void *arg, int status)</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:135</div></div>
+<div class="ttc" id="aMeshNodeAP_8cpp_html_ab1e9ec157fb9c086690a2ad3f1a5b172"><div class="ttname"><a href="MeshNodeAP_8cpp.html#ab1e9ec157fb9c086690a2ad3f1a5b172">IP</a></div><div class="ttdeci">#define IP(x)</div></div>
+<div class="ttc" id="aclassAPNode_html_a901319e21366b2ce2bf8ac779a2bf71d"><div class="ttname"><a href="classAPNode.html#a901319e21366b2ce2bf8ac779a2bf71d">APNode::get_node_id</a></div><div class="ttdeci">int get_node_id()</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:407</div></div>
+<div class="ttc" id="aclassSPI_html_a7dafbdd194b14feafa6bc4abf95114ee"><div class="ttname"><a href="classSPI.html#a7dafbdd194b14feafa6bc4abf95114ee">SPI::SPI_send_message</a></div><div class="ttdeci">int SPI_send_message(uint8_t *message, size_t length)</div><div class="ttdef"><b>Definition:</b> SPI.cpp:51</div></div>
+<div class="ttc" id="aclassSPI_html_a7ff6c627f5b5176fb9ad371170b3a4af"><div class="ttname"><a href="classSPI.html#a7ff6c627f5b5176fb9ad371170b3a4af">SPI::SPI_is_write_available</a></div><div class="ttdeci">bool SPI_is_write_available()</div><div class="ttdef"><b>Definition:</b> SPI.cpp:127</div></div>
+<div class="ttc" id="adhcpserver_8c_html_a3930af518fd87ebe481a23453ae92512"><div class="ttname"><a href="dhcpserver_8c.html#a3930af518fd87ebe481a23453ae92512">dhcp_server_init</a></div><div class="ttdeci">void dhcp_server_init(dhcp_server_t *d, ip_addr_t *ip, ip_addr_t *nm)</div><div class="ttdef"><b>Definition:</b> dhcpserver.c:297</div></div>
+<div class="ttc" id="astructTCP__SERVER__T___html_a01476886348d11f11f6ea17a8099b15a"><div class="ttname"><a href="structTCP__SERVER__T__.html#a01476886348d11f11f6ea17a8099b15a">TCP_SERVER_T_::gw</a></div><div class="ttdeci">ip_addr_t gw</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:63</div></div>
+<div class="ttc" id="astructTCP__SERVER__T___html_a96c913acdc8fac8304296bd845a14f2b"><div class="ttname"><a href="structTCP__SERVER__T__.html#a96c913acdc8fac8304296bd845a14f2b">TCP_SERVER_T_::dhcp_server</a></div><div class="ttdeci">dhcp_server_t dhcp_server</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:65</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classAPNode.html#ad1f2d4fd7748e6020201e0305bbe793b">ap_name</a>, <a class="el" href="structTCP__SERVER__T__.html#a96c913acdc8fac8304296bd845a14f2b">TCP_SERVER_T_::dhcp_server</a>, <a class="el" href="dhcpserver_8c.html#a3930af518fd87ebe481a23453ae92512">dhcp_server_init()</a>, <a class="el" href="classAPNode.html#a901319e21366b2ce2bf8ac779a2bf71d">get_node_id()</a>, <a class="el" href="structTCP__SERVER__T__.html#a01476886348d11f11f6ea17a8099b15a">TCP_SERVER_T_::gw</a>, <a class="el" href="MeshNodeAP_8cpp.html#ab1e9ec157fb9c086690a2ad3f1a5b172">IP</a>, <a class="el" href="classAPNode.html#a33f42f6bd11523a7d53d337d84766808">Master_Pico</a>, <a class="el" href="classAPNode.html#af24f7284d8a7f02f73b98e20a0ce69d2">password</a>, <a class="el" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a>, <a class="el" href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI::SPI_init()</a>, <a class="el" href="classSPI.html#a7ff6c627f5b5176fb9ad371170b3a4af">SPI::SPI_is_write_available()</a>, <a class="el" href="classSPI.html#a7dafbdd194b14feafa6bc4abf95114ee">SPI::SPI_send_message()</a>, <a class="el" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>, <a class="el" href="MeshNodeAP_8cpp.html#a01ab1a5940d58c4d231b186df2a50294">tcp_server_open()</a>, and <a class="el" href="MeshNodeAP_8cpp.html#aa770ff9e047fdd2a26da33220aa9354d">tcp_server_result()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="src_2main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>.</p>
+
+</div>
+</div>
+<a id="a2d1b86fff1bbfe9baef8704c09fa08b4" name="a2d1b86fff1bbfe9baef8704c09fa08b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d1b86fff1bbfe9baef8704c09fa08b4">&#9670;&#160;</a></span>stop_ap_mode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void APNode::stop_ap_mode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  486</span>                          {</div>
+<div class="line"><span class="lineno">  487</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a>) {</div>
+<div class="line"><span class="lineno">  488</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  489</span>    }</div>
+<div class="line"><span class="lineno">  490</span>    </div>
+<div class="line"><span class="lineno">  491</span>    <span class="comment">// Disable the AP mode</span></div>
+<div class="line"><span class="lineno">  492</span>    cyw43_arch_lwip_begin();</div>
+<div class="line"><span class="lineno">  493</span>    cyw43_arch_disable_ap_mode();</div>
+<div class="line"><span class="lineno">  494</span>    cyw43_arch_lwip_end();</div>
+<div class="line"><span class="lineno">  495</span>    </div>
+<div class="line"><span class="lineno">  496</span>    <span class="comment">// Close the TCP server</span></div>
+<div class="line"><span class="lineno">  497</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a> &amp;&amp; <a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>-&gt;<a class="code hl_variable" href="structTCP__SERVER__T__.html#a04904a1963bae5da866eef69595887e5">server_pcb</a>) {</div>
+<div class="line"><span class="lineno">  498</span>        <a class="code hl_function" href="MeshNodeAP_8cpp.html#a46b9f7a16b75932c3df4c486653eb673">tcp_server_close</a>(<a class="code hl_variable" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>);</div>
+<div class="line"><span class="lineno">  499</span>    }</div>
+<div class="line"><span class="lineno">  500</span>    </div>
+<div class="line"><span class="lineno">  501</span>    <a class="code hl_variable" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a> = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  502</span>}</div>
+<div class="ttc" id="aMeshNodeAP_8cpp_html_a46b9f7a16b75932c3df4c486653eb673"><div class="ttname"><a href="MeshNodeAP_8cpp.html#a46b9f7a16b75932c3df4c486653eb673">tcp_server_close</a></div><div class="ttdeci">err_t tcp_server_close(void *arg)</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:109</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classAPNode.html#a121221cf5fdde7e45b87e81e3ede857d">running</a>, <a class="el" href="structTCP__SERVER__T__.html#a04904a1963bae5da866eef69595887e5">TCP_SERVER_T_::server_pcb</a>, <a class="el" href="classAPNode.html#a88f8012cf5851db724dcef1322829bac">state</a>, and <a class="el" href="MeshNodeAP_8cpp.html#a46b9f7a16b75932c3df4c486653eb673">tcp_server_close()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="classAPNode.html#a655e0cf00805452b7a8c498b18a0514e">~APNode()</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="ad1f2d4fd7748e6020201e0305bbe793b" name="ad1f2d4fd7748e6020201e0305bbe793b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1f2d4fd7748e6020201e0305bbe793b">&#9670;&#160;</a></span>ap_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char APNode::ap_name[32]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="classAPNode.html#a7520e149cbd1fe92ec81254f60e77254">APNode()</a>, <a class="el" href="classAPNode.html#ac8e48a111bea8c9f01f592892256ec0f">set_ap_credentials()</a>, and <a class="el" href="classAPNode.html#a0baffab88dae0ef512726601ee2de82c">start_ap_mode()</a>.</p>
+
+</div>
+</div>
+<a id="a643de62b25972c425e1e1928964dae90" name="a643de62b25972c425e1e1928964dae90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a643de62b25972c425e1e1928964dae90">&#9670;&#160;</a></span>client_results</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;int, std::string&gt; APNode::client_results</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1bf36c3de2719acd75a1db2406c615bf" name="a1bf36c3de2719acd75a1db2406c615bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1bf36c3de2719acd75a1db2406c615bf">&#9670;&#160;</a></span>client_results_flag</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;int, bool&gt; APNode::client_results_flag</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa1010007862435c32e7b1d207225333c" name="aa1010007862435c32e7b1d207225333c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1010007862435c32e7b1d207225333c">&#9670;&#160;</a></span>client_tpcbs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;uint32_t, tcp_pcb*&gt; APNode::client_tpcbs</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">handle_incoming_data()</a>.</p>
+
+</div>
+</div>
+<a id="a35f6712389c12ce194a03bc77b8ba4d7" name="a35f6712389c12ce194a03bc77b8ba4d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35f6712389c12ce194a03bc77b8ba4d7">&#9670;&#160;</a></span>connections</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;void*&gt; APNode::connections</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a33f42f6bd11523a7d53d337d84766808" name="a33f42f6bd11523a7d53d337d84766808"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33f42f6bd11523a7d53d337d84766808">&#9670;&#160;</a></span>Master_Pico</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSPI.html">SPI</a> APNode::Master_Pico</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="classAPNode.html#a7520e149cbd1fe92ec81254f60e77254">APNode()</a>, and <a class="el" href="classAPNode.html#a0baffab88dae0ef512726601ee2de82c">start_ap_mode()</a>.</p>
+
+</div>
+</div>
+<a id="af24f7284d8a7f02f73b98e20a0ce69d2" name="af24f7284d8a7f02f73b98e20a0ce69d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af24f7284d8a7f02f73b98e20a0ce69d2">&#9670;&#160;</a></span>password</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* APNode::password = &quot;password&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="classAPNode.html#ac8e48a111bea8c9f01f592892256ec0f">set_ap_credentials()</a>, and <a class="el" href="classAPNode.html#a0baffab88dae0ef512726601ee2de82c">start_ap_mode()</a>.</p>
+
+</div>
+</div>
+<a id="a76a4d88449c2a5ab205ab8eff9d73cec" name="a76a4d88449c2a5ab205ab8eff9d73cec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76a4d88449c2a5ab205ab8eff9d73cec">&#9670;&#160;</a></span>rb</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classRingBuffer.html">RingBuffer</a> APNode::rb</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">handle_incoming_data()</a>, and <a class="el" href="classAPNode.html#a1eb8b7163387b293008b3903cc651c90">number_of_messages()</a>.</p>
+
+</div>
+</div>
+<a id="a121221cf5fdde7e45b87e81e3ede857d" name="a121221cf5fdde7e45b87e81e3ede857d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a121221cf5fdde7e45b87e81e3ede857d">&#9670;&#160;</a></span>running</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool APNode::running</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="classAPNode.html#aeb770e3913b5027d76771517446dcce0">poll()</a>, <a class="el" href="classAPNode.html#a0baffab88dae0ef512726601ee2de82c">start_ap_mode()</a>, and <a class="el" href="classAPNode.html#a2d1b86fff1bbfe9baef8704c09fa08b4">stop_ap_mode()</a>.</p>
+
+</div>
+</div>
+<a id="a88f8012cf5851db724dcef1322829bac" name="a88f8012cf5851db724dcef1322829bac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88f8012cf5851db724dcef1322829bac">&#9670;&#160;</a></span>state</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="MeshNode_8hpp.html#af7f4e975a84bf5ac14987f38c5a0bd49">TCP_SERVER_T</a>* APNode::state</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">handle_incoming_data()</a>, <a class="el" href="classAPNode.html#a18d893cc18ed0b777328f2206b5e2219">init_ap_mode()</a>, <a class="el" href="classAPNode.html#aeb770e3913b5027d76771517446dcce0">poll()</a>, <a class="el" href="classAPNode.html#aa02e0b6dcbc9a8f06c769c4277f30482">server_running()</a>, <a class="el" href="classAPNode.html#a818d713e7937e58df4a0aa1366e63da0">server_start()</a>, <a class="el" href="classAPNode.html#a0baffab88dae0ef512726601ee2de82c">start_ap_mode()</a>, <a class="el" href="classAPNode.html#a2d1b86fff1bbfe9baef8704c09fa08b4">stop_ap_mode()</a>, <a class="el" href="MeshNodeAP_8cpp.html#a46b9f7a16b75932c3df4c486653eb673">tcp_server_close()</a>, <a class="el" href="MeshNodeAP_8cpp.html#aa770ff9e047fdd2a26da33220aa9354d">tcp_server_result()</a>, <a class="el" href="MeshNodeAP_8cpp.html#a39f08470b0e7011af49ddea7a3909fc1">tcp_server_send_data()</a>, <a class="el" href="MeshNodeAP_8cpp.html#a75c547887c1c279809c0864bfd05671a">tcp_server_sent()</a>, and <a class="el" href="classAPNode.html#a655e0cf00805452b7a8c498b18a0514e">~APNode()</a>.</p>
+
+</div>
+</div>
+<a id="ac9b37eb7479f4f685ac096b8d16a75b2" name="ac9b37eb7479f4f685ac096b8d16a75b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9b37eb7479f4f685ac096b8d16a75b2">&#9670;&#160;</a></span>tree</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classChildrenTree.html">ChildrenTree</a> APNode::tree</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">handle_incoming_data()</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>libraries/MeshNode/<a class="el" href="MeshNode_8hpp_source.html">MeshNode.hpp</a></li>
-<li>libraries/MeshNode/MeshNodeAP.cpp</li>
+<li>libraries/MeshNode/<a class="el" href="MeshNodeAP_8cpp.html">MeshNodeAP.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

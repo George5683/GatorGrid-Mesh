@@ -23,6 +23,7 @@
   <td id="projectalign">
    <div id="projectname">GatorGrid
    </div>
+   <div id="projectbrief">A mesh network implemented on the Raspberry Pi Pico</div>
   </td>
  </tr>
  </tbody>
@@ -76,30 +77,56 @@ $(function() {
   <div class="headertitle"><div class="title">SPI Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="SPI_8hpp_source.html">SPI.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for SPI:</div>
+<div class="dyncontent">
+<div class="center"><img src="classSPI__coll__graph.png" border="0" usemap="#aSPI_coll__map" alt="Collaboration graph"/></div>
+<map name="aSPI_coll__map" id="aSPI_coll__map">
+<area shape="rect" title=" " alt="" coords="5,5,197,156"/>
+</map>
+</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a2ba081c29fbdecc704c6bf00b24d5205"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSPI.html#a2ba081c29fbdecc704c6bf00b24d5205">SPI</a> ()</td></tr>
+<tr class="separator:a2ba081c29fbdecc704c6bf00b24d5205"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab72f8834e97185f2f5ec4ca06f51dbfd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI_init</a> (bool mode)</td></tr>
 <tr class="separator:ab72f8834e97185f2f5ec4ca06f51dbfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7dafbdd194b14feafa6bc4abf95114ee"><td class="memItemLeft" align="right" valign="top"><a id="a7dafbdd194b14feafa6bc4abf95114ee" name="a7dafbdd194b14feafa6bc4abf95114ee"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>SPI_send_message</b> (uint8_t *message, size_t length)</td></tr>
+<tr class="memitem:a7dafbdd194b14feafa6bc4abf95114ee"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSPI.html#a7dafbdd194b14feafa6bc4abf95114ee">SPI_send_message</a> (uint8_t *message, size_t length)</td></tr>
 <tr class="separator:a7dafbdd194b14feafa6bc4abf95114ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1b382e51be9b97ea313dca4ad797993"><td class="memItemLeft" align="right" valign="top"><a id="ae1b382e51be9b97ea313dca4ad797993" name="ae1b382e51be9b97ea313dca4ad797993"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>SPI_read_message</b> (uint8_t *buffer, size_t buffer_size)</td></tr>
+<tr class="memitem:ae1b382e51be9b97ea313dca4ad797993"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSPI.html#ae1b382e51be9b97ea313dca4ad797993">SPI_read_message</a> (uint8_t *buffer, size_t buffer_size)</td></tr>
 <tr class="separator:ae1b382e51be9b97ea313dca4ad797993"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ff6c627f5b5176fb9ad371170b3a4af"><td class="memItemLeft" align="right" valign="top"><a id="a7ff6c627f5b5176fb9ad371170b3a4af" name="a7ff6c627f5b5176fb9ad371170b3a4af"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>SPI_is_write_available</b> ()</td></tr>
+<tr class="memitem:a7ff6c627f5b5176fb9ad371170b3a4af"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSPI.html#a7ff6c627f5b5176fb9ad371170b3a4af">SPI_is_write_available</a> ()</td></tr>
 <tr class="separator:a7ff6c627f5b5176fb9ad371170b3a4af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbf1bd96c0cbc54a523c93abe264206a"><td class="memItemLeft" align="right" valign="top"><a id="afbf1bd96c0cbc54a523c93abe264206a" name="afbf1bd96c0cbc54a523c93abe264206a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>SPI_is_read_available</b> ()</td></tr>
+<tr class="memitem:afbf1bd96c0cbc54a523c93abe264206a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSPI.html#afbf1bd96c0cbc54a523c93abe264206a">SPI_is_read_available</a> ()</td></tr>
 <tr class="separator:afbf1bd96c0cbc54a523c93abe264206a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ae775889618b83e2b9c08a1f48770e99b"><td class="memItemLeft" align="right" valign="top"><a id="ae775889618b83e2b9c08a1f48770e99b" name="ae775889618b83e2b9c08a1f48770e99b"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_master</b></td></tr>
+<tr class="memitem:ae775889618b83e2b9c08a1f48770e99b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSPI.html#ae775889618b83e2b9c08a1f48770e99b">is_master</a></td></tr>
 <tr class="separator:ae775889618b83e2b9c08a1f48770e99b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a2ba081c29fbdecc704c6bf00b24d5205" name="a2ba081c29fbdecc704c6bf00b24d5205"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ba081c29fbdecc704c6bf00b24d5205">&#9670;&#160;</a></span>SPI()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SPI::SPI </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">   14</span>{};</div>
+</div><!-- fragment -->
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="ab72f8834e97185f2f5ec4ca06f51dbfd" name="ab72f8834e97185f2f5ec4ca06f51dbfd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab72f8834e97185f2f5ec4ca06f51dbfd">&#9670;&#160;</a></span>SPI_init()</h2>
@@ -117,12 +144,260 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_master</b></td></t
       </table>
 </div><div class="memdoc">
 <p>spi_init contents</p>
+<div class="fragment"><div class="line"><span class="lineno">   17</span>                           {</div>
+<div class="line"><span class="lineno">   21</span>    <a class="code hl_variable" href="classSPI.html#ae775889618b83e2b9c08a1f48770e99b">is_master</a> = mode;</div>
+<div class="line"><span class="lineno">   22</span>    <span class="keywordflow">if</span>(mode == <span class="keyword">true</span>){</div>
+<div class="line"><span class="lineno">   23</span>        printf(<span class="stringliteral">&quot;Setting up SPI Master\n&quot;</span>);</div>
+<div class="line"><span class="lineno">   24</span>        <span class="comment">// Setting up the Master</span></div>
+<div class="line"><span class="lineno">   25</span>        spi_init(<a class="code hl_define" href="SPI_8cpp.html#a8112c985f7444e82198d7571ce0a9160">SPI_PORT</a>, 1000 * 1000);</div>
+<div class="line"><span class="lineno">   26</span>        spi_set_slave(<a class="code hl_define" href="SPI_8cpp.html#a8112c985f7444e82198d7571ce0a9160">SPI_PORT</a>, <span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">   27</span> </div>
+<div class="line"><span class="lineno">   28</span>        gpio_set_function(<a class="code hl_define" href="SPI_8cpp.html#a6a1a3e97267377d1b18bb9073192fdf1">PIN_SCK</a>, GPIO_FUNC_SPI);</div>
+<div class="line"><span class="lineno">   29</span>        gpio_set_function(<a class="code hl_define" href="SPI_8cpp.html#abaeddda4b992af7165ed898ab8b2b4ac">PIN_MOSI</a>, GPIO_FUNC_SPI);</div>
+<div class="line"><span class="lineno">   30</span>        gpio_set_function(<a class="code hl_define" href="SPI_8cpp.html#a46bdd417480dec5cb9cf196af3c7489c">PIN_MISO</a>, GPIO_FUNC_SPI);</div>
+<div class="line"><span class="lineno">   31</span> </div>
+<div class="line"><span class="lineno">   32</span>        gpio_set_function(<a class="code hl_define" href="SPI_8cpp.html#afa592f8fcb7a301edfe97aa121fd28ce">PIN_CS</a>, GPIO_FUNC_SIO);</div>
+<div class="line"><span class="lineno">   33</span>        gpio_set_dir(<a class="code hl_define" href="SPI_8cpp.html#afa592f8fcb7a301edfe97aa121fd28ce">PIN_CS</a>, GPIO_OUT);</div>
+<div class="line"><span class="lineno">   34</span>        gpio_put(<a class="code hl_define" href="SPI_8cpp.html#afa592f8fcb7a301edfe97aa121fd28ce">PIN_CS</a>, 1);</div>
+<div class="line"><span class="lineno">   35</span>    }</div>
+<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">else</span>{</div>
+<div class="line"><span class="lineno">   37</span>        printf(<span class="stringliteral">&quot;Setting up SPI Slave\n&quot;</span>);</div>
+<div class="line"><span class="lineno">   38</span>        <span class="comment">// Set as slave</span></div>
+<div class="line"><span class="lineno">   39</span>        spi_init(<a class="code hl_define" href="SPI_8cpp.html#a8112c985f7444e82198d7571ce0a9160">SPI_PORT</a>, 1000 * 1000);</div>
+<div class="line"><span class="lineno">   40</span>        spi_set_slave(<a class="code hl_define" href="SPI_8cpp.html#a8112c985f7444e82198d7571ce0a9160">SPI_PORT</a>, <span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">   41</span> </div>
+<div class="line"><span class="lineno">   42</span>        gpio_set_function(<a class="code hl_define" href="SPI_8cpp.html#a46bdd417480dec5cb9cf196af3c7489c">PIN_MISO</a>, GPIO_FUNC_SPI);</div>
+<div class="line"><span class="lineno">   43</span>        gpio_set_function(<a class="code hl_define" href="SPI_8cpp.html#abaeddda4b992af7165ed898ab8b2b4ac">PIN_MOSI</a>, GPIO_FUNC_SPI);</div>
+<div class="line"><span class="lineno">   44</span>        gpio_set_function(<a class="code hl_define" href="SPI_8cpp.html#a6a1a3e97267377d1b18bb9073192fdf1">PIN_SCK</a>, GPIO_FUNC_SPI);</div>
+<div class="line"><span class="lineno">   45</span>        gpio_set_function(<a class="code hl_define" href="SPI_8cpp.html#afa592f8fcb7a301edfe97aa121fd28ce">PIN_CS</a>, GPIO_FUNC_SPI);</div>
+<div class="line"><span class="lineno">   46</span>    }</div>
+<div class="line"><span class="lineno">   47</span>    printf(<span class="stringliteral">&quot;SPI initialized successfully\n&quot;</span>);</div>
+<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   49</span>};</div>
+<div class="ttc" id="aSPI_8cpp_html_a46bdd417480dec5cb9cf196af3c7489c"><div class="ttname"><a href="SPI_8cpp.html#a46bdd417480dec5cb9cf196af3c7489c">PIN_MISO</a></div><div class="ttdeci">#define PIN_MISO</div><div class="ttdef"><b>Definition:</b> SPI.cpp:8</div></div>
+<div class="ttc" id="aSPI_8cpp_html_a6a1a3e97267377d1b18bb9073192fdf1"><div class="ttname"><a href="SPI_8cpp.html#a6a1a3e97267377d1b18bb9073192fdf1">PIN_SCK</a></div><div class="ttdeci">#define PIN_SCK</div><div class="ttdef"><b>Definition:</b> SPI.cpp:10</div></div>
+<div class="ttc" id="aSPI_8cpp_html_a8112c985f7444e82198d7571ce0a9160"><div class="ttname"><a href="SPI_8cpp.html#a8112c985f7444e82198d7571ce0a9160">SPI_PORT</a></div><div class="ttdeci">#define SPI_PORT</div><div class="ttdef"><b>Definition:</b> SPI.cpp:7</div></div>
+<div class="ttc" id="aSPI_8cpp_html_abaeddda4b992af7165ed898ab8b2b4ac"><div class="ttname"><a href="SPI_8cpp.html#abaeddda4b992af7165ed898ab8b2b4ac">PIN_MOSI</a></div><div class="ttdeci">#define PIN_MOSI</div><div class="ttdef"><b>Definition:</b> SPI.cpp:11</div></div>
+<div class="ttc" id="aSPI_8cpp_html_afa592f8fcb7a301edfe97aa121fd28ce"><div class="ttname"><a href="SPI_8cpp.html#afa592f8fcb7a301edfe97aa121fd28ce">PIN_CS</a></div><div class="ttdeci">#define PIN_CS</div><div class="ttdef"><b>Definition:</b> SPI.cpp:9</div></div>
+<div class="ttc" id="aclassSPI_html_ae775889618b83e2b9c08a1f48770e99b"><div class="ttname"><a href="classSPI.html#ae775889618b83e2b9c08a1f48770e99b">SPI::is_master</a></div><div class="ttdeci">bool is_master</div><div class="ttdef"><b>Definition:</b> SPI.hpp:7</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classSPI.html#ae775889618b83e2b9c08a1f48770e99b">is_master</a>, <a class="el" href="SPI_8cpp.html#afa592f8fcb7a301edfe97aa121fd28ce">PIN_CS</a>, <a class="el" href="SPI_8cpp.html#a46bdd417480dec5cb9cf196af3c7489c">PIN_MISO</a>, <a class="el" href="SPI_8cpp.html#abaeddda4b992af7165ed898ab8b2b4ac">PIN_MOSI</a>, <a class="el" href="SPI_8cpp.html#a6a1a3e97267377d1b18bb9073192fdf1">PIN_SCK</a>, and <a class="el" href="SPI_8cpp.html#a8112c985f7444e82198d7571ce0a9160">SPI_PORT</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="classAPNode.html#a7520e149cbd1fe92ec81254f60e77254">APNode::APNode()</a>, <a class="el" href="SPI__MASTER__TEST_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>, <a class="el" href="classSTANode.html#ad0f212bb430664f5af25d5559917286c">STANode::STANode()</a>, and <a class="el" href="classAPNode.html#a0baffab88dae0ef512726601ee2de82c">APNode::start_ap_mode()</a>.</p>
+
+</div>
+</div>
+<a id="afbf1bd96c0cbc54a523c93abe264206a" name="afbf1bd96c0cbc54a523c93abe264206a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbf1bd96c0cbc54a523c93abe264206a">&#9670;&#160;</a></span>SPI_is_read_available()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SPI::SPI_is_read_available </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  115</span>                               {</div>
+<div class="line"><span class="lineno">  116</span>    <span class="comment">// If the master, check if CS can be asserted (indicating bus is free)</span></div>
+<div class="line"><span class="lineno">  117</span>    <span class="keywordflow">if</span>(<a class="code hl_variable" href="classSPI.html#ae775889618b83e2b9c08a1f48770e99b">is_master</a>){</div>
+<div class="line"><span class="lineno">  118</span>        <span class="keywordflow">return</span> gpio_get(<a class="code hl_define" href="SPI_8cpp.html#afa592f8fcb7a301edfe97aa121fd28ce">PIN_CS</a>) == 1; <span class="comment">// CS high means bus is available</span></div>
+<div class="line"><span class="lineno">  119</span>    }</div>
+<div class="line"><span class="lineno">  120</span>    <span class="keywordflow">else</span>{</div>
+<div class="line"><span class="lineno">  121</span>        <span class="comment">// For slave, check if the CS line is low (indicating master wants to communicate)</span></div>
+<div class="line"><span class="lineno">  122</span>        <span class="keywordflow">return</span> gpio_get(<a class="code hl_define" href="SPI_8cpp.html#afa592f8fcb7a301edfe97aa121fd28ce">PIN_CS</a>) == 0; <span class="comment">// CS low means master is selecting this slave</span></div>
+<div class="line"><span class="lineno">  123</span>    }</div>
+<div class="line"><span class="lineno">  124</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  125</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classSPI.html#ae775889618b83e2b9c08a1f48770e99b">is_master</a>, and <a class="el" href="SPI_8cpp.html#afa592f8fcb7a301edfe97aa121fd28ce">PIN_CS</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="classSTANode.html#afa7df9532e1f864c077148c3fc8295bc">STANode::init_sta_mode()</a>, and <a class="el" href="SPI__MASTER__TEST_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>.</p>
+
+</div>
+</div>
+<a id="a7ff6c627f5b5176fb9ad371170b3a4af" name="a7ff6c627f5b5176fb9ad371170b3a4af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ff6c627f5b5176fb9ad371170b3a4af">&#9670;&#160;</a></span>SPI_is_write_available()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SPI::SPI_is_write_available </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  127</span>                                {</div>
+<div class="line"><span class="lineno">  128</span>    <span class="comment">// For master, check if the SPI bus is idle and ready for transmission</span></div>
+<div class="line"><span class="lineno">  129</span>    <span class="keywordflow">if</span>(<a class="code hl_variable" href="classSPI.html#ae775889618b83e2b9c08a1f48770e99b">is_master</a>){</div>
+<div class="line"><span class="lineno">  130</span>        <span class="comment">// Check if not busy and CS is high (not currently communicating)</span></div>
+<div class="line"><span class="lineno">  131</span>        <span class="keywordflow">return</span> !spi_is_busy(<a class="code hl_define" href="SPI_8cpp.html#a8112c985f7444e82198d7571ce0a9160">SPI_PORT</a>) &amp;&amp; gpio_get(<a class="code hl_define" href="SPI_8cpp.html#afa592f8fcb7a301edfe97aa121fd28ce">PIN_CS</a>) == 1;</div>
+<div class="line"><span class="lineno">  132</span>    }</div>
+<div class="line"><span class="lineno">  133</span>    <span class="keywordflow">else</span>{</div>
+<div class="line"><span class="lineno">  134</span>        <span class="comment">// For slave, check if selected by master (CS low) and not currently busy</span></div>
+<div class="line"><span class="lineno">  135</span>        <span class="keywordflow">return</span> !spi_is_busy(<a class="code hl_define" href="SPI_8cpp.html#a8112c985f7444e82198d7571ce0a9160">SPI_PORT</a>) &amp;&amp; gpio_get(<a class="code hl_define" href="SPI_8cpp.html#afa592f8fcb7a301edfe97aa121fd28ce">PIN_CS</a>) == 0;</div>
+<div class="line"><span class="lineno">  136</span>    }</div>
+<div class="line"><span class="lineno">  137</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  138</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classSPI.html#ae775889618b83e2b9c08a1f48770e99b">is_master</a>, <a class="el" href="SPI_8cpp.html#afa592f8fcb7a301edfe97aa121fd28ce">PIN_CS</a>, and <a class="el" href="SPI_8cpp.html#a8112c985f7444e82198d7571ce0a9160">SPI_PORT</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="SPI__MASTER__TEST_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>, and <a class="el" href="classAPNode.html#a0baffab88dae0ef512726601ee2de82c">APNode::start_ap_mode()</a>.</p>
+
+</div>
+</div>
+<a id="ae1b382e51be9b97ea313dca4ad797993" name="ae1b382e51be9b97ea313dca4ad797993"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1b382e51be9b97ea313dca4ad797993">&#9670;&#160;</a></span>SPI_read_message()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SPI::SPI_read_message </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>buffer_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">   77</span>                                                            {</div>
+<div class="line"><span class="lineno">   78</span>    uint8_t tempOutBuffer = 0;</div>
+<div class="line"><span class="lineno">   79</span>    uint8_t tempInBuffer = 0;</div>
+<div class="line"><span class="lineno">   80</span> </div>
+<div class="line"><span class="lineno">   81</span>    <span class="comment">// Clear buffer before reading</span></div>
+<div class="line"><span class="lineno">   82</span>    memset(buffer, 0, buffer_size);</div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">if</span>(<a class="code hl_variable" href="classSPI.html#ae775889618b83e2b9c08a1f48770e99b">is_master</a> == <span class="keyword">true</span>){</div>
+<div class="line"><span class="lineno">   85</span> </div>
+<div class="line"><span class="lineno">   86</span>        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; buffer_size - 1; i++){</div>
+<div class="line"><span class="lineno">   87</span>            gpio_put(<a class="code hl_define" href="SPI_8cpp.html#afa592f8fcb7a301edfe97aa121fd28ce">PIN_CS</a>, 0);</div>
+<div class="line"><span class="lineno">   88</span>            sleep_ms(1);</div>
+<div class="line"><span class="lineno">   89</span>            spi_write_read_blocking(<a class="code hl_define" href="SPI_8cpp.html#a8112c985f7444e82198d7571ce0a9160">SPI_PORT</a>, &amp;tempOutBuffer, &amp;tempInBuffer, 1);</div>
+<div class="line"><span class="lineno">   90</span>            gpio_put(<a class="code hl_define" href="SPI_8cpp.html#afa592f8fcb7a301edfe97aa121fd28ce">PIN_CS</a>, 1);</div>
+<div class="line"><span class="lineno">   91</span>            buffer[i] = tempInBuffer;</div>
+<div class="line"><span class="lineno">   92</span> </div>
+<div class="line"><span class="lineno">   93</span>            <span class="comment">// Break if we received a null terminator (end of string)</span></div>
+<div class="line"><span class="lineno">   94</span>            <span class="keywordflow">if</span> (tempInBuffer == 0) {</div>
+<div class="line"><span class="lineno">   95</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   96</span>            }</div>
+<div class="line"><span class="lineno">   97</span>        }</div>
+<div class="line"><span class="lineno">   98</span>        <span class="comment">// Ensure null-termination</span></div>
+<div class="line"><span class="lineno">   99</span>        buffer[buffer_size - 1] = 0;</div>
+<div class="line"><span class="lineno">  100</span>        printf(<span class="stringliteral">&quot;Received Data: %s\n&quot;</span>, buffer);</div>
+<div class="line"><span class="lineno">  101</span>    }</div>
+<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">else</span>{</div>
+<div class="line"><span class="lineno">  103</span>        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; buffer_size - 1; i++){</div>
+<div class="line"><span class="lineno">  104</span> </div>
+<div class="line"><span class="lineno">  105</span>            spi_write_read_blocking(<a class="code hl_define" href="SPI_8cpp.html#a8112c985f7444e82198d7571ce0a9160">SPI_PORT</a>, &amp;tempOutBuffer, &amp;tempInBuffer, 1);</div>
+<div class="line"><span class="lineno">  106</span>            buffer[i] = tempInBuffer;</div>
+<div class="line"><span class="lineno">  107</span>        }</div>
+<div class="line"><span class="lineno">  108</span>        <span class="comment">// Ensure null-termination</span></div>
+<div class="line"><span class="lineno">  109</span>        buffer[buffer_size - 1] = 0;</div>
+<div class="line"><span class="lineno">  110</span>        printf(<span class="stringliteral">&quot;Received Data: %s\n&quot;</span>, buffer);</div>
+<div class="line"><span class="lineno">  111</span>    }</div>
+<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">return</span> 1;</div>
+<div class="line"><span class="lineno">  113</span>};</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classSPI.html#ae775889618b83e2b9c08a1f48770e99b">is_master</a>, <a class="el" href="SPI_8cpp.html#afa592f8fcb7a301edfe97aa121fd28ce">PIN_CS</a>, and <a class="el" href="SPI_8cpp.html#a8112c985f7444e82198d7571ce0a9160">SPI_PORT</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="classSTANode.html#afa7df9532e1f864c077148c3fc8295bc">STANode::init_sta_mode()</a>, and <a class="el" href="SPI__MASTER__TEST_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>.</p>
+
+</div>
+</div>
+<a id="a7dafbdd194b14feafa6bc4abf95114ee" name="a7dafbdd194b14feafa6bc4abf95114ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7dafbdd194b14feafa6bc4abf95114ee">&#9670;&#160;</a></span>SPI_send_message()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SPI::SPI_send_message </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>message</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">   51</span>                                                        {</div>
+<div class="line"><span class="lineno">   52</span>    uint8_t tempOutBuffer = 0;</div>
+<div class="line"><span class="lineno">   53</span>    uint8_t tempInBuffer = 0;</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span>    printf(<span class="stringliteral">&quot;Sending Data: %s\n&quot;</span>, message);</div>
+<div class="line"><span class="lineno">   56</span> </div>
+<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">if</span>(<a class="code hl_variable" href="classSPI.html#ae775889618b83e2b9c08a1f48770e99b">is_master</a> == <span class="keyword">true</span>){</div>
+<div class="line"><span class="lineno">   58</span>        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; length; i++){</div>
+<div class="line"><span class="lineno">   59</span>            tempOutBuffer = message[i];</div>
+<div class="line"><span class="lineno">   60</span>            gpio_put(<a class="code hl_define" href="SPI_8cpp.html#afa592f8fcb7a301edfe97aa121fd28ce">PIN_CS</a>, 0);  <span class="comment">// Assert CS</span></div>
+<div class="line"><span class="lineno">   61</span>            sleep_ms(1);  <span class="comment">// Delay for timing requirements</span></div>
+<div class="line"><span class="lineno">   62</span>            spi_write_read_blocking(<a class="code hl_define" href="SPI_8cpp.html#a8112c985f7444e82198d7571ce0a9160">SPI_PORT</a>, &amp;tempOutBuffer, &amp;tempInBuffer, 1);</div>
+<div class="line"><span class="lineno">   63</span>            gpio_put(<a class="code hl_define" href="SPI_8cpp.html#afa592f8fcb7a301edfe97aa121fd28ce">PIN_CS</a>, 1);  <span class="comment">// Deassert CS</span></div>
+<div class="line"><span class="lineno">   64</span>        }</div>
+<div class="line"><span class="lineno">   65</span>    }</div>
+<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">else</span>{</div>
+<div class="line"><span class="lineno">   67</span>        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; length; i++){</div>
+<div class="line"><span class="lineno">   68</span>            tempOutBuffer = message[i];</div>
+<div class="line"><span class="lineno">   69</span>            spi_write_read_blocking(<a class="code hl_define" href="SPI_8cpp.html#a8112c985f7444e82198d7571ce0a9160">SPI_PORT</a>, &amp;tempOutBuffer, &amp;tempInBuffer, 1);</div>
+<div class="line"><span class="lineno">   70</span>        }</div>
+<div class="line"><span class="lineno">   71</span> </div>
+<div class="line"><span class="lineno">   72</span>    }</div>
+<div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">return</span> 1;</div>
+<div class="line"><span class="lineno">   75</span>};</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classSPI.html#ae775889618b83e2b9c08a1f48770e99b">is_master</a>, <a class="el" href="SPI_8cpp.html#afa592f8fcb7a301edfe97aa121fd28ce">PIN_CS</a>, and <a class="el" href="SPI_8cpp.html#a8112c985f7444e82198d7571ce0a9160">SPI_PORT</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="SPI__MASTER__TEST_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>, and <a class="el" href="classAPNode.html#a0baffab88dae0ef512726601ee2de82c">APNode::start_ap_mode()</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="ae775889618b83e2b9c08a1f48770e99b" name="ae775889618b83e2b9c08a1f48770e99b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae775889618b83e2b9c08a1f48770e99b">&#9670;&#160;</a></span>is_master</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SPI::is_master</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI_init()</a>, <a class="el" href="classSPI.html#afbf1bd96c0cbc54a523c93abe264206a">SPI_is_read_available()</a>, <a class="el" href="classSPI.html#a7ff6c627f5b5176fb9ad371170b3a4af">SPI_is_write_available()</a>, <a class="el" href="classSPI.html#ae1b382e51be9b97ea313dca4ad797993">SPI_read_message()</a>, and <a class="el" href="classSPI.html#a7dafbdd194b14feafa6bc4abf95114ee">SPI_send_message()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>libraries/SPI/<a class="el" href="SPI_8hpp_source.html">SPI.hpp</a></li>
-<li>libraries/SPI/SPI.cpp</li>
+<li>libraries/SPI/<a class="el" href="SPI_8cpp.html">SPI.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

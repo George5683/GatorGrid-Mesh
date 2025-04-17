@@ -23,6 +23,7 @@
   <td id="projectalign">
    <div id="projectname">GatorGrid
    </div>
+   <div id="projectbrief">A mesh network implemented on the Raspberry Pi Pico</div>
   </td>
  </tr>
  </tbody>
@@ -76,43 +77,332 @@ $(function() {
   <div class="headertitle"><div class="title">picoNodeVector Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="picoNodeVectorClass_8hpp_source.html">picoNodeVectorClass.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for picoNodeVector:</div>
+<div class="dyncontent">
+<div class="center"><img src="classpicoNodeVector__coll__graph.png" border="0" usemap="#apicoNodeVector_coll__map" alt="Collaboration graph"/></div>
+<map name="apicoNodeVector_coll__map" id="apicoNodeVector_coll__map">
+<area shape="rect" title=" " alt="" coords="5,425,211,591"/>
+<area shape="rect" title=" " alt="" coords="39,285,177,363"/>
+<area shape="rect" title=" " alt="" coords="43,145,173,223"/>
+<area shape="rect" title=" " alt="" coords="89,5,127,83"/>
+</map>
+</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac1be285943d18794dd8876fcc276478b"><td class="memItemLeft" align="right" valign="top"><a id="ac1be285943d18794dd8876fcc276478b" name="ac1be285943d18794dd8876fcc276478b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>picoNodeVector</b> (int nodeID=0)</td></tr>
+<tr class="memitem:ac1be285943d18794dd8876fcc276478b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpicoNodeVector.html#ac1be285943d18794dd8876fcc276478b">picoNodeVector</a> (int <a class="el" href="classpicoNodeVector.html#aa94ef162b47dae1e0f1251b79af144dc">nodeID</a>=0)</td></tr>
 <tr class="separator:ac1be285943d18794dd8876fcc276478b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a960883aa441f4bebf438cc80e23b0470"><td class="memItemLeft" align="right" valign="top"><a id="a960883aa441f4bebf438cc80e23b0470" name="a960883aa441f4bebf438cc80e23b0470"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>addItem</b> (int picoID)</td></tr>
+<tr class="memitem:a960883aa441f4bebf438cc80e23b0470"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpicoNodeVector.html#a960883aa441f4bebf438cc80e23b0470">addItem</a> (int picoID)</td></tr>
 <tr class="separator:a960883aa441f4bebf438cc80e23b0470"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef356e5304200b3b0fc842cc7b330040"><td class="memItemLeft" align="right" valign="top"><a id="aef356e5304200b3b0fc842cc7b330040" name="aef356e5304200b3b0fc842cc7b330040"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>removeItem</b> (int picoID)</td></tr>
+<tr class="memitem:aef356e5304200b3b0fc842cc7b330040"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpicoNodeVector.html#aef356e5304200b3b0fc842cc7b330040">removeItem</a> (int picoID)</td></tr>
 <tr class="separator:aef356e5304200b3b0fc842cc7b330040"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d7bf0d6356962b22d9cb6f21a622f17"><td class="memItemLeft" align="right" valign="top"><a id="a3d7bf0d6356962b22d9cb6f21a622f17" name="a3d7bf0d6356962b22d9cb6f21a622f17"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>handleOperation</b> (int operationType, int picoID)</td></tr>
+<tr class="memitem:a3d7bf0d6356962b22d9cb6f21a622f17"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpicoNodeVector.html#a3d7bf0d6356962b22d9cb6f21a622f17">handleOperation</a> (int operationType, int picoID)</td></tr>
 <tr class="separator:a3d7bf0d6356962b22d9cb6f21a622f17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fa3392b7aff9cae60ac2bd9a866ef5a"><td class="memItemLeft" align="right" valign="top"><a id="a3fa3392b7aff9cae60ac2bd9a866ef5a" name="a3fa3392b7aff9cae60ac2bd9a866ef5a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>compareWithCurrentList</b> (std::vector&lt; int &gt; inputVector)</td></tr>
+<tr class="memitem:a3fa3392b7aff9cae60ac2bd9a866ef5a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpicoNodeVector.html#a3fa3392b7aff9cae60ac2bd9a866ef5a">compareWithCurrentList</a> (std::vector&lt; int &gt; inputVector)</td></tr>
 <tr class="separator:a3fa3392b7aff9cae60ac2bd9a866ef5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8abbecc594c10abf1337c751df54fb8a"><td class="memItemLeft" align="right" valign="top"><a id="a8abbecc594c10abf1337c751df54fb8a" name="a8abbecc594c10abf1337c751df54fb8a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>clearList</b> ()</td></tr>
+<tr class="memitem:a8abbecc594c10abf1337c751df54fb8a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpicoNodeVector.html#a8abbecc594c10abf1337c751df54fb8a">clearList</a> ()</td></tr>
 <tr class="separator:a8abbecc594c10abf1337c751df54fb8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a179ee53d7317c7d580ccd3fc11b2aac5"><td class="memItemLeft" align="right" valign="top"><a id="a179ee53d7317c7d580ccd3fc11b2aac5" name="a179ee53d7317c7d580ccd3fc11b2aac5"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>vectorSize</b></td></tr>
+<tr class="memitem:a179ee53d7317c7d580ccd3fc11b2aac5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpicoNodeVector.html#a179ee53d7317c7d580ccd3fc11b2aac5">vectorSize</a></td></tr>
 <tr class="separator:a179ee53d7317c7d580ccd3fc11b2aac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa94ef162b47dae1e0f1251b79af144dc"><td class="memItemLeft" align="right" valign="top"><a id="aa94ef162b47dae1e0f1251b79af144dc" name="aa94ef162b47dae1e0f1251b79af144dc"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>nodeID</b></td></tr>
+<tr class="memitem:aa94ef162b47dae1e0f1251b79af144dc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpicoNodeVector.html#aa94ef162b47dae1e0f1251b79af144dc">nodeID</a></td></tr>
 <tr class="separator:aa94ef162b47dae1e0f1251b79af144dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbd08d50278772cfd32b228f45d76a58"><td class="memItemLeft" align="right" valign="top"><a id="abbd08d50278772cfd32b228f45d76a58" name="abbd08d50278772cfd32b228f45d76a58"></a>
-std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>nodeIDVector</b></td></tr>
+<tr class="memitem:abbd08d50278772cfd32b228f45d76a58"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a></td></tr>
 <tr class="separator:abbd08d50278772cfd32b228f45d76a58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ac1be285943d18794dd8876fcc276478b" name="ac1be285943d18794dd8876fcc276478b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1be285943d18794dd8876fcc276478b">&#9670;&#160;</a></span>picoNodeVector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">picoNodeVector::picoNodeVector </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nodeID</em> = <code>0</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">    3</span>                                            {</div>
+<div class="line"><span class="lineno">    4</span> </div>
+<div class="line"><span class="lineno">    5</span>    this-&gt;<a class="code hl_variable" href="classpicoNodeVector.html#aa94ef162b47dae1e0f1251b79af144dc">nodeID</a> = picoID;</div>
+<div class="line"><span class="lineno">    6</span> </div>
+<div class="line"><span class="lineno">    7</span>    std::vector&lt;int&gt; <a class="code hl_variable" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a>;</div>
+<div class="line"><span class="lineno">    8</span> </div>
+<div class="line"><span class="lineno">    9</span>    <a class="code hl_variable" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a>.push_back(<a class="code hl_variable" href="classpicoNodeVector.html#aa94ef162b47dae1e0f1251b79af144dc">nodeID</a>);</div>
+<div class="line"><span class="lineno">   10</span> </div>
+<div class="line"><span class="lineno">   11</span>}</div>
+<div class="ttc" id="aclasspicoNodeVector_html_aa94ef162b47dae1e0f1251b79af144dc"><div class="ttname"><a href="classpicoNodeVector.html#aa94ef162b47dae1e0f1251b79af144dc">picoNodeVector::nodeID</a></div><div class="ttdeci">int nodeID</div><div class="ttdef"><b>Definition:</b> picoNodeVectorClass.hpp:22</div></div>
+<div class="ttc" id="aclasspicoNodeVector_html_abbd08d50278772cfd32b228f45d76a58"><div class="ttname"><a href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">picoNodeVector::nodeIDVector</a></div><div class="ttdeci">std::vector&lt; int &gt; nodeIDVector</div><div class="ttdef"><b>Definition:</b> picoNodeVectorClass.hpp:24</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classpicoNodeVector.html#aa94ef162b47dae1e0f1251b79af144dc">nodeID</a>, and <a class="el" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a960883aa441f4bebf438cc80e23b0470" name="a960883aa441f4bebf438cc80e23b0470"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a960883aa441f4bebf438cc80e23b0470">&#9670;&#160;</a></span>addItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int picoNodeVector::addItem </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>picoID</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">   15</span>                                     {</div>
+<div class="line"><span class="lineno">   16</span> </div>
+<div class="line"><span class="lineno">   17</span>    <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a>.size(); i++){</div>
+<div class="line"><span class="lineno">   18</span>        <span class="keywordflow">if</span>(<a class="code hl_variable" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a>[i] == picoID){</div>
+<div class="line"><span class="lineno">   19</span>            <span class="keywordflow">return</span> -2;</div>
+<div class="line"><span class="lineno">   20</span>        }</div>
+<div class="line"><span class="lineno">   21</span>    }</div>
+<div class="line"><span class="lineno">   22</span> </div>
+<div class="line"><span class="lineno">   23</span>    <a class="code hl_variable" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a>.push_back(picoID);</div>
+<div class="line"><span class="lineno">   24</span> </div>
+<div class="line"><span class="lineno">   25</span>    <a class="code hl_variable" href="classpicoNodeVector.html#a179ee53d7317c7d580ccd3fc11b2aac5">vectorSize</a> = <a class="code hl_variable" href="classpicoNodeVector.html#a179ee53d7317c7d580ccd3fc11b2aac5">vectorSize</a> + 1;</div>
+<div class="line"><span class="lineno">   26</span> </div>
+<div class="line"><span class="lineno">   27</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">   28</span>}</div>
+<div class="ttc" id="aclasspicoNodeVector_html_a179ee53d7317c7d580ccd3fc11b2aac5"><div class="ttname"><a href="classpicoNodeVector.html#a179ee53d7317c7d580ccd3fc11b2aac5">picoNodeVector::vectorSize</a></div><div class="ttdeci">int vectorSize</div><div class="ttdef"><b>Definition:</b> picoNodeVectorClass.hpp:21</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a>, and <a class="el" href="classpicoNodeVector.html#a179ee53d7317c7d580ccd3fc11b2aac5">vectorSize</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="classpicoNodeVector.html#a3d7bf0d6356962b22d9cb6f21a622f17">handleOperation()</a>.</p>
+
+</div>
+</div>
+<a id="a8abbecc594c10abf1337c751df54fb8a" name="a8abbecc594c10abf1337c751df54fb8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8abbecc594c10abf1337c751df54fb8a">&#9670;&#160;</a></span>clearList()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void picoNodeVector::clearList </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  101</span>                              {</div>
+<div class="line"><span class="lineno">  102</span> </div>
+<div class="line"><span class="lineno">  103</span>    <a class="code hl_variable" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a>.clear();</div>
+<div class="line"><span class="lineno">  104</span>    <a class="code hl_variable" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a>.push_back(<a class="code hl_variable" href="classpicoNodeVector.html#aa94ef162b47dae1e0f1251b79af144dc">nodeID</a>);</div>
+<div class="line"><span class="lineno">  105</span> </div>
+<div class="line"><span class="lineno">  106</span>    <a class="code hl_variable" href="classpicoNodeVector.html#a179ee53d7317c7d580ccd3fc11b2aac5">vectorSize</a> = 1;</div>
+<div class="line"><span class="lineno">  107</span> </div>
+<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  109</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classpicoNodeVector.html#aa94ef162b47dae1e0f1251b79af144dc">nodeID</a>, <a class="el" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a>, and <a class="el" href="classpicoNodeVector.html#a179ee53d7317c7d580ccd3fc11b2aac5">vectorSize</a>.</p>
+
+</div>
+</div>
+<a id="a3fa3392b7aff9cae60ac2bd9a866ef5a" name="a3fa3392b7aff9cae60ac2bd9a866ef5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fa3392b7aff9cae60ac2bd9a866ef5a">&#9670;&#160;</a></span>compareWithCurrentList()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool picoNodeVector::compareWithCurrentList </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; int &gt;&#160;</td>
+          <td class="paramname"><em>inputVector</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">   70</span>                                                                     {</div>
+<div class="line"><span class="lineno">   71</span> </div>
+<div class="line"><span class="lineno">   72</span>    <span class="keywordtype">bool</span> itemFound = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">if</span>(<a class="code hl_variable" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a>.size() != inputVector.size()){</div>
+<div class="line"><span class="lineno">   75</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   76</span>    }</div>
+<div class="line"><span class="lineno">   77</span> </div>
+<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; inputVector.size(); i++){</div>
+<div class="line"><span class="lineno">   79</span> </div>
+<div class="line"><span class="lineno">   80</span>        itemFound = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   81</span> </div>
+<div class="line"><span class="lineno">   82</span>        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> j = 0; j &lt; <a class="code hl_variable" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a>.size(); j++){</div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>            <span class="keywordflow">if</span>(<a class="code hl_variable" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a>[j] == inputVector[i]){</div>
+<div class="line"><span class="lineno">   85</span>                itemFound = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   86</span>            }</div>
+<div class="line"><span class="lineno">   87</span> </div>
+<div class="line"><span class="lineno">   88</span>        }</div>
+<div class="line"><span class="lineno">   89</span> </div>
+<div class="line"><span class="lineno">   90</span>        <span class="keywordflow">if</span>(itemFound == <span class="keyword">false</span>){</div>
+<div class="line"><span class="lineno">   91</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   92</span>        }</div>
+<div class="line"><span class="lineno">   93</span>    }</div>
+<div class="line"><span class="lineno">   94</span> </div>
+<div class="line"><span class="lineno">   95</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   96</span> </div>
+<div class="line"><span class="lineno">   97</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a>.</p>
+
+</div>
+</div>
+<a id="a3d7bf0d6356962b22d9cb6f21a622f17" name="a3d7bf0d6356962b22d9cb6f21a622f17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d7bf0d6356962b22d9cb6f21a622f17">&#9670;&#160;</a></span>handleOperation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int picoNodeVector::handleOperation </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>operationType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>picoID</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">   52</span>                                                                {</div>
+<div class="line"><span class="lineno">   53</span>    </div>
+<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">if</span>(operationType = 0){</div>
+<div class="line"><span class="lineno">   55</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classpicoNodeVector.html#a960883aa441f4bebf438cc80e23b0470">addItem</a>(picoID);</div>
+<div class="line"><span class="lineno">   56</span>    }</div>
+<div class="line"><span class="lineno">   57</span> </div>
+<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span>(operationType = 1){</div>
+<div class="line"><span class="lineno">   59</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classpicoNodeVector.html#aef356e5304200b3b0fc842cc7b330040">removeItem</a>(picoID);</div>
+<div class="line"><span class="lineno">   60</span>    }</div>
+<div class="line"><span class="lineno">   61</span> </div>
+<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">else</span>{</div>
+<div class="line"><span class="lineno">   63</span>        <span class="keywordflow">return</span> -1;</div>
+<div class="line"><span class="lineno">   64</span>    }</div>
+<div class="line"><span class="lineno">   65</span> </div>
+<div class="line"><span class="lineno">   66</span>}</div>
+<div class="ttc" id="aclasspicoNodeVector_html_a960883aa441f4bebf438cc80e23b0470"><div class="ttname"><a href="classpicoNodeVector.html#a960883aa441f4bebf438cc80e23b0470">picoNodeVector::addItem</a></div><div class="ttdeci">int addItem(int picoID)</div><div class="ttdef"><b>Definition:</b> picoNodeVectorClass.cpp:15</div></div>
+<div class="ttc" id="aclasspicoNodeVector_html_aef356e5304200b3b0fc842cc7b330040"><div class="ttname"><a href="classpicoNodeVector.html#aef356e5304200b3b0fc842cc7b330040">picoNodeVector::removeItem</a></div><div class="ttdeci">int removeItem(int picoID)</div><div class="ttdef"><b>Definition:</b> picoNodeVectorClass.cpp:30</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classpicoNodeVector.html#a960883aa441f4bebf438cc80e23b0470">addItem()</a>, and <a class="el" href="classpicoNodeVector.html#aef356e5304200b3b0fc842cc7b330040">removeItem()</a>.</p>
+
+</div>
+</div>
+<a id="aef356e5304200b3b0fc842cc7b330040" name="aef356e5304200b3b0fc842cc7b330040"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef356e5304200b3b0fc842cc7b330040">&#9670;&#160;</a></span>removeItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int picoNodeVector::removeItem </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>picoID</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">   30</span>                                        {</div>
+<div class="line"><span class="lineno">   31</span> </div>
+<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a>.size(); i++){</div>
+<div class="line"><span class="lineno">   33</span>        <span class="keywordflow">if</span>(<a class="code hl_variable" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a>[i] == picoID){</div>
+<div class="line"><span class="lineno">   34</span> </div>
+<div class="line"><span class="lineno">   35</span>            <span class="keywordflow">if</span>(<a class="code hl_variable" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a>[i] == <a class="code hl_variable" href="classpicoNodeVector.html#aa94ef162b47dae1e0f1251b79af144dc">nodeID</a>){</div>
+<div class="line"><span class="lineno">   36</span>            </div>
+<div class="line"><span class="lineno">   37</span>                <span class="keywordflow">return</span> -3;</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span>            }</div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span>            <a class="code hl_variable" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a>.erase(<a class="code hl_variable" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a>.begin() + i);</div>
+<div class="line"><span class="lineno">   42</span> </div>
+<div class="line"><span class="lineno">   43</span>            <a class="code hl_variable" href="classpicoNodeVector.html#a179ee53d7317c7d580ccd3fc11b2aac5">vectorSize</a> = <a class="code hl_variable" href="classpicoNodeVector.html#a179ee53d7317c7d580ccd3fc11b2aac5">vectorSize</a> - 1;</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   45</span>            <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">   46</span>        }</div>
+<div class="line"><span class="lineno">   47</span>    }</div>
+<div class="line"><span class="lineno">   48</span> </div>
+<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span> -4;</div>
+<div class="line"><span class="lineno">   50</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classpicoNodeVector.html#aa94ef162b47dae1e0f1251b79af144dc">nodeID</a>, <a class="el" href="classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58">nodeIDVector</a>, and <a class="el" href="classpicoNodeVector.html#a179ee53d7317c7d580ccd3fc11b2aac5">vectorSize</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="classpicoNodeVector.html#a3d7bf0d6356962b22d9cb6f21a622f17">handleOperation()</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="aa94ef162b47dae1e0f1251b79af144dc" name="aa94ef162b47dae1e0f1251b79af144dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa94ef162b47dae1e0f1251b79af144dc">&#9670;&#160;</a></span>nodeID</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int picoNodeVector::nodeID</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="classpicoNodeVector.html#a8abbecc594c10abf1337c751df54fb8a">clearList()</a>, <a class="el" href="classpicoNodeVector.html#ac1be285943d18794dd8876fcc276478b">picoNodeVector()</a>, and <a class="el" href="classpicoNodeVector.html#aef356e5304200b3b0fc842cc7b330040">removeItem()</a>.</p>
+
+</div>
+</div>
+<a id="abbd08d50278772cfd32b228f45d76a58" name="abbd08d50278772cfd32b228f45d76a58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbd08d50278772cfd32b228f45d76a58">&#9670;&#160;</a></span>nodeIDVector</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;int&gt; picoNodeVector::nodeIDVector</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="classpicoNodeVector.html#a960883aa441f4bebf438cc80e23b0470">addItem()</a>, <a class="el" href="classpicoNodeVector.html#a8abbecc594c10abf1337c751df54fb8a">clearList()</a>, <a class="el" href="classpicoNodeVector.html#a3fa3392b7aff9cae60ac2bd9a866ef5a">compareWithCurrentList()</a>, <a class="el" href="classpicoNodeVector.html#ac1be285943d18794dd8876fcc276478b">picoNodeVector()</a>, and <a class="el" href="classpicoNodeVector.html#aef356e5304200b3b0fc842cc7b330040">removeItem()</a>.</p>
+
+</div>
+</div>
+<a id="a179ee53d7317c7d580ccd3fc11b2aac5" name="a179ee53d7317c7d580ccd3fc11b2aac5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a179ee53d7317c7d580ccd3fc11b2aac5">&#9670;&#160;</a></span>vectorSize</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int picoNodeVector::vectorSize</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="classpicoNodeVector.html#a960883aa441f4bebf438cc80e23b0470">addItem()</a>, <a class="el" href="classpicoNodeVector.html#a8abbecc594c10abf1337c751df54fb8a">clearList()</a>, and <a class="el" href="classpicoNodeVector.html#aef356e5304200b3b0fc842cc7b330040">removeItem()</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>libraries/picoNodeVectorClass/<a class="el" href="picoNodeVectorClass_8hpp_source.html">picoNodeVectorClass.hpp</a></li>
-<li>libraries/picoNodeVectorClass/picoNodeVectorClass.cpp</li>
+<li>libraries/picoNodeVectorClass/<a class="el" href="picoNodeVectorClass_8cpp.html">picoNodeVectorClass.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

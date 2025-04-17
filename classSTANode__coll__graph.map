@@ -1,6 +1,12 @@
 <map id="STANode" name="STANode">
-<area shape="rect" id="node1" title=" " alt="" coords="141,93,221,119"/>
-<area shape="rect" id="node2" href="$classMeshNode.html" title=" " alt="" coords="5,5,96,31"/>
-<area shape="rect" id="node3" href="$structTCP__CLIENT__T__.html" title=" " alt="" coords="121,5,242,31"/>
-<area shape="rect" id="node4" href="$classSPI.html" title=" " alt="" coords="267,5,309,31"/>
+<area shape="rect" id="node1" title=" " alt="" coords="313,572,515,811"/>
+<area shape="rect" id="node2" href="$classMeshNode.html" title=" " alt="" coords="5,344,132,480"/>
+<area shape="rect" id="node3" title=" " alt="" coords="156,359,320,465"/>
+<area shape="rect" id="node4" title=" " alt="" coords="171,153,305,230"/>
+<area shape="rect" id="node5" title=" " alt="" coords="181,5,220,83"/>
+<area shape="rect" id="node6" title=" " alt="" coords="257,5,296,83"/>
+<area shape="rect" id="node7" href="$structTCP__CLIENT__T__.html" title=" " alt="" coords="344,315,484,509"/>
+<area shape="rect" id="node8" title=" " alt="" coords="508,373,595,451"/>
+<area shape="rect" id="node9" title=" " alt="" coords="482,145,621,237"/>
+<area shape="rect" id="node10" href="$classSPI.html" title=" " alt="" coords="619,337,811,487"/>
 </map>
