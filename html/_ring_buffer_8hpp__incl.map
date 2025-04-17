@@ -1,0 +1,13 @@
+<map id="libraries/RingBuffer/RingBuffer.hpp" name="libraries/RingBuffer/RingBuffer.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="140,5,272,48"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,96,63,123"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,51,76,92,73,87,161,46"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="86,96,150,123"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="185,51,145,87,141,83,182,47"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="174,96,238,123"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="209,49,209,80,203,80,203,49"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="263,96,352,123"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="234,47,281,84,278,88,230,51"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="376,96,433,123"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="258,46,363,88,361,93,256,51"/>
+</map>
