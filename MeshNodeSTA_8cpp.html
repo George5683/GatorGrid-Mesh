@@ -352,24 +352,24 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  279</span>                                 {</div>
-<div class="line"><span class="lineno">  280</span>    <span class="comment">// Find the position of &#39;:&#39;</span></div>
-<div class="line"><span class="lineno">  281</span>    <span class="keywordtype">char</span> *id_str = strchr(ssid, <span class="charliteral">&#39;:&#39;</span>); </div>
-<div class="line"><span class="lineno">  282</span>    <span class="keywordflow">if</span> (id_str &amp;&amp; *(id_str + 1)) {</div>
-<div class="line"><span class="lineno">  283</span>        id_str++; <span class="comment">// Move past &#39;:&#39;</span></div>
-<div class="line"><span class="lineno">  284</span> </div>
-<div class="line"><span class="lineno">  285</span>        <span class="comment">// Print extracted string for debugging</span></div>
-<div class="line"><span class="lineno">  286</span>        <span class="comment">//printf(&quot;Extracted ID string: %s\n&quot;, id_str);</span></div>
-<div class="line"><span class="lineno">  287</span> </div>
-<div class="line"><span class="lineno">  288</span>        <span class="comment">// Convert it to an integer</span></div>
-<div class="line"><span class="lineno">  289</span>        <span class="keywordtype">int</span> <span class="keywordtype">id</span> = strtol(id_str, NULL, 16); <span class="comment">// Assuming it&#39;s hexadecimal</span></div>
-<div class="line"><span class="lineno">  290</span>        <span class="comment">//printf(&quot;Converted ID: %d (Hex to Decimal)\n&quot;, id);</span></div>
-<div class="line"><span class="lineno">  291</span>        <span class="keywordflow">return</span> id;</div>
-<div class="line"><span class="lineno">  292</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  293</span>        printf(<span class="stringliteral">&quot;Invalid SSID format: %s\n&quot;</span>, ssid);</div>
-<div class="line"><span class="lineno">  294</span>        <span class="keywordflow">return</span> -1;</div>
-<div class="line"><span class="lineno">  295</span>    }</div>
-<div class="line"><span class="lineno">  296</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  280</span>                                 {</div>
+<div class="line"><span class="lineno">  281</span>    <span class="comment">// Find the position of &#39;:&#39;</span></div>
+<div class="line"><span class="lineno">  282</span>    <span class="keywordtype">char</span> *id_str = strchr(ssid, <span class="charliteral">&#39;:&#39;</span>); </div>
+<div class="line"><span class="lineno">  283</span>    <span class="keywordflow">if</span> (id_str &amp;&amp; *(id_str + 1)) {</div>
+<div class="line"><span class="lineno">  284</span>        id_str++; <span class="comment">// Move past &#39;:&#39;</span></div>
+<div class="line"><span class="lineno">  285</span> </div>
+<div class="line"><span class="lineno">  286</span>        <span class="comment">// Print extracted string for debugging</span></div>
+<div class="line"><span class="lineno">  287</span>        <span class="comment">//printf(&quot;Extracted ID string: %s\n&quot;, id_str);</span></div>
+<div class="line"><span class="lineno">  288</span> </div>
+<div class="line"><span class="lineno">  289</span>        <span class="comment">// Convert it to an integer</span></div>
+<div class="line"><span class="lineno">  290</span>        <span class="keywordtype">int</span> <span class="keywordtype">id</span> = strtol(id_str, NULL, 16); <span class="comment">// Assuming it&#39;s hexadecimal</span></div>
+<div class="line"><span class="lineno">  291</span>        <span class="comment">//printf(&quot;Converted ID: %d (Hex to Decimal)\n&quot;, id);</span></div>
+<div class="line"><span class="lineno">  292</span>        <span class="keywordflow">return</span> id;</div>
+<div class="line"><span class="lineno">  293</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  294</span>        printf(<span class="stringliteral">&quot;Invalid SSID format: %s\n&quot;</span>, ssid);</div>
+<div class="line"><span class="lineno">  295</span>        <span class="keywordflow">return</span> -1;</div>
+<div class="line"><span class="lineno">  296</span>    }</div>
+<div class="line"><span class="lineno">  297</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -418,7 +418,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   88</span>}</div>
 <div class="ttc" id="aMeshNodeSTA_8cpp_html_a8b87c1c0e005df58ffe11a9384065502"><div class="ttname"><a href="MeshNodeSTA_8cpp.html#a8b87c1c0e005df58ffe11a9384065502">DEBUG_printf</a></div><div class="ttdeci">#define DEBUG_printf</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:30</div></div>
 <div class="ttc" id="aclassSTANode_html"><div class="ttname"><a href="classSTANode.html">STANode</a></div><div class="ttdef"><b>Definition:</b> MeshNode.hpp:127</div></div>
-<div class="ttc" id="aclassSTANode_html_a3b8bb4123b133ab0bd4295e164f3043e"><div class="ttname"><a href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">STANode::state</a></div><div class="ttdeci">TCP_CLIENT_T * state</div><div class="ttdef"><b>Definition:</b> MeshNode.hpp:131</div></div>
+<div class="ttc" id="aclassSTANode_html_a3b8bb4123b133ab0bd4295e164f3043e"><div class="ttname"><a href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">STANode::state</a></div><div class="ttdeci">TCP_CLIENT_T * state</div><div class="ttdef"><b>Definition:</b> MeshNode.hpp:132</div></div>
 <div class="ttc" id="astructTCP__CLIENT__T___html"><div class="ttname"><a href="structTCP__CLIENT__T__.html">TCP_CLIENT_T_</a></div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:57</div></div>
 <div class="ttc" id="astructTCP__CLIENT__T___html_a3b9b0a4caa20f7d183aca45ccd1d39ba"><div class="ttname"><a href="structTCP__CLIENT__T__.html#a3b9b0a4caa20f7d183aca45ccd1d39ba">TCP_CLIENT_T_::tcp_pcb</a></div><div class="ttdeci">struct tcp_pcb * tcp_pcb</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:58</div></div>
 </div><!-- fragment -->
@@ -755,7 +755,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  186</span>    <span class="keywordflow">return</span> ERR_OK;</div>
 <div class="line"><span class="lineno">  187</span>}</div>
 <div class="ttc" id="aMeshNodeSTA_8cpp_html_a6821bafc3c88dfb2e433a095df9940c6"><div class="ttname"><a href="MeshNodeSTA_8cpp.html#a6821bafc3c88dfb2e433a095df9940c6">BUF_SIZE</a></div><div class="ttdeci">#define BUF_SIZE</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:31</div></div>
-<div class="ttc" id="aclassSTANode_html_a07f1bd97bed2342b18886377eab36ace"><div class="ttname"><a href="classSTANode.html#a07f1bd97bed2342b18886377eab36ace">STANode::handle_incoming_data</a></div><div class="ttdeci">bool handle_incoming_data(unsigned char *buffer, struct pbuf *p)</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:525</div></div>
+<div class="ttc" id="aclassSTANode_html_a07f1bd97bed2342b18886377eab36ace"><div class="ttname"><a href="classSTANode.html#a07f1bd97bed2342b18886377eab36ace">STANode::handle_incoming_data</a></div><div class="ttdeci">bool handle_incoming_data(unsigned char *buffer, struct pbuf *p)</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:527</div></div>
 <div class="ttc" id="astructTCP__CLIENT__T___html_a5b045516d90e9cb920bb16fb44a71d29"><div class="ttname"><a href="structTCP__CLIENT__T__.html#a5b045516d90e9cb920bb16fb44a71d29">TCP_CLIENT_T_::buffer</a></div><div class="ttdeci">uint8_t buffer[BUF_SIZE]</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:60</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="MeshNodeSTA_8cpp.html#a6821bafc3c88dfb2e433a095df9940c6">BUF_SIZE</a>, <a class="el" href="structTCP__CLIENT__T__.html#a5b045516d90e9cb920bb16fb44a71d29">TCP_CLIENT_T_::buffer</a>, <a class="el" href="structTCP__CLIENT__T__.html#a6b12caad62a8560f953d4a946b63608d">TCP_CLIENT_T_::buffer_len</a>, <a class="el" href="MeshNodeSTA_8cpp.html#a8b87c1c0e005df58ffe11a9384065502">DEBUG_printf</a>, <a class="el" href="classSTANode.html#a07f1bd97bed2342b18886377eab36ace">STANode::handle_incoming_data()</a>, <a class="el" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">STANode::state</a>, and <a class="el" href="MeshNodeSTA_8cpp.html#ad9ecfd764e26edd7803eec0e926b9ea1">tcp_result()</a>.</p>
