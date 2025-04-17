@@ -101,13 +101,19 @@ int main() {
 
     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
 
-
-    while (node.known_nodes.size() <= 0) {
+    
+    if (!node.scan_for_nodes()) {
+        return 0;
+    }
+    printf("known nodes map size: %d\n", node.known_nodes.size());
+    while (node.known_nodes.empty()) {
+        //printf("known nodes map size: %d", node.known_nodes.size());
         if (!node.scan_for_nodes()) {
+
             return 0;
         }
     }
-
+    printf("Left searching for nodes\n");
     if (node.connect_to_node(node.known_nodes.begin()->first)) {
         node.tcp_init();
     }

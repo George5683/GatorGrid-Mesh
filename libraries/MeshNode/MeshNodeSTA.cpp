@@ -237,6 +237,7 @@ STANode::STANode() {
 
     // Set SPI to be a slave 
     Slave_Pico.SPI_init(false);
+    known_nodes.clear();
 }
 
 STANode::~STANode() {
@@ -311,12 +312,14 @@ int STANode::scan_result(void* env, const cyw43_ev_scan_result_t* result) {
     size_t prefix_len = strlen(prefix);
     
     //printf(ssid_str);
+    //printf("\n");
     
     if (strncmp(ssid_str, prefix, prefix_len) == 0) {
         unsigned int id; // Changed to unsigned int for hexadecimal
         if (sscanf(ssid_str, "GatorGrid_Node:%x", &id) == 1) { // Changed format to %x for hexadecimal
             // Add to known nodes if not already present
             if (self->get_NodeID() == id) {
+                //printf("Ignoring own AP node\n");
                 goto free_mem;
             } else if (self->known_nodes.find(id) == self->known_nodes.end()) {
                 printf("New node ID: 0x%x\n", id); // Changed format to 0x%x for hexadecimal output
@@ -344,6 +347,7 @@ free_mem:
 
 // Improve scan_for_nodes with better error handling
 bool STANode::scan_for_nodes() {
+    known_nodes.clear();
     // Check if a scan is already in progress
     if (cyw43_wifi_scan_active(&cyw43_state)) {
         printf("Scan already in progress, skipping\n");
