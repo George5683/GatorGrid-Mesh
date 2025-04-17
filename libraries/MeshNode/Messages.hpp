@@ -69,6 +69,12 @@ public:
         uint32_t dest;
         uint16_t bytes_received; // TODO:: add error check val in future
     }tcp_failed_msg_t;
+
+    typedef struct __attribute__((__packed__)) {
+        uint8_t priority;
+        uint8_t msg_id;
+        uint16_t len;
+    }tcp_force_update_msg_t; // its 10pm do you know where your children are??
 };
 
 
@@ -241,6 +247,8 @@ public:
         this->msg = *(reinterpret_cast<tcp_failed_msg_t*>(msg));
     }
 };
+
+
 
 /**
  * @brief Takes in some tcp message buffer and returns a pointer to a new TCP_MESSAGE
