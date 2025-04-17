@@ -465,7 +465,7 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size, bool forward) {
 
     // Not getting an ack message back for some reason
     //sleep_ms(5);
-    while(state->waiting_for_ack) {sleep_ms(5);}
+    while(state->waiting_for_ack); //{sleep_ms(5);}
     err_t err = tcp_write(state->tcp_pcb, (void*)data, size, TCP_WRITE_FLAG_COPY);
     err_t err2 = tcp_output(state->tcp_pcb);
     if (err != ERR_OK) {
@@ -603,7 +603,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
     if (ACK_flag && !self_reply){
         TCP_ACK_MESSAGE ackMsg(get_NodeID(), source_id, p->tot_len);
         send_tcp_data(ackMsg.get_msg(), ackMsg.get_len(), false);
-        state->waiting_for_ack = true;
+        //state->waiting_for_ack = true;
     } else if (NAK_flag) {
         // TODO: Update for error handling
         // identify the source from sender and send back?
