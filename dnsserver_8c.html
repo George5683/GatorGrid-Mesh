@@ -537,9 +537,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <div class="fragment"><div class="line"><span class="lineno">   49</span>                                                                             {</div>
-<div class="line"><span class="lineno">   50</span>    ip_addr_t addr;</div>
-<div class="line"><span class="lineno">   51</span>    IP4_ADDR(&amp;addr, ip &gt;&gt; 24 &amp; 0xff, ip &gt;&gt; 16 &amp; 0xff, ip &gt;&gt; 8 &amp; 0xff, ip &amp; 0xff);</div>
-<div class="line"><span class="lineno">   52</span>    err_t err = udp_bind(*udp, &amp;addr, port);</div>
+<div class="line"><span class="lineno">   50</span>    ip_addr_t <a class="code hl_variable" href="mpuSensorTest_8c.html#aafb8164f20f79a2dd0290502a25367d1">addr</a>;</div>
+<div class="line"><span class="lineno">   51</span>    IP4_ADDR(&amp;<a class="code hl_variable" href="mpuSensorTest_8c.html#aafb8164f20f79a2dd0290502a25367d1">addr</a>, ip &gt;&gt; 24 &amp; 0xff, ip &gt;&gt; 16 &amp; 0xff, ip &gt;&gt; 8 &amp; 0xff, ip &amp; 0xff);</div>
+<div class="line"><span class="lineno">   52</span>    err_t err = udp_bind(*udp, &amp;<a class="code hl_variable" href="mpuSensorTest_8c.html#aafb8164f20f79a2dd0290502a25367d1">addr</a>, port);</div>
 <div class="line"><span class="lineno">   53</span>    <span class="keywordflow">if</span> (err != ERR_OK) {</div>
 <div class="line"><span class="lineno">   54</span>        <a class="code hl_define" href="dnsserver_8c.html#a73a8557073074e2ece4510535256d8e6">ERROR_printf</a>(<span class="stringliteral">&quot;dns failed to bind to port %u: %d&quot;</span>, port, err);</div>
 <div class="line"><span class="lineno">   55</span>        assert(<span class="keyword">false</span>);</div>
@@ -547,8 +547,9 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   57</span>    <span class="keywordflow">return</span> err;</div>
 <div class="line"><span class="lineno">   58</span>}</div>
 <div class="ttc" id="adnsserver_8c_html_a73a8557073074e2ece4510535256d8e6"><div class="ttname"><a href="dnsserver_8c.html#a73a8557073074e2ece4510535256d8e6">ERROR_printf</a></div><div class="ttdeci">#define ERROR_printf</div><div class="ttdef"><b>Definition:</b> dnsserver.c:20</div></div>
+<div class="ttc" id="ampuSensorTest_8c_html_aafb8164f20f79a2dd0290502a25367d1"><div class="ttname"><a href="mpuSensorTest_8c.html#aafb8164f20f79a2dd0290502a25367d1">addr</a></div><div class="ttdeci">static int addr</div><div class="ttdef"><b>Definition:</b> mpuSensorTest.c:34</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="dnsserver_8c.html#a73a8557073074e2ece4510535256d8e6">ERROR_printf</a>.</p>
+<p class="reference">References <a class="el" href="mpuSensorTest_8c.html#aafb8164f20f79a2dd0290502a25367d1">addr</a>, and <a class="el" href="dnsserver_8c.html#a73a8557073074e2ece4510535256d8e6">ERROR_printf</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="dnsserver_8c.html#a7aee227a71303853e48503d5e086f13b">dns_server_init()</a>.</p>
 
