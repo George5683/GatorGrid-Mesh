@@ -795,9 +795,10 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
         nakMsg.set_error(error);
         send_tcp_data(clients_map[tpcb].id, tpcb, nakMsg.get_msg(), nakMsg.get_len());
         //send_tcp_data(nakMsg.get_msg(), nakMsg.get_len());
+        delete msg;
         return false;
     } 
 
-    //delete msg;
+    delete msg;
     return true;
 }
