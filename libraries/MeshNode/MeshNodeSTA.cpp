@@ -43,16 +43,16 @@ extern "C" {
  static void dump_bytes(const uint8_t *bptr, uint32_t len) {
      unsigned int i = 0;
  
-    DEBUG_printf("dump_bytes %d", len);
+    printf("dump_bytes %d", len);
      for (i = 0; i < len;) {
          if ((i & 0x0f) == 0) {
-            DEBUG_printf("\n");
+            printf("\n");
          } else if ((i & 0x07) == 0) {
-            DEBUG_printf(" ");
+            printf(" ");
          }
-        DEBUG_printf("%02x ", bptr[i++]);
+        printf("%02x ", bptr[i++]);
      }
-    DEBUG_printf("\n");
+    printf("\n");
  }
  #define DUMP_BYTES dump_bytes
  #else
@@ -545,9 +545,10 @@ bool STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward)
 
 bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
     uint32_t source_id = 0;
-    bool ACK_flag = true;
+    bool ACK_flag = false;
     bool NAK_flag = false;
     bool self_reply = false;
+    
     TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(buffer));
     if (!msg) {
        DEBUG_printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
@@ -555,6 +556,8 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
     } else {
 
         uint8_t msg_id = buffer[1];
+        uint16_t len = *reinterpret_cast<uint16_t*>(buffer +2);
+        dump_bytes(buffer, len);
         switch (msg_id) {
             case 0x00: {
                 TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(msg);
@@ -569,6 +572,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
                 puts("Got data message");
                 if (dataMsg->msg.dest == get_NodeID()) {
                    DEBUG_printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
+                   ACK_flag = true;
                     break;
                 } else {
                     // TODO pass msg to AP
