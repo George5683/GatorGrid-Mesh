@@ -584,7 +584,7 @@ bool APNode::send_tcp_data(uint32_t id, tcp_pcb *client_pcb, uint8_t* data, uint
     //err_t err = tcp_write(state->client_pcb, (void*)buffer, size, TCP_WRITE_FLAG_COPY);
     //err_t err2 = tcp_output(state->client_pcb);
 
-    printf("send_tcp_data: Source ID %08x\n", id);
+    printf("send_tcp_data: Destination ID %08x\n", id);
 
     err_t err = tcp_write(client_pcb, (void*)buffer, size, TCP_WRITE_FLAG_COPY);
     err_t err2 = tcp_output(client_pcb);
@@ -610,6 +610,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
     bool ACK_flag = true;
     bool NAK_flag = false;
     bool update_flag = false;
+    uint8_t error = 0;
     // tcp_init_msg_t *init_msg_str = reinterpret_cast <tcp_init_msg_t *>(state->buffer_recv);
     // clients_map[tpcb].id = init_msg_str->source;
     // printf("ID RECV FROM INIT MESSAGE: %08X\n", clients_map[tpcb].id);
@@ -660,13 +661,22 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                 if (dataMsg->msg.dest == get_NodeID()) {
                     rb.insert(dataMsg->msg.msg,dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
                 } else {
-                    //uint32_t dest;
+                    uint32_t dest;
                     printf("Message was not for me, was for dest:%08x\n", dataMsg->msg.dest);
-                    /*if(!tree.find_path_parent(dataMsg->msg.dest, &dest)) {
+                    if(!tree.find_path_parent(dataMsg->msg.dest, &dest)) {
                         ACK_flag = false;
                         NAK_flag = true;
+                        error = 0x01; // TODO make enum for errors (no node in tree)
                         break;
-                    }*/
+                    }
+                    if (client_tpcbs.find(dest) == client_tpcbs.end()) {
+                        ACK_flag = false;
+                        NAK_flag = true;
+                        error = 0x02; // TODO make enum for errors (id not in connected clients)
+                        break;
+                    }
+                    ACK_flag = false;
+                    send_tcp_data(dest, client_tpcbs.at(dest), dataMsg->get_msg(), dataMsg->get_len());
                 }
                 printf("Successfully inserted into ring buffer\n");
                 ACK_flag = true;
@@ -686,7 +696,28 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                 TCP_ACK_MESSAGE* ackMsg = static_cast<TCP_ACK_MESSAGE*>(msg);
                 //does stuff
                 // Do not need to respond to acks
-                ACK_flag = false;
+                if (ackMsg->msg.dest == get_NodeID()) {
+                    //rb.insert(dataMsg->msg.msg,dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
+                    ACK_flag = false;
+                } else {
+                    uint32_t dest;
+                    printf("Message was not for me, was for dest:%08x\n", ackMsg->msg.dest);
+                    if(!tree.find_path_parent(ackMsg->msg.dest, &dest)) {
+                        ACK_flag = false;
+                        NAK_flag = true;
+                        error = 0x01; // TODO make enum for errors (no node in tree)
+                        break;
+                    }
+                    if (client_tpcbs.find(dest) == client_tpcbs.end()) {
+                        ACK_flag = false;
+                        NAK_flag = true;
+                        error = 0x02; // TODO make enum for errors (id not in connected clients)
+                        break;
+                    }
+                    ACK_flag = false;
+                    send_tcp_data(dest, client_tpcbs.at(dest), ackMsg->get_msg(), ackMsg->get_len());
+                }
+                
 
 
                 break;
@@ -738,6 +769,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
         // TODO: Update for error handling
         // identify the source from clients_map and send back?
         TCP_NAK_MESSAGE nakMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
+        nakMsg.set_error(error);
         send_tcp_data(clients_map[tpcb].id, tpcb, nakMsg.get_msg(), nakMsg.get_len());
         //send_tcp_data(nakMsg.get_msg(), nakMsg.get_len());
         return false;

@@ -114,7 +114,7 @@ int main() {
         }
     }
     printf("Left searching for nodes\n");
-    if (node.connect_to_node(node.known_nodes.begin()->first)) {
+    if (node.connect_to_node(1)) {
         node.tcp_init();
     }
 

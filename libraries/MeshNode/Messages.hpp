@@ -68,6 +68,7 @@ public:
         uint32_t source;
         uint32_t dest;
         uint16_t bytes_received; // TODO:: add error check val in future
+        uint8_t error;
     }tcp_failed_msg_t;
 
     typedef struct __attribute__((__packed__)) {
@@ -233,7 +234,7 @@ public:
     TCP_NAK_MESSAGE(uint32_t src_id, uint32_t dest_id, uint16_t bytes_received) : TCP_MESSAGE(0xFF) { 
         msg.priority = priority;
         msg.msg_id = 0x05;
-        msg.len = 14;
+        msg.len = 15;
         msg.source = src_id;
         msg.dest = dest_id;
         msg.bytes_received = bytes_received;
@@ -246,6 +247,9 @@ public:
     }
     uint16_t get_len() override {
         return msg.len;
+    }
+    void set_error(uint8_t err) {
+        msg.error = err;
     }
     void set_msg(void* msg) override {
         this->msg = *(reinterpret_cast<tcp_failed_msg_t*>(msg));

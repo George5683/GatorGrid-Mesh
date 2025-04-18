@@ -64,6 +64,7 @@ typedef struct TCP_CLIENT_T_ {
     int run_count;
     bool connected;
     volatile bool waiting_for_ack;
+    volatile bool got_nak;
 } TCP_CLIENT_T;
 
 static err_t tcp_client_close(void *arg) {
@@ -430,6 +431,7 @@ bool STANode::tcp_init() {
         return false;
     }
     printf("Initialized tcp client\n");
+    state->got_nak = false;
     if (!tcp_client_open(this)) {
         printf("Failed to open client\n");
         tcp_result(state, -1);
@@ -455,7 +457,7 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size, bool forward) {
     // while(state->tcp_pcb->snd_buf != 0) {
     //   printf("tcp buffer has %d bytes in it\n", state->tcp_pcb->snd_buf);
     // }
-
+    while(state->waiting_for_ack); //{sleep_ms(5);}
     cyw43_arch_lwip_begin();
     //printf("Space used in the buffer %d\n", tcp_sndbuf(state->tcp_pcb));
     // while (tcp_write(state->tcp_pcb, (void*)buffer, BUF_SIZE, TCP_WRITE_FLAG_COPY) == -1) {
@@ -464,8 +466,8 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size, bool forward) {
     // }
 
     // Not getting an ack message back for some reason
-    //sleep_ms(5);
-    while(state->waiting_for_ack); //{sleep_ms(5);}
+    sleep_ms(125);
+    
     err_t err = tcp_write(state->tcp_pcb, (void*)data, size, TCP_WRITE_FLAG_COPY);
     err_t err2 = tcp_output(state->tcp_pcb);
     if (err != ERR_OK) {
@@ -485,7 +487,11 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size, bool forward) {
     state->waiting_for_ack = !forward;
     DUMP_BYTES(data, size);
     return true;
-}/**
+}
+
+
+
+/**
  * @brief Will wait until availble to send tcp, then will wait for an ACK response before releasing
  * 
  * @param data 
@@ -499,9 +505,10 @@ bool STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward)
 
     bool flag = false;
 
+    while(state->waiting_for_ack);
     cyw43_arch_lwip_begin();
 
-    while(state->waiting_for_ack) {sleep_ms(5);}
+    
     err_t err = tcp_write(state->tcp_pcb, (void*)data, size, TCP_WRITE_FLAG_COPY);
     err_t err2 = tcp_output(state->tcp_pcb);
     if (err != ERR_OK) {
@@ -523,6 +530,9 @@ bool STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward)
     while(state->waiting_for_ack)
     {
         sleep_ms(20);
+    }
+    if (state->got_nak) {
+        return false;
     }
     return true;
 }
@@ -550,6 +560,13 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
             }
             case 0x01: {
                 TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
+                puts("Got data message");
+                if (dataMsg->msg.dest == get_NodeID()) {
+                    printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
+                    break;
+                } else {
+                    // TODO pass msg to AP
+                }
                 //does stuff
                 break;
             }
@@ -589,6 +606,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
                 puts("Got NAK");
                 self_reply = true;
                 state->waiting_for_ack = false;
+                state->got_nak = true;
                 break;
             }
             default:
