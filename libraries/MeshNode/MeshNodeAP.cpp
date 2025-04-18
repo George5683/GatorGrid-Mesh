@@ -678,18 +678,18 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                 } else {
                     uint32_t dest;
                    DEBUG_printf("Message was not for me, was for dest:%08x\n", dataMsg->msg.dest);
-                    if(!tree.find_path_parent(dataMsg->msg.dest, &dest)) {
-                        DEBUG_printf("Count not find path to parent\n");
-                        ACK_flag = false;
-                        //NAK_flag = true;
-                        error = 0x01; // TODO make enum for errors (no node in tree)
-                        TCP_NAK_MESSAGE nakMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
-                        nakMsg.set_error(error);
-                        send_tcp_data(dataMsg->msg.source, client_tpcbs.at(dataMsg->msg.source), nakMsg.get_msg(), nakMsg.get_len());
-                        break;
-                    }
-                    DEBUG_printf("Found path to parent, starts with %u\n", dest);
-                    if (client_tpcbs.find(dest) == client_tpcbs.end()) {
+                    // if(!tree.find_path_parent(dataMsg->msg.dest, &dest)) {
+                    //     DEBUG_printf("Count not find path to parent\n");
+                    //     ACK_flag = false;
+                    //     //NAK_flag = true;
+                    //     error = 0x01; // TODO make enum for errors (no node in tree)
+                    //     TCP_NAK_MESSAGE nakMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
+                    //     nakMsg.set_error(error);
+                    //     send_tcp_data(dataMsg->msg.source, client_tpcbs.at(dataMsg->msg.source), nakMsg.get_msg(), nakMsg.get_len());
+                    //     break;
+                    // }
+                    // DEBUG_printf("Found path to parent, starts with %u\n", dest);
+                    if (client_tpcbs.find(dataMsg->msg.dest) == client_tpcbs.end()) {
                         ACK_flag = false;
                         //NAK_flag = true;
                         error = 0x02; // TODO make enum for errors (id not in connected clients)
@@ -700,7 +700,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                     }
                     ACK_flag = false;
                     DEBUG_printf("Forwarding message to node\n");
-                    send_tcp_data(dest, client_tpcbs.at(dest), dataMsg->get_msg(), dataMsg->get_len());
+                    send_tcp_data(dataMsg->msg.dest, client_tpcbs.at(dataMsg->msg.dest), dataMsg->get_msg(), dataMsg->get_len());
                     break;
                 }
                 
@@ -725,20 +725,23 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                 } else {
                     uint32_t dest;
                    DEBUG_printf("Message was not for me, was for dest:%08x\n", ackMsg->msg.dest);
-                    if(!tree.find_path_parent(ackMsg->msg.dest, &dest)) {
+                    // if(!tree.find_path_parent(ackMsg->msg.dest, &dest)) {
+                    //     ACK_flag = false;
+                    //     NAK_flag = true;
+                    //     error = 0x01; // TODO make enum for errors (no node in tree)
+                    //     break;
+                    // }
+                    if (client_tpcbs.find(ackMsg->msg.dest) == client_tpcbs.end()) {
                         ACK_flag = false;
-                        NAK_flag = true;
-                        error = 0x01; // TODO make enum for errors (no node in tree)
-                        break;
-                    }
-                    if (client_tpcbs.find(dest) == client_tpcbs.end()) {
-                        ACK_flag = false;
-                        NAK_flag = true;
+                        //NAK_flag = true;
                         error = 0x02; // TODO make enum for errors (id not in connected clients)
+                        TCP_NAK_MESSAGE nakMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
+                        nakMsg.set_error(error);
+                        send_tcp_data(ackMsg->msg.source, client_tpcbs.at(ackMsg->msg.source), nakMsg.get_msg(), nakMsg.get_len());
                         break;
                     }
                     ACK_flag = false;
-                    send_tcp_data(dest, client_tpcbs.at(dest), ackMsg->get_msg(), ackMsg->get_len());
+                    send_tcp_data(ackMsg->msg.dest, client_tpcbs.at(ackMsg->msg.dest), ackMsg->get_msg(), ackMsg->get_len());
                 }
                 
 
