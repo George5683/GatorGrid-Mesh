@@ -282,8 +282,8 @@ target_include_directories(sta_two PRIVATE
 target_link_libraries(sta_two
         pico_cyw43_arch_lwip_threadsafe_background
         pico_stdlib
-        pico_multicore
         hardware_spi
+        hardware_i2c
         )
 
 pico_enable_stdio_uart(sta_two 0)
