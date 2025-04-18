@@ -215,11 +215,9 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         // Receive the buffer
         const uint16_t buffer_left = BUF_SIZE - state->recv_len;
         //printf("before pbuf copy partial\n");
-        //state->recv_len += pbuf_copy_partial(p, state->buffer_recv + state->recv_len,
-        //                                     p->tot_len > buffer_left ? buffer_left : p->tot_len, 0);
+        state->recv_len += pbuf_copy_partial(p, state->buffer_recv + state->recv_len,
+                                             p->tot_len > buffer_left ? buffer_left : p->tot_len, 0);
         //printf("after pbuf copy partial\n");
-        state->recv_len += pbuf_copy_partial(p, state->buffer_recv,
-                                                state->recv_len, 0);
         tcp_recved(tpcb, p->tot_len);
         //printf("before tcp_recved\n");
 
@@ -796,11 +794,10 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
         TCP_NAK_MESSAGE nakMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
         nakMsg.set_error(error);
         send_tcp_data(clients_map[tpcb].id, tpcb, nakMsg.get_msg(), nakMsg.get_len());
-        delete msg;
         //send_tcp_data(nakMsg.get_msg(), nakMsg.get_len());
         return false;
     } 
 
-    delete msg;
+    //delete msg;
     return true;
 }
