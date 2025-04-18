@@ -215,9 +215,11 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         // Receive the buffer
         const uint16_t buffer_left = BUF_SIZE - state->recv_len;
         //printf("before pbuf copy partial\n");
-        state->recv_len += pbuf_copy_partial(p, state->buffer_recv + state->recv_len,
-                                             p->tot_len > buffer_left ? buffer_left : p->tot_len, 0);
+        //state->recv_len += pbuf_copy_partial(p, state->buffer_recv + state->recv_len,
+        //                                     p->tot_len > buffer_left ? buffer_left : p->tot_len, 0);
         //printf("after pbuf copy partial\n");
+        state->recv_len += pbuf_copy_partial(p, state->buffer_recv,
+                                                state->recv_len, 0);
         tcp_recved(tpcb, p->tot_len);
         //printf("before tcp_recved\n");
 
@@ -625,6 +627,9 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
     //DEBUG_printf("ID RECV FROM INIT MESSAGE: %08X\n", clients_map[tpcb].id);
     // uint32_t test = ((APNode*)(state->ap_node))->get_NodeID();
     //DEBUG_printf("CURRENT NODE ID: %08X\n", test);
+
+    puts("HANDLE DUMP");\
+    dump_bytes(buffer, 100); 
 
     // TCP_INIT_MESSAGE init_msg(((APNode*)(state->ap_node))->get_NodeID());  
     TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(state->buffer_recv));

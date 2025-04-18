@@ -174,7 +174,7 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         const uint16_t buffer_left = BUF_SIZE - state->buffer_len;
         uint16_t copy_len = p->tot_len > buffer_left ? buffer_left : p->tot_len;
         
-        state->buffer_len += pbuf_copy_partial(p, state->buffer + state->buffer_len, copy_len, 0);
+        state->buffer_len += pbuf_copy_partial(p, state->buffer, copy_len, 0);
         
         // Print the received data for debugging
         // char received_data[256] = {0}; // Small buffer for displaying part of response
@@ -187,7 +187,6 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         node->handle_incoming_data(state->buffer, p);
     
     }
-
     
     pbuf_free(p);
     return ERR_OK;
@@ -557,7 +556,8 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
 
         uint8_t msg_id = buffer[1];
         uint16_t len = *reinterpret_cast<uint16_t*>(buffer +2);
-        dump_bytes(buffer, len);
+        //dump_bytes(buffer, len);
+        dump_bytes(buffer, 100);
         switch (msg_id) {
             case 0x00: {
                 TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(msg);
