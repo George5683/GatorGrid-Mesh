@@ -40,9 +40,9 @@ int main() {
         node.tcp_init();
     }
 
-    sleep_ms(1000);
+    //sleep_ms(1000);
 
-    for (int i = 0; i < 10; i++)
+    /*for (int i = 0; i < 10; i++)
     {
         TCP_DATA_MSG msg(node.get_NodeID(), 2);
         uint8_t arr[] = "hello, this is message:  ";
@@ -50,7 +50,7 @@ int main() {
         msg.add_message(25, arr);
         printf("Sending message: %d/10\n", i+1);
         while (!node.send_tcp_data_blocking(msg.get_msg(), msg.get_len(), false));
-    }
+    }*/
 
 
     bool toggle = true;

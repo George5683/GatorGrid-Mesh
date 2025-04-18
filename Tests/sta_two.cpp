@@ -119,7 +119,7 @@ int main() {
         } else {
             mpu6050_read_raw(acceleration, gyro, &temp);
 
-            final_size = snprintf(format_string, 50, "Current Temp (C) = %f\n", (temp / 340.0) + 36.53);
+            final_size = snprintf(format_string, 50, "Current Temp (F) = %f\n", ((temp / 340.0) + 36.53)*(9/5) + 32);
 
             if(final_size < 0)
                 puts("Size is neg error snprintf");
