@@ -26,7 +26,7 @@ extern "C" {
 *   Client Class
 */
 
-#define DEBUG 0
+#define DEBUG 1
 
 #define TCP_PORT 4242
 #if DEBUG 
@@ -471,10 +471,19 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size, bool forward) {
     // }
 
     // Not getting an ack message back for some reason
-    sleep_ms(125);
+    //sleep_ms(125);
     
+    DEBUG_printf("Before tpc_write\n");
+
     err_t err = tcp_write(state->tcp_pcb, (void*)data, size, TCP_WRITE_FLAG_COPY);
+
+    DEBUG_printf("After tpc_write\n");
+
     err_t err2 = tcp_output(state->tcp_pcb);
+
+    DEBUG_printf("After tpc_output\n");
+
+
     if (err != ERR_OK) {
        DEBUG_printf("Message failed to write\n");
        DEBUG_printf("ERR: %d\n", err);
@@ -571,8 +580,9 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
                 TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
                 puts("Got data message");
                 if (dataMsg->msg.dest == get_NodeID()) {
-                   DEBUG_printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
-                   ACK_flag = true;
+                    source_id =  dataMsg->msg.source;
+                    DEBUG_printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
+                    ACK_flag = true;
                     break;
                 } else {
                     // TODO pass msg to AP
@@ -629,14 +639,15 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
     }
 
     if (ACK_flag && !self_reply){
+        DEBUG_printf("Sending ack to %08x\n", source_id);
         TCP_ACK_MESSAGE ackMsg(get_NodeID(), source_id, p->tot_len);
-        send_tcp_data(ackMsg.get_msg(), ackMsg.get_len(), false);
+        send_tcp_data(ackMsg.get_msg(), ackMsg.get_len(), true);
         //state->waiting_for_ack = true;
     } else if (NAK_flag) {
         // TODO: Update for error handling
         // identify the source from sender and send back?
         TCP_NAK_MESSAGE nakMsg(get_NodeID(), 0, p->tot_len);
-        send_tcp_data(nakMsg.get_msg(), nakMsg.get_len(), false);
+        send_tcp_data(nakMsg.get_msg(), nakMsg.get_len(), true);
         delete msg;
         return false;
     }
