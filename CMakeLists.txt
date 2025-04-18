@@ -156,6 +156,7 @@ add_executable(ap_root
         libraries/SPI/SPI.cpp
         libraries/RingBuffer/RingBuffer.cpp
         libraries/ChildrenTree/ChildrenTree.cpp
+        libraries/display/display.cpp
         )
 
 target_include_directories(ap_root PRIVATE
@@ -167,6 +168,7 @@ target_include_directories(ap_root PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
         ${CMAKE_CURRENT_LIST_DIR}/libraries/RingBuffer
         ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/display
         )
 
 target_link_libraries(ap_root

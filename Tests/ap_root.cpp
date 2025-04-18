@@ -1,10 +1,13 @@
 #include "pico/stdlib.h"
 #include "libraries/MeshNode/MeshNode.hpp"
+#include "libraries/display/display.hpp"
 #include <cstdio>
 #include "pico/cyw43_arch.h"
 #include "pico/multicore.h"
 
 bool is_wifi_connected = false;
+#define DEBUG 1
+
 
 int main() {
 
@@ -13,6 +16,7 @@ int main() {
 
     // initial delay to allow user to look at the serial monitor
     sleep_ms(10000);
+    display_test();
 
     //multicore_launch_core1(core1_entry);
     APNode node(0);

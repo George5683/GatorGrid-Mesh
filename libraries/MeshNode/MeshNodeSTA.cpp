@@ -26,8 +26,14 @@ extern "C" {
 *   Client Class
 */
 
+#define DEBUG 0
+
 #define TCP_PORT 4242
+#if DEBUG 
 #define DEBUG_printf printf
+#else
+#define DEBUG_printf
+#endif
 #define BUF_SIZE 2048
 
 #define TEST_ITERATIONS 10
@@ -37,16 +43,16 @@ extern "C" {
  static void dump_bytes(const uint8_t *bptr, uint32_t len) {
      unsigned int i = 0;
  
-     printf("dump_bytes %d", len);
+    DEBUG_printf("dump_bytes %d", len);
      for (i = 0; i < len;) {
          if ((i & 0x0f) == 0) {
-             printf("\n");
+            DEBUG_printf("\n");
          } else if ((i & 0x07) == 0) {
-             printf(" ");
+            DEBUG_printf(" ");
          }
-         printf("%02x ", bptr[i++]);
+        DEBUG_printf("%02x ", bptr[i++]);
      }
-     printf("\n");
+    DEBUG_printf("\n");
  }
  #define DUMP_BYTES dump_bytes
  #else
@@ -128,7 +134,7 @@ static err_t tcp_client_connected(void *arg, struct tcp_pcb *tpcb, err_t err) {
     STANode* node = (STANode*)arg;
     TCP_CLIENT_T *state = node->state;
     if (err != ERR_OK) {
-        printf("connect failed %d\n", err);
+       DEBUG_printf("connect failed %d\n", err);
         return tcp_result(arg, err);
     }
     state->connected = true;
@@ -190,10 +196,10 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 static bool tcp_client_open(void *arg) {
     STANode* node = (STANode*)arg;
     TCP_CLIENT_T *state = node->state;
-    printf("Connecting to %s port %u\n", ip4addr_ntoa(&state->remote_addr), TCP_PORT);
+   DEBUG_printf("Connecting to %s port %u\n", ip4addr_ntoa(&state->remote_addr), TCP_PORT);
     state->tcp_pcb = tcp_new_ip_type(IP_GET_TYPE(&state->remote_addr));
     if (!state->tcp_pcb) {
-        printf("failed to create pcb\n");
+       DEBUG_printf("failed to create pcb\n");
         return false;
     }
 
@@ -234,7 +240,7 @@ STANode::STANode() {
     // set the NodeID variable
     set_NodeID(ID);
 
-    printf("Node ID is initially set to 0!\n");
+   DEBUG_printf("Node ID is initially set to 0!\n");
 
     // Set SPI to be a slave 
     Slave_Pico.SPI_init(false);
@@ -261,20 +267,20 @@ bool STANode::init_sta_mode() {
 
     this->set_NodeID(AP_ID);
 
-    printf("STA new ID is: %08x\n", get_NodeID());
+   DEBUG_printf("STA new ID is: %08x\n", get_NodeID());
 
     if (cyw43_arch_init()) {
-        printf("failed to initialise\n");
+       DEBUG_printf("failed to initialise\n");
         return false;
     }
 
-    printf("Initiation to STA mode successful\n");
+   DEBUG_printf("Initiation to STA mode successful\n");
     return true;
 }
 
 bool STANode::start_sta_mode() {
     cyw43_arch_enable_sta_mode();
-    printf("Starting STA mode\n");
+   DEBUG_printf("Starting STA mode\n");
     return true; // ggwp
 }
 
@@ -292,7 +298,7 @@ int extract_id(const char *ssid) {
         //printf("Converted ID: %d (Hex to Decimal)\n", id);
         return id;
     } else {
-        printf("Invalid SSID format: %s\n", ssid);
+       DEBUG_printf("Invalid SSID format: %s\n", ssid);
         return -1;
     }
 }
@@ -324,8 +330,8 @@ int STANode::scan_result(void* env, const cyw43_ev_scan_result_t* result) {
                 //printf("Ignoring own AP node\n");
                 goto free_mem;
             } else if (self->known_nodes.find(id) == self->known_nodes.end()) {
-                printf("New node ID: 0x%x\n", id); // Changed format to 0x%x for hexadecimal output
-                printf("New node ID: 0x%x, SSID: %s, Signal strength: %d dBm\n", id, (char*)&(result->ssid), result->rssi);
+               DEBUG_printf("New node ID: 0x%x\n", id); // Changed format to 0x%x for hexadecimal output
+               DEBUG_printf("New node ID: 0x%x, SSID: %s, Signal strength: %d dBm\n", id, (char*)&(result->ssid), result->rssi);
                 self->known_nodes[id] = result_copy;
             } else {
                 // Free if node is already known
@@ -352,7 +358,7 @@ bool STANode::scan_for_nodes() {
     known_nodes.clear();
     // Check if a scan is already in progress
     if (cyw43_wifi_scan_active(&cyw43_state)) {
-        printf("Scan already in progress, skipping\n");
+       DEBUG_printf("Scan already in progress, skipping\n");
         return false;
     }
     
@@ -362,16 +368,16 @@ bool STANode::scan_for_nodes() {
     cyw43_wifi_scan_options_t scan_options = { 0 };
     int err = cyw43_wifi_scan(&cyw43_state, &scan_options, this, STANode::scan_result);
     if (err != 0) {
-        printf("Failed to start scan: %d\n", err);
+       DEBUG_printf("Failed to start scan: %d\n", err);
         return false;
     }
     
-    printf("Scan started\n");
+    puts("Scan started");
     
     // Wait for scan to complete with timeout
     while (cyw43_wifi_scan_active(&cyw43_state)) {
         if (absolute_time_diff_us(scan_start_time, get_absolute_time()) > 5000000) {
-            printf("Scan timeout\n");
+           DEBUG_printf("Scan timeout\n");
             return false;
         }
 
@@ -383,16 +389,16 @@ bool STANode::scan_for_nodes() {
         #endif
     }
     
-    printf("Scan completed successfully\n");
+    puts("Scan completed successfully");
     return true;
 }
 
 bool STANode::connect_to_node(uint32_t id) {
-    printf("Connecting to node: %u\n", id);
+   DEBUG_printf("Connecting to node: %u\n", id);
 
     // Check if node is known
     if (known_nodes.count(id) == 0) {
-        printf("Unknown node. Ending connection attempt.\n");
+       DEBUG_printf("Unknown node. Ending connection attempt.\n");
         return false;
     }
 
@@ -400,18 +406,18 @@ bool STANode::connect_to_node(uint32_t id) {
     char ssid[32];  // Allocate on stack instead of heap
     snprintf(ssid, sizeof(ssid), "GatorGrid_Node:%08X", id);  // Convert ID to uppercase hex
 
-    printf("Generated SSID: %s\n", ssid);
+   DEBUG_printf("Generated SSID: %s\n", ssid);
 
     // Attempt to connect
     if (cyw43_arch_wifi_connect_timeout_ms(ssid, "password", CYW43_AUTH_WPA2_AES_PSK, 20000)) {
         for (int i = 0; i < 20; i++) {
-            printf("Failed to connect. Retrying...\n");
+           DEBUG_printf("Failed to connect. Retrying...\n");
             sleep_ms(1000);  
         }
         return false;
     }
 
-    printf("Connected successfully.\n");
+   DEBUG_printf("Connected successfully.\n");
     parent = id;
     return true;
 }
@@ -427,17 +433,17 @@ bool STANode::is_connected() {
 bool STANode::tcp_init() {
     state = tcp_client_init();
     if (!state) {
-        printf("Unable to initialize tcp client state\n");
+       DEBUG_printf("Unable to initialize tcp client state\n");
         return false;
     }
-    printf("Initialized tcp client\n");
+   DEBUG_printf("Initialized tcp client\n");
     state->got_nak = false;
     if (!tcp_client_open(this)) {
-        printf("Failed to open client\n");
+       DEBUG_printf("Failed to open client\n");
         tcp_result(state, -1);
         return false; 
     }
-    printf("Opened tcp client connection\n");
+   DEBUG_printf("Opened tcp client connection\n");
 
     //uint8_t buffer[BUF_SIZE] = {};
     //create_join_message(BUF_SIZE, buffer, this);
@@ -455,13 +461,13 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size, bool forward) {
     bool flag = false;
 
     // while(state->tcp_pcb->snd_buf != 0) {
-    //   printf("tcp buffer has %d bytes in it\n", state->tcp_pcb->snd_buf);
+    //  DEBUG_printf("tcp buffer has %d bytes in it\n", state->tcp_pcb->snd_buf);
     // }
     while(state->waiting_for_ack); //{sleep_ms(5);}
     cyw43_arch_lwip_begin();
     //printf("Space used in the buffer %d\n", tcp_sndbuf(state->tcp_pcb));
     // while (tcp_write(state->tcp_pcb, (void*)buffer, BUF_SIZE, TCP_WRITE_FLAG_COPY) == -1) {
-    //     printf("attempting to write\n");
+    //    DEBUG_printf("attempting to write\n");
     //     sleep_ms(2);
     // }
 
@@ -471,19 +477,19 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size, bool forward) {
     err_t err = tcp_write(state->tcp_pcb, (void*)data, size, TCP_WRITE_FLAG_COPY);
     err_t err2 = tcp_output(state->tcp_pcb);
     if (err != ERR_OK) {
-        printf("Message failed to write\n");
-        printf("ERR: %d\n", err);
+       DEBUG_printf("Message failed to write\n");
+       DEBUG_printf("ERR: %d\n", err);
         flag = true;
     }
     if (err2 != ERR_OK) {
-        printf("Message failed to be sent\n");
+       DEBUG_printf("Message failed to be sent\n");
         flag = true;
     }
     cyw43_arch_lwip_end();
     if (flag)
       return false;
     
-    printf("SENDING BYTES BELOW: \n");
+   DEBUG_printf("SENDING BYTES BELOW: \n");
     state->waiting_for_ack = !forward;
     DUMP_BYTES(data, size);
     return true;
@@ -512,19 +518,19 @@ bool STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward)
     err_t err = tcp_write(state->tcp_pcb, (void*)data, size, TCP_WRITE_FLAG_COPY);
     err_t err2 = tcp_output(state->tcp_pcb);
     if (err != ERR_OK) {
-        printf("Message failed to write\n");
-        printf("ERR: %d\n", err);
+       DEBUG_printf("Message failed to write\n");
+       DEBUG_printf("ERR: %d\n", err);
         flag = true;
     }
     if (err2 != ERR_OK) {
-        printf("Message failed to be sent\n");
+       DEBUG_printf("Message failed to be sent\n");
         flag = true;
     }
     cyw43_arch_lwip_end();
     if (flag)
       return false;
     
-    printf("SENDING BYTES BELOW: \n");
+   DEBUG_printf("SENDING BYTES BELOW: \n");
     state->waiting_for_ack = !forward;
     DUMP_BYTES(data, size);
     while(state->waiting_for_ack)
@@ -544,7 +550,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
     bool self_reply = false;
     TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(buffer));
     if (!msg) {
-        printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
+       DEBUG_printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
         ACK_flag = false;
     } else {
 
@@ -553,7 +559,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
             case 0x00: {
                 TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(msg);
                 //does stuff
-                printf("Received initialization message from node %u", initMsg->msg.source);
+               DEBUG_printf("Received initialization message from node %u", initMsg->msg.source);
                 source_id =  initMsg->msg.source;
 
                 break;
@@ -562,7 +568,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
                 TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
                 puts("Got data message");
                 if (dataMsg->msg.dest == get_NodeID()) {
-                    printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
+                   DEBUG_printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
                     break;
                 } else {
                     // TODO pass msg to AP
@@ -591,7 +597,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
 
                 source_id = ackMsg->msg.source;
 
-                printf("Ack is from %08x and for %08x\n", ackMsg->msg.source, ackMsg->msg.dest);
+               DEBUG_printf("Ack is from %08x and for %08x\n", ackMsg->msg.source, ackMsg->msg.dest);
                 if (ackMsg->msg.dest == get_NodeID()) {
                     self_reply = true;
                     puts("ACK is for me");
@@ -610,7 +616,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
                 break;
             }
             default:
-                printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
+               DEBUG_printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
                 ACK_flag = false;
                 // SEND NAK message
                 //TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), msg_id ? msg_id : 0, 0);

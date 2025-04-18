@@ -14,23 +14,23 @@ public:
     virtual uint16_t get_len() = 0;
     virtual void set_msg(void* msg) = 0;
 
-    typedef struct __attribute__((__packed__)) {
+    typedef struct __attribute__((__packed__)) tcp_init_msg_t{
         uint8_t priority;
         uint8_t msg_id;
         uint16_t len;
         uint32_t source;
-    }tcp_init_msg_t;
+    }tcp_init_msg;
 
-    typedef struct __attribute__((__packed__)) {
+    typedef struct __attribute__((__packed__)) tcp_update_msg_t{
         uint8_t priority;
         uint8_t msg_id;
         uint16_t len;
         uint32_t source;
         uint8_t child_count;
         uint32_t children_IDs[4]; //max 4
-    }tcp_update_msg_t;
+    }tcp_update_msg;
 
-    typedef struct __attribute__((__packed__)) {
+    typedef struct __attribute__((__packed__)) tcp_data_msg_t{
         uint8_t priority;
         uint8_t msg_id;
         uint16_t len;
@@ -38,9 +38,9 @@ public:
         uint32_t dest;
         uint16_t msg_len;
         uint8_t msg[2034]; //max message len left for 2048 bytes
-    }tcp_data_msg_t;
+    }tcp_data_msg;
 
-    typedef struct __attribute__((__packed__)) {
+    typedef struct __attribute__((__packed__)) tcp_disconnect_msg_t{
         uint8_t priority;
         uint8_t msg_id;
         uint16_t len;
@@ -50,18 +50,18 @@ public:
         uint32_t lost_node; // ignored if 0-127 cause
         uint8_t child_count;
         uint32_t children_IDs[4]; //max 4
-    }tcp_disconnect_msg_t;
+    }tcp_disconnect_msg;
 
-    typedef struct __attribute__((__packed__)) {
+    typedef struct __attribute__((__packed__)) tcp_acknowledge_msg_t{
         uint8_t priority;
         uint8_t msg_id;
         uint16_t len;
         uint32_t source;
         uint32_t dest;
         uint16_t bytes_received; // TODO:: add error check val in future
-    }tcp_acknowledge_msg_t;
+    }tcp_acknowledge_msg;
 
-    typedef struct __attribute__((__packed__)) {
+    typedef struct __attribute__((__packed__)) tcp_failed_msg_t{
         uint8_t priority;
         uint8_t msg_id;
         uint16_t len;
@@ -69,20 +69,20 @@ public:
         uint32_t dest;
         uint16_t bytes_received; // TODO:: add error check val in future
         uint8_t error;
-    }tcp_failed_msg_t;
+    }tcp_failed_msg;
 
-    typedef struct __attribute__((__packed__)) {
+    typedef struct __attribute__((__packed__)) tcp_force_update_msg_t{
         uint8_t priority;
         uint8_t msg_id;
         uint16_t len;
-    }tcp_force_update_msg_t; // its 10pm do you know where your children are??
+    }tcp_force_update_msg; // its 10pm do you know where your children are??
 };
 
 
 
 class TCP_INIT_MESSAGE : public TCP_MESSAGE {
 public:
-    tcp_init_msg_t msg = {0};
+    tcp_init_msg msg = {0};
 public:
     TCP_INIT_MESSAGE(uint32_t id) : TCP_MESSAGE(0xFF) { 
         msg.priority = priority;
@@ -100,13 +100,13 @@ public:
     }
 
     void set_msg(void* msg) override {
-        this->msg = *(reinterpret_cast<tcp_init_msg_t*>(msg));
+        this->msg = *(reinterpret_cast<tcp_init_msg*>(msg));
     }
 };
 
 class TCP_DATA_MSG : public TCP_MESSAGE {
 public:
-    tcp_data_msg_t msg = {0};
+    tcp_data_msg msg = {0};
 public:
     TCP_DATA_MSG(uint32_t src_id, uint32_t dest_id) : TCP_MESSAGE(0x7F) {
         msg.priority = priority;
@@ -129,14 +129,14 @@ public:
         return msg.len;
     }
     void set_msg(void* msg) override {
-        this->msg = *(reinterpret_cast<tcp_data_msg_t*>(msg));
+        this->msg = *(reinterpret_cast<tcp_data_msg*>(msg));
     }
 };
 
 
 class TCP_DISCONNECT_MSG : public TCP_MESSAGE {
 public:
-    tcp_disconnect_msg_t msg = {0};
+    tcp_disconnect_msg msg = {0};
 public:
     TCP_DISCONNECT_MSG(uint32_t src_id) : TCP_MESSAGE(0xFF) {
         msg.priority = priority;
@@ -164,13 +164,13 @@ public:
         return msg.len;
     }
     void set_msg(void* msg) override {
-        this->msg = *(reinterpret_cast<tcp_disconnect_msg_t*>(msg));
+        this->msg = *(reinterpret_cast<tcp_disconnect_msg*>(msg));
     }
 };
 
 class TCP_UPDATE_MESSAGE : public TCP_MESSAGE {
 public:
-    tcp_update_msg_t msg = {0};
+    tcp_update_msg msg = {0};
 public:
     TCP_UPDATE_MESSAGE(uint32_t id) : TCP_MESSAGE(0xFF) { 
         msg.priority = priority;
@@ -197,13 +197,13 @@ public:
         return msg.child_count;
     }
     void set_msg(void* msg) override {
-        this->msg = *(reinterpret_cast<tcp_update_msg_t*>(msg));
+        this->msg = *(reinterpret_cast<tcp_update_msg*>(msg));
     }
 };
     
 class TCP_ACK_MESSAGE : public TCP_MESSAGE {
 public:
-    tcp_acknowledge_msg_t msg = {0};
+    tcp_acknowledge_msg msg = {0};
 public:
     TCP_ACK_MESSAGE(uint32_t src_id, uint32_t dest_id, uint16_t bytes_received) : TCP_MESSAGE(0xFF) { 
         msg.priority = priority;
@@ -223,13 +223,13 @@ public:
         return msg.len;
     }
     void set_msg(void* msg) override {
-        this->msg = *(reinterpret_cast<tcp_acknowledge_msg_t*>(msg));
+        this->msg = *(reinterpret_cast<tcp_acknowledge_msg*>(msg));
     }
 };
 
 class TCP_NAK_MESSAGE : public TCP_MESSAGE {
 public:
-    tcp_failed_msg_t msg = {0};
+    tcp_failed_msg msg = {0};
 public:
     TCP_NAK_MESSAGE(uint32_t src_id, uint32_t dest_id, uint16_t bytes_received) : TCP_MESSAGE(0xFF) { 
         msg.priority = priority;
@@ -252,7 +252,7 @@ public:
         msg.error = err;
     }
     void set_msg(void* msg) override {
-        this->msg = *(reinterpret_cast<tcp_failed_msg_t*>(msg));
+        this->msg = *(reinterpret_cast<tcp_failed_msg*>(msg));
     }
 };
 
