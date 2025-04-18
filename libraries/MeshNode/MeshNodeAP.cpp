@@ -14,25 +14,33 @@
 #include "hardware/regs/addressmap.h"
 
 #define TCP_PORT 4242
-#define DEBUG_printf printf
+
 #define BUF_SIZE 2048
 #define TEST_ITERATIONS 10
 #define POLL_TIME_S 5
+
+#define DEBUG 1
+
+#if DEBUG 
+#define DEBUG_printf printf
+#else
+#define DEBUG_printf
+#endif
 
 #if 1
  static void dump_bytes(const uint8_t *bptr, uint32_t len) {
      unsigned int i = 0;
  
-     printf("dump_bytes %d", len);
+    DEBUG_printf("dump_bytes %d", len);
      for (i = 0; i < len;) {
          if ((i & 0x0f) == 0) {
-             printf("\n");
+            DEBUG_printf("\n");
          } else if ((i & 0x07) == 0) {
-             printf(" ");
+            DEBUG_printf(" ");
          }
-         printf("%02x ", bptr[i++]);
+        DEBUG_printf("%02x ", bptr[i++]);
      }
-     printf("\n");
+    DEBUG_printf("\n");
  }
  #define DUMP_BYTES dump_bytes
  #else
@@ -190,7 +198,7 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 
     bool got_full_message = false;
 
-    printf("Recv called\n");
+   DEBUG_printf("Recv called\n");
     if (!p) {
         return tcp_server_result(arg, -1);
     }
@@ -214,17 +222,17 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         //printf("before tcp_recved\n");
 
         if(state->recv_len == 2048) {
-            printf("SERVER DEBUG: GOT 2048\n");
+           DEBUG_printf("SERVER DEBUG: GOT 2048\n");
             //got_full_message = true;
 
         } else {
-            printf("SERVER DEBUG: Currently recv %d\n", state->recv_len);
+           DEBUG_printf("SERVER DEBUG: Currently recv %d\n", state->recv_len);
         }
 
         if(clients_map.find(tpcb) != clients_map.end()) {
-            printf("PCB FOUND\n");
+           DEBUG_printf("PCB FOUND\n");
         } else {
-            printf("MAJOR ERROR CLIENT PCB NOT FOUND\n");
+           DEBUG_printf("MAJOR ERROR CLIENT PCB NOT FOUND\n");
             return ERR_OK; // TODO: Change error handling
         }
 
@@ -232,7 +240,7 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 
         //tcp_server_send_data(arg, state->client_pcb);
         // for (int i = 0; i < 20; i++) {
-        //     printf("recv buff[%d] == %02x\n", i, state->buffer_recv[i]);
+        //    DEBUG_printf("recv buff[%d] == %02x\n", i, state->buffer_recv[i]);
            
         // }
     }
@@ -365,7 +373,7 @@ void run_tcp_server(void * arg) {
         sleep_ms(1000);
 #endif
     }
-    printf("Now freeing state\n");
+   DEBUG_printf("Now freeing state\n");
     free(state);
     
 }
@@ -584,24 +592,24 @@ bool APNode::send_tcp_data(uint32_t id, tcp_pcb *client_pcb, uint8_t* data, uint
     //err_t err = tcp_write(state->client_pcb, (void*)buffer, size, TCP_WRITE_FLAG_COPY);
     //err_t err2 = tcp_output(state->client_pcb);
 
-    printf("send_tcp_data: Destination ID %08x\n", id);
+   DEBUG_printf("send_tcp_data: Destination ID %08x\n", id);
 
     err_t err = tcp_write(client_pcb, (void*)buffer, size, TCP_WRITE_FLAG_COPY);
     err_t err2 = tcp_output(client_pcb);
 
     if (err != ERR_OK) {
-        printf("Message failed to write\n");
-        printf("ERR: %d\n", err);
+       DEBUG_printf("Message failed to write\n");
+       DEBUG_printf("ERR: %d\n", err);
         flag = true;
     }
     if (err2 != ERR_OK) {
-        printf("Message failed to be sent\n");
+       DEBUG_printf("Message failed to be sent\n");
         flag = true;
     }
     cyw43_arch_lwip_end();
     if (flag)
       return false;
-    printf("Successfully queued message\n");
+   DEBUG_printf("Successfully queued message\n");
     return true;
 }
 
@@ -613,16 +621,16 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
     uint8_t error = 0;
     // tcp_init_msg_t *init_msg_str = reinterpret_cast <tcp_init_msg_t *>(state->buffer_recv);
     // clients_map[tpcb].id = init_msg_str->source;
-    // printf("ID RECV FROM INIT MESSAGE: %08X\n", clients_map[tpcb].id);
+    //DEBUG_printf("ID RECV FROM INIT MESSAGE: %08X\n", clients_map[tpcb].id);
     // uint32_t test = ((APNode*)(state->ap_node))->get_NodeID();
-    // printf("CURRENT NODE ID: %08X\n", test);
+    //DEBUG_printf("CURRENT NODE ID: %08X\n", test);
 
     // TCP_INIT_MESSAGE init_msg(((APNode*)(state->ap_node))->get_NodeID());  
     TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(state->buffer_recv));
     uint8_t msg_id = 0xFF;
 
     if (!msg) {
-        printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
+       DEBUG_printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
         ACK_flag = false;
     } else {
 
@@ -634,7 +642,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
         switch (msg_id) {
             case 0x00: {
                 TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(msg);
-                printf("Received initialization message from node %u", initMsg->msg.source);
+               DEBUG_printf("Received initialization message from node %u", initMsg->msg.source);
                 //does stuff
 
                 // Set init node ID
@@ -657,30 +665,36 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                 TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
                 // Store messages in a ring buffer
                 puts("Got data message");
-                printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
+               DEBUG_printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
                 if (dataMsg->msg.dest == get_NodeID()) {
                     rb.insert(dataMsg->msg.msg,dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
+                    DEBUG_printf("Successfully inserted into ring buffer\n");
+                    ACK_flag = true;
+                    break;
                 } else {
                     uint32_t dest;
-                    printf("Message was not for me, was for dest:%08x\n", dataMsg->msg.dest);
+                   DEBUG_printf("Message was not for me, was for dest:%08x\n", dataMsg->msg.dest);
                     if(!tree.find_path_parent(dataMsg->msg.dest, &dest)) {
                         ACK_flag = false;
                         NAK_flag = true;
                         error = 0x01; // TODO make enum for errors (no node in tree)
-                        break;
                     }
                     if (client_tpcbs.find(dest) == client_tpcbs.end()) {
                         ACK_flag = false;
                         NAK_flag = true;
                         error = 0x02; // TODO make enum for errors (id not in connected clients)
+                    }
+                    if (NAK_flag) {
+                        TCP_NAK_MESSAGE nakMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
+                        nakMsg.set_error(error);
+                        send_tcp_data(dataMsg->msg.source, client_tpcbs.at(dataMsg->msg.source), nakMsg.get_msg(), nakMsg.get_len());
                         break;
                     }
                     ACK_flag = false;
                     send_tcp_data(dest, client_tpcbs.at(dest), dataMsg->get_msg(), dataMsg->get_len());
+                    break;
                 }
-                printf("Successfully inserted into ring buffer\n");
-                ACK_flag = true;
-                break;
+                
             }
             case 0x02: {
                 TCP_DISCONNECT_MSG* discMsg = static_cast<TCP_DISCONNECT_MSG*>(msg);
@@ -701,7 +715,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                     ACK_flag = false;
                 } else {
                     uint32_t dest;
-                    printf("Message was not for me, was for dest:%08x\n", ackMsg->msg.dest);
+                   DEBUG_printf("Message was not for me, was for dest:%08x\n", ackMsg->msg.dest);
                     if(!tree.find_path_parent(ackMsg->msg.dest, &dest)) {
                         ACK_flag = false;
                         NAK_flag = true;
@@ -729,7 +743,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                 break;
             }
             default:
-                printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
+               DEBUG_printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
                 ACK_flag = false;
                 break;
         }
@@ -753,17 +767,17 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
         for(auto i : client_tpcbs) {
             sleep_ms(20);
             send_tcp_data(i.first, i.second, updateMsg.get_msg(), updateMsg.get_len());
-            printf("Sent update message to %08x\n", i.first);
+           DEBUG_printf("Sent update message to %08x\n", i.first);
         }*/
     }
 
     if (ACK_flag){
-        printf("Sending ACK message to client %08x\n", clients_map[tpcb].id);
+       DEBUG_printf("Sending ACK message to client %08x\n", clients_map[tpcb].id);
         // Assumption: clients_map[tpcb].id implies that any message worth acking isn't being forwarded and is originating from the intended node
         TCP_ACK_MESSAGE ackMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
         send_tcp_data(clients_map[tpcb].id, tpcb, ackMsg.get_msg(), ackMsg.get_len());
         //send_tcp_data(ackMsg.get_msg(), ackMsg.get_len());
-        printf("Sent ACK message to client %08x\n", clients_map[tpcb].id);
+       DEBUG_printf("Sent ACK message to client %08x\n", clients_map[tpcb].id);
         
     } else if (NAK_flag) {
         // TODO: Update for error handling

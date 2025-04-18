@@ -5,6 +5,8 @@
 #include "pico/cyw43_arch.h"
 #include "pico/multicore.h"
 
+#define DEBUG 1
+
 
 int main() {
     stdio_init_all();
@@ -22,23 +24,23 @@ int main() {
     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
 
     
-    if (!node.scan_for_nodes()) {
-        return 0;
-    }
-    printf("known nodes map size: %d\n", node.known_nodes.size());
-    while (node.known_nodes.empty()) {
-        //printf("known nodes map size: %d", node.known_nodes.size());
-        if (!node.scan_for_nodes()) {
+    // if (!node.scan_for_nodes()) {
+    //     return 0;
+    // }
+    // printf("known nodes map size: %d\n", node.known_nodes.size());
+    // while (node.known_nodes.empty()) {
+    //     //printf("known nodes map size: %d", node.known_nodes.size());
+    //     if (!node.scan_for_nodes()) {
 
-            return 0;
-        }
-    }
-    printf("Left searching for nodes\n");
-    if (node.connect_to_node(1)) {
-        node.tcp_init();
-    }
+    //         return 0;
+    //     }
+    // }
+    // printf("Left searching for nodes\n");
+    // if (node.connect_to_node(1)) {
+    //     node.tcp_init();
+    // }
 
-    sleep_ms(1000);
+    // sleep_ms(1000);
 
 
     bool toggle = true;

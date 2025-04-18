@@ -5,6 +5,8 @@
 #include "pico/cyw43_arch.h"
 #include "pico/multicore.h"
 
+#define DEBUG 1
+
 
 int main() {
     stdio_init_all();
@@ -46,6 +48,7 @@ int main() {
         uint8_t arr[] = "hello, this is message:  ";
         arr[24] = 48 + i;
         msg.add_message(25, arr);
+        printf("Sending message: %d/10\n", i+1);
         while (!node.send_tcp_data_blocking(msg.get_msg(), msg.get_len(), false));
     }
 
