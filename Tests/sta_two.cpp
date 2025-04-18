@@ -88,7 +88,6 @@ int main() {
 
     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
 
-    
     if (!node.scan_for_nodes()) {
         return 0;
     }
