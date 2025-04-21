@@ -10,12 +10,11 @@ GatorGrid is a multifunctional software solution designed for the Raspberry Pi P
 ## Requirements to run
 - Install doxygen
 - Install graphviz
-- Install extensions for VS code if applicable: Doxygen Runner, Doxygen Documentation Generator, Live Preview
+- Install extensions for VS code if applicable: Doxygen Documentation Generator 
 
 ## How to run Doxygen
-- Without Vs code, use doxygen Doxyfile then view it on github or on a website
-- With Vs code, do CTRL+SHIFT+P and then type Generate Doxygen Documentation and the viewer should automatically open
-- If the viewer does not automatically open, check the settings of Doxygen Runner
+1. Use doxygen Doxyfile to generate the documentation
+2. Use **start doc\html\index.html** (WINDOWS ONLY) or **open doc/html/index.html** (LINUX/MAC)
 
 ## How to upload code to PICO W's
 1. Push the bootsel and plug the microcontroller into the computer
