@@ -146,6 +146,8 @@ public:
     bool is_connected();
     bool tcp_init();
 
+    err_t send_data(uint32_t send_id, ssize_t len, uint8_t *buf);
+
     bool send_tcp_data(uint8_t* data, uint32_t size, bool forward);
     bool send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward);
 

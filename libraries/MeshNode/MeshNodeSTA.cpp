@@ -655,3 +655,9 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
     delete msg;
     return true;
 }
+
+err_t STANode::send_data(uint32_t send_id, ssize_t len, uint8_t *buf) {
+    TCP_DATA_MSG msg(node.get_NodeID(), send_id);
+    msg.add_message(buf, len);
+    node.send_tcp_data_blocking(msg.get_msg(), msg.get_len(), false);
+}
