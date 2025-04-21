@@ -805,3 +805,16 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
     delete msg;
     return true;
 }
+
+
+err_t APNode::send_data(uint32_t send_id, ssize_t len, uint8_t *buf) {
+    TCP_DATA_MSG msg(get_NodeID(), send_id);
+    msg.add_message(buf, len);
+    if (client_tpcbs.find(send_id) == client_tpcbs.end()){
+        return -2;
+    } 
+    tcp_pcb *client_pcb = client_tpcbs.at(send_id);
+    if (!send_tcp_data(send_id, client_pcb, msg.get_msg(), msg.get_len()))
+        return -1;
+    return 0;
+}
