@@ -127,7 +127,7 @@ int main() {
             puts(format_string);
 
             TCP_DATA_MSG msg(node.get_NodeID(), 1);
-            msg.add_message(final_size, (uint8_t*)format_string);
+            msg.add_message((uint8_t*)format_string, final_size);
 
             node.send_tcp_data_blocking(msg.get_msg(), msg.get_len(), false);
         }

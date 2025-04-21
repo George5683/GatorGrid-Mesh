@@ -116,7 +116,7 @@ public:
         msg.dest = dest_id;
     }
 
-    void add_message(uint8_t msg_len, uint8_t* msg_i) {
+    void add_message(uint8_t* msg_i, uint8_t msg_len) {
         memcpy(msg.msg, msg_i, msg_len > 2034 ? 2034 : msg_len);
         msg.msg_len = msg_len;
         msg.len += msg_len > 2034 ? 2034 : msg_len;
