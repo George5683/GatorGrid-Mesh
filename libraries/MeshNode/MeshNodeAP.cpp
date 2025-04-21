@@ -19,7 +19,7 @@
 #define TEST_ITERATIONS 10
 #define POLL_TIME_S 5
 
-#define DEBUG 1
+#define DEBUG 0
 
 #if DEBUG 
 #define DEBUG_printf printf

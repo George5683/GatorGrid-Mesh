@@ -26,7 +26,7 @@ extern "C" {
 *   Client Class
 */
 
-#define DEBUG 1
+#define DEBUG 0
 
 #define TCP_PORT 4242
 #if DEBUG 
@@ -232,7 +232,7 @@ static TCP_CLIENT_T* tcp_client_init(void) {
     return state;
 }
 
-STANode::STANode() {
+STANode::STANode() : rb(10) {
     // Use hardware-based entropy sources if possible
     uint32_t ID = 0;
     
@@ -253,6 +253,10 @@ STANode::~STANode() {
     {
         free(it->second);
     } 
+}
+
+struct data STANode::digest_data() {
+    return this->rb.digest();
 }
 
 bool STANode::init_sta_mode() {
@@ -371,7 +375,7 @@ bool STANode::scan_for_nodes() {
         return false;
     }
     
-    puts("Scan started");
+    DEBUG_printf("Scan started");
     
     // Wait for scan to complete with timeout
     while (cyw43_wifi_scan_active(&cyw43_state)) {
@@ -388,7 +392,7 @@ bool STANode::scan_for_nodes() {
         #endif
     }
     
-    puts("Scan completed successfully");
+    DEBUG_printf("Scan completed successfully");
     return true;
 }
 
@@ -499,7 +503,7 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size, bool forward) {
     
    DEBUG_printf("SENDING BYTES BELOW: \n");
     state->waiting_for_ack = !forward;
-    DUMP_BYTES(data, size);
+    //DUMP_BYTES(data, size);
     return true;
 }
 
@@ -540,7 +544,7 @@ bool STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward)
     
    DEBUG_printf("SENDING BYTES BELOW: \n");
     state->waiting_for_ack = !forward;
-    DUMP_BYTES(data, size);
+    //DUMP_BYTES(data, size);
     while(state->waiting_for_ack)
     {
         sleep_ms(20);
@@ -566,7 +570,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
         uint8_t msg_id = buffer[1];
         uint16_t len = *reinterpret_cast<uint16_t*>(buffer +2);
         //dump_bytes(buffer, len);
-        dump_bytes(buffer, 100);
+        //dump_bytes(buffer, 100);
         switch (msg_id) {
             case 0x00: {
                 TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(msg);
@@ -578,10 +582,11 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
             }
             case 0x01: {
                 TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
-                puts("Got data message");
+                DEBUG_printf("Got data message");
                 if (dataMsg->msg.dest == get_NodeID()) {
                     source_id =  dataMsg->msg.source;
                     DEBUG_printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
+                    //printf("Received message from node %08x: %s", dataMsg->msg.source, (char*)dataMsg->msg.msg);
                     ACK_flag = true;
                     break;
                 } else {
@@ -598,7 +603,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
             case 0x03: {
                 TCP_UPDATE_MESSAGE* updMsg = static_cast<TCP_UPDATE_MESSAGE*>(msg);
 
-                puts("Update packet recieved");
+                //puts("Update packet recieved");
 
                 //updMsg.
 
@@ -606,7 +611,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
                 break;
             }
             case 0x04: {
-                puts("Got ACK");
+                DEBUG_printf("Got ACK");
                 TCP_ACK_MESSAGE* ackMsg = static_cast<TCP_ACK_MESSAGE*>(msg);
 
                 source_id = ackMsg->msg.source;
@@ -614,7 +619,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
                DEBUG_printf("Ack is from %08x and for %08x\n", ackMsg->msg.source, ackMsg->msg.dest);
                 if (ackMsg->msg.dest == get_NodeID()) {
                     self_reply = true;
-                    puts("ACK is for me");
+                    DEBUG_printf("ACK is for me");
                     state->waiting_for_ack = false;
                 }
                 //does stuff
@@ -623,7 +628,8 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
             case 0x05: {
                 TCP_NAK_MESSAGE* nakMsg = static_cast<TCP_NAK_MESSAGE*>(msg);
                 //does stuff
-                puts("Got NAK");
+                puts("Warning! Message was not received! (Got a NAK instead of ACK)");
+                DEBUG_printf("Got NAK");
                 self_reply = true;
                 state->waiting_for_ack = false;
                 state->got_nak = true;

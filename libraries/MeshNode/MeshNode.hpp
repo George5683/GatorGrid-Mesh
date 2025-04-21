@@ -133,6 +133,8 @@ public:
 
     std::string AP_CONNECTED_IP;
 
+    RingBuffer rb;
+
     SPI Slave_Pico;
 
 
@@ -149,7 +151,8 @@ public:
     bool send_tcp_data(uint8_t* data, uint32_t size, bool forward);
     bool send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward);
 
-
+    struct data digest_data();
+     
     static int scan_result(void* env, const cyw43_ev_scan_result_t* result);
     bool handle_incoming_data(unsigned char* buffer, struct pbuf *p);
 };
