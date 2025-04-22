@@ -154,7 +154,8 @@ public:
     bool send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward);
 
     struct data digest_data();
-     
+    int number_of_messages();
+
     static int scan_result(void* env, const cyw43_ev_scan_result_t* result);
     bool handle_incoming_data(unsigned char* buffer, struct pbuf *p);
 };
