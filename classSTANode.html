@@ -85,7 +85,7 @@ Inheritance diagram for STANode:</div>
 <div class="dyncontent">
 <div class="center"><img src="classSTANode__inherit__graph.png" border="0" usemap="#aSTANode_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSTANode_inherit__map" id="aSTANode_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,189,208,531"/>
+<area shape="rect" title=" " alt="" coords="5,189,208,545"/>
 <area shape="rect" href="classMeshNode.html" title=" " alt="" coords="43,5,170,141"/>
 </map>
 </div>
@@ -94,7 +94,7 @@ Collaboration diagram for STANode:</div>
 <div class="dyncontent">
 <div class="center"><img src="classSTANode__coll__graph.png" border="0" usemap="#aSTANode_coll__map" alt="Collaboration graph"/></div>
 <map name="aSTANode_coll__map" id="aSTANode_coll__map">
-<area shape="rect" title=" " alt="" coords="437,863,639,1131"/>
+<area shape="rect" title=" " alt="" coords="437,863,639,1145"/>
 <area shape="rect" href="classMeshNode.html" title=" " alt="" coords="5,627,132,763"/>
 <area shape="rect" title=" " alt="" coords="99,460,263,567"/>
 <area shape="rect" title=" " alt="" coords="113,167,248,245"/>
@@ -138,6 +138,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9559ead3656f626628c3d61432004367"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67b774eab2f074c8fe8d9ca2922ccc07"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdata.html">data</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSTANode.html#a67b774eab2f074c8fe8d9ca2922ccc07">digest_data</a> ()</td></tr>
 <tr class="separator:a67b774eab2f074c8fe8d9ca2922ccc07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85f3bd0e6d9c50fbf84756c8d6fcd618"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSTANode.html#a85f3bd0e6d9c50fbf84756c8d6fcd618">number_of_messages</a> ()</td></tr>
+<tr class="separator:a85f3bd0e6d9c50fbf84756c8d6fcd618"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07f1bd97bed2342b18886377eab36ace"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSTANode.html#a07f1bd97bed2342b18886377eab36ace">handle_incoming_data</a> (unsigned char *buffer, struct pbuf *p)</td></tr>
 <tr class="separator:a07f1bd97bed2342b18886377eab36ace"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classMeshNode"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classMeshNode')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classMeshNode.html">MeshNode</a></td></tr>
@@ -187,20 +189,20 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  235</span>                 : <a class="code hl_variable" href="classSTANode.html#abce6bd1830556b46abe189a3105c3415">rb</a>(10) {</div>
-<div class="line"><span class="lineno">  236</span>    <span class="comment">// Use hardware-based entropy sources if possible</span></div>
-<div class="line"><span class="lineno">  237</span>    uint32_t ID = 0;</div>
-<div class="line"><span class="lineno">  238</span>    </div>
-<div class="line"><span class="lineno">  239</span>    <span class="comment">// set the NodeID variable</span></div>
-<div class="line"><span class="lineno">  240</span>    <a class="code hl_function" href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">set_NodeID</a>(ID);</div>
-<div class="line"><span class="lineno">  241</span> </div>
-<div class="line"><span class="lineno">  242</span>   <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Node ID is initially set to 0!\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  243</span> </div>
-<div class="line"><span class="lineno">  244</span>    <span class="comment">// Set SPI to be a slave </span></div>
-<div class="line"><span class="lineno">  245</span>    <a class="code hl_variable" href="classSTANode.html#aa4008fd7f0e1f889fd2cd6eef1ad2157">Slave_Pico</a>.<a class="code hl_function" href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI_init</a>(<span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">  246</span>    <a class="code hl_variable" href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">known_nodes</a>.clear();</div>
-<div class="line"><span class="lineno">  247</span>    <a class="code hl_variable" href="classSTANode.html#a9a14e788f6d219cb10ad982744bde978">parent</a> = 0xFFFFFFFF;</div>
-<div class="line"><span class="lineno">  248</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  229</span>                 : <a class="code hl_variable" href="classSTANode.html#abce6bd1830556b46abe189a3105c3415">rb</a>(10) {</div>
+<div class="line"><span class="lineno">  230</span>    <span class="comment">// Use hardware-based entropy sources if possible</span></div>
+<div class="line"><span class="lineno">  231</span>    uint32_t ID = 0;</div>
+<div class="line"><span class="lineno">  232</span>    </div>
+<div class="line"><span class="lineno">  233</span>    <span class="comment">// set the NodeID variable</span></div>
+<div class="line"><span class="lineno">  234</span>    <a class="code hl_function" href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">set_NodeID</a>(ID);</div>
+<div class="line"><span class="lineno">  235</span> </div>
+<div class="line"><span class="lineno">  236</span>   <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Node ID is initially set to 0!\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  237</span> </div>
+<div class="line"><span class="lineno">  238</span>    <span class="comment">// Set SPI to be a slave </span></div>
+<div class="line"><span class="lineno">  239</span>    <a class="code hl_variable" href="classSTANode.html#aa4008fd7f0e1f889fd2cd6eef1ad2157">Slave_Pico</a>.<a class="code hl_function" href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI_init</a>(<span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">  240</span>    <a class="code hl_variable" href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">known_nodes</a>.clear();</div>
+<div class="line"><span class="lineno">  241</span>    <a class="code hl_variable" href="classSTANode.html#a9a14e788f6d219cb10ad982744bde978">parent</a> = 0xFFFFFFFF;</div>
+<div class="line"><span class="lineno">  242</span>}</div>
 <div class="ttc" id="aclassMeshNode_html_af666a6d82e48cbff383d10e93dde8719"><div class="ttname"><a href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">MeshNode::set_NodeID</a></div><div class="ttdeci">void set_NodeID(uint32_t ID)</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:409</div></div>
 <div class="ttc" id="aclassSPI_html_ab72f8834e97185f2f5ec4ca06f51dbfd"><div class="ttname"><a href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI::SPI_init</a></div><div class="ttdeci">bool SPI_init(bool mode)</div><div class="ttdef"><b>Definition:</b> SPI.cpp:17</div></div>
 <div class="ttc" id="aclassSTANode_html_a07e3937eb4eb954e44df016e889e3399"><div class="ttname"><a href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">STANode::known_nodes</a></div><div class="ttdeci">std::map&lt; int, cyw43_ev_scan_result_t * &gt; known_nodes</div><div class="ttdef"><b>Definition:</b> MeshNode.hpp:132</div></div>
@@ -227,13 +229,13 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  250</span>                  {</div>
-<div class="line"><span class="lineno">  251</span> </div>
-<div class="line"><span class="lineno">  252</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = <a class="code hl_variable" href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">known_nodes</a>.begin(); it != <a class="code hl_variable" href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">known_nodes</a>.end(); it++)</div>
-<div class="line"><span class="lineno">  253</span>    {</div>
-<div class="line"><span class="lineno">  254</span>        free(it-&gt;second);</div>
-<div class="line"><span class="lineno">  255</span>    } </div>
-<div class="line"><span class="lineno">  256</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  244</span>                  {</div>
+<div class="line"><span class="lineno">  245</span> </div>
+<div class="line"><span class="lineno">  246</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = <a class="code hl_variable" href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">known_nodes</a>.begin(); it != <a class="code hl_variable" href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">known_nodes</a>.end(); it++)</div>
+<div class="line"><span class="lineno">  247</span>    {</div>
+<div class="line"><span class="lineno">  248</span>        free(it-&gt;second);</div>
+<div class="line"><span class="lineno">  249</span>    } </div>
+<div class="line"><span class="lineno">  250</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">known_nodes</a>.</p>
 
@@ -255,34 +257,34 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  399</span>                                         {</div>
-<div class="line"><span class="lineno">  400</span>   <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Connecting to node: %u\n&quot;</span>, <span class="keywordtype">id</span>);</div>
+<div class="fragment"><div class="line"><span class="lineno">  393</span>                                         {</div>
+<div class="line"><span class="lineno">  394</span>   <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Connecting to node: %u\n&quot;</span>, <span class="keywordtype">id</span>);</div>
+<div class="line"><span class="lineno">  395</span> </div>
+<div class="line"><span class="lineno">  396</span>    <span class="comment">// Check if node is known</span></div>
+<div class="line"><span class="lineno">  397</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">known_nodes</a>.count(<span class="keywordtype">id</span>) == 0) {</div>
+<div class="line"><span class="lineno">  398</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Unknown node. Ending connection attempt.\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  399</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  400</span>    }</div>
 <div class="line"><span class="lineno">  401</span> </div>
-<div class="line"><span class="lineno">  402</span>    <span class="comment">// Check if node is known</span></div>
-<div class="line"><span class="lineno">  403</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">known_nodes</a>.count(<span class="keywordtype">id</span>) == 0) {</div>
-<div class="line"><span class="lineno">  404</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Unknown node. Ending connection attempt.\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  405</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  406</span>    }</div>
+<div class="line"><span class="lineno">  402</span>    <span class="comment">// Generate SSID string</span></div>
+<div class="line"><span class="lineno">  403</span>    <span class="keywordtype">char</span> ssid[32];  <span class="comment">// Allocate on stack instead of heap</span></div>
+<div class="line"><span class="lineno">  404</span>    snprintf(ssid, <span class="keyword">sizeof</span>(ssid), <span class="stringliteral">&quot;GatorGrid_Node:%08X&quot;</span>, <span class="keywordtype">id</span>);  <span class="comment">// Convert ID to uppercase hex</span></div>
+<div class="line"><span class="lineno">  405</span> </div>
+<div class="line"><span class="lineno">  406</span>   <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Generated SSID: %s\n&quot;</span>, ssid);</div>
 <div class="line"><span class="lineno">  407</span> </div>
-<div class="line"><span class="lineno">  408</span>    <span class="comment">// Generate SSID string</span></div>
-<div class="line"><span class="lineno">  409</span>    <span class="keywordtype">char</span> ssid[32];  <span class="comment">// Allocate on stack instead of heap</span></div>
-<div class="line"><span class="lineno">  410</span>    snprintf(ssid, <span class="keyword">sizeof</span>(ssid), <span class="stringliteral">&quot;GatorGrid_Node:%08X&quot;</span>, <span class="keywordtype">id</span>);  <span class="comment">// Convert ID to uppercase hex</span></div>
-<div class="line"><span class="lineno">  411</span> </div>
-<div class="line"><span class="lineno">  412</span>   <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Generated SSID: %s\n&quot;</span>, ssid);</div>
-<div class="line"><span class="lineno">  413</span> </div>
-<div class="line"><span class="lineno">  414</span>    <span class="comment">// Attempt to connect</span></div>
-<div class="line"><span class="lineno">  415</span>    <span class="keywordflow">if</span> (cyw43_arch_wifi_connect_timeout_ms(ssid, <span class="stringliteral">&quot;password&quot;</span>, CYW43_AUTH_WPA2_AES_PSK, 20000)) {</div>
-<div class="line"><span class="lineno">  416</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 20; i++) {</div>
-<div class="line"><span class="lineno">  417</span>           <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Failed to connect. Retrying...\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  418</span>            sleep_ms(1000);  </div>
-<div class="line"><span class="lineno">  419</span>        }</div>
-<div class="line"><span class="lineno">  420</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  421</span>    }</div>
-<div class="line"><span class="lineno">  422</span> </div>
-<div class="line"><span class="lineno">  423</span>   <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Connected successfully.\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  424</span>    <a class="code hl_variable" href="classSTANode.html#a9a14e788f6d219cb10ad982744bde978">parent</a> = id;</div>
-<div class="line"><span class="lineno">  425</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  426</span>}</div>
+<div class="line"><span class="lineno">  408</span>    <span class="comment">// Attempt to connect</span></div>
+<div class="line"><span class="lineno">  409</span>    <span class="keywordflow">if</span> (cyw43_arch_wifi_connect_timeout_ms(ssid, <span class="stringliteral">&quot;password&quot;</span>, CYW43_AUTH_WPA2_AES_PSK, 20000)) {</div>
+<div class="line"><span class="lineno">  410</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 20; i++) {</div>
+<div class="line"><span class="lineno">  411</span>           <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Failed to connect. Retrying...\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  412</span>            sleep_ms(1000);  </div>
+<div class="line"><span class="lineno">  413</span>        }</div>
+<div class="line"><span class="lineno">  414</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  415</span>    }</div>
+<div class="line"><span class="lineno">  416</span> </div>
+<div class="line"><span class="lineno">  417</span>   <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Connected successfully.\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  418</span>    <a class="code hl_variable" href="classSTANode.html#a9a14e788f6d219cb10ad982744bde978">parent</a> = id;</div>
+<div class="line"><span class="lineno">  419</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  420</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>, <a class="el" href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">known_nodes</a>, and <a class="el" href="classSTANode.html#a9a14e788f6d219cb10ad982744bde978">parent</a>.</p>
 
@@ -304,11 +306,13 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  258</span>                                 {</div>
-<div class="line"><span class="lineno">  259</span>    <span class="keywordflow">return</span> this-&gt;<a class="code hl_variable" href="classSTANode.html#abce6bd1830556b46abe189a3105c3415">rb</a>.<a class="code hl_function" href="classRingBuffer.html#ac68abd2ecd02bea9e99c3195694723c0">digest</a>();</div>
-<div class="line"><span class="lineno">  260</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  252</span>                                 {</div>
+<div class="line"><span class="lineno">  253</span>    <span class="keywordflow">return</span> this-&gt;<a class="code hl_variable" href="classSTANode.html#abce6bd1830556b46abe189a3105c3415">rb</a>.<a class="code hl_function" href="classRingBuffer.html#ac68abd2ecd02bea9e99c3195694723c0">digest</a>();</div>
+<div class="line"><span class="lineno">  254</span>}</div>
 <div class="ttc" id="aclassRingBuffer_html_ac68abd2ecd02bea9e99c3195694723c0"><div class="ttname"><a href="classRingBuffer.html#ac68abd2ecd02bea9e99c3195694723c0">RingBuffer::digest</a></div><div class="ttdeci">struct data digest()</div><div class="ttdef"><b>Definition:</b> RingBuffer.cpp:33</div></div>
 </div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="sta__one_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>.</p>
+
 </div>
 </div>
 <a id="a07f1bd97bed2342b18886377eab36ace" name="a07f1bd97bed2342b18886377eab36ace"></a>
@@ -336,115 +340,122 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  558</span>                                                                        {</div>
-<div class="line"><span class="lineno">  559</span>    uint32_t source_id = 0;</div>
-<div class="line"><span class="lineno">  560</span>    <span class="keywordtype">bool</span> ACK_flag = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  561</span>    <span class="keywordtype">bool</span> NAK_flag = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  562</span>    <span class="keywordtype">bool</span> self_reply = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  563</span>    </div>
-<div class="line"><span class="lineno">  564</span>    <a class="code hl_class" href="classTCP__MESSAGE.html">TCP_MESSAGE</a>* msg = <a class="code hl_function" href="Messages_8cpp.html#af38d02b60aa8d13a179c24ca5d9ad8d1">parseMessage</a>(<span class="keyword">reinterpret_cast &lt;</span>uint8_t *<span class="keyword">&gt;</span>(buffer));</div>
-<div class="line"><span class="lineno">  565</span>    <span class="keywordflow">if</span> (!msg) {</div>
-<div class="line"><span class="lineno">  566</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Error: Unable to parse message (invalid buffer or unknown msg_id).\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  567</span>        ACK_flag = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  568</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  569</span> </div>
-<div class="line"><span class="lineno">  570</span>        uint8_t msg_id = buffer[1];</div>
-<div class="line"><span class="lineno">  571</span>        uint16_t len = *<span class="keyword">reinterpret_cast&lt;</span>uint16_t*<span class="keyword">&gt;</span>(buffer +2);</div>
-<div class="line"><span class="lineno">  572</span>        <span class="comment">//dump_bytes(buffer, len);</span></div>
-<div class="line"><span class="lineno">  573</span>        <span class="comment">//dump_bytes(buffer, 100);</span></div>
-<div class="line"><span class="lineno">  574</span>        <span class="keywordflow">switch</span> (msg_id) {</div>
-<div class="line"><span class="lineno">  575</span>            <span class="keywordflow">case</span> 0x00: {</div>
-<div class="line"><span class="lineno">  576</span>                <a class="code hl_class" href="classTCP__INIT__MESSAGE.html">TCP_INIT_MESSAGE</a>* initMsg = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classTCP__INIT__MESSAGE.html">TCP_INIT_MESSAGE</a>*<span class="keyword">&gt;</span>(msg);</div>
-<div class="line"><span class="lineno">  577</span>                <span class="comment">//does stuff</span></div>
-<div class="line"><span class="lineno">  578</span>               <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Received initialization message from node %u&quot;</span>, initMsg-&gt;<a class="code hl_variable" href="classTCP__INIT__MESSAGE.html#a1158cd04bdc7e5a0ab5013deb4e5ea81">msg</a>.source);</div>
-<div class="line"><span class="lineno">  579</span>                source_id =  initMsg-&gt;<a class="code hl_variable" href="classTCP__INIT__MESSAGE.html#a1158cd04bdc7e5a0ab5013deb4e5ea81">msg</a>.source;</div>
-<div class="line"><span class="lineno">  580</span> </div>
-<div class="line"><span class="lineno">  581</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  582</span>            }</div>
-<div class="line"><span class="lineno">  583</span>            <span class="keywordflow">case</span> 0x01: {</div>
-<div class="line"><span class="lineno">  584</span>                <a class="code hl_class" href="classTCP__DATA__MSG.html">TCP_DATA_MSG</a>* dataMsg = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classTCP__DATA__MSG.html">TCP_DATA_MSG</a>*<span class="keyword">&gt;</span>(msg);</div>
-<div class="line"><span class="lineno">  585</span>                <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Got data message&quot;</span>);</div>
-<div class="line"><span class="lineno">  586</span>                <span class="keywordflow">if</span> (dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.dest == <a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>()) {</div>
-<div class="line"><span class="lineno">  587</span>                    source_id =  dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.source;</div>
-<div class="line"><span class="lineno">  588</span>                    <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Testing dataMsg, len:%u, source:%08x, dest:%08x\n&quot;</span>,dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.msg_len, dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.source, dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.dest);</div>
-<div class="line"><span class="lineno">  589</span>                    <span class="comment">//printf(&quot;Received message from node %08x: %s&quot;, dataMsg-&gt;msg.source, (char*)dataMsg-&gt;msg.msg);</span></div>
-<div class="line"><span class="lineno">  590</span>                    ACK_flag = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  591</span>                    <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  592</span>                } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  593</span>                    <span class="comment">// TODO pass msg to AP</span></div>
-<div class="line"><span class="lineno">  594</span>                }</div>
+<div class="fragment"><div class="line"><span class="lineno">  572</span>                                                                        {</div>
+<div class="line"><span class="lineno">  573</span>    uint32_t source_id = 0;</div>
+<div class="line"><span class="lineno">  574</span>    <span class="keywordtype">bool</span> ACK_flag = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  575</span>    <span class="keywordtype">bool</span> NAK_flag = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  576</span>    <span class="keywordtype">bool</span> self_reply = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  577</span>    <a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#aa692163e51c7d6865fa7bc6378d69958">got_nak</a> = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  578</span>    </div>
+<div class="line"><span class="lineno">  579</span>    <a class="code hl_class" href="classTCP__MESSAGE.html">TCP_MESSAGE</a>* msg = <a class="code hl_function" href="Messages_8cpp.html#af38d02b60aa8d13a179c24ca5d9ad8d1">parseMessage</a>(<span class="keyword">reinterpret_cast &lt;</span>uint8_t *<span class="keyword">&gt;</span>(buffer));</div>
+<div class="line"><span class="lineno">  580</span>    <span class="keywordflow">if</span> (!msg) {</div>
+<div class="line"><span class="lineno">  581</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Error: Unable to parse message (invalid buffer or unknown msg_id).\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  582</span>        ACK_flag = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  583</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  584</span> </div>
+<div class="line"><span class="lineno">  585</span>        uint8_t msg_id = buffer[1];</div>
+<div class="line"><span class="lineno">  586</span>        uint16_t len = *<span class="keyword">reinterpret_cast&lt;</span>uint16_t*<span class="keyword">&gt;</span>(buffer +2);</div>
+<div class="line"><span class="lineno">  587</span>        <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;DUMPING STATE BUFFER BELOW:\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  588</span>        <a class="code hl_define" href="MeshNodeAP_8cpp.html#a08bc1ee60cebdc4189bc44ede1245a24">DUMP_BYTES</a>(<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#a5b045516d90e9cb920bb16fb44a71d29">buffer</a>, 200);</div>
+<div class="line"><span class="lineno">  589</span>        <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;DUMPING BYTES RECV BELOW:\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  590</span>        <a class="code hl_define" href="MeshNodeAP_8cpp.html#a08bc1ee60cebdc4189bc44ede1245a24">DUMP_BYTES</a>(buffer, 200);</div>
+<div class="line"><span class="lineno">  591</span>        <span class="comment">//dump_bytes(buffer, 100);</span></div>
+<div class="line"><span class="lineno">  592</span>        <span class="keywordflow">switch</span> (msg_id) {</div>
+<div class="line"><span class="lineno">  593</span>            <span class="keywordflow">case</span> 0x00: {</div>
+<div class="line"><span class="lineno">  594</span>                <a class="code hl_class" href="classTCP__INIT__MESSAGE.html">TCP_INIT_MESSAGE</a>* initMsg = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classTCP__INIT__MESSAGE.html">TCP_INIT_MESSAGE</a>*<span class="keyword">&gt;</span>(msg);</div>
 <div class="line"><span class="lineno">  595</span>                <span class="comment">//does stuff</span></div>
-<div class="line"><span class="lineno">  596</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  597</span>            }</div>
-<div class="line"><span class="lineno">  598</span>            <span class="keywordflow">case</span> 0x02: {</div>
-<div class="line"><span class="lineno">  599</span>                <a class="code hl_class" href="classTCP__DISCONNECT__MSG.html">TCP_DISCONNECT_MSG</a>* discMsg = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classTCP__DISCONNECT__MSG.html">TCP_DISCONNECT_MSG</a>*<span class="keyword">&gt;</span>(msg);</div>
-<div class="line"><span class="lineno">  600</span>                <span class="comment">//does stuff</span></div>
-<div class="line"><span class="lineno">  601</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  602</span>            }</div>
-<div class="line"><span class="lineno">  603</span>            <span class="keywordflow">case</span> 0x03: {</div>
-<div class="line"><span class="lineno">  604</span>                <a class="code hl_class" href="classTCP__UPDATE__MESSAGE.html">TCP_UPDATE_MESSAGE</a>* updMsg = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classTCP__UPDATE__MESSAGE.html">TCP_UPDATE_MESSAGE</a>*<span class="keyword">&gt;</span>(msg);</div>
-<div class="line"><span class="lineno">  605</span> </div>
-<div class="line"><span class="lineno">  606</span>                <span class="comment">//puts(&quot;Update packet recieved&quot;);</span></div>
-<div class="line"><span class="lineno">  607</span> </div>
-<div class="line"><span class="lineno">  608</span>                <span class="comment">//updMsg.</span></div>
-<div class="line"><span class="lineno">  609</span> </div>
-<div class="line"><span class="lineno">  610</span>                <span class="comment">//does stuff</span></div>
-<div class="line"><span class="lineno">  611</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  612</span>            }</div>
-<div class="line"><span class="lineno">  613</span>            <span class="keywordflow">case</span> 0x04: {</div>
-<div class="line"><span class="lineno">  614</span>                <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Got ACK&quot;</span>);</div>
-<div class="line"><span class="lineno">  615</span>                <a class="code hl_class" href="classTCP__ACK__MESSAGE.html">TCP_ACK_MESSAGE</a>* ackMsg = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classTCP__ACK__MESSAGE.html">TCP_ACK_MESSAGE</a>*<span class="keyword">&gt;</span>(msg);</div>
-<div class="line"><span class="lineno">  616</span> </div>
-<div class="line"><span class="lineno">  617</span>                source_id = ackMsg-&gt;<a class="code hl_variable" href="classTCP__ACK__MESSAGE.html#afd3550bfea1842ab8d938dd60ce91562">msg</a>.source;</div>
-<div class="line"><span class="lineno">  618</span> </div>
-<div class="line"><span class="lineno">  619</span>               <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Ack is from %08x and for %08x\n&quot;</span>, ackMsg-&gt;<a class="code hl_variable" href="classTCP__ACK__MESSAGE.html#afd3550bfea1842ab8d938dd60ce91562">msg</a>.source, ackMsg-&gt;<a class="code hl_variable" href="classTCP__ACK__MESSAGE.html#afd3550bfea1842ab8d938dd60ce91562">msg</a>.dest);</div>
-<div class="line"><span class="lineno">  620</span>                <span class="keywordflow">if</span> (ackMsg-&gt;<a class="code hl_variable" href="classTCP__ACK__MESSAGE.html#afd3550bfea1842ab8d938dd60ce91562">msg</a>.dest == <a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>()) {</div>
-<div class="line"><span class="lineno">  621</span>                    self_reply = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  622</span>                    <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;ACK is for me&quot;</span>);</div>
-<div class="line"><span class="lineno">  623</span>                    <a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">waiting_for_ack</a> = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  624</span>                }</div>
-<div class="line"><span class="lineno">  625</span>                <span class="comment">//does stuff</span></div>
-<div class="line"><span class="lineno">  626</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  627</span>            }</div>
-<div class="line"><span class="lineno">  628</span>            <span class="keywordflow">case</span> 0x05: {</div>
-<div class="line"><span class="lineno">  629</span>                <a class="code hl_class" href="classTCP__NAK__MESSAGE.html">TCP_NAK_MESSAGE</a>* nakMsg = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classTCP__NAK__MESSAGE.html">TCP_NAK_MESSAGE</a>*<span class="keyword">&gt;</span>(msg);</div>
-<div class="line"><span class="lineno">  630</span>                <span class="comment">//does stuff</span></div>
-<div class="line"><span class="lineno">  631</span>                puts(<span class="stringliteral">&quot;Warning! Message was not received! (Got a NAK instead of ACK)&quot;</span>);</div>
-<div class="line"><span class="lineno">  632</span>                <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Got NAK&quot;</span>);</div>
-<div class="line"><span class="lineno">  633</span>                self_reply = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  634</span>                <a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">waiting_for_ack</a> = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  635</span>                <a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#aa692163e51c7d6865fa7bc6378d69958">got_nak</a> = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  636</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  637</span>            }</div>
-<div class="line"><span class="lineno">  638</span>            <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  639</span>               <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Error: Unable to parse message (invalid buffer or unknown msg_id).\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  640</span>                ACK_flag = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  641</span>                <span class="comment">// SEND NAK message</span></div>
-<div class="line"><span class="lineno">  642</span>                <span class="comment">//TCP_NAK_MESSAGE nakMsg(node-&gt;get_NodeID(), msg_id ? msg_id : 0, 0);</span></div>
-<div class="line"><span class="lineno">  643</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  644</span>        }</div>
-<div class="line"><span class="lineno">  645</span>    }</div>
-<div class="line"><span class="lineno">  646</span> </div>
-<div class="line"><span class="lineno">  647</span>    <span class="keywordflow">if</span> (ACK_flag &amp;&amp; !self_reply){</div>
-<div class="line"><span class="lineno">  648</span>        <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Sending ack to %08x\n&quot;</span>, source_id);</div>
-<div class="line"><span class="lineno">  649</span>        <a class="code hl_class" href="classTCP__ACK__MESSAGE.html">TCP_ACK_MESSAGE</a> ackMsg(<a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>(), source_id, p-&gt;tot_len);</div>
-<div class="line"><span class="lineno">  650</span>        <a class="code hl_function" href="classSTANode.html#a10fde1bbdae827a032bfb3e3663c0364">send_tcp_data</a>(ackMsg.get_msg(), ackMsg.get_len(), <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  651</span>        <span class="comment">//state-&gt;waiting_for_ack = true;</span></div>
-<div class="line"><span class="lineno">  652</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (NAK_flag) {</div>
-<div class="line"><span class="lineno">  653</span>        <span class="comment">// TODO: Update for error handling</span></div>
-<div class="line"><span class="lineno">  654</span>        <span class="comment">// identify the source from sender and send back?</span></div>
-<div class="line"><span class="lineno">  655</span>        <a class="code hl_class" href="classTCP__NAK__MESSAGE.html">TCP_NAK_MESSAGE</a> nakMsg(<a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>(), 0, p-&gt;tot_len);</div>
-<div class="line"><span class="lineno">  656</span>        <a class="code hl_function" href="classSTANode.html#a10fde1bbdae827a032bfb3e3663c0364">send_tcp_data</a>(nakMsg.get_msg(), nakMsg.get_len(), <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  657</span>        <span class="keyword">delete</span> msg;</div>
-<div class="line"><span class="lineno">  658</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  659</span>    }</div>
-<div class="line"><span class="lineno">  660</span> </div>
-<div class="line"><span class="lineno">  661</span>    <span class="keyword">delete</span> msg;</div>
-<div class="line"><span class="lineno">  662</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  663</span>}</div>
+<div class="line"><span class="lineno">  596</span>               <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Received initialization message from node %u&quot;</span>, initMsg-&gt;<a class="code hl_variable" href="classTCP__INIT__MESSAGE.html#a1158cd04bdc7e5a0ab5013deb4e5ea81">msg</a>.source);</div>
+<div class="line"><span class="lineno">  597</span>                source_id =  initMsg-&gt;<a class="code hl_variable" href="classTCP__INIT__MESSAGE.html#a1158cd04bdc7e5a0ab5013deb4e5ea81">msg</a>.source;</div>
+<div class="line"><span class="lineno">  598</span> </div>
+<div class="line"><span class="lineno">  599</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  600</span>            }</div>
+<div class="line"><span class="lineno">  601</span>            <span class="keywordflow">case</span> 0x01: {</div>
+<div class="line"><span class="lineno">  602</span>                <a class="code hl_class" href="classTCP__DATA__MSG.html">TCP_DATA_MSG</a>* dataMsg = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classTCP__DATA__MSG.html">TCP_DATA_MSG</a>*<span class="keyword">&gt;</span>(msg);</div>
+<div class="line"><span class="lineno">  603</span>                <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Got data message\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  604</span>                <span class="keywordflow">if</span> (dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.dest == <a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>()) {</div>
+<div class="line"><span class="lineno">  605</span>                    source_id =  dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.source;</div>
+<div class="line"><span class="lineno">  606</span>                    <a class="code hl_variable" href="classSTANode.html#abce6bd1830556b46abe189a3105c3415">rb</a>.<a class="code hl_function" href="classRingBuffer.html#a26f24ba18ecad8fc3df4b848f35724c5">insert</a>(dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.msg,dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.msg_len, dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.source, dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.dest);</div>
+<div class="line"><span class="lineno">  607</span>                    <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Testing dataMsg, len:%u, source:%08x, dest:%08x\n&quot;</span>,dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.msg_len, dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.source, dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.dest);</div>
+<div class="line"><span class="lineno">  608</span>                    <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;DBG: Received message from node %08x: %s&quot;</span>, dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.source, (<span class="keywordtype">char</span>*)dataMsg-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.msg);</div>
+<div class="line"><span class="lineno">  609</span>                    ACK_flag = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  610</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  611</span>                } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  612</span>                    <span class="comment">// TODO pass msg to AP</span></div>
+<div class="line"><span class="lineno">  613</span>                }</div>
+<div class="line"><span class="lineno">  614</span>                <span class="comment">//does stuff</span></div>
+<div class="line"><span class="lineno">  615</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  616</span>            }</div>
+<div class="line"><span class="lineno">  617</span>            <span class="keywordflow">case</span> 0x02: {</div>
+<div class="line"><span class="lineno">  618</span>                <a class="code hl_class" href="classTCP__DISCONNECT__MSG.html">TCP_DISCONNECT_MSG</a>* discMsg = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classTCP__DISCONNECT__MSG.html">TCP_DISCONNECT_MSG</a>*<span class="keyword">&gt;</span>(msg);</div>
+<div class="line"><span class="lineno">  619</span>                <span class="comment">//does stuff</span></div>
+<div class="line"><span class="lineno">  620</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  621</span>            }</div>
+<div class="line"><span class="lineno">  622</span>            <span class="keywordflow">case</span> 0x03: {</div>
+<div class="line"><span class="lineno">  623</span>                <a class="code hl_class" href="classTCP__UPDATE__MESSAGE.html">TCP_UPDATE_MESSAGE</a>* updMsg = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classTCP__UPDATE__MESSAGE.html">TCP_UPDATE_MESSAGE</a>*<span class="keyword">&gt;</span>(msg);</div>
+<div class="line"><span class="lineno">  624</span> </div>
+<div class="line"><span class="lineno">  625</span>                <span class="comment">//puts(&quot;Update packet recieved&quot;);</span></div>
+<div class="line"><span class="lineno">  626</span> </div>
+<div class="line"><span class="lineno">  627</span>                <span class="comment">//updMsg.</span></div>
+<div class="line"><span class="lineno">  628</span> </div>
+<div class="line"><span class="lineno">  629</span>                <span class="comment">//does stuff</span></div>
+<div class="line"><span class="lineno">  630</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  631</span>            }</div>
+<div class="line"><span class="lineno">  632</span>            <span class="keywordflow">case</span> 0x04: {</div>
+<div class="line"><span class="lineno">  633</span>                <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Got ACK\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  634</span>                <a class="code hl_class" href="classTCP__ACK__MESSAGE.html">TCP_ACK_MESSAGE</a>* ackMsg = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classTCP__ACK__MESSAGE.html">TCP_ACK_MESSAGE</a>*<span class="keyword">&gt;</span>(msg);</div>
+<div class="line"><span class="lineno">  635</span> </div>
+<div class="line"><span class="lineno">  636</span>                source_id = ackMsg-&gt;<a class="code hl_variable" href="classTCP__ACK__MESSAGE.html#afd3550bfea1842ab8d938dd60ce91562">msg</a>.source;</div>
+<div class="line"><span class="lineno">  637</span> </div>
+<div class="line"><span class="lineno">  638</span>               <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Ack is from %08x and for %08x\n&quot;</span>, ackMsg-&gt;<a class="code hl_variable" href="classTCP__ACK__MESSAGE.html#afd3550bfea1842ab8d938dd60ce91562">msg</a>.source, ackMsg-&gt;<a class="code hl_variable" href="classTCP__ACK__MESSAGE.html#afd3550bfea1842ab8d938dd60ce91562">msg</a>.dest);</div>
+<div class="line"><span class="lineno">  639</span>                <span class="keywordflow">if</span> (ackMsg-&gt;<a class="code hl_variable" href="classTCP__ACK__MESSAGE.html#afd3550bfea1842ab8d938dd60ce91562">msg</a>.dest == <a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>()) {</div>
+<div class="line"><span class="lineno">  640</span>                    self_reply = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  641</span>                    <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;ACK is for me\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  642</span>                    <a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">waiting_for_ack</a> = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  643</span>                }</div>
+<div class="line"><span class="lineno">  644</span>                <span class="comment">//does stuff</span></div>
+<div class="line"><span class="lineno">  645</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  646</span>            }</div>
+<div class="line"><span class="lineno">  647</span>            <span class="keywordflow">case</span> 0x05: {</div>
+<div class="line"><span class="lineno">  648</span>                <a class="code hl_class" href="classTCP__NAK__MESSAGE.html">TCP_NAK_MESSAGE</a>* nakMsg = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classTCP__NAK__MESSAGE.html">TCP_NAK_MESSAGE</a>*<span class="keyword">&gt;</span>(msg);</div>
+<div class="line"><span class="lineno">  649</span>                <span class="comment">//does stuff</span></div>
+<div class="line"><span class="lineno">  650</span>                puts(<span class="stringliteral">&quot;Warning! Message was not received! (Got a NAK instead of ACK)&quot;</span>);</div>
+<div class="line"><span class="lineno">  651</span>                <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Got NAK\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  652</span>                self_reply = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  653</span>                <a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">waiting_for_ack</a> = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  654</span>                <a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#aa692163e51c7d6865fa7bc6378d69958">got_nak</a> = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  655</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  656</span>            }</div>
+<div class="line"><span class="lineno">  657</span>            <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  658</span>               <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Error: Unable to parse message (invalid buffer or unknown msg_id).\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  659</span>                ACK_flag = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  660</span>                <span class="comment">// SEND NAK message</span></div>
+<div class="line"><span class="lineno">  661</span>                <span class="comment">//TCP_NAK_MESSAGE nakMsg(node-&gt;get_NodeID(), msg_id ? msg_id : 0, 0);</span></div>
+<div class="line"><span class="lineno">  662</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  663</span>        }</div>
+<div class="line"><span class="lineno">  664</span>    }</div>
+<div class="line"><span class="lineno">  665</span> </div>
+<div class="line"><span class="lineno">  666</span>    <span class="keywordflow">if</span> (ACK_flag &amp;&amp; !self_reply){</div>
+<div class="line"><span class="lineno">  667</span>        <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Sending ack to %08x\n&quot;</span>, source_id);</div>
+<div class="line"><span class="lineno">  668</span>        <a class="code hl_class" href="classTCP__ACK__MESSAGE.html">TCP_ACK_MESSAGE</a> ackMsg(<a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>(), source_id, p-&gt;tot_len);</div>
+<div class="line"><span class="lineno">  669</span>        <a class="code hl_function" href="classSTANode.html#a10fde1bbdae827a032bfb3e3663c0364">send_tcp_data</a>(ackMsg.get_msg(), ackMsg.get_len(), <span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">  670</span>        <span class="comment">//state-&gt;waiting_for_ack = true;</span></div>
+<div class="line"><span class="lineno">  671</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (NAK_flag) {</div>
+<div class="line"><span class="lineno">  672</span>        <span class="comment">// TODO: Update for error handling</span></div>
+<div class="line"><span class="lineno">  673</span>        <span class="comment">// identify the source from sender and send back?</span></div>
+<div class="line"><span class="lineno">  674</span>        <a class="code hl_class" href="classTCP__NAK__MESSAGE.html">TCP_NAK_MESSAGE</a> nakMsg(<a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>(), 0, p-&gt;tot_len);</div>
+<div class="line"><span class="lineno">  675</span>        <a class="code hl_function" href="classSTANode.html#a10fde1bbdae827a032bfb3e3663c0364">send_tcp_data</a>(nakMsg.get_msg(), nakMsg.get_len(), <span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">  676</span>        <span class="keyword">delete</span> msg;</div>
+<div class="line"><span class="lineno">  677</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  678</span>    }</div>
+<div class="line"><span class="lineno">  679</span> </div>
+<div class="line"><span class="lineno">  680</span>    <span class="keyword">delete</span> msg;</div>
+<div class="line"><span class="lineno">  681</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  682</span>}</div>
+<div class="ttc" id="aMeshNodeAP_8cpp_html_a08bc1ee60cebdc4189bc44ede1245a24"><div class="ttname"><a href="MeshNodeAP_8cpp.html#a08bc1ee60cebdc4189bc44ede1245a24">DUMP_BYTES</a></div><div class="ttdeci">#define DUMP_BYTES</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:45</div></div>
 <div class="ttc" id="aMessages_8cpp_html_af38d02b60aa8d13a179c24ca5d9ad8d1"><div class="ttname"><a href="Messages_8cpp.html#af38d02b60aa8d13a179c24ca5d9ad8d1">parseMessage</a></div><div class="ttdeci">TCP_MESSAGE * parseMessage(uint8_t *data)</div><div class="ttdoc">Takes in some tcp message buffer and returns a pointer to a new TCP_MESSAGE.</div><div class="ttdef"><b>Definition:</b> Messages.cpp:7</div></div>
 <div class="ttc" id="aclassMeshNode_html_adc8f29a44d7baf4a56ca6f20cec861e8"><div class="ttname"><a href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">MeshNode::get_NodeID</a></div><div class="ttdeci">uint32_t get_NodeID()</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:420</div></div>
-<div class="ttc" id="aclassSTANode_html_a10fde1bbdae827a032bfb3e3663c0364"><div class="ttname"><a href="classSTANode.html#a10fde1bbdae827a032bfb3e3663c0364">STANode::send_tcp_data</a></div><div class="ttdeci">bool send_tcp_data(uint8_t *data, uint32_t size, bool forward)</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:458</div></div>
+<div class="ttc" id="aclassRingBuffer_html_a26f24ba18ecad8fc3df4b848f35724c5"><div class="ttname"><a href="classRingBuffer.html#a26f24ba18ecad8fc3df4b848f35724c5">RingBuffer::insert</a></div><div class="ttdeci">void insert(uint8_t *data, ssize_t len, uint32_t source, uint32_t dest)</div><div class="ttdef"><b>Definition:</b> RingBuffer.cpp:16</div></div>
+<div class="ttc" id="aclassSTANode_html_a10fde1bbdae827a032bfb3e3663c0364"><div class="ttname"><a href="classSTANode.html#a10fde1bbdae827a032bfb3e3663c0364">STANode::send_tcp_data</a></div><div class="ttdeci">bool send_tcp_data(uint8_t *data, uint32_t size, bool forward)</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:456</div></div>
 <div class="ttc" id="aclassSTANode_html_a3b8bb4123b133ab0bd4295e164f3043e"><div class="ttname"><a href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">STANode::state</a></div><div class="ttdeci">TCP_CLIENT_T * state</div><div class="ttdef"><b>Definition:</b> MeshNode.hpp:134</div></div>
 <div class="ttc" id="aclassTCP__ACK__MESSAGE_html"><div class="ttname"><a href="classTCP__ACK__MESSAGE.html">TCP_ACK_MESSAGE</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:204</div></div>
 <div class="ttc" id="aclassTCP__ACK__MESSAGE_html_afd3550bfea1842ab8d938dd60ce91562"><div class="ttname"><a href="classTCP__ACK__MESSAGE.html#afd3550bfea1842ab8d938dd60ce91562">TCP_ACK_MESSAGE::msg</a></div><div class="ttdeci">tcp_acknowledge_msg msg</div><div class="ttdef"><b>Definition:</b> Messages.hpp:206</div></div>
@@ -456,10 +467,11 @@ Public Attributes</h2></td></tr>
 <div class="ttc" id="aclassTCP__MESSAGE_html"><div class="ttname"><a href="classTCP__MESSAGE.html">TCP_MESSAGE</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:7</div></div>
 <div class="ttc" id="aclassTCP__NAK__MESSAGE_html"><div class="ttname"><a href="classTCP__NAK__MESSAGE.html">TCP_NAK_MESSAGE</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:230</div></div>
 <div class="ttc" id="aclassTCP__UPDATE__MESSAGE_html"><div class="ttname"><a href="classTCP__UPDATE__MESSAGE.html">TCP_UPDATE_MESSAGE</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:171</div></div>
+<div class="ttc" id="astructTCP__CLIENT__T___html_a5b045516d90e9cb920bb16fb44a71d29"><div class="ttname"><a href="structTCP__CLIENT__T__.html#a5b045516d90e9cb920bb16fb44a71d29">TCP_CLIENT_T_::buffer</a></div><div class="ttdeci">uint8_t buffer[BUF_SIZE]</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:66</div></div>
 <div class="ttc" id="astructTCP__CLIENT__T___html_aa692163e51c7d6865fa7bc6378d69958"><div class="ttname"><a href="structTCP__CLIENT__T__.html#aa692163e51c7d6865fa7bc6378d69958">TCP_CLIENT_T_::got_nak</a></div><div class="ttdeci">volatile bool got_nak</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:73</div></div>
 <div class="ttc" id="astructTCP__CLIENT__T___html_ad92fd5bede81fa7b5f9a45926c90e1c7"><div class="ttname"><a href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">TCP_CLIENT_T_::waiting_for_ack</a></div><div class="ttdeci">volatile bool waiting_for_ack</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:72</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>, <a class="el" href="classTCP__ACK__MESSAGE.html#ab4e638ec61a065068e508fc2b90cb030">TCP_ACK_MESSAGE::get_len()</a>, <a class="el" href="classTCP__NAK__MESSAGE.html#a6746520a94996327fdab3dca47e9f16f">TCP_NAK_MESSAGE::get_len()</a>, <a class="el" href="classTCP__ACK__MESSAGE.html#ab05ca4215448fbff136ab1f3350f5a17">TCP_ACK_MESSAGE::get_msg()</a>, <a class="el" href="classTCP__NAK__MESSAGE.html#a20f5c9b1cab26158a334330e5bd6853b">TCP_NAK_MESSAGE::get_msg()</a>, <a class="el" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">MeshNode::get_NodeID()</a>, <a class="el" href="structTCP__CLIENT__T__.html#aa692163e51c7d6865fa7bc6378d69958">TCP_CLIENT_T_::got_nak</a>, <a class="el" href="classTCP__INIT__MESSAGE.html#a1158cd04bdc7e5a0ab5013deb4e5ea81">TCP_INIT_MESSAGE::msg</a>, <a class="el" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">TCP_DATA_MSG::msg</a>, <a class="el" href="classTCP__ACK__MESSAGE.html#afd3550bfea1842ab8d938dd60ce91562">TCP_ACK_MESSAGE::msg</a>, <a class="el" href="Messages_8cpp.html#af38d02b60aa8d13a179c24ca5d9ad8d1">parseMessage()</a>, <a class="el" href="classSTANode.html#a10fde1bbdae827a032bfb3e3663c0364">send_tcp_data()</a>, <a class="el" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>, and <a class="el" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">TCP_CLIENT_T_::waiting_for_ack</a>.</p>
+<p class="reference">References <a class="el" href="structTCP__CLIENT__T__.html#a5b045516d90e9cb920bb16fb44a71d29">TCP_CLIENT_T_::buffer</a>, <a class="el" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>, <a class="el" href="MeshNodeAP_8cpp.html#a08bc1ee60cebdc4189bc44ede1245a24">DUMP_BYTES</a>, <a class="el" href="classTCP__ACK__MESSAGE.html#ab4e638ec61a065068e508fc2b90cb030">TCP_ACK_MESSAGE::get_len()</a>, <a class="el" href="classTCP__NAK__MESSAGE.html#a6746520a94996327fdab3dca47e9f16f">TCP_NAK_MESSAGE::get_len()</a>, <a class="el" href="classTCP__ACK__MESSAGE.html#ab05ca4215448fbff136ab1f3350f5a17">TCP_ACK_MESSAGE::get_msg()</a>, <a class="el" href="classTCP__NAK__MESSAGE.html#a20f5c9b1cab26158a334330e5bd6853b">TCP_NAK_MESSAGE::get_msg()</a>, <a class="el" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">MeshNode::get_NodeID()</a>, <a class="el" href="structTCP__CLIENT__T__.html#aa692163e51c7d6865fa7bc6378d69958">TCP_CLIENT_T_::got_nak</a>, <a class="el" href="classRingBuffer.html#a26f24ba18ecad8fc3df4b848f35724c5">RingBuffer::insert()</a>, <a class="el" href="classTCP__INIT__MESSAGE.html#a1158cd04bdc7e5a0ab5013deb4e5ea81">TCP_INIT_MESSAGE::msg</a>, <a class="el" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">TCP_DATA_MSG::msg</a>, <a class="el" href="classTCP__ACK__MESSAGE.html#afd3550bfea1842ab8d938dd60ce91562">TCP_ACK_MESSAGE::msg</a>, <a class="el" href="Messages_8cpp.html#af38d02b60aa8d13a179c24ca5d9ad8d1">parseMessage()</a>, <a class="el" href="classSTANode.html#abce6bd1830556b46abe189a3105c3415">rb</a>, <a class="el" href="classSTANode.html#a10fde1bbdae827a032bfb3e3663c0364">send_tcp_data()</a>, <a class="el" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>, and <a class="el" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">TCP_CLIENT_T_::waiting_for_ack</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="MeshNodeSTA_8cpp.html#a16cac447637244bdb2512ca1a0141f7c">tcp_client_recv()</a>.</p>
 
@@ -479,27 +491,27 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  262</span>                            {</div>
-<div class="line"><span class="lineno">  263</span>    <span class="comment">//stdio_init_all();</span></div>
+<div class="fragment"><div class="line"><span class="lineno">  256</span>                            {</div>
+<div class="line"><span class="lineno">  257</span>    <span class="comment">//stdio_init_all();</span></div>
+<div class="line"><span class="lineno">  258</span> </div>
+<div class="line"><span class="lineno">  259</span>    uint32_t AP_ID = 0;</div>
+<div class="line"><span class="lineno">  260</span> </div>
+<div class="line"><span class="lineno">  261</span>    <span class="keywordflow">while</span>(!<a class="code hl_variable" href="classSTANode.html#aa4008fd7f0e1f889fd2cd6eef1ad2157">Slave_Pico</a>.<a class="code hl_function" href="classSPI.html#afbf1bd96c0cbc54a523c93abe264206a">SPI_is_read_available</a>());</div>
+<div class="line"><span class="lineno">  262</span> </div>
+<div class="line"><span class="lineno">  263</span>    <a class="code hl_variable" href="classSTANode.html#aa4008fd7f0e1f889fd2cd6eef1ad2157">Slave_Pico</a>.<a class="code hl_function" href="classSPI.html#ae1b382e51be9b97ea313dca4ad797993">SPI_read_message</a>((uint8_t*)&amp;AP_ID, 5);</div>
 <div class="line"><span class="lineno">  264</span> </div>
-<div class="line"><span class="lineno">  265</span>    uint32_t AP_ID = 0;</div>
+<div class="line"><span class="lineno">  265</span>    this-&gt;<a class="code hl_function" href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">set_NodeID</a>(AP_ID);</div>
 <div class="line"><span class="lineno">  266</span> </div>
-<div class="line"><span class="lineno">  267</span>    <span class="keywordflow">while</span>(!<a class="code hl_variable" href="classSTANode.html#aa4008fd7f0e1f889fd2cd6eef1ad2157">Slave_Pico</a>.<a class="code hl_function" href="classSPI.html#afbf1bd96c0cbc54a523c93abe264206a">SPI_is_read_available</a>());</div>
+<div class="line"><span class="lineno">  267</span>   <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;STA new ID is: %08x\n&quot;</span>, <a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>());</div>
 <div class="line"><span class="lineno">  268</span> </div>
-<div class="line"><span class="lineno">  269</span>    <a class="code hl_variable" href="classSTANode.html#aa4008fd7f0e1f889fd2cd6eef1ad2157">Slave_Pico</a>.<a class="code hl_function" href="classSPI.html#ae1b382e51be9b97ea313dca4ad797993">SPI_read_message</a>((uint8_t*)&amp;AP_ID, 5);</div>
-<div class="line"><span class="lineno">  270</span> </div>
-<div class="line"><span class="lineno">  271</span>    this-&gt;<a class="code hl_function" href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">set_NodeID</a>(AP_ID);</div>
-<div class="line"><span class="lineno">  272</span> </div>
-<div class="line"><span class="lineno">  273</span>   <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;STA new ID is: %08x\n&quot;</span>, <a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>());</div>
-<div class="line"><span class="lineno">  274</span> </div>
-<div class="line"><span class="lineno">  275</span>    <span class="keywordflow">if</span> (cyw43_arch_init()) {</div>
-<div class="line"><span class="lineno">  276</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;failed to initialise\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  277</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  278</span>    }</div>
-<div class="line"><span class="lineno">  279</span> </div>
-<div class="line"><span class="lineno">  280</span>   <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Initiation to STA mode successful\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  281</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  282</span>}</div>
+<div class="line"><span class="lineno">  269</span>    <span class="keywordflow">if</span> (cyw43_arch_init()) {</div>
+<div class="line"><span class="lineno">  270</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;failed to initialise\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  271</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  272</span>    }</div>
+<div class="line"><span class="lineno">  273</span> </div>
+<div class="line"><span class="lineno">  274</span>   <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Initiation to STA mode successful\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  275</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  276</span>}</div>
 <div class="ttc" id="aclassSPI_html_ae1b382e51be9b97ea313dca4ad797993"><div class="ttname"><a href="classSPI.html#ae1b382e51be9b97ea313dca4ad797993">SPI::SPI_read_message</a></div><div class="ttdeci">int SPI_read_message(uint8_t *buffer, size_t buffer_size)</div><div class="ttdef"><b>Definition:</b> SPI.cpp:80</div></div>
 <div class="ttc" id="aclassSPI_html_afbf1bd96c0cbc54a523c93abe264206a"><div class="ttname"><a href="classSPI.html#afbf1bd96c0cbc54a523c93abe264206a">SPI::SPI_is_read_available</a></div><div class="ttdeci">bool SPI_is_read_available()</div><div class="ttdef"><b>Definition:</b> SPI.cpp:121</div></div>
 </div><!-- fragment -->
@@ -523,14 +535,39 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  428</span>                           {</div>
-<div class="line"><span class="lineno">  429</span>    <span class="keywordtype">int</span> res = cyw43_wifi_link_status(&amp;cyw43_state, CYW43_ITF_STA);</div>
-<div class="line"><span class="lineno">  430</span>    <span class="keywordflow">if</span> (res != CYW43_LINK_JOIN) {</div>
-<div class="line"><span class="lineno">  431</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  432</span>    }</div>
-<div class="line"><span class="lineno">  433</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  434</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  422</span>                           {</div>
+<div class="line"><span class="lineno">  423</span>    <span class="keywordtype">int</span> res = cyw43_wifi_link_status(&amp;cyw43_state, CYW43_ITF_STA);</div>
+<div class="line"><span class="lineno">  424</span>    <span class="keywordflow">if</span> (res != CYW43_LINK_JOIN) {</div>
+<div class="line"><span class="lineno">  425</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  426</span>    }</div>
+<div class="line"><span class="lineno">  427</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  428</span>}</div>
 </div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="sta__one_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>.</p>
+
+</div>
+</div>
+<a id="a85f3bd0e6d9c50fbf84756c8d6fcd618" name="a85f3bd0e6d9c50fbf84756c8d6fcd618"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85f3bd0e6d9c50fbf84756c8d6fcd618">&#9670;&#160;</a></span>number_of_messages()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int STANode::number_of_messages </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  452</span>                                {</div>
+<div class="line"><span class="lineno">  453</span>    <span class="keywordflow">return</span> this-&gt;<a class="code hl_variable" href="classSTANode.html#abce6bd1830556b46abe189a3105c3415">rb</a>.<a class="code hl_function" href="classRingBuffer.html#aabd4823f01b3502c5cd5da535308ae39">get_size</a>();</div>
+<div class="line"><span class="lineno">  454</span>}</div>
+<div class="ttc" id="aclassRingBuffer_html_aabd4823f01b3502c5cd5da535308ae39"><div class="ttname"><a href="classRingBuffer.html#aabd4823f01b3502c5cd5da535308ae39">RingBuffer::get_size</a></div><div class="ttdeci">int get_size()</div><div class="ttdef"><b>Definition:</b> RingBuffer.cpp:50</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classRingBuffer.html#aabd4823f01b3502c5cd5da535308ae39">RingBuffer::get_size()</a>, and <a class="el" href="classSTANode.html#abce6bd1830556b46abe189a3105c3415">rb</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="sta__one_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>.</p>
 
 </div>
@@ -549,45 +586,45 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  360</span>                             {</div>
-<div class="line"><span class="lineno">  361</span>    <a class="code hl_variable" href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">known_nodes</a>.clear();</div>
-<div class="line"><span class="lineno">  362</span>    <span class="comment">// Check if a scan is already in progress</span></div>
-<div class="line"><span class="lineno">  363</span>    <span class="keywordflow">if</span> (cyw43_wifi_scan_active(&amp;cyw43_state)) {</div>
-<div class="line"><span class="lineno">  364</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Scan already in progress, skipping\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  365</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  366</span>    }</div>
-<div class="line"><span class="lineno">  367</span>    </div>
-<div class="line"><span class="lineno">  368</span>    absolute_time_t scan_start_time = get_absolute_time();</div>
-<div class="line"><span class="lineno">  369</span>    absolute_time_t scan_time = make_timeout_time_ms(5000);</div>
-<div class="line"><span class="lineno">  370</span>    </div>
-<div class="line"><span class="lineno">  371</span>    cyw43_wifi_scan_options_t scan_options = { 0 };</div>
-<div class="line"><span class="lineno">  372</span>    <span class="keywordtype">int</span> err = cyw43_wifi_scan(&amp;cyw43_state, &amp;scan_options, <span class="keyword">this</span>, <a class="code hl_function" href="classSTANode.html#a5c059872b86e2d75a7aa151cf797e39f">STANode::scan_result</a>);</div>
-<div class="line"><span class="lineno">  373</span>    <span class="keywordflow">if</span> (err != 0) {</div>
-<div class="line"><span class="lineno">  374</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Failed to start scan: %d\n&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  375</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  376</span>    }</div>
-<div class="line"><span class="lineno">  377</span>    </div>
-<div class="line"><span class="lineno">  378</span>    <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Scan started&quot;</span>);</div>
-<div class="line"><span class="lineno">  379</span>    </div>
-<div class="line"><span class="lineno">  380</span>    <span class="comment">// Wait for scan to complete with timeout</span></div>
-<div class="line"><span class="lineno">  381</span>    <span class="keywordflow">while</span> (cyw43_wifi_scan_active(&amp;cyw43_state)) {</div>
-<div class="line"><span class="lineno">  382</span>        <span class="keywordflow">if</span> (absolute_time_diff_us(scan_start_time, get_absolute_time()) &gt; 5000000) {</div>
-<div class="line"><span class="lineno">  383</span>           <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Scan timeout\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  384</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  385</span>        }</div>
-<div class="line"><span class="lineno">  386</span> </div>
-<div class="line"><span class="lineno">  387</span><span class="preprocessor">        #if PICO_CYW43_ARCH_POLL</span></div>
-<div class="line"><span class="lineno">  388</span>            cyw43_arch_poll();</div>
-<div class="line"><span class="lineno">  389</span>            cyw43_arch_wait_for_work_until(scan_time);</div>
-<div class="line"><span class="lineno">  390</span><span class="preprocessor">        #else</span></div>
-<div class="line"><span class="lineno">  391</span>            sleep_ms(100);</div>
-<div class="line"><span class="lineno">  392</span><span class="preprocessor">        #endif</span></div>
-<div class="line"><span class="lineno">  393</span>    }</div>
-<div class="line"><span class="lineno">  394</span>    </div>
-<div class="line"><span class="lineno">  395</span>    <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Scan completed successfully&quot;</span>);</div>
-<div class="line"><span class="lineno">  396</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  397</span>}</div>
-<div class="ttc" id="aclassSTANode_html_a5c059872b86e2d75a7aa151cf797e39f"><div class="ttname"><a href="classSTANode.html#a5c059872b86e2d75a7aa151cf797e39f">STANode::scan_result</a></div><div class="ttdeci">static int scan_result(void *env, const cyw43_ev_scan_result_t *result)</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:310</div></div>
+<div class="fragment"><div class="line"><span class="lineno">  354</span>                             {</div>
+<div class="line"><span class="lineno">  355</span>    <a class="code hl_variable" href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">known_nodes</a>.clear();</div>
+<div class="line"><span class="lineno">  356</span>    <span class="comment">// Check if a scan is already in progress</span></div>
+<div class="line"><span class="lineno">  357</span>    <span class="keywordflow">if</span> (cyw43_wifi_scan_active(&amp;cyw43_state)) {</div>
+<div class="line"><span class="lineno">  358</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Scan already in progress, skipping\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  359</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  360</span>    }</div>
+<div class="line"><span class="lineno">  361</span>    </div>
+<div class="line"><span class="lineno">  362</span>    absolute_time_t scan_start_time = get_absolute_time();</div>
+<div class="line"><span class="lineno">  363</span>    absolute_time_t scan_time = make_timeout_time_ms(5000);</div>
+<div class="line"><span class="lineno">  364</span>    </div>
+<div class="line"><span class="lineno">  365</span>    cyw43_wifi_scan_options_t scan_options = { 0 };</div>
+<div class="line"><span class="lineno">  366</span>    <span class="keywordtype">int</span> err = cyw43_wifi_scan(&amp;cyw43_state, &amp;scan_options, <span class="keyword">this</span>, <a class="code hl_function" href="classSTANode.html#a5c059872b86e2d75a7aa151cf797e39f">STANode::scan_result</a>);</div>
+<div class="line"><span class="lineno">  367</span>    <span class="keywordflow">if</span> (err != 0) {</div>
+<div class="line"><span class="lineno">  368</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Failed to start scan: %d\n&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  369</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  370</span>    }</div>
+<div class="line"><span class="lineno">  371</span>    </div>
+<div class="line"><span class="lineno">  372</span>    <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Scan started&quot;</span>);</div>
+<div class="line"><span class="lineno">  373</span>    </div>
+<div class="line"><span class="lineno">  374</span>    <span class="comment">// Wait for scan to complete with timeout</span></div>
+<div class="line"><span class="lineno">  375</span>    <span class="keywordflow">while</span> (cyw43_wifi_scan_active(&amp;cyw43_state)) {</div>
+<div class="line"><span class="lineno">  376</span>        <span class="keywordflow">if</span> (absolute_time_diff_us(scan_start_time, get_absolute_time()) &gt; 5000000) {</div>
+<div class="line"><span class="lineno">  377</span>           <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Scan timeout\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  378</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  379</span>        }</div>
+<div class="line"><span class="lineno">  380</span> </div>
+<div class="line"><span class="lineno">  381</span><span class="preprocessor">        #if PICO_CYW43_ARCH_POLL</span></div>
+<div class="line"><span class="lineno">  382</span>            cyw43_arch_poll();</div>
+<div class="line"><span class="lineno">  383</span>            cyw43_arch_wait_for_work_until(scan_time);</div>
+<div class="line"><span class="lineno">  384</span><span class="preprocessor">        #else</span></div>
+<div class="line"><span class="lineno">  385</span>            sleep_ms(100);</div>
+<div class="line"><span class="lineno">  386</span><span class="preprocessor">        #endif</span></div>
+<div class="line"><span class="lineno">  387</span>    }</div>
+<div class="line"><span class="lineno">  388</span>    </div>
+<div class="line"><span class="lineno">  389</span>    <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Scan completed successfully&quot;</span>);</div>
+<div class="line"><span class="lineno">  390</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  391</span>}</div>
+<div class="ttc" id="aclassSTANode_html_a5c059872b86e2d75a7aa151cf797e39f"><div class="ttname"><a href="classSTANode.html#a5c059872b86e2d75a7aa151cf797e39f">STANode::scan_result</a></div><div class="ttdeci">static int scan_result(void *env, const cyw43_ev_scan_result_t *result)</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:304</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>, <a class="el" href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">known_nodes</a>, and <a class="el" href="classSTANode.html#a5c059872b86e2d75a7aa151cf797e39f">scan_result()</a>.</p>
 
@@ -628,54 +665,54 @@ Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  310</span>                                                                        {</div>
-<div class="line"><span class="lineno">  311</span>    <span class="keywordflow">if</span> (result == NULL) {</div>
-<div class="line"><span class="lineno">  312</span>        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">  313</span>    }</div>
-<div class="line"><span class="lineno">  314</span>    <span class="comment">// copy the result</span></div>
-<div class="line"><span class="lineno">  315</span>    cyw43_ev_scan_result_t* result_copy = <span class="keyword">static_cast&lt;</span>cyw43_ev_scan_result_t*<span class="keyword">&gt;</span>(malloc(<span class="keyword">sizeof</span>(cyw43_ev_scan_result_t)));</div>
-<div class="line"><span class="lineno">  316</span>    <span class="keywordflow">if</span> (result_copy) {</div>
-<div class="line"><span class="lineno">  317</span>        memcpy(result_copy, result, <span class="keyword">sizeof</span>(cyw43_ev_scan_result_t));</div>
-<div class="line"><span class="lineno">  318</span>    }</div>
-<div class="line"><span class="lineno">  319</span>          </div>
-<div class="line"><span class="lineno">  320</span>    <a class="code hl_class" href="classSTANode.html">STANode</a>* self = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classSTANode.html">STANode</a>*<span class="keyword">&gt;</span>(env);</div>
-<div class="line"><span class="lineno">  321</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* ssid_str = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(result-&gt;ssid);</div>
-<div class="line"><span class="lineno">  322</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* prefix = <span class="stringliteral">&quot;GatorGrid_Node:&quot;</span>;</div>
-<div class="line"><span class="lineno">  323</span>    <span class="keywordtype">size_t</span> prefix_len = strlen(prefix);</div>
-<div class="line"><span class="lineno">  324</span>    </div>
-<div class="line"><span class="lineno">  325</span>    <span class="comment">//printf(ssid_str);</span></div>
-<div class="line"><span class="lineno">  326</span>    <span class="comment">//printf(&quot;\n&quot;);</span></div>
-<div class="line"><span class="lineno">  327</span>    </div>
-<div class="line"><span class="lineno">  328</span>    <span class="keywordflow">if</span> (strncmp(ssid_str, prefix, prefix_len) == 0) {</div>
-<div class="line"><span class="lineno">  329</span>        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> id; <span class="comment">// Changed to unsigned int for hexadecimal</span></div>
-<div class="line"><span class="lineno">  330</span>        <span class="keywordflow">if</span> (sscanf(ssid_str, <span class="stringliteral">&quot;GatorGrid_Node:%x&quot;</span>, &amp;<span class="keywordtype">id</span>) == 1) { <span class="comment">// Changed format to %x for hexadecimal</span></div>
-<div class="line"><span class="lineno">  331</span>            <span class="comment">// Add to known nodes if not already present</span></div>
-<div class="line"><span class="lineno">  332</span>            <span class="keywordflow">if</span> (self-&gt;<a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>() == <span class="keywordtype">id</span>) {</div>
-<div class="line"><span class="lineno">  333</span>                <span class="comment">//printf(&quot;Ignoring own AP node\n&quot;);</span></div>
-<div class="line"><span class="lineno">  334</span>                <span class="keywordflow">goto</span> free_mem;</div>
-<div class="line"><span class="lineno">  335</span>            } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (self-&gt;<a class="code hl_variable" href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">known_nodes</a>.find(<span class="keywordtype">id</span>) == self-&gt;<a class="code hl_variable" href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">known_nodes</a>.end()) {</div>
-<div class="line"><span class="lineno">  336</span>               <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;New node ID: 0x%x\n&quot;</span>, <span class="keywordtype">id</span>); <span class="comment">// Changed format to 0x%x for hexadecimal output</span></div>
-<div class="line"><span class="lineno">  337</span>               <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;New node ID: 0x%x, SSID: %s, Signal strength: %d dBm\n&quot;</span>, <span class="keywordtype">id</span>, (<span class="keywordtype">char</span>*)&amp;(result-&gt;ssid), result-&gt;rssi);</div>
-<div class="line"><span class="lineno">  338</span>                self-&gt;<a class="code hl_variable" href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">known_nodes</a>[id] = result_copy;</div>
-<div class="line"><span class="lineno">  339</span>            } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  340</span>                <span class="comment">// Free if node is already known</span></div>
-<div class="line"><span class="lineno">  341</span>                <span class="keywordflow">goto</span> free_mem;</div>
-<div class="line"><span class="lineno">  342</span>            }</div>
-<div class="line"><span class="lineno">  343</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  344</span>            <span class="comment">// Free if parsing fails</span></div>
-<div class="line"><span class="lineno">  345</span>            <span class="keywordflow">goto</span> free_mem;</div>
-<div class="line"><span class="lineno">  346</span>        }</div>
-<div class="line"><span class="lineno">  347</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  348</span>        <span class="comment">// Free if SSID doesn&#39;t match prefix</span></div>
-<div class="line"><span class="lineno">  349</span>        <span class="keywordflow">goto</span> free_mem;</div>
-<div class="line"><span class="lineno">  350</span>    }</div>
-<div class="line"><span class="lineno">  351</span>     </div>
-<div class="line"><span class="lineno">  352</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">  353</span> </div>
-<div class="line"><span class="lineno">  354</span>free_mem:</div>
-<div class="line"><span class="lineno">  355</span>    free(result_copy);</div>
-<div class="line"><span class="lineno">  356</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">  357</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  304</span>                                                                        {</div>
+<div class="line"><span class="lineno">  305</span>    <span class="keywordflow">if</span> (result == NULL) {</div>
+<div class="line"><span class="lineno">  306</span>        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">  307</span>    }</div>
+<div class="line"><span class="lineno">  308</span>    <span class="comment">// copy the result</span></div>
+<div class="line"><span class="lineno">  309</span>    cyw43_ev_scan_result_t* result_copy = <span class="keyword">static_cast&lt;</span>cyw43_ev_scan_result_t*<span class="keyword">&gt;</span>(malloc(<span class="keyword">sizeof</span>(cyw43_ev_scan_result_t)));</div>
+<div class="line"><span class="lineno">  310</span>    <span class="keywordflow">if</span> (result_copy) {</div>
+<div class="line"><span class="lineno">  311</span>        memcpy(result_copy, result, <span class="keyword">sizeof</span>(cyw43_ev_scan_result_t));</div>
+<div class="line"><span class="lineno">  312</span>    }</div>
+<div class="line"><span class="lineno">  313</span>          </div>
+<div class="line"><span class="lineno">  314</span>    <a class="code hl_class" href="classSTANode.html">STANode</a>* self = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classSTANode.html">STANode</a>*<span class="keyword">&gt;</span>(env);</div>
+<div class="line"><span class="lineno">  315</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* ssid_str = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(result-&gt;ssid);</div>
+<div class="line"><span class="lineno">  316</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* prefix = <span class="stringliteral">&quot;GatorGrid_Node:&quot;</span>;</div>
+<div class="line"><span class="lineno">  317</span>    <span class="keywordtype">size_t</span> prefix_len = strlen(prefix);</div>
+<div class="line"><span class="lineno">  318</span>    </div>
+<div class="line"><span class="lineno">  319</span>    <span class="comment">//printf(ssid_str);</span></div>
+<div class="line"><span class="lineno">  320</span>    <span class="comment">//printf(&quot;\n&quot;);</span></div>
+<div class="line"><span class="lineno">  321</span>    </div>
+<div class="line"><span class="lineno">  322</span>    <span class="keywordflow">if</span> (strncmp(ssid_str, prefix, prefix_len) == 0) {</div>
+<div class="line"><span class="lineno">  323</span>        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> id; <span class="comment">// Changed to unsigned int for hexadecimal</span></div>
+<div class="line"><span class="lineno">  324</span>        <span class="keywordflow">if</span> (sscanf(ssid_str, <span class="stringliteral">&quot;GatorGrid_Node:%x&quot;</span>, &amp;<span class="keywordtype">id</span>) == 1) { <span class="comment">// Changed format to %x for hexadecimal</span></div>
+<div class="line"><span class="lineno">  325</span>            <span class="comment">// Add to known nodes if not already present</span></div>
+<div class="line"><span class="lineno">  326</span>            <span class="keywordflow">if</span> (self-&gt;<a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>() == <span class="keywordtype">id</span>) {</div>
+<div class="line"><span class="lineno">  327</span>                <span class="comment">//printf(&quot;Ignoring own AP node\n&quot;);</span></div>
+<div class="line"><span class="lineno">  328</span>                <span class="keywordflow">goto</span> free_mem;</div>
+<div class="line"><span class="lineno">  329</span>            } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (self-&gt;<a class="code hl_variable" href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">known_nodes</a>.find(<span class="keywordtype">id</span>) == self-&gt;<a class="code hl_variable" href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">known_nodes</a>.end()) {</div>
+<div class="line"><span class="lineno">  330</span>               <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;New node ID: 0x%x\n&quot;</span>, <span class="keywordtype">id</span>); <span class="comment">// Changed format to 0x%x for hexadecimal output</span></div>
+<div class="line"><span class="lineno">  331</span>               <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;New node ID: 0x%x, SSID: %s, Signal strength: %d dBm\n&quot;</span>, <span class="keywordtype">id</span>, (<span class="keywordtype">char</span>*)&amp;(result-&gt;ssid), result-&gt;rssi);</div>
+<div class="line"><span class="lineno">  332</span>                self-&gt;<a class="code hl_variable" href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">known_nodes</a>[id] = result_copy;</div>
+<div class="line"><span class="lineno">  333</span>            } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  334</span>                <span class="comment">// Free if node is already known</span></div>
+<div class="line"><span class="lineno">  335</span>                <span class="keywordflow">goto</span> free_mem;</div>
+<div class="line"><span class="lineno">  336</span>            }</div>
+<div class="line"><span class="lineno">  337</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  338</span>            <span class="comment">// Free if parsing fails</span></div>
+<div class="line"><span class="lineno">  339</span>            <span class="keywordflow">goto</span> free_mem;</div>
+<div class="line"><span class="lineno">  340</span>        }</div>
+<div class="line"><span class="lineno">  341</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  342</span>        <span class="comment">// Free if SSID doesn&#39;t match prefix</span></div>
+<div class="line"><span class="lineno">  343</span>        <span class="keywordflow">goto</span> free_mem;</div>
+<div class="line"><span class="lineno">  344</span>    }</div>
+<div class="line"><span class="lineno">  345</span>     </div>
+<div class="line"><span class="lineno">  346</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">  347</span> </div>
+<div class="line"><span class="lineno">  348</span>free_mem:</div>
+<div class="line"><span class="lineno">  349</span>    free(result_copy);</div>
+<div class="line"><span class="lineno">  350</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">  351</span>}</div>
 <div class="ttc" id="aclassSTANode_html"><div class="ttname"><a href="classSTANode.html">STANode</a></div><div class="ttdef"><b>Definition:</b> MeshNode.hpp:129</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>, <a class="el" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">MeshNode::get_NodeID()</a>, and <a class="el" href="classSTANode.html#a07e3937eb4eb954e44df016e889e3399">known_nodes</a>.</p>
@@ -715,16 +752,18 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  665</span>                                                                    {</div>
-<div class="line"><span class="lineno">  666</span>    <a class="code hl_class" href="classTCP__DATA__MSG.html">TCP_DATA_MSG</a> msg(<a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>(), send_id);</div>
-<div class="line"><span class="lineno">  667</span>    msg.add_message(buf, len);</div>
-<div class="line"><span class="lineno">  668</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="classSTANode.html#a9559ead3656f626628c3d61432004367">send_tcp_data_blocking</a>(msg.get_msg(), msg.get_len(), <span class="keyword">false</span>))</div>
-<div class="line"><span class="lineno">  669</span>        <span class="keywordflow">return</span> -1;</div>
-<div class="line"><span class="lineno">  670</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">  671</span>}</div>
-<div class="ttc" id="aclassSTANode_html_a9559ead3656f626628c3d61432004367"><div class="ttname"><a href="classSTANode.html#a9559ead3656f626628c3d61432004367">STANode::send_tcp_data_blocking</a></div><div class="ttdeci">bool send_tcp_data_blocking(uint8_t *data, uint32_t size, bool forward)</div><div class="ttdoc">Will wait until availble to send tcp, then will wait for an ACK response before releasing.</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:522</div></div>
+<div class="fragment"><div class="line"><span class="lineno">  684</span>                                                                    {</div>
+<div class="line"><span class="lineno">  685</span>    <a class="code hl_class" href="classTCP__DATA__MSG.html">TCP_DATA_MSG</a> msg(<a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>(), send_id);</div>
+<div class="line"><span class="lineno">  686</span>    msg.add_message(buf, len);</div>
+<div class="line"><span class="lineno">  687</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="classSTANode.html#a9559ead3656f626628c3d61432004367">send_tcp_data_blocking</a>(msg.get_msg(), msg.get_len(), <span class="keyword">false</span>))</div>
+<div class="line"><span class="lineno">  688</span>        <span class="keywordflow">return</span> -1;</div>
+<div class="line"><span class="lineno">  689</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">  690</span>}</div>
+<div class="ttc" id="aclassSTANode_html_a9559ead3656f626628c3d61432004367"><div class="ttname"><a href="classSTANode.html#a9559ead3656f626628c3d61432004367">STANode::send_tcp_data_blocking</a></div><div class="ttdeci">bool send_tcp_data_blocking(uint8_t *data, uint32_t size, bool forward)</div><div class="ttdoc">Will wait until availble to send tcp, then will wait for an ACK response before releasing.</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:523</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classTCP__DATA__MSG.html#a425e57a569337d010b4dd547d2e85c28">TCP_DATA_MSG::add_message()</a>, <a class="el" href="classTCP__DATA__MSG.html#a8bff11a0a6e983808895f292f038eab0">TCP_DATA_MSG::get_len()</a>, <a class="el" href="classTCP__DATA__MSG.html#a3fc5565136760b1840432d2e43e28d99">TCP_DATA_MSG::get_msg()</a>, <a class="el" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">MeshNode::get_NodeID()</a>, and <a class="el" href="classSTANode.html#a9559ead3656f626628c3d61432004367">send_tcp_data_blocking()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="sta__one_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>.</p>
 
 </div>
 </div>
@@ -759,61 +798,64 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  458</span>                                                                      {</div>
-<div class="line"><span class="lineno">  459</span> </div>
-<div class="line"><span class="lineno">  460</span>    <span class="comment">// uint8_t buffer[size] = {};</span></div>
-<div class="line"><span class="lineno">  461</span>    <span class="comment">// if (size &gt; BUF_SIZE) { size = size; }</span></div>
-<div class="line"><span class="lineno">  462</span>    <span class="comment">// memcpy(buffer, data, size);</span></div>
+<div class="fragment"><div class="line"><span class="lineno">  456</span>                                                                      {</div>
+<div class="line"><span class="lineno">  457</span> </div>
+<div class="line"><span class="lineno">  458</span>    <span class="comment">// uint8_t buffer[size] = {};</span></div>
+<div class="line"><span class="lineno">  459</span>    <span class="comment">// if (size &gt; BUF_SIZE) { size = size; }</span></div>
+<div class="line"><span class="lineno">  460</span>    <span class="comment">// memcpy(buffer, data, size);</span></div>
+<div class="line"><span class="lineno">  461</span> </div>
+<div class="line"><span class="lineno">  462</span>    <span class="keywordtype">bool</span> flag = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  463</span> </div>
-<div class="line"><span class="lineno">  464</span>    <span class="keywordtype">bool</span> flag = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  465</span> </div>
-<div class="line"><span class="lineno">  466</span>    <span class="comment">// while(state-&gt;tcp_pcb-&gt;snd_buf != 0) {</span></div>
-<div class="line"><span class="lineno">  467</span>    <span class="comment">//  DEBUG_printf(&quot;tcp buffer has %d bytes in it\n&quot;, state-&gt;tcp_pcb-&gt;snd_buf);</span></div>
-<div class="line"><span class="lineno">  468</span>    <span class="comment">// }</span></div>
-<div class="line"><span class="lineno">  469</span>    <span class="keywordflow">while</span>(<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">waiting_for_ack</a>); <span class="comment">//{sleep_ms(5);}</span></div>
-<div class="line"><span class="lineno">  470</span>    cyw43_arch_lwip_begin();</div>
-<div class="line"><span class="lineno">  471</span>    <span class="comment">//printf(&quot;Space used in the buffer %d\n&quot;, tcp_sndbuf(state-&gt;tcp_pcb));</span></div>
-<div class="line"><span class="lineno">  472</span>    <span class="comment">// while (tcp_write(state-&gt;tcp_pcb, (void*)buffer, BUF_SIZE, TCP_WRITE_FLAG_COPY) == -1) {</span></div>
-<div class="line"><span class="lineno">  473</span>    <span class="comment">//    DEBUG_printf(&quot;attempting to write\n&quot;);</span></div>
-<div class="line"><span class="lineno">  474</span>    <span class="comment">//     sleep_ms(2);</span></div>
-<div class="line"><span class="lineno">  475</span>    <span class="comment">// }</span></div>
-<div class="line"><span class="lineno">  476</span> </div>
-<div class="line"><span class="lineno">  477</span>    <span class="comment">// Not getting an ack message back for some reason</span></div>
-<div class="line"><span class="lineno">  478</span>    <span class="comment">//sleep_ms(125);</span></div>
-<div class="line"><span class="lineno">  479</span>    </div>
-<div class="line"><span class="lineno">  480</span>    <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Before tpc_write\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  481</span> </div>
-<div class="line"><span class="lineno">  482</span>    err_t err = tcp_write(<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#a3b9b0a4caa20f7d183aca45ccd1d39ba">tcp_pcb</a>, (<span class="keywordtype">void</span>*)<a class="code hl_struct" href="structdata.html">data</a>, size, TCP_WRITE_FLAG_COPY);</div>
-<div class="line"><span class="lineno">  483</span> </div>
-<div class="line"><span class="lineno">  484</span>    <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;After tpc_write\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  485</span> </div>
-<div class="line"><span class="lineno">  486</span>    err_t err2 = tcp_output(<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#a3b9b0a4caa20f7d183aca45ccd1d39ba">tcp_pcb</a>);</div>
-<div class="line"><span class="lineno">  487</span> </div>
-<div class="line"><span class="lineno">  488</span>    <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;After tpc_output\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  489</span> </div>
+<div class="line"><span class="lineno">  464</span>    <span class="comment">// while(state-&gt;tcp_pcb-&gt;snd_buf != 0) {</span></div>
+<div class="line"><span class="lineno">  465</span>    <span class="comment">//  DEBUG_printf(&quot;tcp buffer has %d bytes in it\n&quot;, state-&gt;tcp_pcb-&gt;snd_buf);</span></div>
+<div class="line"><span class="lineno">  466</span>    <span class="comment">// }</span></div>
+<div class="line"><span class="lineno">  467</span>    <span class="keywordflow">if</span> (!forward) {</div>
+<div class="line"><span class="lineno">  468</span>        <span class="keywordflow">while</span>(<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">waiting_for_ack</a>); <span class="comment">//{sleep_ms(5);}</span></div>
+<div class="line"><span class="lineno">  469</span>    }</div>
+<div class="line"><span class="lineno">  470</span>    <span class="comment">//sleep_ms(10);</span></div>
+<div class="line"><span class="lineno">  471</span>    cyw43_arch_lwip_begin();</div>
+<div class="line"><span class="lineno">  472</span>    <span class="comment">//printf(&quot;Space used in the buffer %d\n&quot;, tcp_sndbuf(state-&gt;tcp_pcb));</span></div>
+<div class="line"><span class="lineno">  473</span>    <span class="comment">// while (tcp_write(state-&gt;tcp_pcb, (void*)buffer, BUF_SIZE, TCP_WRITE_FLAG_COPY) == -1) {</span></div>
+<div class="line"><span class="lineno">  474</span>    <span class="comment">//    DEBUG_printf(&quot;attempting to write\n&quot;);</span></div>
+<div class="line"><span class="lineno">  475</span>    <span class="comment">//     sleep_ms(2);</span></div>
+<div class="line"><span class="lineno">  476</span>    <span class="comment">// }</span></div>
+<div class="line"><span class="lineno">  477</span> </div>
+<div class="line"><span class="lineno">  478</span>    <span class="comment">// Not getting an ack message back for some reason</span></div>
+<div class="line"><span class="lineno">  479</span>    <span class="comment">//sleep_ms(125);</span></div>
+<div class="line"><span class="lineno">  480</span>    </div>
+<div class="line"><span class="lineno">  481</span>    <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Before tpc_write\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  482</span> </div>
+<div class="line"><span class="lineno">  483</span>    err_t err = tcp_write(<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#a3b9b0a4caa20f7d183aca45ccd1d39ba">tcp_pcb</a>, (<span class="keywordtype">void</span>*)<a class="code hl_struct" href="structdata.html">data</a>, size, TCP_WRITE_FLAG_COPY);</div>
+<div class="line"><span class="lineno">  484</span> </div>
+<div class="line"><span class="lineno">  485</span>    <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;After tpc_write\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  486</span> </div>
+<div class="line"><span class="lineno">  487</span>    err_t err2 = tcp_output(<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#a3b9b0a4caa20f7d183aca45ccd1d39ba">tcp_pcb</a>);</div>
+<div class="line"><span class="lineno">  488</span> </div>
+<div class="line"><span class="lineno">  489</span>    <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;After tpc_output\n&quot;</span>);</div>
 <div class="line"><span class="lineno">  490</span> </div>
-<div class="line"><span class="lineno">  491</span>    <span class="keywordflow">if</span> (err != ERR_OK) {</div>
-<div class="line"><span class="lineno">  492</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Message failed to write\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  493</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;ERR: %d\n&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  494</span>        flag = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  495</span>    }</div>
-<div class="line"><span class="lineno">  496</span>    <span class="keywordflow">if</span> (err2 != ERR_OK) {</div>
-<div class="line"><span class="lineno">  497</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Message failed to be sent\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  498</span>        flag = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  499</span>    }</div>
-<div class="line"><span class="lineno">  500</span>    cyw43_arch_lwip_end();</div>
-<div class="line"><span class="lineno">  501</span>    <span class="keywordflow">if</span> (flag)</div>
-<div class="line"><span class="lineno">  502</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  503</span>    </div>
-<div class="line"><span class="lineno">  504</span>   <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;SENDING BYTES BELOW: \n&quot;</span>);</div>
-<div class="line"><span class="lineno">  505</span>    <a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">waiting_for_ack</a> = !forward;</div>
-<div class="line"><span class="lineno">  506</span>    <span class="comment">//DUMP_BYTES(data, size);</span></div>
-<div class="line"><span class="lineno">  507</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  508</span>}</div>
+<div class="line"><span class="lineno">  491</span> </div>
+<div class="line"><span class="lineno">  492</span>    <span class="keywordflow">if</span> (err != ERR_OK) {</div>
+<div class="line"><span class="lineno">  493</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Message failed to write\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  494</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;ERR: %d\n&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  495</span>        flag = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  496</span>    }</div>
+<div class="line"><span class="lineno">  497</span>    <span class="keywordflow">if</span> (err2 != ERR_OK) {</div>
+<div class="line"><span class="lineno">  498</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Message failed to be sent\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  499</span>        flag = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  500</span>    }</div>
+<div class="line"><span class="lineno">  501</span>    cyw43_arch_lwip_end();</div>
+<div class="line"><span class="lineno">  502</span>    <span class="keywordflow">if</span> (flag)</div>
+<div class="line"><span class="lineno">  503</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  504</span>    </div>
+<div class="line"><span class="lineno">  505</span>    <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;SENDING BYTES BELOW: \n&quot;</span>);</div>
+<div class="line"><span class="lineno">  506</span>    <a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">waiting_for_ack</a> = !forward;</div>
+<div class="line"><span class="lineno">  507</span>    <a class="code hl_define" href="MeshNodeAP_8cpp.html#a08bc1ee60cebdc4189bc44ede1245a24">DUMP_BYTES</a>(<a class="code hl_struct" href="structdata.html">data</a>, size);</div>
+<div class="line"><span class="lineno">  508</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  509</span>}</div>
 <div class="ttc" id="astructTCP__CLIENT__T___html_a3b9b0a4caa20f7d183aca45ccd1d39ba"><div class="ttname"><a href="structTCP__CLIENT__T__.html#a3b9b0a4caa20f7d183aca45ccd1d39ba">TCP_CLIENT_T_::tcp_pcb</a></div><div class="ttdeci">struct tcp_pcb * tcp_pcb</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:64</div></div>
 <div class="ttc" id="astructdata_html"><div class="ttname"><a href="structdata.html">data</a></div><div class="ttdef"><b>Definition:</b> RingBuffer.hpp:11</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>, <a class="el" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>, <a class="el" href="structTCP__CLIENT__T__.html#a3b9b0a4caa20f7d183aca45ccd1d39ba">TCP_CLIENT_T_::tcp_pcb</a>, and <a class="el" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">TCP_CLIENT_T_::waiting_for_ack</a>.</p>
+<p class="reference">References <a class="el" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>, <a class="el" href="MeshNodeAP_8cpp.html#a08bc1ee60cebdc4189bc44ede1245a24">DUMP_BYTES</a>, <a class="el" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>, <a class="el" href="structTCP__CLIENT__T__.html#a3b9b0a4caa20f7d183aca45ccd1d39ba">TCP_CLIENT_T_::tcp_pcb</a>, and <a class="el" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">TCP_CLIENT_T_::waiting_for_ack</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="classSTANode.html#a07f1bd97bed2342b18886377eab36ace">handle_incoming_data()</a>, <a class="el" href="sta__test_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>, and <a class="el" href="classSTANode.html#adbc289879317eba8fd0f3d0bab4008af">tcp_init()</a>.</p>
 
@@ -863,45 +905,58 @@ Public Attributes</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>true - message successfully sent </dd>
 <dd>
 false - message failed to send </dd></dl>
-<div class="fragment"><div class="line"><span class="lineno">  522</span>                                                                               {</div>
-<div class="line"><span class="lineno">  523</span> </div>
-<div class="line"><span class="lineno">  524</span>    <span class="keywordtype">bool</span> flag = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  525</span> </div>
-<div class="line"><span class="lineno">  526</span>    <span class="keywordflow">while</span>(<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">waiting_for_ack</a>);</div>
-<div class="line"><span class="lineno">  527</span>    cyw43_arch_lwip_begin();</div>
-<div class="line"><span class="lineno">  528</span> </div>
-<div class="line"><span class="lineno">  529</span>    </div>
-<div class="line"><span class="lineno">  530</span>    err_t err = tcp_write(<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#a3b9b0a4caa20f7d183aca45ccd1d39ba">tcp_pcb</a>, (<span class="keywordtype">void</span>*)<a class="code hl_struct" href="structdata.html">data</a>, size, TCP_WRITE_FLAG_COPY);</div>
-<div class="line"><span class="lineno">  531</span>    err_t err2 = tcp_output(<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#a3b9b0a4caa20f7d183aca45ccd1d39ba">tcp_pcb</a>);</div>
-<div class="line"><span class="lineno">  532</span>    <span class="keywordflow">if</span> (err != ERR_OK) {</div>
-<div class="line"><span class="lineno">  533</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Message failed to write\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  534</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;ERR: %d\n&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  535</span>        flag = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  536</span>    }</div>
-<div class="line"><span class="lineno">  537</span>    <span class="keywordflow">if</span> (err2 != ERR_OK) {</div>
-<div class="line"><span class="lineno">  538</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Message failed to be sent\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  539</span>        flag = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  540</span>    }</div>
-<div class="line"><span class="lineno">  541</span>    cyw43_arch_lwip_end();</div>
-<div class="line"><span class="lineno">  542</span>    <span class="keywordflow">if</span> (flag)</div>
-<div class="line"><span class="lineno">  543</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  544</span>    </div>
-<div class="line"><span class="lineno">  545</span>   <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;SENDING BYTES BELOW: \n&quot;</span>);</div>
-<div class="line"><span class="lineno">  546</span>    <a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">waiting_for_ack</a> = !forward;</div>
-<div class="line"><span class="lineno">  547</span>    <span class="comment">//DUMP_BYTES(data, size);</span></div>
-<div class="line"><span class="lineno">  548</span>    <span class="keywordflow">while</span>(<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">waiting_for_ack</a>)</div>
-<div class="line"><span class="lineno">  549</span>    {</div>
-<div class="line"><span class="lineno">  550</span>        sleep_ms(20);</div>
-<div class="line"><span class="lineno">  551</span>    }</div>
-<div class="line"><span class="lineno">  552</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#aa692163e51c7d6865fa7bc6378d69958">got_nak</a>) {</div>
-<div class="line"><span class="lineno">  553</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  554</span>    }</div>
-<div class="line"><span class="lineno">  555</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  556</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  523</span>                                                                               {</div>
+<div class="line"><span class="lineno">  524</span> </div>
+<div class="line"><span class="lineno">  525</span>    <span class="keywordtype">bool</span> flag = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  526</span> </div>
+<div class="line"><span class="lineno">  527</span>    <span class="keywordflow">while</span>(<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">waiting_for_ack</a>); </div>
+<div class="line"><span class="lineno">  528</span>    cyw43_arch_lwip_begin();</div>
+<div class="line"><span class="lineno">  529</span> </div>
+<div class="line"><span class="lineno">  530</span>    <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;blocking before write/output\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  531</span>    err_t err = tcp_write(<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#a3b9b0a4caa20f7d183aca45ccd1d39ba">tcp_pcb</a>, (<span class="keywordtype">void</span>*)<a class="code hl_struct" href="structdata.html">data</a>, size, TCP_WRITE_FLAG_COPY);</div>
+<div class="line"><span class="lineno">  532</span>    err_t err2 = tcp_output(<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#a3b9b0a4caa20f7d183aca45ccd1d39ba">tcp_pcb</a>);</div>
+<div class="line"><span class="lineno">  533</span>    <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;blocking after write/output\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  534</span>    <span class="keywordflow">if</span> (err != ERR_OK) {</div>
+<div class="line"><span class="lineno">  535</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Message failed to write\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  536</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;ERR: %d\n&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  537</span>        flag = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  538</span>    }</div>
+<div class="line"><span class="lineno">  539</span>    <span class="keywordflow">if</span> (err2 != ERR_OK) {</div>
+<div class="line"><span class="lineno">  540</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Message failed to be sent\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  541</span>        flag = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  542</span>    }</div>
+<div class="line"><span class="lineno">  543</span>    cyw43_arch_lwip_end();</div>
+<div class="line"><span class="lineno">  544</span>    <span class="keywordflow">if</span> (flag) {</div>
+<div class="line"><span class="lineno">  545</span>        <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Some error in write/output\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  546</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  547</span>    }</div>
+<div class="line"><span class="lineno">  548</span>    </div>
+<div class="line"><span class="lineno">  549</span>    <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;SENDING BYTES BELOW: \n&quot;</span>);</div>
+<div class="line"><span class="lineno">  550</span>    <a class="code hl_define" href="MeshNodeAP_8cpp.html#a08bc1ee60cebdc4189bc44ede1245a24">DUMP_BYTES</a>(<a class="code hl_struct" href="structdata.html">data</a>, size);</div>
+<div class="line"><span class="lineno">  551</span>    <a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">waiting_for_ack</a> = !forward;</div>
+<div class="line"><span class="lineno">  552</span>    </div>
+<div class="line"><span class="lineno">  553</span>    <span class="keywordtype">int</span> count = 0;</div>
+<div class="line"><span class="lineno">  554</span>    <span class="keywordflow">while</span>(<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">waiting_for_ack</a>)</div>
+<div class="line"><span class="lineno">  555</span>    {</div>
+<div class="line"><span class="lineno">  556</span>        sleep_ms(2);</div>
+<div class="line"><span class="lineno">  557</span>        count++;</div>
+<div class="line"><span class="lineno">  558</span>        <span class="keywordflow">if</span>(count == 1000) {</div>
+<div class="line"><span class="lineno">  559</span>            <a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">waiting_for_ack</a> = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  560</span>            <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Timeout\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  561</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  562</span>        }</div>
+<div class="line"><span class="lineno">  563</span>            </div>
+<div class="line"><span class="lineno">  564</span>    }</div>
+<div class="line"><span class="lineno">  565</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#aa692163e51c7d6865fa7bc6378d69958">got_nak</a>) {</div>
+<div class="line"><span class="lineno">  566</span>        <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Got NAK, returning false\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  567</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  568</span>    }</div>
+<div class="line"><span class="lineno">  569</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  570</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>, <a class="el" href="structTCP__CLIENT__T__.html#aa692163e51c7d6865fa7bc6378d69958">TCP_CLIENT_T_::got_nak</a>, <a class="el" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>, <a class="el" href="structTCP__CLIENT__T__.html#a3b9b0a4caa20f7d183aca45ccd1d39ba">TCP_CLIENT_T_::tcp_pcb</a>, and <a class="el" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">TCP_CLIENT_T_::waiting_for_ack</a>.</p>
+<p class="reference">References <a class="el" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>, <a class="el" href="MeshNodeAP_8cpp.html#a08bc1ee60cebdc4189bc44ede1245a24">DUMP_BYTES</a>, <a class="el" href="structTCP__CLIENT__T__.html#aa692163e51c7d6865fa7bc6378d69958">TCP_CLIENT_T_::got_nak</a>, <a class="el" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>, <a class="el" href="structTCP__CLIENT__T__.html#a3b9b0a4caa20f7d183aca45ccd1d39ba">TCP_CLIENT_T_::tcp_pcb</a>, and <a class="el" href="structTCP__CLIENT__T__.html#ad92fd5bede81fa7b5f9a45926c90e1c7">TCP_CLIENT_T_::waiting_for_ack</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sta__two_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>, and <a class="el" href="classSTANode.html#aa32061846b7b2191d000bec26b40ae32">send_data()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classSTANode.html#aa32061846b7b2191d000bec26b40ae32">send_data()</a>.</p>
 
 </div>
 </div>
@@ -919,11 +974,11 @@ false - message failed to send </dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  284</span>                             {</div>
-<div class="line"><span class="lineno">  285</span>    cyw43_arch_enable_sta_mode();</div>
-<div class="line"><span class="lineno">  286</span>   <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Starting STA mode\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  287</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// ggwp</span></div>
-<div class="line"><span class="lineno">  288</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  278</span>                             {</div>
+<div class="line"><span class="lineno">  279</span>    cyw43_arch_enable_sta_mode();</div>
+<div class="line"><span class="lineno">  280</span>   <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Starting STA mode\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  281</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// ggwp</span></div>
+<div class="line"><span class="lineno">  282</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>.</p>
 
@@ -945,30 +1000,30 @@ false - message failed to send </dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  436</span>                       {</div>
-<div class="line"><span class="lineno">  437</span>    <a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a> = <a class="code hl_function" href="MeshNodeSTA_8cpp.html#abec9b2e98a1be0817859121526530af9">tcp_client_init</a>();</div>
-<div class="line"><span class="lineno">  438</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>) {</div>
-<div class="line"><span class="lineno">  439</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Unable to initialize tcp client state\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  440</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  441</span>    }</div>
-<div class="line"><span class="lineno">  442</span>   <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Initialized tcp client\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  443</span>    <a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#aa692163e51c7d6865fa7bc6378d69958">got_nak</a> = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  444</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="MeshNodeSTA_8cpp.html#af4e9551c85f318991f5e270805231074">tcp_client_open</a>(<span class="keyword">this</span>)) {</div>
-<div class="line"><span class="lineno">  445</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Failed to open client\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  446</span>        <a class="code hl_function" href="MeshNodeSTA_8cpp.html#ad9ecfd764e26edd7803eec0e926b9ea1">tcp_result</a>(<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>, -1);</div>
-<div class="line"><span class="lineno">  447</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>; </div>
-<div class="line"><span class="lineno">  448</span>    }</div>
-<div class="line"><span class="lineno">  449</span>   <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Opened tcp client connection\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  450</span> </div>
-<div class="line"><span class="lineno">  451</span>    <span class="comment">//uint8_t buffer[BUF_SIZE] = {};</span></div>
-<div class="line"><span class="lineno">  452</span>    <span class="comment">//create_join_message(BUF_SIZE, buffer, this);</span></div>
-<div class="line"><span class="lineno">  453</span>    <a class="code hl_class" href="classTCP__INIT__MESSAGE.html">TCP_INIT_MESSAGE</a> init_msg(<a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>());</div>
-<div class="line"><span class="lineno">  454</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classSTANode.html#a10fde1bbdae827a032bfb3e3663c0364">send_tcp_data</a>(init_msg.get_msg(), init_msg.get_len(), <span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">  455</span> </div>
-<div class="line"><span class="lineno">  456</span>}</div>
-<div class="ttc" id="aMeshNodeSTA_8cpp_html_abec9b2e98a1be0817859121526530af9"><div class="ttname"><a href="MeshNodeSTA_8cpp.html#abec9b2e98a1be0817859121526530af9">tcp_client_init</a></div><div class="ttdeci">static TCP_CLIENT_T * tcp_client_init(void)</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:225</div></div>
+<div class="fragment"><div class="line"><span class="lineno">  430</span>                       {</div>
+<div class="line"><span class="lineno">  431</span>    <a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a> = <a class="code hl_function" href="MeshNodeSTA_8cpp.html#abec9b2e98a1be0817859121526530af9">tcp_client_init</a>();</div>
+<div class="line"><span class="lineno">  432</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>) {</div>
+<div class="line"><span class="lineno">  433</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Unable to initialize tcp client state\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  434</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  435</span>    }</div>
+<div class="line"><span class="lineno">  436</span>   <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Initialized tcp client\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  437</span>    <a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>-&gt;<a class="code hl_variable" href="structTCP__CLIENT__T__.html#aa692163e51c7d6865fa7bc6378d69958">got_nak</a> = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  438</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="MeshNodeSTA_8cpp.html#af4e9551c85f318991f5e270805231074">tcp_client_open</a>(<span class="keyword">this</span>)) {</div>
+<div class="line"><span class="lineno">  439</span>       <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Failed to open client\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  440</span>        <a class="code hl_function" href="MeshNodeSTA_8cpp.html#ad9ecfd764e26edd7803eec0e926b9ea1">tcp_result</a>(<a class="code hl_variable" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>, -1);</div>
+<div class="line"><span class="lineno">  441</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>; </div>
+<div class="line"><span class="lineno">  442</span>    }</div>
+<div class="line"><span class="lineno">  443</span>   <a class="code hl_define" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(<span class="stringliteral">&quot;Opened tcp client connection\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  444</span> </div>
+<div class="line"><span class="lineno">  445</span>    <span class="comment">//uint8_t buffer[BUF_SIZE] = {};</span></div>
+<div class="line"><span class="lineno">  446</span>    <span class="comment">//create_join_message(BUF_SIZE, buffer, this);</span></div>
+<div class="line"><span class="lineno">  447</span>    <a class="code hl_class" href="classTCP__INIT__MESSAGE.html">TCP_INIT_MESSAGE</a> init_msg(<a class="code hl_function" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">get_NodeID</a>());</div>
+<div class="line"><span class="lineno">  448</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classSTANode.html#a10fde1bbdae827a032bfb3e3663c0364">send_tcp_data</a>(init_msg.get_msg(), init_msg.get_len(), <span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">  449</span> </div>
+<div class="line"><span class="lineno">  450</span>}</div>
+<div class="ttc" id="aMeshNodeSTA_8cpp_html_abec9b2e98a1be0817859121526530af9"><div class="ttname"><a href="MeshNodeSTA_8cpp.html#abec9b2e98a1be0817859121526530af9">tcp_client_init</a></div><div class="ttdeci">static TCP_CLIENT_T * tcp_client_init(void)</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:219</div></div>
 <div class="ttc" id="aMeshNodeSTA_8cpp_html_ad9ecfd764e26edd7803eec0e926b9ea1"><div class="ttname"><a href="MeshNodeSTA_8cpp.html#ad9ecfd764e26edd7803eec0e926b9ea1">tcp_result</a></div><div class="ttdeci">static err_t tcp_result(void *arg, int status)</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:98</div></div>
-<div class="ttc" id="aMeshNodeSTA_8cpp_html_af4e9551c85f318991f5e270805231074"><div class="ttname"><a href="MeshNodeSTA_8cpp.html#af4e9551c85f318991f5e270805231074">tcp_client_open</a></div><div class="ttdeci">static bool tcp_client_open(void *arg)</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:195</div></div>
+<div class="ttc" id="aMeshNodeSTA_8cpp_html_af4e9551c85f318991f5e270805231074"><div class="ttname"><a href="MeshNodeSTA_8cpp.html#af4e9551c85f318991f5e270805231074">tcp_client_open</a></div><div class="ttdeci">static bool tcp_client_open(void *arg)</div><div class="ttdef"><b>Definition:</b> MeshNodeSTA.cpp:189</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="dnsserver_8c.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>, <a class="el" href="classTCP__INIT__MESSAGE.html#a873ecabeb873d1ffa6ef2185da4d28d0">TCP_INIT_MESSAGE::get_len()</a>, <a class="el" href="classTCP__INIT__MESSAGE.html#a29a1ae3bdad394b39abee9eaaececa76">TCP_INIT_MESSAGE::get_msg()</a>, <a class="el" href="classMeshNode.html#adc8f29a44d7baf4a56ca6f20cec861e8">MeshNode::get_NodeID()</a>, <a class="el" href="structTCP__CLIENT__T__.html#aa692163e51c7d6865fa7bc6378d69958">TCP_CLIENT_T_::got_nak</a>, <a class="el" href="classSTANode.html#a10fde1bbdae827a032bfb3e3663c0364">send_tcp_data()</a>, <a class="el" href="classSTANode.html#a3b8bb4123b133ab0bd4295e164f3043e">state</a>, <a class="el" href="MeshNodeSTA_8cpp.html#abec9b2e98a1be0817859121526530af9">tcp_client_init()</a>, <a class="el" href="MeshNodeSTA_8cpp.html#af4e9551c85f318991f5e270805231074">tcp_client_open()</a>, and <a class="el" href="MeshNodeSTA_8cpp.html#ad9ecfd764e26edd7803eec0e926b9ea1">tcp_result()</a>.</p>
 
@@ -1034,6 +1089,8 @@ false - message failed to send </dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="classSTANode.html#a07f1bd97bed2342b18886377eab36ace">handle_incoming_data()</a>, and <a class="el" href="classSTANode.html#a85f3bd0e6d9c50fbf84756c8d6fcd618">number_of_messages()</a>.</p>
 
 </div>
 </div>
