@@ -20,6 +20,9 @@ GatorGrid is a multifunctional software solution designed for the Raspberry Pi P
 1. Push the bootsel and plug the microcontroller into the computer
 2. Create the .uf2 file and upload it to PICO W by dragging it into the directory
 
+## Bugs:
+- At the moment if in an environment with high congestion, packets may not arrive. Moving locations is required.
+
 ## Author
 George Salomon, Cole Smith, Jonathon Brown, Mateo Slivka, Maxwell Evans
 
