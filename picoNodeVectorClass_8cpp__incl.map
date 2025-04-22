@@ -1,7 +1,5 @@
 <map id="libraries/picoNodeVectorClass/picoNodeVectorClass.cpp" name="libraries/picoNodeVectorClass/picoNodeVectorClass.cpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,231,45"/>
-<area shape="rect" id="Node000002" href="$picoNodeVectorClass_8h.html" title=" " alt="" coords="33,93,203,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,46,121,79,115,79,115,46"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="87,167,149,192"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="121,119,121,153,115,153,115,119"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,5,231,45"/>
+<area shape="rect" id="node2" href="$picoNodeVectorClass_8hpp.html" title=" " alt="" coords="25,93,211,119"/>
+<area shape="rect" id="node3" title=" " alt="" coords="87,167,149,192"/>
 </map>

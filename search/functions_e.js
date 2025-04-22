@@ -1,24 +1,8 @@
 var searchData=
 [
-  ['scan_5ffor_5fnodes_0',['scan_for_nodes',['../classSTANode.html#a7037f417643a8378164041f4f504fa27',1,'STANode']]],
-  ['scan_5fresult_1',['scan_result',['../classSTANode.html#a5c059872b86e2d75a7aa151cf797e39f',1,'STANode']]],
-  ['seed_5frand_2',['seed_rand',['../classMeshNode.html#a38f289f39af779b21b1918e1da6f352e',1,'MeshNode']]],
-  ['send_5fstring_5fdata_3',['send_string_data',['../classSTANode.html#a14dfa1e7bd0cfe2525b8c7d35dd7a7f0',1,'STANode']]],
-  ['send_5ftcp_5fdata_4',['send_tcp_data',['../classAPNode.html#aa32432c8d0f713c852fbeb0e796adffe',1,'APNode::send_tcp_data()'],['../classSTANode.html#a10fde1bbdae827a032bfb3e3663c0364',1,'STANode::send_tcp_data()']]],
-  ['server_5frunning_5',['server_running',['../classAPNode.html#aa02e0b6dcbc9a8f06c769c4277f30482',1,'APNode']]],
-  ['server_5fstart_6',['server_start',['../classAPNode.html#a818d713e7937e58df4a0aa1366e63da0',1,'APNode']]],
-  ['set_5fap_5fcredentials_7',['set_ap_credentials',['../classAPNode.html#ac8e48a111bea8c9f01f592892256ec0f',1,'APNode']]],
-  ['set_5fmsg_8',['set_msg',['../classTCP__ACK__MESSAGE.html#a9244e8fae020ec01984b8a1bc6f0c2cc',1,'TCP_ACK_MESSAGE::set_msg()'],['../classTCP__NAK__MESSAGE.html#a46b69ed413bea8d00861b29452178284',1,'TCP_NAK_MESSAGE::set_msg()'],['../classTCP__UPDATE__MESSAGE.html#a6faef8b91f098506b095932ea0f03af4',1,'TCP_UPDATE_MESSAGE::set_msg()'],['../classTCP__DISCONNECT__MSG.html#a2bd9635410f605b01a112988f289ab4a',1,'TCP_DISCONNECT_MSG::set_msg()'],['../classTCP__DATA__MSG.html#a8ea6eef2b8845e1b4b4b08f67fd6c279',1,'TCP_DATA_MSG::set_msg()'],['../classTCP__INIT__MESSAGE.html#a8db9cf8ce0c0e4fe20f01b6a01a1238d',1,'TCP_INIT_MESSAGE::set_msg()'],['../classTCP__MESSAGE.html#aecb87ea9b0ba8c995ef4834bdfbbf353',1,'TCP_MESSAGE::set_msg()']]],
-  ['set_5fnode_5fid_9',['set_node_id',['../classAPNode.html#ab5a41cb6892721ffd8543d5bef39150e',1,'APNode']]],
-  ['set_5fnodeid_10',['set_NodeID',['../classMeshNode.html#af666a6d82e48cbff383d10e93dde8719',1,'MeshNode']]],
-  ['spi_11',['SPI',['../classSPI.html#a2ba081c29fbdecc704c6bf00b24d5205',1,'SPI']]],
-  ['spi_5finit_12',['SPI_init',['../classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd',1,'SPI']]],
-  ['spi_5fis_5fread_5favailable_13',['SPI_is_read_available',['../classSPI.html#afbf1bd96c0cbc54a523c93abe264206a',1,'SPI']]],
-  ['spi_5fis_5fwrite_5favailable_14',['SPI_is_write_available',['../classSPI.html#a7ff6c627f5b5176fb9ad371170b3a4af',1,'SPI']]],
-  ['spi_5fread_5fmessage_15',['SPI_read_message',['../classSPI.html#ae1b382e51be9b97ea313dca4ad797993',1,'SPI']]],
-  ['spi_5fsend_5fmessage_16',['SPI_send_message',['../classSPI.html#a7dafbdd194b14feafa6bc4abf95114ee',1,'SPI']]],
-  ['stanode_17',['STANode',['../classSTANode.html#ad0f212bb430664f5af25d5559917286c',1,'STANode']]],
-  ['start_5fap_5fmode_18',['start_ap_mode',['../classAPNode.html#a0baffab88dae0ef512726601ee2de82c',1,'APNode']]],
-  ['start_5fsta_5fmode_19',['start_sta_mode',['../classSTANode.html#a2d1fcac90b0e29d97b11d0b918f061e7',1,'STANode']]],
-  ['stop_5fap_5fmode_20',['stop_ap_mode',['../classAPNode.html#a2d1b86fff1bbfe9baef8704c09fa08b4',1,'APNode']]]
+  ['remove_5fchild_0',['remove_child',['../classChildrenTree.html#a26113efcdfc9160c457dbaa722376b9c',1,'ChildrenTree']]],
+  ['remove_5fchildren_1',['remove_children',['../classChildrenTree.html#a7dab7e985e65a14a1dda879866c196f3',1,'ChildrenTree']]],
+  ['removeitem_2',['removeItem',['../classpicoNodeVector.html#aef356e5304200b3b0fc842cc7b330040',1,'picoNodeVector']]],
+  ['ringbuffer_3',['RingBuffer',['../classRingBuffer.html#a7ea5a56078f9fab7c599bbe5f3a49e80',1,'RingBuffer']]],
+  ['run_5ftcp_5fserver_4',['run_tcp_server',['../MeshNodeAP_8cpp.html#a012bff17b060f420fb99523abed970b0',1,'MeshNodeAP.cpp']]]
 ];

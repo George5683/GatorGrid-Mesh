@@ -1,5 +1,4 @@
 <map id="TCP_DISCONNECT_MSG" name="TCP_DISCONNECT_MSG">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,439,199,604"/>
-<area shape="rect" id="Node000002" href="$classTCP__MESSAGE.html" title=" " alt="" coords="7,5,197,391"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,404,105,439,99,439,99,404"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,395,207,545"/>
+<area shape="rect" id="node2" href="$classTCP__MESSAGE.html" title=" " alt="" coords="13,5,199,347"/>
 </map>

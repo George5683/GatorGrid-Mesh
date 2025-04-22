@@ -73,8 +73,8 @@ $(function() {
   <div class="headertitle"><div class="title">SPI Library</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md12"></a> The <a class="el" href="classSPI.html">SPI</a> library is used in order to transfer data between Picos within a node. It consists of a slave and a master.</p>
-<h1><a class="anchor" id="autotoc_md13"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md18"></a> The <a class="el" href="classSPI.html">SPI</a> library is used in order to transfer data between Picos within a node. It consists of a slave and a master.</p>
+<h1><a class="anchor" id="autotoc_md19"></a>
 Features</h1>
 <ul>
 <li>Configuring master</li>
@@ -82,26 +82,26 @@ Features</h1>
 <li>Sending messages bidirectionally between master and slave</li>
 <li>Check if communication between nodes is ready</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md14"></a>
+<h1><a class="anchor" id="autotoc_md20"></a>
 Functions Overview</h1>
-<h2><a class="anchor" id="autotoc_md15"></a>
+<h2><a class="anchor" id="autotoc_md21"></a>
 SPI</h2>
-<h2><a class="anchor" id="autotoc_md16"></a>
+<h2><a class="anchor" id="autotoc_md22"></a>
 void SPI_init(bool mode)</h2>
 <p>Initialize the <a class="el" href="classSPI.html">SPI</a> module by passing in whether the node is a slave (false) or master (true)</p>
-<h2><a class="anchor" id="autotoc_md17"></a>
+<h2><a class="anchor" id="autotoc_md23"></a>
 int SPI_send_message(uint8_t *message, size_t length)</h2>
 <p>Function to send a message by passing in the message as a byte pointer and its size</p>
-<h2><a class="anchor" id="autotoc_md18"></a>
+<h2><a class="anchor" id="autotoc_md24"></a>
 int SPI_read_message(uint8_t *buffer, size_t buffer_size)</h2>
 <p>Function to read a message that was sent from <a class="el" href="classSPI.html">SPI</a> by passing in a byte pointer and its size to store result.</p>
-<h2><a class="anchor" id="autotoc_md19"></a>
+<h2><a class="anchor" id="autotoc_md25"></a>
 bool SPI_is_write_available()</h2>
 <p>Function to check if the bus is free for writing a message, for master checks if the CS pin is High to indicate it is available. For slave chekcs if the CS pin is Low to indicate it is available.</p>
-<h2><a class="anchor" id="autotoc_md20"></a>
+<h2><a class="anchor" id="autotoc_md26"></a>
 bool SPI_is_read_available()</h2>
 <p>Function to check if the bus is idle for reading a message, for master checks if the CS pin is High and the spi is not busy. For slave chekcs if the CS pin is Low and the spi is not busy.</p>
-<h1><a class="anchor" id="autotoc_md21"></a>
+<h1><a class="anchor" id="autotoc_md27"></a>
 Authors</h1>
 <p>George Salomon, Cole Smith, Jonathon Brown, Mateo Slivka, Maxwell Evans </p>
 </div></div><!-- contents -->
