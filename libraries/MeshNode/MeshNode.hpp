@@ -116,6 +116,8 @@ public:
 
     int number_of_messages();
 
+    err_t send_data(uint32_t send_id, ssize_t len, uint8_t *buf);
+
     bool send_tcp_data(uint32_t id, tcp_pcb *client_pcb, uint8_t* data, uint32_t size);
 
     struct data digest_data();
