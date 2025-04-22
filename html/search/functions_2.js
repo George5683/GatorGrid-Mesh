@@ -1,9 +1,0 @@
-var searchData=
-[
-  ['check_5fall_5fclient_5fdata_0',['check_all_client_data',['../class_a_p_node.html#ac150d8ef94717187c4196be4032146dd',1,'APNode']]],
-  ['childrentree_1',['ChildrenTree',['../class_children_tree.html#aa3374a65d0c66d2eb431257be7767906',1,'ChildrenTree']]],
-  ['clearlist_2',['clearList',['../classpico_node_vector.html#a8abbecc594c10abf1337c751df54fb8a',1,'picoNodeVector']]],
-  ['comparewithcurrentlist_3',['compareWithCurrentList',['../classpico_node_vector.html#a3fa3392b7aff9cae60ac2bd9a866ef5a',1,'picoNodeVector']]],
-  ['connect_5fto_5fnode_4',['connect_to_node',['../class_s_t_a_node.html#acce4f8421d3b3641e1737fef659d922a',1,'STANode']]],
-  ['core1_5fentry_5',['core1_entry',['../_tests_2main_8cpp.html#a9f153132b8b4afad133b952111e18bd9',1,'main.cpp']]]
-];

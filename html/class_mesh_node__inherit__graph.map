@@ -1,7 +1,0 @@
-<map id="MeshNode" name="MeshNode">
-<area shape="rect" id="Node000001" title=" " alt="" coords="129,5,232,160"/>
-<area shape="rect" id="Node000002" href="$class_a_p_node.html" title=" " alt="" coords="5,208,166,875"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,175,157,209,152,208,159,174"/>
-<area shape="rect" id="Node000003" href="$class_s_t_a_node.html" title=" " alt="" coords="190,347,362,736"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="202,174,238,346,233,347,197,175"/>
-</map>
