@@ -1,0 +1,6 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "PICO W")(type "KiCad")(uri "M:/GitHub/University_of_Florida/CEN3907C/GatorGrid-Kicad/Design V1.0/Resources/RASPBERRY_PI_PICO_W")(options "")(descr ""))
+  (lib (name "TP4056")(type "KiCad")(uri "M:/GitHub/University_of_Florida/CEN3907C/GatorGrid-Mesh/GatorGrid-Kicad/Design V1.0/Resources/TP4056")(options "")(descr ""))
+  (lib (name "SS12D00")(type "KiCad")(uri "M:/GitHub/University_of_Florida/CEN3907C/GatorGrid-Mesh/GatorGrid-Kicad/Design V1.0/Resources/SS12D00")(options "")(descr ""))
+)
