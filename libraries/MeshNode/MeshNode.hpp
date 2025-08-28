@@ -27,20 +27,6 @@ extern "C" {
     #include "hardware/clocks.h"
 }
 
-extern "C" {
-    #include "pico/cyw43_arch.h"
-    #include "pico/stdlib.h"
-    
-    #include "lwip/pbuf.h"
-    #include "lwip/tcp.h"
-    
-    #include "dhcpserver.h"
-    #include "dnsserver.h"
-
-    #include "hardware/vreg.h"
-    #include "hardware/clocks.h"
-}
-
 // Forward declarations
 struct TCP_SERVER_T_;
 typedef struct TCP_SERVER_T_ TCP_SERVER_T;

@@ -516,7 +516,10 @@ bool APNode::start_ap_mode() {
     Master_Pico.SPI_init(true);
 
     // Enable the AP mode on the driver
-    cyw43_arch_enable_ap_mode(ap_name, password, CYW43_AUTH_WPA2_AES_PSK);
+    //cyw43_arch_enable_ap_mode(ap_name, password, CYW43_AUTH_WPA2_AES_PSK);
+    cyw43_state.ap_channel = 6;
+    cyw43_arch_enable_ap_mode(ap_name, NULL, CYW43_AUTH_OPEN);
+    cyw43_wifi_pm(&cyw43_state, CYW43_DEFAULT_PM & ~0xf);
 
     //state = tcp_server_init();
     if (!state) {

@@ -276,8 +276,10 @@ bool STANode::init_sta_mode() {
 }
 
 bool STANode::start_sta_mode() {
+    cyw43_state.ap_channel = 6;
     cyw43_arch_enable_sta_mode();
-   DEBUG_printf("Starting STA mode\n");
+    cyw43_wifi_pm(&cyw43_state, CYW43_DEFAULT_PM & ~0xf);
+    DEBUG_printf("Starting STA mode\n");
     return true; // ggwp
 }
 
@@ -406,7 +408,8 @@ bool STANode::connect_to_node(uint32_t id) {
    DEBUG_printf("Generated SSID: %s\n", ssid);
 
     // Attempt to connect
-    if (cyw43_arch_wifi_connect_timeout_ms(ssid, "password", CYW43_AUTH_WPA2_AES_PSK, 20000)) {
+    //if (cyw43_arch_wifi_connect_timeout_ms(ssid, "password", CYW43_AUTH_WPA2_AES_PSK, 20000)) {
+    if (cyw43_arch_wifi_connect_timeout_ms(ssid, NULL, CYW43_AUTH_OPEN, 20000)) {
         for (int i = 0; i < 20; i++) {
            DEBUG_printf("Failed to connect. Retrying...\n");
             sleep_ms(1000);  
