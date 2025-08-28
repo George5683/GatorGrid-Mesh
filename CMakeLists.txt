@@ -339,4 +339,49 @@ pico_add_extra_outputs(ap_two)
 
 # ________________________________________ Cmake for SPI_SLAVE_TEST.cpp ________________________________________
 
+add_executable(SPI_SLAVE_TEST
+        Tests/SPI_SLAVE_TEST.cpp
+        libraries/SPI/SPI.cpp
+        )
+
+target_include_directories(SPI_SLAVE_TEST PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
+        )
+
+target_link_libraries(SPI_SLAVE_TEST
+        pico_cyw43_arch_lwip_threadsafe_background
+        pico_stdlib
+        pico_multicore
+        hardware_spi
+        )
+
+pico_enable_stdio_uart(SPI_SLAVE_TEST 0)
+pico_enable_stdio_usb(SPI_SLAVE_TEST 1)
+
+pico_add_extra_outputs(SPI_SLAVE_TEST)
+
 # ________________________________________ Cmake for SPI_Master_TEST.cpp ________________________________________
+add_executable(SPI_Master_TEST
+        Tests/SPI_Master_TEST.cpp
+        libraries/SPI/SPI.cpp
+        )
+
+target_include_directories(SPI_Master_TEST PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
+        )
+
+target_link_libraries(SPI_Master_TEST
+        pico_cyw43_arch_lwip_threadsafe_background
+        pico_stdlib
+        pico_multicore
+        hardware_spi
+        )
+
+pico_enable_stdio_uart(SPI_Master_TEST 0)
+pico_enable_stdio_usb(SPI_Master_TEST 1)
+
+pico_add_extra_outputs(SPI_Master_TEST)
