@@ -35,7 +35,7 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-# Cmake for sta_testing
+# ________________________________________ Cmake for sta_background ________________________________________
 add_executable(sta_background
         Tests/sta_test.cpp
         libraries/dhcpserver/dhcpserver.c
@@ -72,7 +72,7 @@ pico_enable_stdio_usb(sta_background 1)
 
 pico_add_extra_outputs(sta_background)
 
-# Cmake for AP_testing
+# ________________________________________ Cmake for ap_background ________________________________________
 add_executable(ap_background
         Tests/AP_Test.cpp
         libraries/dhcpserver/dhcpserver.c
@@ -109,7 +109,7 @@ pico_enable_stdio_usb(ap_background 1)
 
 pico_add_extra_outputs(ap_background)
 
-# Cmake for sta_root
+# ________________________________________ Cmake for sta_root ________________________________________
 add_executable(sta_root
         Tests/sta_root.cpp
         libraries/dhcpserver/dhcpserver.c
@@ -146,7 +146,7 @@ pico_enable_stdio_usb(sta_root 1)
 
 pico_add_extra_outputs(sta_root)
 
-# Cmake for sta_root
+# ________________________________________ Cmake for ap_root ________________________________________
 add_executable(ap_root
         Tests/ap_root.cpp
         libraries/dhcpserver/dhcpserver.c
@@ -186,6 +186,7 @@ pico_enable_stdio_usb(ap_root 1)
 pico_add_extra_outputs(ap_root)
 
 # node 1
+# ________________________________________ Cmake for sta_one ________________________________________
 add_executable(sta_one
         Tests/sta_one.cpp
         libraries/dhcpserver/dhcpserver.c
@@ -221,6 +222,8 @@ pico_enable_stdio_usb(sta_one 1)
         
 
 pico_add_extra_outputs(sta_one)
+
+# ________________________________________ Cmake for ap_one ________________________________________
 
 add_executable(ap_one
         Tests/ap_one.cpp
@@ -259,6 +262,7 @@ pico_enable_stdio_usb(ap_one 1)
 pico_add_extra_outputs(ap_one)
 
 # node 2
+# ________________________________________ Cmake for sta_two ________________________________________
 add_executable(sta_two
         Tests/sta_two.cpp
         libraries/dhcpserver/dhcpserver.c
@@ -295,6 +299,8 @@ pico_enable_stdio_usb(sta_two 1)
 
 pico_add_extra_outputs(sta_two)
 
+# ________________________________________ Cmake for ap_two ________________________________________
+
 add_executable(ap_two
         Tests/ap_two.cpp
         libraries/dhcpserver/dhcpserver.c
@@ -330,3 +336,7 @@ pico_enable_stdio_usb(ap_two 1)
         
 
 pico_add_extra_outputs(ap_two)
+
+# ________________________________________ Cmake for SPI_SLAVE_TEST.cpp ________________________________________
+
+# ________________________________________ Cmake for SPI_Master_TEST.cpp ________________________________________
