@@ -10,5 +10,7 @@ Schematics Update:
 - Added a polyfuse (polyfuse's reset instead of replacing the fuse if its broken)
 - Added a Schottky diode (to prevent current backflow and if user connects the battery backwards)
 - Added a charging/safety cicuit [TP4056] (for charging the battery and battery management)
+- Added an AND gate circuitry to indicate both Picos are turned on. 
+- Added an LED to indicate charging of external battery. 
 
 
