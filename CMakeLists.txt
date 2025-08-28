@@ -109,7 +109,7 @@ pico_enable_stdio_usb(ap_background 1)
 
 pico_add_extra_outputs(ap_background)
 
-
+# Cmake for sta_root
 add_executable(sta_root
         Tests/sta_root.cpp
         libraries/dhcpserver/dhcpserver.c
@@ -146,6 +146,7 @@ pico_enable_stdio_usb(sta_root 1)
 
 pico_add_extra_outputs(sta_root)
 
+# Cmake for sta_root
 add_executable(ap_root
         Tests/ap_root.cpp
         libraries/dhcpserver/dhcpserver.c
