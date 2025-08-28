@@ -3831,250 +3831,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Simulation_SPICE:NPN"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "Q"
-				(at -2.54 7.62 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "NPN"
-				(at -2.54 5.08 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 63.5 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "https://ngspice.sourceforge.io/docs/ngspice-html-manual/manual.xhtml#cha_BJTs"
-				(at 63.5 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Bipolar transistor symbol for simulation only, substrate tied to the emitter"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Sim.Device" "NPN"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Sim.Type" "GUMMELPOON"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Sim.Pins" "1=C 2=B 3=E"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "simulation"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "NPN_0_1"
-				(polyline
-					(pts
-						(xy -2.54 0) (xy 0.635 0)
-					)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.635 1.905) (xy 0.635 -1.905) (xy 0.635 -1.905)
-					)
-					(stroke
-						(width 0.508)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.635 0.635) (xy 2.54 2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.635 -0.635) (xy 2.54 -2.54) (xy 2.54 -2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 1.27 0)
-					(radius 2.8194)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 -1.778) (xy 1.778 -1.27) (xy 2.286 -2.286) (xy 1.27 -1.778) (xy 1.27 -1.778)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.794 -1.27) (xy 2.794 -1.27)
-					)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.794 -1.27) (xy 2.794 -1.27)
-					)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "NPN_1_1"
-				(pin input line
-					(at -5.08 0 0)
-					(length 2.54)
-					(name "B"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin open_collector line
-					(at 2.54 5.08 270)
-					(length 2.54)
-					(name "C"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin open_emitter line
-					(at 2.54 -5.08 90)
-					(length 2.54)
-					(name "E"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Switch:SW_SPST"
 			(pin_names
 				(offset 0)
@@ -4551,6 +4307,211 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Transistor_BJT:2N3904"
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "Q"
+				(at 5.08 1.905 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "2N3904"
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+				(at 5.08 -1.905 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+						(italic yes)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "https://www.onsemi.com/pub/Collateral/2N3903-D.PDF"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Description" "0.2A Ic, 40V Vce, Small Signal NPN Transistor, TO-92"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "NPN Transistor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "TO?92*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "2N3904_0_1"
+				(polyline
+					(pts
+						(xy -2.54 0) (xy 0.635 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.635 1.905) (xy 0.635 -1.905)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 1.27 0)
+					(radius 2.8194)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "2N3904_1_1"
+				(polyline
+					(pts
+						(xy 0.635 0.635) (xy 2.54 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.635 -0.635) (xy 2.54 -2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 -1.778) (xy 1.778 -1.27) (xy 2.286 -2.286) (xy 1.27 -1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(pin input line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 5.08 270)
+					(length 2.54)
+					(name "C"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 -5.08 90)
+					(length 2.54)
+					(name "E"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "power:GND"
 			(power)
 			(pin_numbers
@@ -4686,6 +4647,12 @@
 		(uuid "7e507997-a916-4881-ba0d-91c38b90dd9a")
 	)
 	(junction
+		(at 251.46 29.21)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "82bf6fc5-d776-4af7-aab5-5b61f397f48d")
+	)
+	(junction
 		(at 46.99 38.1)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4696,6 +4663,24 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "b1c568b1-f336-47a1-8c4c-52eec10de331")
+	)
+	(junction
+		(at 243.84 36.83)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "c8e13d3b-5a4f-4343-8b5c-aceffc05d4c8")
+	)
+	(junction
+		(at 266.7 29.21)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "cc5f1cd1-e14b-48cd-a018-036031c78494")
+	)
+	(junction
+		(at 259.08 36.83)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e860d3a4-cfc9-42f9-bb11-84d673f3fa1f")
 	)
 	(no_connect
 		(at 248.92 100.33)
@@ -4747,6 +4732,16 @@
 	)
 	(wire
 		(pts
+			(xy 251.46 29.21) (xy 248.92 29.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2fad4231-3856-45c4-ac85-cd5c9f32a9b4")
+	)
+	(wire
+		(pts
 			(xy 130.81 39.37) (xy 130.81 44.45)
 		)
 		(stroke
@@ -4767,6 +4762,16 @@
 	)
 	(wire
 		(pts
+			(xy 259.08 36.83) (xy 266.7 36.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4785ba26-f6c2-4bdb-83fc-7692d626df02")
+	)
+	(wire
+		(pts
 			(xy 158.75 69.85) (xy 166.37 69.85)
 		)
 		(stroke
@@ -4774,6 +4779,16 @@
 			(type default)
 		)
 		(uuid "59152a79-acea-4a3c-b214-ff2ba6593f9e")
+	)
+	(wire
+		(pts
+			(xy 254 29.21) (xy 251.46 29.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "59209c9d-5a76-4a94-8394-f91dbe0e707b")
 	)
 	(wire
 		(pts
@@ -4867,6 +4882,16 @@
 	)
 	(wire
 		(pts
+			(xy 243.84 36.83) (xy 251.46 36.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b208877f-86c1-4f49-805a-2a7b9c4f2e1b")
+	)
+	(wire
+		(pts
 			(xy 119.38 39.37) (xy 123.19 39.37)
 		)
 		(stroke
@@ -4924,6 +4949,26 @@
 			(type default)
 		)
 		(uuid "d818c2ba-e04d-401e-b3dd-3114f48df907")
+	)
+	(wire
+		(pts
+			(xy 266.7 29.21) (xy 264.16 29.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e36a4350-f322-4cd0-9027-a688dbd02116")
+	)
+	(wire
+		(pts
+			(xy 269.24 29.21) (xy 266.7 29.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f4529400-b31e-469d-9717-58f4a8a2e2c4")
 	)
 	(global_label "RX-TX"
 		(shape input)
@@ -5059,7 +5104,7 @@
 	)
 	(global_label "A_3V3(OUT)"
 		(shape input)
-		(at 254 44.45 270)
+		(at 259.08 44.45 270)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -5069,7 +5114,7 @@
 		)
 		(uuid "0d42fead-106c-44f4-92f9-1b4e78a240ce")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 254 58.321 90)
+			(at 259.08 58.321 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8091,7 +8136,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "1k"
+		(property "Value" "10k"
 			(at 246.38 41.9099 0)
 			(effects
 				(font
@@ -9368,6 +9413,76 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 266.7 33.02 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "43c6e801-b9ef-499d-98b1-d38cda89e098")
+		(property "Reference" "R6"
+			(at 269.24 31.7499 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1M"
+			(at 269.24 34.2899 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 264.922 33.02 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 266.7 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 266.7 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "8822fdaa-2dcc-45ed-ba48-75f880bb710a")
+		)
+		(pin "2"
+			(uuid "c6a54399-bbc4-4be2-8390-198c84d35f3c")
+		)
+		(instances
+			(project ""
+				(path "/e5d91564-edf1-47a0-9cf2-4d1020567cc1"
+					(reference "R6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Switch:SW_SPST")
 		(at 229.87 140.97 180)
 		(unit 1)
@@ -9774,7 +9889,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 259.08 29.21 90)
+		(at 269.24 29.21 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -9783,7 +9898,7 @@
 		(fields_autoplaced yes)
 		(uuid "647b69cd-2586-4506-ab09-c8a08b6a6069")
 		(property "Reference" "#PWR012"
-			(at 265.43 29.21 0)
+			(at 275.59 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9792,7 +9907,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 262.89 29.2099 90)
+			(at 273.05 29.2099 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9801,7 +9916,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 259.08 29.21 0)
+			(at 269.24 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9810,7 +9925,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 259.08 29.21 0)
+			(at 269.24 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9819,7 +9934,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 259.08 29.21 0)
+			(at 269.24 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9834,202 +9949,6 @@
 			(project "Design V2.0"
 				(path "/e5d91564-edf1-47a0-9cf2-4d1020567cc1"
 					(reference "#PWR012")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Simulation_SPICE:NPN")
-		(at 243.84 31.75 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "677a0024-6686-4259-86a9-ff19d897b391")
-		(property "Reference" "Q1"
-			(at 243.84 22.86 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "NPN"
-			(at 243.84 25.4 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 243.84 -31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://ngspice.sourceforge.io/docs/ngspice-html-manual/manual.xhtml#cha_BJTs"
-			(at 243.84 -31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Bipolar transistor symbol for simulation only, substrate tied to the emitter"
-			(at 243.84 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Device" "NPN"
-			(at 243.84 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Type" "GUMMELPOON"
-			(at 243.84 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Pins" "1=C 2=B 3=E"
-			(at 243.84 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "3"
-			(uuid "8f198590-e6f5-4600-9ef4-d864b3743d40")
-		)
-		(pin "2"
-			(uuid "8f16c169-ca5b-4afe-8bfe-27b604d0dba1")
-		)
-		(pin "1"
-			(uuid "f050f147-52cd-4eb1-aa99-47610dc93ed3")
-		)
-		(instances
-			(project ""
-				(path "/e5d91564-edf1-47a0-9cf2-4d1020567cc1"
-					(reference "Q1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Simulation_SPICE:NPN")
-		(at 254 31.75 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "68e6661d-7240-448b-b122-66ccc77f3257")
-		(property "Reference" "Q2"
-			(at 254 22.86 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "NPN"
-			(at 254 25.4 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 254 -31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://ngspice.sourceforge.io/docs/ngspice-html-manual/manual.xhtml#cha_BJTs"
-			(at 254 -31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Bipolar transistor symbol for simulation only, substrate tied to the emitter"
-			(at 254 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Device" "NPN"
-			(at 254 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Type" "GUMMELPOON"
-			(at 254 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Pins" "1=C 2=B 3=E"
-			(at 254 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "3"
-			(uuid "f56086f9-4c40-4436-89c2-58a57c84224b")
-		)
-		(pin "2"
-			(uuid "268a2c38-936a-4f29-a0f4-88a2a580defc")
-		)
-		(pin "1"
-			(uuid "fe7919e3-f38a-4ee2-8f33-3a2c2657195d")
-		)
-		(instances
-			(project "Design V2.0"
-				(path "/e5d91564-edf1-47a0-9cf2-4d1020567cc1"
-					(reference "Q2")
 					(unit 1)
 				)
 			)
@@ -10642,6 +10561,80 @@
 		)
 	)
 	(symbol
+		(lib_id "Transistor_BJT:2N3904")
+		(at 259.08 31.75 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "9a595d42-3176-4daf-b49a-2c6d886054e7")
+		(property "Reference" "Q4"
+			(at 259.08 22.86 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "2N3904"
+			(at 259.08 25.4 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+			(at 260.985 26.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/2N3903-D.PDF"
+			(at 259.08 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "0.2A Ic, 40V Vce, Small Signal NPN Transistor, TO-92"
+			(at 259.08 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "2a384247-8e9e-469d-85a1-10be9d97c55b")
+		)
+		(pin "3"
+			(uuid "38c01154-afe2-48f1-945a-9e584b361f5f")
+		)
+		(pin "2"
+			(uuid "c2ba6ff1-3c88-4326-afcb-f6eaefedce47")
+		)
+		(instances
+			(project "Design V2.0"
+				(path "/e5d91564-edf1-47a0-9cf2-4d1020567cc1"
+					(reference "Q4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 52.07 118.11 0)
 		(unit 1)
@@ -10978,7 +10971,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 254 40.64 180)
+		(at 259.08 40.64 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -10987,7 +10980,7 @@
 		(fields_autoplaced yes)
 		(uuid "aa28d7b1-a926-4e31-ac88-3c8ef2f9ece5")
 		(property "Reference" "R5"
-			(at 256.54 39.3699 0)
+			(at 261.62 39.3699 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10995,8 +10988,8 @@
 				(justify right)
 			)
 		)
-		(property "Value" "1k"
-			(at 256.54 41.9099 0)
+		(property "Value" "10k"
+			(at 261.62 41.9099 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11005,7 +10998,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 255.778 40.64 90)
+			(at 260.858 40.64 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11014,7 +11007,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 254 40.64 0)
+			(at 259.08 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11023,7 +11016,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 254 40.64 0)
+			(at 259.08 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11048,24 +11041,93 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 227.33 29.21 90)
+		(at 251.46 33.02 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
+		(uuid "ac5fc42a-df27-49ba-91c5-2343b517348a")
+		(property "Reference" "R7"
+			(at 254 31.7499 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1M"
+			(at 254 34.2899 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 249.682 33.02 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 251.46 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 251.46 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "fac43712-d2da-48db-bc81-a187e444bf71")
+		)
+		(pin "2"
+			(uuid "d465e65e-f816-47ed-bf4f-09c92626adfa")
+		)
+		(instances
+			(project "Design V2.0"
+				(path "/e5d91564-edf1-47a0-9cf2-4d1020567cc1"
+					(reference "R7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 227.33 29.21 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
 		(uuid "af7a9efb-0fdc-49e8-9c35-f3cbf13a1737")
 		(property "Reference" "R2"
-			(at 227.33 22.86 90)
+			(at 224.536 22.86 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "1k"
-			(at 227.33 25.4 90)
+		(property "Value" "470"
+			(at 224.536 25.4 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11729,10 +11791,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "daa77b8c-63b0-4c02-b5f7-d7d1db831eff")
 		(property "Reference" "D2"
-			(at 236.5375 21.59 0)
+			(at 234.188 21.844 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11740,7 +11801,7 @@
 			)
 		)
 		(property "Value" "POWER_LED"
-			(at 236.5375 24.13 0)
+			(at 234.188 24.384 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11914,6 +11975,80 @@
 			(project "Design V2.0"
 				(path "/e5d91564-edf1-47a0-9cf2-4d1020567cc1"
 					(reference "J3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_BJT:2N3904")
+		(at 243.84 31.75 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e3b10ca5-6511-4783-803f-7958d1c87b08")
+		(property "Reference" "Q3"
+			(at 243.84 22.86 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "2N3904"
+			(at 243.84 25.4 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+			(at 245.745 26.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/2N3903-D.PDF"
+			(at 243.84 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "0.2A Ic, 40V Vce, Small Signal NPN Transistor, TO-92"
+			(at 243.84 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "8bf6fbbe-e236-45e1-b33d-ddc841285e59")
+		)
+		(pin "3"
+			(uuid "2ba4f82f-19b6-4eb1-8115-1c0ce312507d")
+		)
+		(pin "2"
+			(uuid "4fe66b2e-bbbb-474c-bad0-0fdce6b5a072")
+		)
+		(instances
+			(project ""
+				(path "/e5d91564-edf1-47a0-9cf2-4d1020567cc1"
+					(reference "Q3")
 					(unit 1)
 				)
 			)
