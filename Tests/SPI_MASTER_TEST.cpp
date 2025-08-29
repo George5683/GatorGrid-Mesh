@@ -1,6 +1,7 @@
 //Example for Master
 #include "libraries/SPI/SPI.hpp"
 #include <stdio.h>
+#include <vector>
 
 int main() {
     stdio_init_all();
@@ -8,26 +9,25 @@ int main() {
     // Delay to allow time to view serial monitor
     sleep_ms(10000);
 
-    // Delay to wait for Slave to turn on and initialize
-    sleep_ms(2000);
-
     SPI Master_Pico;
+
+    sleep_ms(2000);
     
     // set as the master 
     Master_Pico.SPI_init(true);
-    
-    uint8_t send_string[] = "Fortnite!";
-    uint8_t recv_buffer[sizeof(send_string)] = {0};
-    
-    for (int i = 0; i<2 ;i++) {
+
+    std::vector<uint8_t> send_string = {'F', 'o', 'r', 't', 'n', 'i', 't', 'e', '!'};
+
+    for (int i = 0; i<5 ;i++) {
+        while(!Master_Pico.SPI_is_write_available());
         if(Master_Pico.SPI_is_write_available()){
+            std::vector<uint8_t> recv_buffer(send_string.size());
             printf("Write available\n");
-            Master_Pico.SPI_send_message(send_string, sizeof(send_string));
+            Master_Pico.SPI_send_message_read_message(send_string, recv_buffer);
+
+            // print the size of receive buffer
+            printf("Size of Received Buffer: %zu\n", (int)recv_buffer.size());
         }
-        if(Master_Pico.SPI_is_read_available()){
-            printf("Read available\n");
-            Master_Pico.SPI_read_message(recv_buffer, sizeof(recv_buffer));
-        }
-        sleep_ms(1000);  // Wait before next transmission
+        sleep_ms(500); // Wait for 500 milliseconds before next transmission
     }
 }

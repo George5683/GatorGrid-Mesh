@@ -3,6 +3,7 @@
 #include <string>
 #include <cstring>
 #include "hardware/spi.h"
+#include "hardware/sync.h"
 
 #define SPI_PORT spi0
 #define PIN_MISO 16
@@ -19,7 +20,7 @@ bool SPI::SPI_init(bool mode){
     * Initialize the SPI module by passing in whether the node is a slave (false) or master (true)
     */
     is_master = mode;
-    if(mode == true){
+    if(is_master){
         printf("Setting up SPI Master\n");
         // Setting up the Master
         spi_init(SPI_PORT, 1000 * 1000);
@@ -28,10 +29,7 @@ bool SPI::SPI_init(bool mode){
         gpio_set_function(PIN_SCK, GPIO_FUNC_SPI);
         gpio_set_function(PIN_MOSI, GPIO_FUNC_SPI);
         gpio_set_function(PIN_MISO, GPIO_FUNC_SPI);
-
-        gpio_set_function(PIN_CS, GPIO_FUNC_SIO);
-        gpio_set_dir(PIN_CS, GPIO_OUT);
-        gpio_put(PIN_CS, 1);
+        gpio_set_function(PIN_CS, GPIO_FUNC_SPI);
     }
     else{
         printf("Setting up SPI Slave\n");
@@ -48,73 +46,35 @@ bool SPI::SPI_init(bool mode){
     return true;
 };
 
-int SPI::SPI_send_message(uint8_t *message, size_t length){
+int SPI::SPI_send_message_read_message(std::vector<uint8_t>& message, std::vector<uint8_t>& response){
     /**
     * Function to send a message by passing in the message as a byte pointer and its size
     */
-    uint8_t tempOutBuffer = 0;
-    uint8_t tempInBuffer = 0;
 
-    printf("Sending Data: %08x\n", message);
-
-    if(is_master == true){
-        for(int i = 0; i < length; i++){
-            tempOutBuffer = message[i];
-            gpio_put(PIN_CS, 0);  // Assert CS
-            sleep_ms(1);  // Delay for timing requirements
-            spi_write_read_blocking(SPI_PORT, &tempOutBuffer, &tempInBuffer, 1);
-            gpio_put(PIN_CS, 1);  // Deassert CS
-        }
+    printf("Sending Data: ");
+    for(char c : message){
+        printf("%c", c);
     }
-    else{
-        for(int i = 0; i < length; i++){
-            tempOutBuffer = message[i];
-            spi_write_read_blocking(SPI_PORT, &tempOutBuffer, &tempInBuffer, 1);
-        }
+    printf("\n");
 
+    spi_write_read_blocking(SPI_PORT, message.data(), response.data(), message.size());
+
+    while(spi_is_busy(SPI_PORT));
+
+    printf("Data Sent!\n");
+    printf("Response Data: ");
+    for(char c : response){
+        printf("%c", c);
     }
+    printf("\n");
 
     return 1;
 };
 
-int SPI::SPI_read_message(uint8_t *buffer, size_t buffer_size){
+int SPI::SPI_read_message(std::vector<uint8_t>& message, std::vector<uint8_t>& response){
     /**
     * Function to read a message that was sent from SPI by passing in a byte pointer and its size to store result. 
     */
-    uint8_t tempOutBuffer = 0;
-    uint8_t tempInBuffer = 0;
-
-    // Clear buffer before reading
-    memset(buffer, 0, buffer_size);
-
-    if(is_master == true){
-
-        for(int i = 0; i < buffer_size - 1; i++){
-            gpio_put(PIN_CS, 0);
-            sleep_ms(1);
-            spi_write_read_blocking(SPI_PORT, &tempOutBuffer, &tempInBuffer, 1);
-            gpio_put(PIN_CS, 1);
-            buffer[i] = tempInBuffer;
-
-            // Break if we received a null terminator (end of string)
-            if (tempInBuffer == 0) {
-                break;
-            }
-        }
-        // Ensure null-termination
-        buffer[buffer_size - 1] = 0;
-        printf("Received Data: %s\n", buffer);
-    }
-    else{
-        for(int i = 0; i < buffer_size - 1; i++){
-
-            spi_write_read_blocking(SPI_PORT, &tempOutBuffer, &tempInBuffer, 1);
-            buffer[i] = tempInBuffer;
-        }
-        // Ensure null-termination
-        buffer[buffer_size - 1] = 0;
-        printf("Received Data: %s\n", buffer);
-    }
     return 1;
 };
 
@@ -124,11 +84,11 @@ bool SPI::SPI_is_read_available(){
 */
     // If the master, check if CS can be asserted (indicating bus is free)
     if(is_master){
-        return gpio_get(PIN_CS) == 1; // CS high means bus is available
+        return !spi_is_busy(SPI_PORT);
     }
     else{
         // For slave, check if the CS line is low (indicating master wants to communicate)
-        return gpio_get(PIN_CS) == 0; // CS low means master is selecting this slave
+        return !spi_is_busy(SPI_PORT);
     }
     return false;
 }
@@ -137,11 +97,11 @@ bool SPI::SPI_is_write_available(){
     // Function to check if the bus is free for writing a message, for master checks if the CS pin is High to indicate it is available. For slave chekcs if the CS pin is Low to indicate it is available.
     if(is_master){
         // Check if not busy and CS is high (not currently communicating)
-        return !spi_is_busy(SPI_PORT) && gpio_get(PIN_CS) == 1;
+        return !spi_is_busy(SPI_PORT);
     }
     else{
         // For slave, check if selected by master (CS low) and not currently busy
-        return !spi_is_busy(SPI_PORT) && gpio_get(PIN_CS) == 0;
+        return !spi_is_busy(SPI_PORT);
     }
     return false;
 }

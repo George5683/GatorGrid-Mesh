@@ -1,6 +1,7 @@
 //Example for Slave
 #include "libraries/SPI/SPI.hpp"
 #include <stdio.h>
+#include <vector>
 
 int main() {
     stdio_init_all();
@@ -13,16 +14,13 @@ int main() {
     // set as the slave 
     Slave_Pico.SPI_init(false);
     
-    uint8_t send_string[] = "Herobrine";
-    uint8_t recv_buffer[sizeof(send_string)] = {0};
-    
-    for (int i = 0; i < 2; i++) {
-        while(!Slave_Pico.SPI_is_read_available());
-        if(Slave_Pico.SPI_is_read_available()){
-            printf("Read available\n");
-            Slave_Pico.SPI_read_message(recv_buffer, sizeof(recv_buffer));
-        }
-        Slave_Pico.SPI_send_message(send_string, sizeof(send_string));
-        }
-        sleep_ms(1000);  // Wait before next transmission
+    std::vector<uint8_t> send_string = {'H', 'e', 'r', 'o', 'b', 'r', 'i', 'n', 'e'};
+
+    for (int i = 0; i < 5; i++) {
+        // Wait until the master is ready to send data
+        std::vector<uint8_t> recv_buffer(send_string.size());
+        Slave_Pico.SPI_send_message_read_message(send_string, recv_buffer);
+        printf("Size of Received Buffer: %zu\n", recv_buffer.size());
+        sleep_ms(500); // Wait for 500 milliseconds before next transmission
     }
+}
