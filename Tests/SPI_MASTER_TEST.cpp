@@ -3,6 +3,55 @@
 #include <stdio.h>
 #include <vector>
 
+// Test 1: Message from Master to Slave
+bool Test1(SPI &Master_Pico){
+    printf("Running Test 1\n");
+
+    // set as the master
+    Master_Pico.Set_Master(true);
+
+    printf("Set Master\n");
+
+    // create the string to send
+    std::vector<uint8_t> send_string = {'T', 'E', 'S', 'T', '1'};
+
+    // Pad the string to be 32 bytes
+    send_string.resize(32, 0);
+
+    printf("About to Send to Slave\n");
+
+    Master_Pico.SPI_send_message(send_string);
+
+    printf("Message Sent from Master to Slave\n");
+
+    return true;
+}
+
+// Test 2: Message from Slave to Master
+bool Test2(SPI &Master_Pico){
+    printf("Running Test 2\n");
+
+    // set as the Master
+    Master_Pico.Set_Master(true);
+
+    while(true){
+        // constantly poll for a message
+        if(Master_Pico.SPI_POLL_MESSAGE()){
+            std::vector<uint8_t> response;
+            Master_Pico.SPI_read_message(response);
+
+            printf("Received Message from Slave: ");
+            for(char c : response){
+                printf("%c", c);
+            }
+            printf("\n");
+            break; // Exit after receiving one message
+        }
+    }
+
+    return true;
+}
+
 int main() {
     stdio_init_all();
 
@@ -11,23 +60,11 @@ int main() {
 
     SPI Master_Pico;
 
-    sleep_ms(2000);
-    
-    // set as the master 
-    Master_Pico.SPI_init(true);
+    printf("This is the Master\n");
 
-    std::vector<uint8_t> send_string = {'F', 'o', 'r', 't', 'n', 'i', 't', 'e', '!'};
+    // Run Test1
+    Test1(Master_Pico);
 
-    for (int i = 0; i<5 ;i++) {
-        while(!Master_Pico.SPI_is_write_available());
-        if(Master_Pico.SPI_is_write_available()){
-            std::vector<uint8_t> recv_buffer(send_string.size());
-            printf("Write available\n");
-            Master_Pico.SPI_send_message_read_message(send_string, recv_buffer);
-
-            // print the size of receive buffer
-            printf("Size of Received Buffer: %zu\n", (int)recv_buffer.size());
-        }
-        sleep_ms(500); // Wait for 500 milliseconds before next transmission
-    }
+    // Run Test2
+    Test2(Master_Pico);
 }
