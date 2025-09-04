@@ -99,12 +99,14 @@ int SPI::SPI_send_message(std::vector<uint8_t>& message){
         printf("MOSI Status: %d\n", gpio_get(PIN_MOSI_MASTER));
 
         // short delay for stabilization
-        sleep_ms(10); 
+        //sleep_ms(10); 
 
         printf("Waiting for MISO to go High\n");
 
         // wait for MISO to be high
-        while(!gpio_get(PIN_MISO_MASTER));
+        while(!gpio_get(PIN_MISO_MASTER)) {
+            puts("Master polling for slave to be ready");
+        }
 
         printf("Deasserting MOSI\n");
 
@@ -209,6 +211,8 @@ bool SPI::SPI_POLL_MESSAGE(){
     * Function to poll for messages
     */
 
+    puts("polling");
+
     if(is_master){
        // Master specific polling
 
@@ -277,7 +281,7 @@ bool SPI::SPI_POLL_MESSAGE(){
 
            spi_write_read_blocking(SPI_PORT, message.data(), response.data(), message.size());
 
-            while(spi_is_busy(SPI_PORT));
+            //while(spi_is_busy(SPI_PORT));
 
             response_message = response;
 
