@@ -1,14 +1,16 @@
 #include "ChildrenTree.hpp"
+#include "vector"
 
 ChildrenTree::~ChildrenTree() {
     if (!head) {
         return;
     }
-    remove_children(head);
+    remove_children(head->id);
     delete head;
     head = nullptr;
 }
 
+/*
 void ChildrenTree::remove_children(Node* node) {
     if (!node) {
         return;
@@ -18,11 +20,37 @@ void ChildrenTree::remove_children(Node* node) {
         delete node->children[i];
     }
     node->number_of_children = 0;
+}*/
+void ChildrenTree::remove_children(int id) {
+    Node* node = this->find_node(id, this->head);
+    for (int i = 0; i < node->number_of_children; i++) {
+        for (int j = 0; j < node->children[i]->number_of_children; j++) {
+            int childId = node->children[i]->id;
+            add_any_child(node->id, childId);
+            delete node->children[i]->children[j];
+        }
+        remove_children(node->children[i]->id);
+        delete node->children[i];
+    }
+    node->number_of_children = 0;
 }
 
 bool ChildrenTree::add_child(uint32_t child_id) {
     Node* child = new Node(child_id);
-    head->children[head->number_of_children++] = child;
+    child->parent = head;
+    std::cout << child->parent->id<<"here\n";
+    Node **newChildren = new Node*[head->number_of_children+1];
+    if (head->number_of_children != 0) {
+        for (int i = 0; i < head->number_of_children; ++i)
+            newChildren[i] = head->children[i];
+        delete head->children;
+    }
+    newChildren[head->number_of_children] = child;
+    head->children = newChildren;
+    head->number_of_children+=1;
+    if (head->number_of_children > 3) {
+        std::cout<< "\nWARNING: Number of children for head is greater than 3\n";
+    }
     return true;
 }
 
@@ -31,14 +59,30 @@ bool ChildrenTree::add_any_child(uint32_t parent_id, uint32_t child_id) {
     if (parent_id == id) {
         Node* child = new Node(child_id);
         head->children[head->number_of_children++] = child;
+        if (head->number_of_children > 3) {
+            std::cout<< "\nWARNING: Number of children for head is greater than 3\n";
+        }
         success = true;
     } else {
         Node* parent = find_node(parent_id, head);
+        std::cout << "\nPID: " << parent->id;
         if (!parent) {
             success = false;
         } else {
             Node* child = new Node(child_id);
-            parent->children[parent->number_of_children++] = child;
+            child->parent = parent;
+            Node **newChildren = new Node*[head->number_of_children+1];
+            if (parent->number_of_children != 0) {
+                for (int i = 0; i < parent->number_of_children; ++i)
+                newChildren[i] = parent->children[i];
+                delete parent->children;
+            }
+            newChildren[parent->number_of_children] = child;
+            parent->children = newChildren;
+            parent->number_of_children+=1;
+            if (parent->number_of_children > 3) {
+                std::cout<< "\nWARNING: Number of children for node " << parent->id <<" is greater than 3\n";
+            }
         }
 
     }
@@ -77,7 +121,8 @@ bool ChildrenTree::node_exists(uint32_t id) {
  * @return true 
  * @return false 
  */
- bool ChildrenTree::find_path_parent(uint32_t id, uint32_t* parent) {
+ // Not finished
+ bool ChildrenTree::find_path_parent(uint32_t id, uint32_t parent) {
     printf("Checking tree for parent of the path to %u\n", id);
     if (!head || !find_node(id, head)) {
         // either empty tree or id not in tree
@@ -86,12 +131,13 @@ bool ChildrenTree::node_exists(uint32_t id) {
     return find_parent_recursive(head, id, parent);
 }
 
-bool ChildrenTree::find_parent_recursive(Node* node, uint32_t target, uint32_t* parent) {
+//Not finished
+bool ChildrenTree::find_parent_recursive(Node* node, uint32_t target, uint32_t parent) {
     for (int i = 0; i < node->number_of_children; ++i) {
         Node* child = node->children[i];
         if (child->id == target) {
             // this node is the parent of the target
-            *parent = node->id;
+            parent = node->id;
             return true;
         }
         // otherwise, recurse into that child’s subtree
@@ -100,4 +146,41 @@ bool ChildrenTree::find_parent_recursive(Node* node, uint32_t target, uint32_t* 
         }
     }
     return false;
+}
+
+void ChildrenTree::traverse() {
+    Node *root = this->head;
+    if (root == nullptr) {
+        return;
+    }    
+
+    std::vector<Node*> queue;
+    queue.push_back(root);
+
+    while (!queue.empty()) {
+        Node* current = queue.front();
+        queue.erase(queue.begin());
+
+        std::cout << "\nNode ID: " << current->id << " | Children: " << (int)current->number_of_children << " | Parent ID: " << (current->parent ? std::to_string(current->parent->id) : "None") <<std::endl;
+
+        if (current->children != nullptr) {
+            for (int i = 0; i < current->number_of_children; ++i) {
+                queue.push_back(current->children[i]);
+            }
+        }
+    }
+}
+
+void ChildrenTree::get_node_details(ChildrenTree* tree) {
+    Node* node = tree->head;
+    if (node == this->head) {
+        std::cout << "Head\n";
+    }
+    else {
+        std::cout << "Not Head\n";
+    }
+    
+    std::cout << "Number of Children: "<<(int)node->number_of_children;
+    if(node->number_of_children == 0) std::cout << "No Children";
+    std::cout << "\nID: " << node->id;
 }

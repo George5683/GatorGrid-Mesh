@@ -385,3 +385,28 @@ pico_enable_stdio_uart(SPI_Master_TEST 0)
 pico_enable_stdio_usb(SPI_Master_TEST 1)
 
 pico_add_extra_outputs(SPI_Master_TEST)
+
+# ________________________________________ Cmake for tree_test.cpp ________________________________________
+add_executable(tree_test
+        Tests/tree_test.cpp
+        libraries/ChildrenTree/ChildrenTree.cpp
+        )
+
+target_include_directories(tree_test PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
+        )
+
+target_link_libraries(tree_test
+        pico_cyw43_arch_lwip_threadsafe_background
+        pico_stdlib
+        pico_multicore
+        hardware_spi
+        )
+
+pico_enable_stdio_uart(tree_test 0)
+pico_enable_stdio_usb(tree_test 1)
+        
+
+pico_add_extra_outputs(tree_test)

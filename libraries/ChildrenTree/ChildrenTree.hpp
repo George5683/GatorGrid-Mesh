@@ -1,9 +1,9 @@
-
 #ifndef CHILDREN_TREE_HPP
 #define CHILDREN_TREE_HPP
 
 #include <cstdint>
 #include <cstdio>
+#include <iostream>
 
 class ChildrenTree {
     struct Node {
@@ -25,13 +25,15 @@ public:
     ~ChildrenTree();
     bool add_child(uint32_t child_id);
     bool add_any_child(uint32_t parent_id, uint32_t child_id);
-    void remove_children(Node* node);
+    void remove_children(int id);
     bool remove_child(uint32_t id);
 
     Node* find_node(uint32_t id, Node* head);
     bool node_exists(uint32_t id);
-    bool find_path_parent(uint32_t id, uint32_t* parent);
-    bool find_parent_recursive(Node* node, uint32_t target, uint32_t* parent);
+    bool find_path_parent(uint32_t id, uint32_t parent);
+    bool find_parent_recursive(Node* node, uint32_t target, uint32_t parent);
+    void traverse();
+    void get_node_details(ChildrenTree *tree);
 };
 
 #endif
