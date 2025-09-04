@@ -27,6 +27,20 @@ extern "C" {
     #include "hardware/clocks.h"
 }
 
+extern "C" {
+    #include "pico/cyw43_arch.h"
+    #include "pico/stdlib.h"
+    
+    #include "lwip/pbuf.h"
+    #include "lwip/tcp.h"
+    
+    #include "dhcpserver.h"
+    #include "dnsserver.h"
+
+    #include "hardware/vreg.h"
+    #include "hardware/clocks.h"
+}
+
 // Forward declarations
 struct TCP_SERVER_T_;
 typedef struct TCP_SERVER_T_ TCP_SERVER_T;
@@ -42,22 +56,8 @@ public:
     virtual ~MeshNode();
 
     // Base class functions for get/set NodeID
-
-    /**
-     * @brief Set the NodeID object
-     * 
-     * @param[in] ID    - Node ID
-     */
     void set_NodeID(uint32_t ID);
-
-    /**
-     * @brief Get the NodeID object
-     * 
-     * @return uint32_t  - ID of Node 
-     */
     uint32_t get_NodeID();
-    
-    // TODO: Make standalone object for randomness ?
     void seed_rand();
 };
 
@@ -113,7 +113,6 @@ public:
 
     void server_start();
     bool server_running();
-    std::vector<uint32_t> collect_children();
 
     int number_of_messages();
 
