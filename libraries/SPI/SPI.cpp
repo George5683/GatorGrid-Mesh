@@ -118,7 +118,7 @@ int SPI::SPI_send_message(std::vector<uint8_t>& message){
         SPI_init();
 
         // Delay for Slave to initialize
-        sleep_ms(250);
+        sleep_ms(110);
 
         printf("Sending Data: ");
         for(char c : message){
@@ -223,7 +223,7 @@ bool SPI::SPI_POLL_MESSAGE(){
            sleep_ms(10);
 
            // Delay to wait for slave to initialize
-           sleep_ms(250);
+           sleep_ms(110);
 
            SPI_init();
 
