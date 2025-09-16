@@ -2,6 +2,7 @@
 #define MESH_NODE_HPP
 
 #include <cstdint>
+#include <lwip/err.h>
 #include <set>
 #include <string>
 #include <map>
@@ -10,6 +11,7 @@
 
 #include "../SPI/SPI.hpp"
 #include "../RingBuffer/RingBuffer.hpp"
+#include "../SPI/SerialMessages.hpp"
 #include "Messages.hpp"
 #include "../ChildrenTree/ChildrenTree.hpp"
 
@@ -124,6 +126,8 @@ public:
 
     bool handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct pbuf *p);
 
+    err_t send_msg(uint8_t* msg);
+    err_t handle_serial_message(uint8_t* msg);
 };
 
 class STANode : public MeshNode{
@@ -160,6 +164,9 @@ public:
 
     static int scan_result(void* env, const cyw43_ev_scan_result_t* result);
     bool handle_incoming_data(unsigned char* buffer, struct pbuf *p);
+
+    err_t send_msg(uint8_t *msg);
+    err_t handle_serial_message(uint8_t* msg);
 };
 
 #endif // MESH_NODE_HPP
