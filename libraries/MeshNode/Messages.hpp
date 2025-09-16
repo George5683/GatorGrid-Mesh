@@ -256,7 +256,28 @@ public:
     }
 };
 
+class TCP_FORCE_UPDATE_MESSAGE : public TCP_MESSAGE {
+public:
+    tcp_force_update_msg msg = {0};
+public:
+    TCP_FORCE_UPDATE_MESSAGE(uint32_t id) : TCP_MESSAGE(0xFF) { 
+        msg.priority = priority;
+        msg.msg_id = 0xFF;
+        msg.len = sizeof(tcp_force_update_msg);
+    }
 
+    uint8_t* get_msg() override {
+        return reinterpret_cast<uint8_t*>(&msg);
+    }
+
+    uint16_t get_len() override {
+        return msg.len;
+    }
+
+    void set_msg(void* msg) override {
+        this->msg = *(reinterpret_cast<tcp_force_update_msg*>(msg));
+    }
+};
 
 /**
  * @brief Takes in some tcp message buffer and returns a pointer to a new TCP_MESSAGE

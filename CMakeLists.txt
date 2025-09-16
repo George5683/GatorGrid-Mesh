@@ -35,7 +35,7 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-# Cmake for sta_testing
+# ________________________________________ Cmake for sta_background ________________________________________
 add_executable(sta_background
         Tests/sta_test.cpp
         libraries/dhcpserver/dhcpserver.c
@@ -72,7 +72,7 @@ pico_enable_stdio_usb(sta_background 1)
 
 pico_add_extra_outputs(sta_background)
 
-# Cmake for AP_testing
+# ________________________________________ Cmake for ap_background ________________________________________
 add_executable(ap_background
         Tests/AP_Test.cpp
         libraries/dhcpserver/dhcpserver.c
@@ -109,7 +109,7 @@ pico_enable_stdio_usb(ap_background 1)
 
 pico_add_extra_outputs(ap_background)
 
-
+# ________________________________________ Cmake for sta_root ________________________________________
 add_executable(sta_root
         Tests/sta_root.cpp
         libraries/dhcpserver/dhcpserver.c
@@ -146,6 +146,7 @@ pico_enable_stdio_usb(sta_root 1)
 
 pico_add_extra_outputs(sta_root)
 
+# ________________________________________ Cmake for ap_root ________________________________________
 add_executable(ap_root
         Tests/ap_root.cpp
         libraries/dhcpserver/dhcpserver.c
@@ -185,6 +186,7 @@ pico_enable_stdio_usb(ap_root 1)
 pico_add_extra_outputs(ap_root)
 
 # node 1
+# ________________________________________ Cmake for sta_one ________________________________________
 add_executable(sta_one
         Tests/sta_one.cpp
         libraries/dhcpserver/dhcpserver.c
@@ -220,6 +222,8 @@ pico_enable_stdio_usb(sta_one 1)
         
 
 pico_add_extra_outputs(sta_one)
+
+# ________________________________________ Cmake for ap_one ________________________________________
 
 add_executable(ap_one
         Tests/ap_one.cpp
@@ -258,6 +262,7 @@ pico_enable_stdio_usb(ap_one 1)
 pico_add_extra_outputs(ap_one)
 
 # node 2
+# ________________________________________ Cmake for sta_two ________________________________________
 add_executable(sta_two
         Tests/sta_two.cpp
         libraries/dhcpserver/dhcpserver.c
@@ -294,6 +299,8 @@ pico_enable_stdio_usb(sta_two 1)
 
 pico_add_extra_outputs(sta_two)
 
+# ________________________________________ Cmake for ap_two ________________________________________
+
 add_executable(ap_two
         Tests/ap_two.cpp
         libraries/dhcpserver/dhcpserver.c
@@ -329,3 +336,77 @@ pico_enable_stdio_usb(ap_two 1)
         
 
 pico_add_extra_outputs(ap_two)
+
+# ________________________________________ Cmake for SPI_SLAVE_TEST.cpp ________________________________________
+
+add_executable(SPI_SLAVE_TEST
+        Tests/SPI_SLAVE_TEST.cpp
+        libraries/SPI/SPI.cpp
+        )
+
+target_include_directories(SPI_SLAVE_TEST PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
+        )
+
+target_link_libraries(SPI_SLAVE_TEST
+        pico_cyw43_arch_lwip_threadsafe_background
+        pico_stdlib
+        pico_multicore
+        hardware_spi
+        )
+
+pico_enable_stdio_uart(SPI_SLAVE_TEST 0)
+pico_enable_stdio_usb(SPI_SLAVE_TEST 1)
+
+pico_add_extra_outputs(SPI_SLAVE_TEST)
+
+# ________________________________________ Cmake for SPI_Master_TEST.cpp ________________________________________
+add_executable(SPI_Master_TEST
+        Tests/SPI_Master_TEST.cpp
+        libraries/SPI/SPI.cpp
+        )
+
+target_include_directories(SPI_Master_TEST PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
+        )
+
+target_link_libraries(SPI_Master_TEST
+        pico_cyw43_arch_lwip_threadsafe_background
+        pico_stdlib
+        pico_multicore
+        hardware_spi
+        )
+
+pico_enable_stdio_uart(SPI_Master_TEST 0)
+pico_enable_stdio_usb(SPI_Master_TEST 1)
+
+pico_add_extra_outputs(SPI_Master_TEST)
+
+# ________________________________________ Cmake for tree_test.cpp ________________________________________
+add_executable(tree_test
+        Tests/tree_test.cpp
+        libraries/ChildrenTree/ChildrenTree.cpp
+        )
+
+target_include_directories(tree_test PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
+        ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
+        )
+
+target_link_libraries(tree_test
+        pico_cyw43_arch_lwip_threadsafe_background
+        pico_stdlib
+        pico_multicore
+        hardware_spi
+        )
+
+pico_enable_stdio_uart(tree_test 0)
+pico_enable_stdio_usb(tree_test 1)
+        
+
+pico_add_extra_outputs(tree_test)

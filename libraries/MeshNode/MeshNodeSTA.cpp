@@ -236,7 +236,7 @@ STANode::STANode() : rb(10) {
    DEBUG_printf("Node ID is initially set to 0!\n");
 
     // Set SPI to be a slave 
-    Slave_Pico.SPI_init(false);
+    //Slave_Pico.SPI_init(false);
     known_nodes.clear();
     parent = 0xFFFFFFFF;
 }
@@ -254,13 +254,25 @@ struct data STANode::digest_data() {
 }
 
 bool STANode::init_sta_mode() {
-    //stdio_init_all();
 
     uint32_t AP_ID = 0;
 
-    while(!Slave_Pico.SPI_is_read_available());
+    Slave_Pico.Set_Master(false);
+    Slave_Pico.SPI_init();
 
-    Slave_Pico.SPI_read_message((uint8_t*)&AP_ID, 5);
+    vector<uint8_t> temp;
+
+    while(!Slave_Pico.SPI_POLL_MESSAGE());
+
+    Slave_Pico.SPI_read_message(temp);
+
+    if(temp.size() == 0) {
+        while(true) 
+            puts("Error with SPI read size.");
+    }
+
+    AP_ID = *(uint32_t*)temp.data();
+    printf("ID char: %d\n", AP_ID);
 
     this->set_NodeID(AP_ID);
 
