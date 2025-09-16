@@ -1,3 +1,4 @@
+#pragma once
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/uart.h"
@@ -14,15 +15,20 @@
 #define MAX_LEN 128
 
 class PicoUART {
+private:
     char rxBuffer[MAX_LEN];
+    int rxIndex = 0;
 
-    public:
+    static PicoUART* instance;
+
+public:
     PicoUART();
     ~PicoUART() = default;
+
     bool picoUartInit();
     bool picoUARTInterruptInit();
-
     int sendMessage(const char* message);
     char* getReadBuffer();
 
+    static void on_uart_rx();
 };
