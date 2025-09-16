@@ -25,7 +25,7 @@ public:
     PicoUART();
     ~PicoUART() = default;
 
-    bool picoUartInit();
+    bool picoUARTInit();
     bool picoUARTInterruptInit();
     int sendMessage(const char* message);
     char* getReadBuffer();
