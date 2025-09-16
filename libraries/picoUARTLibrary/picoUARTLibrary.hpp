@@ -14,6 +14,7 @@
 #define MAX_LEN 128
 
 class PicoUART {
+    char rxBuffer[MAX_LEN];
 
     public:
     PicoUART();
@@ -22,24 +23,6 @@ class PicoUART {
     bool picoUARTInterruptInit();
 
     int sendMessage(const char* message);
+    char* getReadBuffer();
 
 };
-
-//Example Interrupt Handler
-// void on_uart_rx(void) {
-
-//     printf("Interrupt\n");
-
-//     while (uart_is_readable(UART_ID)) {
-//         char c = uart_getc(UART_ID);
-
-//         if (rxIndex < MAX_LEN - 1) {
-//             rxBuffer[rxIndex++] = c;
-//             rxBuffer[rxIndex] = '\0';
-//         }
-
-//         if (c == '\n') {
-//             rxIndex = 0;
-//         }
-//     }
-// }
