@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/uart.h"
+#include "libraries/UART/UART.hpp"
 
 #define UART_ID    uart0
 #define BAUD_RATE  115200
@@ -39,18 +40,11 @@ void on_uart_rx(void) {
 int main() {
     stdio_init_all();
 
-    uart_init(UART_ID, BAUD_RATE);
-    gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
-    gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
+    PicoUART uart;
 
-    uart_set_hw_flow(UART_ID, false, false);
-    uart_set_format(UART_ID, DATA_BITS, STOP_BITS, PARITY);
-    uart_set_fifo_enabled(UART_ID, true);
-
-    int UART_IRQ = (UART_ID == uart0) ? UART0_IRQ : UART1_IRQ;
-    irq_set_exclusive_handler(UART_IRQ, on_uart_rx);
-    irq_set_enabled(UART_IRQ, true);
-    uart_set_irq_enables(UART_ID, true, false);
+    uart.picoUARTInit();
+    uart.picoUARTInterruptInit();
+    printf("UART Initialized\n");
 
     sleep_ms(2000);
 
