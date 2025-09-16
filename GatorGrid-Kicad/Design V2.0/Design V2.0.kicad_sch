@@ -4616,7 +4616,7 @@
 	)
 	(text "LED POWER ON/OFF\n"
 		(exclude_from_sim no)
-		(at 198.882 29.718 0)
+		(at 189.992 28.448 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4626,7 +4626,7 @@
 	)
 	(text "AND GATE\n"
 		(exclude_from_sim no)
-		(at 200.406 33.02 0)
+		(at 191.516 31.75 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4647,7 +4647,7 @@
 		(uuid "7e507997-a916-4881-ba0d-91c38b90dd9a")
 	)
 	(junction
-		(at 251.46 29.21)
+		(at 242.57 27.94)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "82bf6fc5-d776-4af7-aab5-5b61f397f48d")
@@ -4665,19 +4665,19 @@
 		(uuid "b1c568b1-f336-47a1-8c4c-52eec10de331")
 	)
 	(junction
-		(at 243.84 36.83)
+		(at 234.95 35.56)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "c8e13d3b-5a4f-4343-8b5c-aceffc05d4c8")
 	)
 	(junction
-		(at 266.7 29.21)
+		(at 257.81 27.94)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "cc5f1cd1-e14b-48cd-a018-036031c78494")
 	)
 	(junction
-		(at 259.08 36.83)
+		(at 250.19 35.56)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "e860d3a4-cfc9-42f9-bb11-84d673f3fa1f")
@@ -4732,7 +4732,7 @@
 	)
 	(wire
 		(pts
-			(xy 251.46 29.21) (xy 248.92 29.21)
+			(xy 242.57 27.94) (xy 240.03 27.94)
 		)
 		(stroke
 			(width 0)
@@ -4762,7 +4762,7 @@
 	)
 	(wire
 		(pts
-			(xy 259.08 36.83) (xy 266.7 36.83)
+			(xy 250.19 35.56) (xy 257.81 35.56)
 		)
 		(stroke
 			(width 0)
@@ -4782,7 +4782,7 @@
 	)
 	(wire
 		(pts
-			(xy 254 29.21) (xy 251.46 29.21)
+			(xy 245.11 27.94) (xy 242.57 27.94)
 		)
 		(stroke
 			(width 0)
@@ -4882,7 +4882,7 @@
 	)
 	(wire
 		(pts
-			(xy 243.84 36.83) (xy 251.46 36.83)
+			(xy 234.95 35.56) (xy 242.57 35.56)
 		)
 		(stroke
 			(width 0)
@@ -4952,7 +4952,7 @@
 	)
 	(wire
 		(pts
-			(xy 266.7 29.21) (xy 264.16 29.21)
+			(xy 257.81 27.94) (xy 255.27 27.94)
 		)
 		(stroke
 			(width 0)
@@ -4962,7 +4962,7 @@
 	)
 	(wire
 		(pts
-			(xy 269.24 29.21) (xy 266.7 29.21)
+			(xy 260.35 27.94) (xy 257.81 27.94)
 		)
 		(stroke
 			(width 0)
@@ -5104,7 +5104,7 @@
 	)
 	(global_label "A_3V3(OUT)"
 		(shape input)
-		(at 259.08 44.45 270)
+		(at 250.19 43.18 270)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -5114,7 +5114,7 @@
 		)
 		(uuid "0d42fead-106c-44f4-92f9-1b4e78a240ce")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 259.08 58.321 90)
+			(at 250.19 57.051 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6204,7 +6204,7 @@
 	)
 	(global_label "B_3V3(OUT)"
 		(shape input)
-		(at 243.84 44.45 270)
+		(at 234.95 43.18 270)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -6214,7 +6214,7 @@
 		)
 		(uuid "74d80a0d-11c9-4c2e-b0b2-317a0ee817ed")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 243.84 58.5024 90)
+			(at 234.95 57.2324 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6358,7 +6358,7 @@
 	)
 	(global_label "A_3V3(OUT)"
 		(shape input)
-		(at 223.52 29.21 180)
+		(at 214.63 27.94 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -6368,7 +6368,7 @@
 		)
 		(uuid "86e57768-f65f-4c80-8308-45dda172b212")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 209.649 29.21 0)
+			(at 200.759 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8119,7 +8119,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 243.84 40.64 180)
+		(at 234.95 39.37 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -8128,7 +8128,7 @@
 		(fields_autoplaced yes)
 		(uuid "0cae8c3e-f54b-447f-a63a-1ae75e0c6d8e")
 		(property "Reference" "R4"
-			(at 246.38 39.3699 0)
+			(at 237.49 38.0999 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8137,7 +8137,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 246.38 41.9099 0)
+			(at 237.49 40.6399 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8146,7 +8146,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 245.618 40.64 90)
+			(at 236.728 39.37 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8155,7 +8155,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 243.84 40.64 0)
+			(at 234.95 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8164,7 +8164,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 243.84 40.64 0)
+			(at 234.95 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9414,7 +9414,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 266.7 33.02 0)
+		(at 257.81 31.75 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -9423,7 +9423,7 @@
 		(fields_autoplaced yes)
 		(uuid "43c6e801-b9ef-499d-98b1-d38cda89e098")
 		(property "Reference" "R6"
-			(at 269.24 31.7499 0)
+			(at 260.35 30.4799 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9432,7 +9432,7 @@
 			)
 		)
 		(property "Value" "1M"
-			(at 269.24 34.2899 0)
+			(at 260.35 33.0199 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9441,7 +9441,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 264.922 33.02 90)
+			(at 256.032 31.75 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9450,7 +9450,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 266.7 33.02 0)
+			(at 257.81 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9459,7 +9459,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 266.7 33.02 0)
+			(at 257.81 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9889,7 +9889,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 269.24 29.21 90)
+		(at 260.35 27.94 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -9898,7 +9898,7 @@
 		(fields_autoplaced yes)
 		(uuid "647b69cd-2586-4506-ab09-c8a08b6a6069")
 		(property "Reference" "#PWR012"
-			(at 275.59 29.21 0)
+			(at 266.7 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9907,7 +9907,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 273.05 29.2099 90)
+			(at 264.16 27.9399 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9916,7 +9916,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 269.24 29.21 0)
+			(at 260.35 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9925,7 +9925,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 269.24 29.21 0)
+			(at 260.35 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9934,7 +9934,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 269.24 29.21 0)
+			(at 260.35 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10562,7 +10562,7 @@
 	)
 	(symbol
 		(lib_id "Transistor_BJT:2N3904")
-		(at 259.08 31.75 90)
+		(at 250.19 30.48 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -10571,7 +10571,7 @@
 		(fields_autoplaced yes)
 		(uuid "9a595d42-3176-4daf-b49a-2c6d886054e7")
 		(property "Reference" "Q4"
-			(at 259.08 22.86 90)
+			(at 250.19 21.59 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10579,7 +10579,7 @@
 			)
 		)
 		(property "Value" "2N3904"
-			(at 259.08 25.4 90)
+			(at 250.19 24.13 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10587,7 +10587,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
-			(at 260.985 26.67 0)
+			(at 252.095 25.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10598,7 +10598,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/2N3903-D.PDF"
-			(at 259.08 31.75 0)
+			(at 250.19 30.48 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10608,7 +10608,7 @@
 			)
 		)
 		(property "Description" "0.2A Ic, 40V Vce, Small Signal NPN Transistor, TO-92"
-			(at 259.08 31.75 0)
+			(at 250.19 30.48 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10971,7 +10971,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 259.08 40.64 180)
+		(at 250.19 39.37 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -10980,7 +10980,7 @@
 		(fields_autoplaced yes)
 		(uuid "aa28d7b1-a926-4e31-ac88-3c8ef2f9ece5")
 		(property "Reference" "R5"
-			(at 261.62 39.3699 0)
+			(at 252.73 38.0999 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10989,7 +10989,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 261.62 41.9099 0)
+			(at 252.73 40.6399 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10998,7 +10998,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 260.858 40.64 90)
+			(at 251.968 39.37 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11007,7 +11007,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 259.08 40.64 0)
+			(at 250.19 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11016,7 +11016,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 259.08 40.64 0)
+			(at 250.19 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11041,7 +11041,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 251.46 33.02 0)
+		(at 242.57 31.75 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -11050,7 +11050,7 @@
 		(fields_autoplaced yes)
 		(uuid "ac5fc42a-df27-49ba-91c5-2343b517348a")
 		(property "Reference" "R7"
-			(at 254 31.7499 0)
+			(at 245.11 30.4799 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11059,7 +11059,7 @@
 			)
 		)
 		(property "Value" "1M"
-			(at 254 34.2899 0)
+			(at 245.11 33.0199 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11068,7 +11068,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 249.682 33.02 90)
+			(at 240.792 31.75 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11077,7 +11077,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 251.46 33.02 0)
+			(at 242.57 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11086,7 +11086,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 251.46 33.02 0)
+			(at 242.57 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11111,7 +11111,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 227.33 29.21 90)
+		(at 218.44 27.94 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -11119,7 +11119,7 @@
 		(dnp no)
 		(uuid "af7a9efb-0fdc-49e8-9c35-f3cbf13a1737")
 		(property "Reference" "R2"
-			(at 224.536 22.86 90)
+			(at 215.646 21.59 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11127,7 +11127,7 @@
 			)
 		)
 		(property "Value" "470"
-			(at 224.536 25.4 90)
+			(at 215.646 24.13 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11135,7 +11135,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 227.33 30.988 90)
+			(at 218.44 29.718 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11144,7 +11144,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 227.33 29.21 0)
+			(at 218.44 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11153,7 +11153,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 227.33 29.21 0)
+			(at 218.44 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11785,7 +11785,7 @@
 	)
 	(symbol
 		(lib_id "Device:LED")
-		(at 234.95 29.21 180)
+		(at 226.06 27.94 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -11793,7 +11793,7 @@
 		(dnp no)
 		(uuid "daa77b8c-63b0-4c02-b5f7-d7d1db831eff")
 		(property "Reference" "D2"
-			(at 234.188 21.844 0)
+			(at 225.298 20.574 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11801,7 +11801,7 @@
 			)
 		)
 		(property "Value" "POWER_LED"
-			(at 234.188 24.384 0)
+			(at 225.298 23.114 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11809,7 +11809,7 @@
 			)
 		)
 		(property "Footprint" "LED_THT:LED_D5.0mm"
-			(at 234.95 29.21 0)
+			(at 226.06 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11818,7 +11818,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 234.95 29.21 0)
+			(at 226.06 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11827,7 +11827,7 @@
 			)
 		)
 		(property "Description" "Light emitting diode"
-			(at 234.95 29.21 0)
+			(at 226.06 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11836,7 +11836,7 @@
 			)
 		)
 		(property "Sim.Pins" "1=K 2=A"
-			(at 234.95 29.21 0)
+			(at 226.06 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11982,7 +11982,7 @@
 	)
 	(symbol
 		(lib_id "Transistor_BJT:2N3904")
-		(at 243.84 31.75 90)
+		(at 234.95 30.48 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -11991,7 +11991,7 @@
 		(fields_autoplaced yes)
 		(uuid "e3b10ca5-6511-4783-803f-7958d1c87b08")
 		(property "Reference" "Q3"
-			(at 243.84 22.86 90)
+			(at 234.95 21.59 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11999,7 +11999,7 @@
 			)
 		)
 		(property "Value" "2N3904"
-			(at 243.84 25.4 90)
+			(at 234.95 24.13 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12007,7 +12007,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
-			(at 245.745 26.67 0)
+			(at 236.855 25.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12018,7 +12018,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/2N3903-D.PDF"
-			(at 243.84 31.75 0)
+			(at 234.95 30.48 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12028,7 +12028,7 @@
 			)
 		)
 		(property "Description" "0.2A Ic, 40V Vce, Small Signal NPN Transistor, TO-92"
-			(at 243.84 31.75 0)
+			(at 234.95 30.48 0)
 			(effects
 				(font
 					(size 1.27 1.27)
