@@ -164,4 +164,12 @@ public:
  */
 SERIAL_MESSAGE* parseSerialMessage(uint8_t* data);
 
+/**
+ * @brief Returns ID of serial message inserted
+ * 
+ * @param data 
+ * @return uint8_t 
+ */
+uint8_t serialMessageType(uint8_t* data);
+
 #endif // SERIAL_MESSAGE_HPP

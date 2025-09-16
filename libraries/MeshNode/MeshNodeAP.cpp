@@ -1,5 +1,6 @@
 #include "MeshNode.hpp"
 #include "Messages.hpp"
+#include <cstdint>
 #include <random>
 #include <ctime>
 #include <cstdio>
@@ -10,6 +11,7 @@
 #include "../SPI/SPI.hpp"
 #include "../ChildrenTree/ChildrenTree.hpp"
 
+#include "SerialMessages.hpp"
 #include "hardware/regs/rosc.h"
 #include "hardware/regs/addressmap.h"
 
@@ -47,7 +49,14 @@
  #define DUMP_BYTES(A,B)
  #endif
 
-
+ #define TRY(x)            \
+ do                        \
+ {                         \
+     err_t st;             \
+     st = (x);             \
+     if (st != 0)          \
+         return st;        \
+ } while (0)
 
 // TCP Server state structures
 typedef struct TCP_CONNECT_STATE_T_ {
@@ -603,7 +612,7 @@ bool APNode::send_tcp_data(uint32_t id, tcp_pcb *client_pcb, uint8_t* data, uint
     //err_t err = tcp_write(state->client_pcb, (void*)buffer, size, TCP_WRITE_FLAG_COPY);
     //err_t err2 = tcp_output(state->client_pcb);
 
-   DEBUG_printf("send_tcp_data: Destination ID %08x\n", id);
+    DEBUG_printf("send_tcp_data: Destination ID %08x\n", id);
 
     err_t err = tcp_write(client_pcb, (void*)data, size, TCP_WRITE_FLAG_COPY);
     err_t err2 = tcp_output(client_pcb);
@@ -636,7 +645,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
     // uint32_t test = ((APNode*)(state->ap_node))->get_NodeID();
     //DEBUG_printf("CURRENT NODE ID: %08X\n", test);
 
-    puts("HANDLE DUMP");\
+    puts("HANDLE DUMP");
     dump_bytes(buffer, 100); 
 
     // TCP_INIT_MESSAGE init_msg(((APNode*)(state->ap_node))->get_NodeID());  
@@ -818,6 +827,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
 
 
 err_t APNode::send_data(uint32_t send_id, ssize_t len, uint8_t *buf) {
+    //TODO: Add tree and look whether it needs to go up or down the tree
     TCP_DATA_MSG msg(get_NodeID(), send_id);
     msg.add_message(buf, len);
     if (client_tpcbs.find(send_id) == client_tpcbs.end()){
@@ -828,3 +838,93 @@ err_t APNode::send_data(uint32_t send_id, ssize_t len, uint8_t *buf) {
         return -1;
     return 0;
 }
+
+err_t APNode::send_msg(uint8_t* msg) {
+    TCP_MESSAGE* tcp_msg = parseMessage(msg);
+    size_t len = 0;
+    uint32_t target_id = 0;
+    tcp_pcb *target = nullptr;
+
+    uint8_t id = msg[1];
+    switch (id) {
+        case 0x00:
+        {
+            TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(tcp_msg);
+            len = initMsg->get_len();
+            target_id = initMsg->msg.source; // ??
+
+            break;
+        }
+        case 0x01: /* TCP_DATA_MSG */
+        {
+            TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(tcp_msg);
+            len = dataMsg->get_len();
+            target_id = dataMsg->msg.dest;
+
+            break;
+        }
+        case 0x02:
+            break;
+        case 0x03:
+            break;
+        default:
+        {
+            return -1;
+        }
+
+        // TODO: target = find(taget_id);
+        // send_tcp_data(target_id, target, msg, len);
+        
+    }
+    return 0;
+}
+
+err_t APNode::handle_serial_message(uint8_t *msg) {
+    uint8_t id = serialMessageType(msg);
+
+    // TODO: Finish switch-case
+    switch (id) {
+        case 0x00: /* serial_node_add_msg */
+            break; 
+        case 0x01: /* serial_node_remove_msg */
+            break;
+        case 0x02: /* Data message */
+        {
+            // SERIAL_DATA_MESSAGE serial_msg;
+            // serial_msg.set_msg(msg);
+
+            send_msg(msg);
+            
+            break;
+        }
+        case 0x03: /* serial_fatal_error_msg */
+        {
+            break;
+        }
+        default:
+        {
+            return 0;
+        }
+    }
+
+    return 0;
+}
+
+
+
+
+
+/*
+(send from STA-A to Node C)
+[STA-A -- AP-A] <----->  [STA-B <-----> AP-B]
+                                        \
+                                        \
+                                    [STA-C <-----> AP-C]
+
+STA-A -> send serial to AP-A                                             (redundant?)
+AP-A recieves serial, sees its DATA passes it, (handle_serial -> send_msg -> send_data -> send_tcp_data) A->C
+
+                                            (redundant?)
+STA-B sees its DATA -> sees its for C (looks in tree, finds its a parent) -> sends serial to AP-B
+AP-B recieves serial, sees its DATA passes it, (handle_serial -> send_msg -> send_data -> send_tcp_data) A->C
+*/
