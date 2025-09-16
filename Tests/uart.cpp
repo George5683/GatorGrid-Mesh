@@ -4,7 +4,7 @@ int main() {
     stdio_init_all();
 
     PicoUART uart;
-    uart.picoUartInit();
+    uart.picoUARTInit();
     uart.picoUARTInterruptInit();
 
     const char* testMessage = "Hello, UART!\n";
