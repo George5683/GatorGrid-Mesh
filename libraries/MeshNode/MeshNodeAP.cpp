@@ -847,12 +847,30 @@ err_t APNode::send_msg(uint8_t* msg) {
 
     uint8_t id = msg[1];
     switch (id) {
-        case 0x00:
+        case 0x00: // Init message from STA -> thus new parent has been added
         {
-            TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(tcp_msg);
-            len = initMsg->get_len();
-            target_id = initMsg->msg.source; // ??
+            /* TODO: This is for STA
+                TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(tcp_msg);
+                // len = initMsg->get_len();
+                // target_id = initMsg->msg.source; // ??
 
+                // Will have to send Update Message to parent
+                tree.add_any_child(get_node_id(), initMsg->msg.source);
+                
+
+                uint32_t children[4];
+                uint8_t children_count = 0;
+                if (!tree.get_children(get_node_id(), children, children_count))
+                {
+                    //idk die or something
+                    // TODO: failure states
+                }
+
+                TCP_UPDATE_MESSAGE updateMsg(get_node_id());
+                updateMsg.add_children(children_count, children);
+
+                target_id = 
+            */
             break;
         }
         case 0x01: /* TCP_DATA_MSG */
@@ -872,7 +890,7 @@ err_t APNode::send_msg(uint8_t* msg) {
             return -1;
         }
 
-        // TODO: target = find(taget_id);
+        // TODO: target = find(target_id);
         // send_tcp_data(target_id, target, msg, len);
         
     }
@@ -885,8 +903,10 @@ err_t APNode::handle_serial_message(uint8_t *msg) {
     // TODO: Finish switch-case
     switch (id) {
         case 0x00: /* serial_node_add_msg */
+            // If AP receives node_add, a parent has been added
             break; 
         case 0x01: /* serial_node_remove_msg */
+            // If AP receives node_remove, a parent has been removed
             break;
         case 0x02: /* Data message */
         {

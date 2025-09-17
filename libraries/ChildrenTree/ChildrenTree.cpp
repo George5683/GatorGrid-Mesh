@@ -1,5 +1,6 @@
 #include "ChildrenTree.hpp"
 #include "vector"
+#include <cstdint>
 
 ChildrenTree::~ChildrenTree() {
     if (!head) {
@@ -87,6 +88,20 @@ bool ChildrenTree::add_any_child(uint32_t parent_id, uint32_t child_id) {
 
     }
     return success;
+}
+
+bool ChildrenTree::get_children(uint32_t parent_id, uint32_t children_id[4], uint8_t &number_of_children) {
+    Node* parent = find_node(parent_id, head);
+    if (parent == nullptr) {
+        return false;
+    }
+    
+    for (int i = 0; i < parent->number_of_children; i++) {
+        children_id[i] = parent->children[i]->id;
+    }
+    number_of_children = parent->number_of_children;
+
+    return true;
 }
 
 ChildrenTree::Node* ChildrenTree::find_node(uint32_t id, Node* head) {

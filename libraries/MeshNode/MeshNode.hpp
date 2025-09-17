@@ -110,6 +110,11 @@ public:
     // Getters/setters for AP configuration
     void set_ap_credentials(char name[32], const char* pwd);
     
+    /**
+     * @brief Get the node id object of APNode
+     * 
+     * @return int 
+     */
     int get_node_id();
     void set_node_id(int ID);
 
