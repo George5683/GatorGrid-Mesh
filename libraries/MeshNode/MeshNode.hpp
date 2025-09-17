@@ -66,6 +66,7 @@ public:
 class APNode : public MeshNode{   
 public:
     TCP_SERVER_T* state;
+    uint32_t parent;
     bool running;
     char ap_name[32];
     const char* password = "password";

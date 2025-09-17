@@ -137,7 +137,7 @@ bool ChildrenTree::node_exists(uint32_t id) {
  * @return false 
  */
  // Not finished
- bool ChildrenTree::find_path_parent(uint32_t id, uint32_t parent) {
+ bool ChildrenTree::find_path_parent(uint32_t id, uint32_t *parent) {
     printf("Checking tree for parent of the path to %u\n", id);
     if (!head || !find_node(id, head)) {
         // either empty tree or id not in tree
@@ -147,12 +147,12 @@ bool ChildrenTree::node_exists(uint32_t id) {
 }
 
 //Not finished
-bool ChildrenTree::find_parent_recursive(Node* node, uint32_t target, uint32_t parent) {
+bool ChildrenTree::find_parent_recursive(Node* node, uint32_t target, uint32_t *parent) {
     for (int i = 0; i < node->number_of_children; ++i) {
         Node* child = node->children[i];
         if (child->id == target) {
             // this node is the parent of the target
-            parent = node->id;
+            *parent = node->id;
             return true;
         }
         // otherwise, recurse into that child’s subtree

@@ -52,6 +52,8 @@ public:
         msg.child = child;
         msg.parent = parent;
     }
+
+    SERIAL_NODE_ADD_MESSAGE() : SERIAL_MESSAGE() {}
     
     uint16_t get_len() override {
         return msg.len;
@@ -63,6 +65,10 @@ public:
 
     uint32_t get_child() {
         return msg.child;
+    }
+
+    void set_msg(void* msg) override {
+        this->msg = *(reinterpret_cast<serial_node_add_msg_t*>(msg));
     }
 
     uint8_t* get_msg() override {
