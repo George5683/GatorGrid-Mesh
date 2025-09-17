@@ -88,21 +88,50 @@ public:
     APNode(uint32_t id);
     ~APNode();
 
-    // Initialize hardware and allocate resources
+    /**
+     * @brief Initialize hardware and allocate resources
+     * 
+     * @return true     - successful
+     * @return false    - failure
+     */
     bool init_ap_mode();
     
-    // Start the AP mode and servers
+    /**
+     * @brief Start the AP mode and servers
+     * 
+     * @return true     - successful
+     * @return false    - failure
+     */
     bool start_ap_mode();
 
-    // Stop the AP mode
+    /**
+     * @brief Stop the AP mode
+     * 
+     */
     void stop_ap_mode();
     
-    // Poll function to handle network events
+    /**
+     * @brief Poll function to handle network events
+     * 
+     * @param timeout_ms 
+     */
     void poll(unsigned int timeout_ms = 1000);
 
-    // Get the data from the incoming client
+    /**
+     * @brief Get the data from the incoming client
+     * 
+     * @param ID 
+     * @return char* (no implementation??)
+     */
     char* get_client_data(int ID);
-    // Check for incoming data from a client
+
+    /**
+     * @brief Check for incoming data from a client
+     * 
+     * @param ID 
+     * @return true 
+     * @return false 
+     */
     bool has_client_data(int ID);
     // Check data incoming from all connected clients
     bool check_all_client_data();
@@ -116,22 +145,87 @@ public:
      * @return int 
      */
     int get_node_id();
+
+    /**
+     * @brief Set the node id object
+     * 
+     * @param ID 
+     */
     void set_node_id(int ID);
 
+    /**
+     * @brief Start server
+     * 
+     */
     void server_start();
+
+    /**
+     * @brief Returns if server is currently running
+     * 
+     * @return true 
+     * @return false 
+     */
     bool server_running();
 
+    /**
+     * @brief Number of messages in ring buffer
+     * 
+     * @return int 
+     */
     int number_of_messages();
 
+    /**
+     * @brief Sends Data packet to a given node
+     * 
+     * @param send_id   - Node receiving the data packet
+     * @param len       - length of buffer
+     * @param buf       - formatted data packet buffer
+     * @return err_t 
+     */
     err_t send_data(uint32_t send_id, ssize_t len, uint8_t *buf);
 
+    /**
+     * @brief Writes data to correct tcp buffer
+     * 
+     * @param id            - Id of reciever (not used lol)
+     * @param client_pcb    - tcp_pcb* of target
+     * @param data          - message buffer
+     * @param size          - length of message buffer
+     * @return true 
+     * @return false 
+     */
     bool send_tcp_data(uint32_t id, tcp_pcb *client_pcb, uint8_t* data, uint32_t size);
 
     struct data digest_data();
 
+    /**
+     * @brief Handles incoming data
+     *
+     * @details Manages operations for dealing with different types of messages
+     *          being received. 
+     * 
+     * @param buffer    - dara buffer
+     * @param tpcb      - tcp_pcb* of source
+     * @param p         - description of buffer
+     * @return true 
+     * @return false 
+     */
     bool handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct pbuf *p);
 
+    /**
+     * @brief Sends formatted Messages(Under construction)
+     * 
+     * @param msg   - formatted message buffer
+     * @return err_t 
+     */
     err_t send_msg(uint8_t* msg);
+
+    /**
+     * @brief Handles incoming serial data
+     * 
+     * @param msg   - formatted message buffer 
+     * @return err_t 
+     */
     err_t handle_serial_message(uint8_t* msg);
 };
 
