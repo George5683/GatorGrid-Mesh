@@ -847,13 +847,34 @@ err_t APNode::send_msg(uint8_t* msg) {
 
     uint8_t id = msg[1];
     switch (id) {
-        case 0x00:
-        {
+        case 0x00:  // Init message from STA -> thus new parent has been added
+        {           // This message should probably never be received via serial
             TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(tcp_msg);
-            len = initMsg->get_len();
-            target_id = initMsg->msg.source; // ??
+            parent = initMsg->msg.source;
 
-            break;
+            return 0;
+            /* TODO: This is for STA
+                
+                // len = initMsg->get_len();
+                // target_id = initMsg->msg.source; // ??
+
+                // Will have to send Update Message to parent
+                tree.add_any_child(get_node_id(), initMsg->msg.source);
+                
+
+                uint32_t children[4];
+                uint8_t children_count = 0;
+                if (!tree.get_children(get_node_id(), children, children_count))
+                {
+                    //idk die or something
+                    // TODO: failure states
+                }
+
+                TCP_UPDATE_MESSAGE updateMsg(get_node_id());
+                updateMsg.add_children(children_count, children);
+
+                target_id = 
+            */
         }
         case 0x01: /* TCP_DATA_MSG */
         {
@@ -872,8 +893,11 @@ err_t APNode::send_msg(uint8_t* msg) {
             return -1;
         }
 
-        // TODO: target = find(taget_id);
-        // send_tcp_data(target_id, target, msg, len);
+        // TODO: target = find(target_id);
+        uint32_t parent;
+        tree.find_path_parent(target_id, &parent);
+        target = client_tpcbs.at(target_id);
+        send_tcp_data(target_id, target, msg, len);
         
     }
     return 0;
@@ -885,8 +909,16 @@ err_t APNode::handle_serial_message(uint8_t *msg) {
     // TODO: Finish switch-case
     switch (id) {
         case 0x00: /* serial_node_add_msg */
+        {
+            // If AP receives node_add, a parent has been added, maybe?
+            SERIAL_NODE_ADD_MESSAGE serial_msg;
+            serial_msg.set_msg(msg);
+
+            // TODO: figure which to set parent = to
             break; 
+        }
         case 0x01: /* serial_node_remove_msg */
+            // If AP receives node_remove, a parent has been removed
             break;
         case 0x02: /* Data message */
         {

@@ -1,5 +1,6 @@
 #include "ChildrenTree.hpp"
 #include "vector"
+#include <cstdint>
 
 ChildrenTree::~ChildrenTree() {
     if (!head) {
@@ -89,6 +90,20 @@ bool ChildrenTree::add_any_child(uint32_t parent_id, uint32_t child_id) {
     return success;
 }
 
+bool ChildrenTree::get_children(uint32_t parent_id, uint32_t children_id[4], uint8_t &number_of_children) {
+    Node* parent = find_node(parent_id, head);
+    if (parent == nullptr) {
+        return false;
+    }
+    
+    for (int i = 0; i < parent->number_of_children; i++) {
+        children_id[i] = parent->children[i]->id;
+    }
+    number_of_children = parent->number_of_children;
+
+    return true;
+}
+
 ChildrenTree::Node* ChildrenTree::find_node(uint32_t id, Node* head) {
     if (head->number_of_children == 0) {
         return nullptr;
@@ -122,7 +137,7 @@ bool ChildrenTree::node_exists(uint32_t id) {
  * @return false 
  */
  // Not finished
- bool ChildrenTree::find_path_parent(uint32_t id, uint32_t parent) {
+ bool ChildrenTree::find_path_parent(uint32_t id, uint32_t *parent) {
     printf("Checking tree for parent of the path to %u\n", id);
     if (!head || !find_node(id, head)) {
         // either empty tree or id not in tree
@@ -132,12 +147,12 @@ bool ChildrenTree::node_exists(uint32_t id) {
 }
 
 //Not finished
-bool ChildrenTree::find_parent_recursive(Node* node, uint32_t target, uint32_t parent) {
+bool ChildrenTree::find_parent_recursive(Node* node, uint32_t target, uint32_t *parent) {
     for (int i = 0; i < node->number_of_children; ++i) {
         Node* child = node->children[i];
         if (child->id == target) {
             // this node is the parent of the target
-            parent = node->id;
+            *parent = node->id;
             return true;
         }
         // otherwise, recurse into that child’s subtree
