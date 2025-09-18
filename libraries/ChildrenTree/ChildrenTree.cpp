@@ -1,6 +1,7 @@
 #include "ChildrenTree.hpp"
 #include "vector"
-#include <cstdint>
+
+// Node can't have more than 4 children, 3 at most so 4th can get 
 
 ChildrenTree::~ChildrenTree() {
     if (!head) {
@@ -22,6 +23,39 @@ void ChildrenTree::remove_children(Node* node) {
     }
     node->number_of_children = 0;
 }*/
+
+bool ChildrenTree::remove_node(uint32_t id) {
+    Node* node = this->find_node(id, this->head);
+    if (node == nullptr) {
+        return false;
+    }
+
+    Node **children = node->children;
+    Node* newParent = this->head;
+    int childrenToAdd = node->number_of_children;
+    int index = 0;
+    /*
+    while (childrenToAdd > 0) {
+        // Try adding to deleted nodes parent
+        while (newParent->number_of_children < 4) {
+            int id = children[index]->id;
+            this->add_any_child(id, newParent->id);
+            index++;
+            childrenToAdd--;
+        }
+        
+    }
+    */
+
+    //current method for reshaping tree, delete then add node again
+   for (int i = 0; i < childrenToAdd; i++) {
+        int id = children[i]->id;
+        this->remove_node(id);
+        add_child(id);
+   }
+    return true;
+}
+
 void ChildrenTree::remove_children(int id) {
     Node* node = this->find_node(id, this->head);
     for (int i = 0; i < node->number_of_children; i++) {
@@ -35,6 +69,7 @@ void ChildrenTree::remove_children(int id) {
     }
     node->number_of_children = 0;
 }
+
 
 bool ChildrenTree::add_child(uint32_t child_id) {
     Node* child = new Node(child_id);
@@ -90,20 +125,6 @@ bool ChildrenTree::add_any_child(uint32_t parent_id, uint32_t child_id) {
     return success;
 }
 
-bool ChildrenTree::get_children(uint32_t parent_id, uint32_t children_id[4], uint8_t &number_of_children) {
-    Node* parent = find_node(parent_id, head);
-    if (parent == nullptr) {
-        return false;
-    }
-    
-    for (int i = 0; i < parent->number_of_children; i++) {
-        children_id[i] = parent->children[i]->id;
-    }
-    number_of_children = parent->number_of_children;
-
-    return true;
-}
-
 ChildrenTree::Node* ChildrenTree::find_node(uint32_t id, Node* head) {
     if (head->number_of_children == 0) {
         return nullptr;
@@ -152,7 +173,7 @@ bool ChildrenTree::find_parent_recursive(Node* node, uint32_t target, uint32_t *
         Node* child = node->children[i];
         if (child->id == target) {
             // this node is the parent of the target
-            *parent = node->id;
+            parent = &node->id;
             return true;
         }
         // otherwise, recurse into that child’s subtree
