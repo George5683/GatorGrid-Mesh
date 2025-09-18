@@ -11,14 +11,6 @@
 #include "hardware/regs/rosc.h"
 #include "hardware/regs/addressmap.h"
 
-#define TCP_PORT 4242
-
-#define BUF_SIZE 2048
-#define TEST_ITERATIONS 10
-#define POLL_TIME_S 5
-
-#define DEBUG 0
-
 #if DEBUG 
 #define DEBUG_printf printf
 #else
@@ -53,42 +45,6 @@
      if (st != 0)          \
          return st;        \
  } while (0)
-
-// TCP Server state structures
-typedef struct TCP_CONNECT_STATE_T_ {
-    struct tcp_pcb *pcb;
-    int sent_len;
-    char headers[128];
-    char result[256];
-    int header_len;
-    int result_len;
-    ip_addr_t *gw;
-    void* ap_node;
-} TCP_CONNECT_STATE_T;
-
-typedef struct TCP_SERVER_T_ {
-    struct tcp_pcb *server_pcb;
-    struct tcp_pcb *client_pcb;
-    bool complete;
-    int sent_len;
-    int recv_len;
-    int run_count;
-    ip_addr_t gw;
-    void* ap_node;
-    dhcp_server_t dhcp_server;
-    dns_server_t dns_server;
-    uint8_t buffer_sent[BUF_SIZE];
-    uint8_t buffer_recv[BUF_SIZE];
-} TCP_SERVER_T;
-
-struct ClientConnection {
-    struct tcp_pcb *pcb;
-    bool id_recved = false;
-    uint32_t id = 0;
-};
- 
-std::vector<ClientConnection> clients;
-std::map<tcp_pcb *, ClientConnection> clients_map;
 
 
 // https://forums.raspberrypi.com/viewtopic.php?t=302960
@@ -234,7 +190,7 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
            DEBUG_printf("SERVER DEBUG: Currently recv %d\n", state->recv_len);
         }
 
-        if(clients_map.find(tpcb) != clients_map.end()) {
+        if(node->clients_map.find(tpcb) != node->clients_map.end()) {
            DEBUG_printf("PCB FOUND\n");
         } else {
            DEBUG_printf("MAJOR ERROR CLIENT PCB NOT FOUND\n");
@@ -294,6 +250,7 @@ void tcp_server_err(void *arg, err_t err) {
 
 err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
     TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
+    APNode* node = (APNode*)state->ap_node;
     if (err != ERR_OK || client_pcb == NULL) {
         DEBUG_printf("Failure in accept\n");
         tcp_server_result(arg, err);
@@ -305,9 +262,9 @@ err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
 
     client.pcb = client_pcb;
 
-    clients.push_back({client});
+    node->clients.push_back({client});
 
-    clients_map.insert({client_pcb, client});
+    node->clients_map.insert({client_pcb, client});
 
     state->client_pcb = client_pcb;
     tcp_arg(client_pcb, state);

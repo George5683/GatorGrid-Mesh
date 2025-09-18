@@ -11,8 +11,6 @@
 #include "hardware/regs/rosc.h"
 #include "hardware/regs/addressmap.h"
 
-#define DEBUG 0
-
 #if DEBUG 
 #define DEBUG_printf printf
 #else
