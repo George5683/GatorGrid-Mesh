@@ -465,6 +465,9 @@ bool APNode::init_ap_mode() {
         DEBUG_printf("failed to initialize cyw43 driver\n");
         return false;
     }
+
+    // Set power mode to high power
+    cyw43_wifi_pm(&cyw43_state, CYW43_PERFORMANCE_PM);
     
     return true;
 }
