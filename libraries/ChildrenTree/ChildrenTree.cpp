@@ -24,37 +24,37 @@ void ChildrenTree::remove_children(Node* node) {
     node->number_of_children = 0;
 }*/
 
-bool ChildrenTree::remove_node(uint32_t id) {
-    Node* node = this->find_node(id, this->head);
-    if (node == nullptr) {
-        return false;
-    }
+// bool ChildrenTree::remove_node(uint32_t id) {
+//     Node* node = this->find_node(id, this->head);
+//     if (node == nullptr) {
+//         return false;
+//     }
 
-    Node **children = node->children;
-    Node* newParent = this->head;
-    int childrenToAdd = node->number_of_children;
-    int index = 0;
-    /*
-    while (childrenToAdd > 0) {
-        // Try adding to deleted nodes parent
-        while (newParent->number_of_children < 4) {
-            int id = children[index]->id;
-            this->add_any_child(id, newParent->id);
-            index++;
-            childrenToAdd--;
-        }
+//     Node **children = node->children;
+//     Node* newParent = this->head;
+//     int childrenToAdd = node->number_of_children;
+//     int index = 0;
+//     /*
+//     while (childrenToAdd > 0) {
+//         // Try adding to deleted nodes parent
+//         while (newParent->number_of_children < 4) {
+//             int id = children[index]->id;
+//             this->add_any_child(id, newParent->id);
+//             index++;
+//             childrenToAdd--;
+//         }
         
-    }
-    */
+//     }
+//     */
 
-    //current method for reshaping tree, delete then add node again
-   for (int i = 0; i < childrenToAdd; i++) {
-        int id = children[i]->id;
-        this->remove_node(id);
-        add_child(id);
-   }
-    return true;
-}
+//     //current method for reshaping tree, delete then add node again
+//    for (int i = 0; i < childrenToAdd; i++) {
+//         int id = children[i]->id;
+//         this->remove_node(id);
+//         add_child(id);
+//    }
+//     return true;
+// }
 
 void ChildrenTree::remove_children(int id) {
     Node* node = this->find_node(id, this->head);
@@ -126,6 +126,7 @@ bool ChildrenTree::add_any_child(uint32_t parent_id, uint32_t child_id) {
 }
 
 ChildrenTree::Node* ChildrenTree::find_node(uint32_t id, Node* head) {
+    if (head == nullptr) {return nullptr;}
     if (head->number_of_children == 0) {
         return nullptr;
     }
@@ -159,7 +160,7 @@ bool ChildrenTree::node_exists(uint32_t id) {
  */
  // Not finished
  bool ChildrenTree::find_path_parent(uint32_t id, uint32_t *parent) {
-    printf("Checking tree for parent of the path to %u\n", id);
+    printf("\nChecking tree for parent of the path to %u\n", id);
     if (!head || !find_node(id, head)) {
         // either empty tree or id not in tree
         return false;
@@ -171,9 +172,10 @@ bool ChildrenTree::node_exists(uint32_t id) {
 bool ChildrenTree::find_parent_recursive(Node* node, uint32_t target, uint32_t *parent) {
     for (int i = 0; i < node->number_of_children; ++i) {
         Node* child = node->children[i];
+        //std::cout << child->id;
         if (child->id == target) {
             // this node is the parent of the target
-            parent = &node->id;
+           *parent = node->id;
             return true;
         }
         // otherwise, recurse into that child’s subtree
