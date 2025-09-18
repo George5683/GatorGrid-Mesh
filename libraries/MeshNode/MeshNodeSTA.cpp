@@ -283,6 +283,9 @@ bool STANode::init_sta_mode() {
         return false;
     }
 
+    // Set power mode to high power
+    cyw43_wifi_pm(&cyw43_state, CYW43_PERFORMANCE_PM);
+
    DEBUG_printf("Initiation to STA mode successful\n");
     return true;
 }
