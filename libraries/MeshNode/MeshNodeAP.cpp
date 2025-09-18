@@ -1,5 +1,4 @@
 #include "MeshNode.hpp"
-#include "Messages.hpp"
 #include <cstdint>
 #include <random>
 #include <ctime>
@@ -7,9 +6,6 @@
 #include <cstdlib>
 #include <cstring>
 #include <sstream>
-
-#include "../SPI/SPI.hpp"
-#include "../ChildrenTree/ChildrenTree.hpp"
 
 #include "SerialMessages.hpp"
 #include "hardware/regs/rosc.h"
@@ -29,7 +25,7 @@
 #define DEBUG_printf
 #endif
 
-#if 1
+#if DEBUG
  static void dump_bytes(const uint8_t *bptr, uint32_t len) {
      unsigned int i = 0;
  
@@ -603,7 +599,7 @@ bool APNode::send_tcp_data(uint32_t id, tcp_pcb *client_pcb, uint8_t* data, uint
     //memcpy(buffer, data, size);
 
     bool flag = false;
-    dump_bytes(data, size);
+    DUMP_BYTES(data, size);
 
     cyw43_arch_lwip_begin();
 
@@ -646,7 +642,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
     //DEBUG_printf("CURRENT NODE ID: %08X\n", test);
 
     puts("HANDLE DUMP");
-    dump_bytes(buffer, 100); 
+    DUMP_BYTES(buffer, 100); 
 
     // TCP_INIT_MESSAGE init_msg(((APNode*)(state->ap_node))->get_NodeID());  
     TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(state->buffer_recv));
@@ -896,7 +892,7 @@ err_t APNode::send_msg(uint8_t* msg) {
         // TODO: target = find(target_id);
         uint32_t parent;
         tree.find_path_parent(target_id, &parent);
-        target = client_tpcbs.at(target_id);
+        target = client_tpcbs.at(parent);
         send_tcp_data(target_id, target, msg, len);
         
     }

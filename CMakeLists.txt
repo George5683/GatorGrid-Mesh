@@ -34,18 +34,14 @@ project(picow_access_point C CXX ASM)
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
+file(GLOB_RECURSE SRC_FILES 
+     "${CMAKE_CURRENT_SOURCE_DIR}/libraries/*/*.c" 
+     "${CMAKE_CURRENT_SOURCE_DIR}/libraries/*/*.cpp")
 
 # ________________________________________ Cmake for sta_background ________________________________________
 add_executable(sta_background
         Tests/sta_test.cpp
-        libraries/dhcpserver/dhcpserver.c
-        libraries/dnsserver/dnsserver.c
-        libraries/MeshNode/MeshNodeAP.cpp
-        libraries/MeshNode/MeshNodeSTA.cpp
-        libraries/MeshNode/Messages.cpp
-        libraries/SPI/SPI.cpp
-        libraries/RingBuffer/RingBuffer.cpp
-        libraries/ChildrenTree/ChildrenTree.cpp
+        ${SRC_FILES}
         )
 
 target_include_directories(sta_background PRIVATE
@@ -75,14 +71,7 @@ pico_add_extra_outputs(sta_background)
 # ________________________________________ Cmake for ap_background ________________________________________
 add_executable(ap_background
         Tests/AP_Test.cpp
-        libraries/dhcpserver/dhcpserver.c
-        libraries/dnsserver/dnsserver.c
-        libraries/MeshNode/MeshNodeAP.cpp
-        libraries/MeshNode/MeshNodeSTA.cpp
-        libraries/MeshNode/Messages.cpp
-        libraries/SPI/SPI.cpp
-        libraries/RingBuffer/RingBuffer.cpp
-        libraries/ChildrenTree/ChildrenTree.cpp
+        ${SRC_FILES}
         )
 
 target_include_directories(ap_background PRIVATE
@@ -112,14 +101,7 @@ pico_add_extra_outputs(ap_background)
 # ________________________________________ Cmake for sta_root ________________________________________
 add_executable(sta_root
         Tests/sta_root.cpp
-        libraries/dhcpserver/dhcpserver.c
-        libraries/dnsserver/dnsserver.c
-        libraries/MeshNode/MeshNodeAP.cpp
-        libraries/MeshNode/MeshNodeSTA.cpp
-        libraries/MeshNode/Messages.cpp
-        libraries/SPI/SPI.cpp
-        libraries/RingBuffer/RingBuffer.cpp
-        libraries/ChildrenTree/ChildrenTree.cpp
+        ${SRC_FILES}
         )
 
 target_include_directories(sta_root PRIVATE
@@ -149,15 +131,7 @@ pico_add_extra_outputs(sta_root)
 # ________________________________________ Cmake for ap_root ________________________________________
 add_executable(ap_root
         Tests/ap_root.cpp
-        libraries/dhcpserver/dhcpserver.c
-        libraries/dnsserver/dnsserver.c
-        libraries/MeshNode/MeshNodeAP.cpp
-        libraries/MeshNode/MeshNodeSTA.cpp
-        libraries/MeshNode/Messages.cpp
-        libraries/SPI/SPI.cpp
-        libraries/RingBuffer/RingBuffer.cpp
-        libraries/ChildrenTree/ChildrenTree.cpp
-        libraries/display/display.cpp
+        ${SRC_FILES}
         )
 
 target_include_directories(ap_root PRIVATE
@@ -189,14 +163,7 @@ pico_add_extra_outputs(ap_root)
 # ________________________________________ Cmake for sta_one ________________________________________
 add_executable(sta_one
         Tests/sta_one.cpp
-        libraries/dhcpserver/dhcpserver.c
-        libraries/dnsserver/dnsserver.c
-        libraries/MeshNode/MeshNodeAP.cpp
-        libraries/MeshNode/MeshNodeSTA.cpp
-        libraries/MeshNode/Messages.cpp
-        libraries/SPI/SPI.cpp
-        libraries/RingBuffer/RingBuffer.cpp
-        libraries/ChildrenTree/ChildrenTree.cpp
+        ${SRC_FILES}
         )
 
 target_include_directories(sta_one PRIVATE
@@ -227,14 +194,7 @@ pico_add_extra_outputs(sta_one)
 
 add_executable(ap_one
         Tests/ap_one.cpp
-        libraries/dhcpserver/dhcpserver.c
-        libraries/dnsserver/dnsserver.c
-        libraries/MeshNode/MeshNodeAP.cpp
-        libraries/MeshNode/MeshNodeSTA.cpp
-        libraries/MeshNode/Messages.cpp
-        libraries/SPI/SPI.cpp
-        libraries/RingBuffer/RingBuffer.cpp
-        libraries/ChildrenTree/ChildrenTree.cpp
+        ${SRC_FILES}
         )
 
 target_include_directories(ap_one PRIVATE
@@ -265,14 +225,7 @@ pico_add_extra_outputs(ap_one)
 # ________________________________________ Cmake for sta_two ________________________________________
 add_executable(sta_two
         Tests/sta_two.cpp
-        libraries/dhcpserver/dhcpserver.c
-        libraries/dnsserver/dnsserver.c
-        libraries/MeshNode/MeshNodeAP.cpp
-        libraries/MeshNode/MeshNodeSTA.cpp
-        libraries/MeshNode/Messages.cpp
-        libraries/SPI/SPI.cpp
-        libraries/RingBuffer/RingBuffer.cpp
-        libraries/ChildrenTree/ChildrenTree.cpp
+        ${SRC_FILES}
         )
 
 target_include_directories(sta_two PRIVATE
@@ -303,14 +256,7 @@ pico_add_extra_outputs(sta_two)
 
 add_executable(ap_two
         Tests/ap_two.cpp
-        libraries/dhcpserver/dhcpserver.c
-        libraries/dnsserver/dnsserver.c
-        libraries/MeshNode/MeshNodeAP.cpp
-        libraries/MeshNode/MeshNodeSTA.cpp
-        libraries/MeshNode/Messages.cpp
-        libraries/SPI/SPI.cpp
-        libraries/RingBuffer/RingBuffer.cpp
-        libraries/ChildrenTree/ChildrenTree.cpp
+        ${SRC_FILES}
         )
 
 target_include_directories(ap_two PRIVATE

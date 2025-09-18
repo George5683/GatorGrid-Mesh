@@ -1,6 +1,6 @@
 #include "picoNodeVectorClass.hpp"
 
-picoNodeVector::picoNodeVector(int picoID = 0){
+picoNodeVector::picoNodeVector(int picoID){
 
     this->nodeID = picoID;
 
