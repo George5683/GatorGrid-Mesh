@@ -72,57 +72,45 @@ void ChildrenTree::remove_children(int id) {
 
 
 bool ChildrenTree::add_child(uint32_t child_id) {
+    if(head == nullptr) {return false;}
     Node* child = new Node(child_id);
-    child->parent = head;
-    std::cout << child->parent->id<<"here\n";
-    Node **newChildren = new Node*[head->number_of_children+1];
-    if (head->number_of_children != 0) {
-        for (int i = 0; i < head->number_of_children; ++i)
-            newChildren[i] = head->children[i];
-        delete head->children;
+    Node* temp;
+    std::vector<Node*> nodes; 
+    nodes.push_back(head);
+    bool found = false;
+    while(!found && !nodes.empty()) {
+        temp = nodes.back();
+        if (temp->number_of_children < 4) {
+            found = true;
+            child->parent = temp;
+            temp->children[temp->number_of_children] = child;
+            temp->number_of_children++;
+        }
+        else {
+            for (int i = 0; i < temp->number_of_children; i++) {
+                nodes.insert(nodes.begin(), temp->children[i]);
+            }
+        }
+        nodes.pop_back();
     }
-    newChildren[head->number_of_children] = child;
-    head->children = newChildren;
-    head->number_of_children+=1;
-    if (head->number_of_children > 3) {
-        std::cout<< "\nWARNING: Number of children for head is greater than 3\n";
-    }
-    return true;
+    nodes.clear();
+    return found;
 }
 
 bool ChildrenTree::add_any_child(uint32_t parent_id, uint32_t child_id) {
-    bool success = false;
-    if (parent_id == id) {
-        Node* child = new Node(child_id);
-        head->children[head->number_of_children++] = child;
-        if (head->number_of_children > 3) {
-            std::cout<< "\nWARNING: Number of children for head is greater than 3\n";
-        }
-        success = true;
-    } else {
-        Node* parent = find_node(parent_id, head);
-        std::cout << "\nPID: " << parent->id;
-        if (!parent) {
-            success = false;
-        } else {
-            Node* child = new Node(child_id);
-            child->parent = parent;
-            Node **newChildren = new Node*[head->number_of_children+1];
-            if (parent->number_of_children != 0) {
-                for (int i = 0; i < parent->number_of_children; ++i)
-                newChildren[i] = parent->children[i];
-                delete parent->children;
-            }
-            newChildren[parent->number_of_children] = child;
-            parent->children = newChildren;
-            parent->number_of_children+=1;
-            if (parent->number_of_children > 3) {
-                std::cout<< "\nWARNING: Number of children for node " << parent->id <<" is greater than 3\n";
-            }
-        }
-
+    if(head == nullptr) {return false;}
+    Node *parent = find_node(parent_id, head);
+    
+    if (parent ==  nullptr) {return false;}
+    if (parent->number_of_children > 3) {
+        std::cout<<"Max number of children already reached for node " << parent->id;
+        return false;
     }
-    return success;
+    Node* child = new Node(child_id);
+    parent->children[parent->number_of_children] = child;
+    parent->number_of_children++;
+    child->parent = parent;
+    return true;
 }
 
 ChildrenTree::Node* ChildrenTree::find_node(uint32_t id, Node* head) {
