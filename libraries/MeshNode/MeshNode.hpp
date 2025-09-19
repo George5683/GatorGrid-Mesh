@@ -43,12 +43,53 @@ extern "C" {
     #include "hardware/clocks.h"
 }
 
+#define TCP_PORT 4242
+
+#define BUF_SIZE 2048
+#define TEST_ITERATIONS 10
+#define POLL_TIME_S 5
+
+#define DEBUG 0
+
 // Forward declarations
 struct TCP_SERVER_T_;
 typedef struct TCP_SERVER_T_ TCP_SERVER_T;
 
 struct TCP_CLIENT_T_;
 typedef struct TCP_CLIENT_T_ TCP_CLIENT_T;
+
+// TCP Server state structures
+typedef struct TCP_CONNECT_STATE_T_ {
+    struct tcp_pcb *pcb;
+    int sent_len;
+    char headers[128];
+    char result[256];
+    int header_len;
+    int result_len;
+    ip_addr_t *gw;
+    void* ap_node;
+} TCP_CONNECT_STATE_T;
+
+typedef struct TCP_SERVER_T_ {
+    struct tcp_pcb *server_pcb;
+    struct tcp_pcb *client_pcb;
+    bool complete;
+    int sent_len;
+    int recv_len;
+    int run_count;
+    ip_addr_t gw;
+    void* ap_node;
+    dhcp_server_t dhcp_server;
+    dns_server_t dns_server;
+    uint8_t buffer_sent[BUF_SIZE];
+    uint8_t buffer_recv[BUF_SIZE];
+} TCP_SERVER_T;
+
+struct ClientConnection {
+    struct tcp_pcb *pcb;
+    bool id_recved = false;
+    uint32_t id = 0;
+};
 
 class MeshNode {
 private:
@@ -76,13 +117,15 @@ public:
 
     SPI Master_Pico;
 
-    std::vector<void*> connections;
+    // std::vector<void*> connections;
 
     // map for results/results_flag from clients
-    std::map<int, std::string> client_results;
-    std::map<int, bool> client_results_flag;
+    // std::map<int, std::string> client_results;
+    // std::map<int, bool> client_results_flag;
 
     std::map<uint32_t, tcp_pcb*> client_tpcbs;
+    std::vector<ClientConnection> clients;
+    std::map<tcp_pcb *, ClientConnection> clients_map;
 
     //lp9 CONSTRUCTOR/DECONSTRUCTOR
     APNode();
