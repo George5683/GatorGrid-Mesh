@@ -2,7 +2,7 @@
 
 Design are seperated into versions based on functionality and Design stages 
 
-*The first design V(X.0) is always the dev kit with extra Pico pinouts sockets for monitoring*
+*Start from BETA BUILD the first design V(X.0) is always the dev kit with extra Pico pinouts sockets for monitoring*
 
 # Kicad Stages
 - Alpha Build (V1.0+)
