@@ -4614,6 +4614,16 @@
 			(embedded_fonts no)
 		)
 	)
+	(text "Charging Pico\n"
+		(exclude_from_sim no)
+		(at 41.148 117.602 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "1826b97f-50f8-47e8-8ca1-f4e393a3b975")
+	)
 	(text "Charge Complete LED"
 		(exclude_from_sim no)
 		(at 210.058 84.074 0)
@@ -4914,7 +4924,7 @@
 	)
 	(wire
 		(pts
-			(xy 177.8 156.21) (xy 189.23 156.21)
+			(xy 177.8 156.21) (xy 196.85 156.21)
 		)
 		(stroke
 			(width 0)
@@ -5126,6 +5136,28 @@
 			)
 		)
 	)
+	(global_label "UART_TX"
+		(shape input)
+		(at 29.21 97.79 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "0e2e1d02-f579-4ffb-a359-84d01e0a44fe")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 18.4234 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "B_GPIO2"
 		(shape input)
 		(at 113.03 72.39 180)
@@ -5210,28 +5242,6 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "A_GPIO13"
-		(shape input)
-		(at 39.37 172.72 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "11aa871a-ff66-4d07-80b6-77920739b6cb")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 28.6438 172.72 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
 				(hide yes)
 			)
 		)
@@ -5434,28 +5444,6 @@
 			)
 		)
 	)
-	(global_label "B_GPIO11"
-		(shape input)
-		(at 113.03 95.25 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "185686f8-9525-4e46-86a1-5d9b4a017f8f")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 102.3038 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "A_GPIO3"
 		(shape input)
 		(at 39.37 142.24 180)
@@ -5654,28 +5642,6 @@
 			)
 		)
 	)
-	(global_label "B_GPIO12"
-		(shape input)
-		(at 113.03 97.79 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "2ea97ba7-b461-4588-bab9-3fb2f9ff52a9")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 102.3038 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "A_RUN"
 		(shape input)
 		(at 29.21 59.69 180)
@@ -5711,6 +5677,28 @@
 		(uuid "316c77c2-2181-454f-9a7b-2144029fec31")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 109.9238 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "UART_TX"
+		(shape input)
+		(at 120.65 173.99 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "35c3557e-964c-4e98-aea2-5060d21b6ed6")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 109.8634 173.99 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6072,28 +6060,6 @@
 			)
 		)
 	)
-	(global_label "A_GPIO13"
-		(shape input)
-		(at 29.21 100.33 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "62f4fa20-0728-4d22-80df-d558570727f0")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 18.4838 100.33 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "B_GPIO3"
 		(shape input)
 		(at 113.03 74.93 180)
@@ -6402,6 +6368,28 @@
 			)
 		)
 	)
+	(global_label "UART_RX"
+		(shape input)
+		(at 120.65 171.45 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "8612960a-d8ea-442b-a9b1-7b23370276a4")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 109.561 171.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "A_3V3(OUT)"
 		(shape input)
 		(at 214.63 27.94 180)
@@ -6415,6 +6403,28 @@
 		(uuid "86e57768-f65f-4c80-8308-45dda172b212")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 200.759 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "UART_RX"
+		(shape input)
+		(at 29.21 100.33 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "875b5b2e-918f-4dea-8b8b-d10d366794e9")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 18.121 100.33 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6556,28 +6566,6 @@
 			)
 		)
 	)
-	(global_label "B_GPIO13"
-		(shape input)
-		(at 120.65 173.99 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "9008e203-925f-4535-ae30-f8042004993c")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 109.9238 173.99 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "VSYS"
 		(shape input)
 		(at 177.8 156.21 180)
@@ -6710,28 +6698,6 @@
 			)
 		)
 	)
-	(global_label "B_GPIO12"
-		(shape input)
-		(at 120.65 171.45 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "96b88f0a-b334-4fcb-8e0c-d2209534b964")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 109.9238 171.45 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "A_GPIO21"
 		(shape input)
 		(at 74.93 82.55 0)
@@ -6838,28 +6804,6 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "A_GPIO12"
-		(shape input)
-		(at 39.37 170.18 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "9979e03b-8482-432c-8e4d-e6dd8a3d5708")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 28.6438 170.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
 				(hide yes)
 			)
 		)
@@ -6987,6 +6931,28 @@
 		(uuid "a1455f50-9be4-4839-b7c4-f221046cd217")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 28.6438 177.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "UART_TX"
+		(shape input)
+		(at 39.37 170.18 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "a287184c-7c6f-469f-a133-58b585d944af")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 28.5834 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7326,6 +7292,28 @@
 			)
 		)
 	)
+	(global_label "UART_RX"
+		(shape input)
+		(at 39.37 172.72 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "c427c57c-de48-432a-a859-f322500c5934")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 28.281 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "A_GPIO9"
 		(shape input)
 		(at 39.37 160.02 180)
@@ -7410,6 +7398,28 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "UART_TX"
+		(shape input)
+		(at 113.03 97.79 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "c87dcf16-7e4e-4938-a46a-530adab38e3c")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 102.2434 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
 				(hide yes)
 			)
 		)
@@ -7810,28 +7820,6 @@
 			)
 		)
 	)
-	(global_label "A_GPIO12"
-		(shape input)
-		(at 29.21 97.79 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "e23b768b-af1b-4886-bcd2-b7899779927f")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 18.4838 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "A-VBUS"
 		(shape input)
 		(at 247.65 83.82 0)
@@ -8026,6 +8014,28 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "UART_RX"
+		(shape input)
+		(at 113.03 95.25 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "f6574d40-6ec3-4538-9fcd-6046c2ef73fb")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 101.941 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
 				(hide yes)
 			)
 		)
@@ -9508,7 +9518,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 			(at 256.032 31.75 90)
 			(effects
 				(font
@@ -11275,7 +11285,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 			(at 240.792 31.75 90)
 			(effects
 				(font
@@ -11379,74 +11389,6 @@
 			(project "Design V2.0"
 				(path "/e5d91564-edf1-47a0-9cf2-4d1020567cc1"
 					(reference "R2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Diode:SS34")
-		(at 193.04 156.21 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b1231e7a-cbe7-44d4-a8c4-eef11884a4f1")
-		(property "Reference" "D1"
-			(at 192.7225 149.86 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SS34"
-			(at 192.7225 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Diode_THT:D_DO-41_SOD81_P7.62mm_Horizontal"
-			(at 193.04 160.655 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.vishay.com/docs/88751/ss32.pdf"
-			(at 193.04 156.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "40V 3A Schottky Diode, SMA"
-			(at 193.04 156.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "09cd6368-24cf-44f0-93e5-c3891e7af5be")
-		)
-		(pin "2"
-			(uuid "1cf2f6b4-fa93-4e1a-8baf-55ee00e1f0e6")
-		)
-		(instances
-			(project "Design V2.0"
-				(path "/e5d91564-edf1-47a0-9cf2-4d1020567cc1"
-					(reference "D1")
 					(unit 1)
 				)
 			)
