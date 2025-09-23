@@ -6,7 +6,7 @@
 - VBUS is 5V when connected to micro usb to power the Pico
 - VSYS can power the Pico with ~1.8-5.5V input
 
-Schematics Update:
+## Schematic Update:
 - Added a JST connector for an extenal battery to be connected
 - Added a switch after the JSt conncector for powering the Picos
 - Added a polyfuse (polyfuse's reset instead of replacing the fuse if its broken)
