@@ -1,4 +1,6 @@
-Explanation for the Pinouts on the Pico W:
+# Kicad Design V1.0
+
+## Explanation for the Pinouts on the Pico W:
 
 - GPIO 1-22 and 26-28 are as the schematic states
 - VBUS is 5V when connected to micro usb to power the Pico

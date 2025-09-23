@@ -1,3 +1,4 @@
+## Kicad Design V0.1
 Explanation for the Pinouts on the Pico W:
 
 - GPIO 1-22 and 26-28 are as the schematic states

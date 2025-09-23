@@ -1,4 +1,6 @@
-Explanation for the Pinouts on the Pico W:
+# Kicad Design V2.0
+
+## Explanation for the Pinouts on the Pico W:
 
 - GPIO 1-22 and 26-28 are as the schematic states
 - VBUS is 5V when connected to micro usb to power the Pico
@@ -10,7 +12,5 @@ Schematics Update:
 - Added a polyfuse (polyfuse's reset instead of replacing the fuse if its broken)
 - Added a Schottky diode (to prevent current backflow and if user connects the battery backwards)
 - Added a charging/safety cicuit [TP4056] (for charging the battery and battery management)
-- Added an AND gate circuitry to indicate both Picos are turned on. 
-- Added an LED to indicate charging of external battery. 
 
 
