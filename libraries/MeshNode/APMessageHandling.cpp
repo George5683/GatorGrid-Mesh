@@ -129,7 +129,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
         case 0x01: {
             TCP_DATA_MSG* dataMsg = reinterpret_cast<TCP_DATA_MSG*>(state->buffer_recv);
             // Store messages in a ring buffer
-            puts("Got data message");
+            DEBUG_printf("Got data message\n");
             DEBUG_printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
             if (dataMsg->msg.dest == get_NodeID()) {
                 rb.insert(dataMsg->msg.msg,dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
@@ -282,6 +282,7 @@ err_t APNode::send_data(uint32_t send_id, ssize_t len, uint8_t *buf) {
 
 err_t APNode::send_msg(uint8_t* msg) {
     //TCP_MESSAGE* tcp_msg = parseMessage(msg);
+    
     size_t len = 0;
     uint32_t target_id = 0;
     tcp_pcb *target = nullptr;
@@ -290,8 +291,11 @@ err_t APNode::send_msg(uint8_t* msg) {
     switch (id) {
         case 0x00:  // Init message from STA -> thus new parent has been added
         {           // This message should probably never be received via serial
-            TCP_INIT_MESSAGE* initMsg = reinterpret_cast<TCP_INIT_MESSAGE*>(msg);
-            parent = initMsg->msg.source;
+            // TCP_INIT_MESSAGE* initMsg = reinterpret_cast<TCP_INIT_MESSAGE*>(msg);
+            // parent = initMsg->msg.source;
+
+            TCP_INIT_MESSAGE initMsg;
+            initMsg.set_msg(msg);
 
             return 0;
             /* TODO: This is for STA
@@ -319,10 +323,11 @@ err_t APNode::send_msg(uint8_t* msg) {
         }
         case 0x01: /* TCP_DATA_MSG */
         {
-            TCP_DATA_MSG* dataMsg = reinterpret_cast<TCP_DATA_MSG*>(msg);
-            len = dataMsg->get_len();
-            target_id = dataMsg->msg.dest;
-
+            TCP_DATA_MSG dataMsg;
+            dataMsg.set_msg(msg);
+            len = dataMsg.get_len();
+            target_id = dataMsg.msg.dest;
+            DUMP_BYTES(dataMsg.get_msg(), len);
             break;
         }
         case 0x02: /* TCP_DISCONNECT_MSG */
@@ -334,26 +339,41 @@ err_t APNode::send_msg(uint8_t* msg) {
             break;
         case 0x03: /* TCP_UPDATE_MESSAGE */
         {
-            TCP_UPDATE_MESSAGE* updateMsg = reinterpret_cast<TCP_UPDATE_MESSAGE*>(msg);
-            len = updateMsg->get_len();
-            target_id = updateMsg->msg.dest;
+            TCP_UPDATE_MESSAGE updateMsg;
+            len = updateMsg.get_len();
+            target_id = updateMsg.msg.dest;
             break;
         }
         case 0x04: /* TCP_ACK_MESSAGE */
+        {   
+            TCP_ACK_MESSAGE ackMsg;
+            len = ackMsg.get_len();
+            target_id = ackMsg.msg.dest;
             break;
+        }
         case 0x05: /* TCP_NAK_MESSAGE */
+        {
+            TCP_NAK_MESSAGE nakMsg;
+            len = nakMsg.get_len();
+            target_id = nakMsg.msg.dest;
             break;
+        }
         case 0x06: /* TCP_FORCE_UPDATE_MESSAGE */
+        {
+            TCP_FORCE_UPDATE_MESSAGE fUpdateMsg;
+            len = fUpdateMsg.get_len();
+            target_id = fUpdateMsg.msg.dest;
             break;
+        }
         default:
         {
             return -1;
         }
 
-        // TODO: target = find(target_id);
-        uint32_t parent;
-        if(!tree.find_path_parent(target_id, &parent)) return -1;
-        target = client_tpcbs.at(parent);
+        uint32_t path_parent;
+        if(!tree.find_path_parent(target_id, &path_parent)) return -1;
+        target = client_tpcbs.at(path_parent);
+        DUMP_BYTES(msg, sizeof(msg));
         send_tcp_data(target_id, target, msg, len);
         
     }
@@ -381,10 +401,9 @@ err_t APNode::handle_serial_message(uint8_t *msg) {
             break;
         case 0x02: /* Data message */
         {
-            // SERIAL_DATA_MESSAGE serial_msg;
-            // serial_msg.set_msg(msg);
-
-            send_msg(msg);
+            SERIAL_DATA_MESSAGE serial_msg;
+            serial_msg.set_msg(msg);
+            send_msg(serial_msg.get_msg());
             
             break;
         }
