@@ -64,7 +64,6 @@
 			(psnegative no)
 			(psa4output no)
 			(plot_black_and_white yes)
-			(plotinvisibletext no)
 			(sketchpadsonfab no)
 			(plotpadnumbers no)
 			(hidednponfab no)
@@ -7264,6 +7263,103 @@
 		)
 		(embedded_fonts no)
 	)
+	(footprint "MountingHole:MountingHole_3.2mm_M3_ISO7380"
+		(layer "F.Cu")
+		(uuid "9907b125-5298-4ed2-8cc2-a7aeca4a51dc")
+		(at 228.5 121)
+		(descr "Mounting Hole 3.2mm, no annular, M3, ISO7380")
+		(tags "mounting hole 3.2mm no annular m3 iso7380")
+		(property "Reference" "H5"
+			(at 0 -3.85 0)
+			(layer "F.SilkS")
+			(uuid "66c50c95-d6bc-4376-85f4-aa3c6431d8ac")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "MountingHole_3.2mm_M3_ISO7380"
+			(at 3 5.5 0)
+			(layer "F.Fab")
+			(uuid "d8ccc07d-4628-488d-b44a-ba71d07e3223")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "c51e49e5-ca52-497f-9ace-9f844f9cdc64")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "5a5cdb2f-fca0-4030-9431-25ef88ee90cf")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr exclude_from_pos_files exclude_from_bom)
+		(fp_circle
+			(center 0 0)
+			(end 2.85 0)
+			(stroke
+				(width 0.15)
+				(type solid)
+			)
+			(fill no)
+			(layer "Cmts.User")
+			(uuid "6bb3b770-b830-4b2b-8972-578eb391246f")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 3.1 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "8f89b20d-a8dd-40a0-b9a8-4be3b6a2bca3")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(uuid "6aeb99ae-9597-4886-824f-9ba48fc295fa")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "" np_thru_hole circle
+			(at 0 0)
+			(size 3.2 3.2)
+			(drill 3.2)
+			(layers "*.Cu" "*.Mask")
+			(uuid "238e2256-4c09-4ef8-a3df-ca32459023e0")
+		)
+		(embedded_fonts no)
+	)
 	(footprint "LED_THT:LED_D5.0mm"
 		(layer "F.Cu")
 		(uuid "a32042ec-f884-48fc-ac86-50b7a29976c6")
@@ -11703,7 +11799,7 @@
 		(layer "Edge.Cuts")
 		(uuid "72fcc0f2-cd98-4378-a250-ad32037c7ce5")
 	)
-	(gr_text "GatorGrid-DEV-V2.0"
+	(gr_text "GatorGrid-DEV-V3.0"
 		(at 247 127.5 90)
 		(layer "F.SilkS")
 		(uuid "93c17cfe-a999-4cc0-a76b-59824f448767")
