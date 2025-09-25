@@ -269,12 +269,13 @@ err_t APNode::send_data(uint32_t send_id, ssize_t len, uint8_t *buf) {
     //TODO: Add tree and look whether it needs to go up or down the tree
     TCP_DATA_MSG msg(get_NodeID(), send_id);
     msg.add_message(buf, len);
-    if (client_tpcbs.find(send_id) == client_tpcbs.end()){
-        return -2;
-    } 
-    tcp_pcb *client_pcb = client_tpcbs.at(send_id);
-    if (!send_tcp_data(send_id, client_pcb, msg.get_msg(), msg.get_len()))
-        return -1;
+    // if (client_tpcbs.find(send_id) == client_tpcbs.end()){
+    //     return -2;
+    // } 
+    // tcp_pcb *client_pcb = client_tpcbs.at(send_id);
+    // if (!send_tcp_data(send_id, client_pcb, msg.get_msg(), msg.get_len()))
+    //     return -1;
+    send_msg(msg.get_msg());
     return 0;
 }
 
@@ -323,9 +324,15 @@ err_t APNode::send_msg(uint8_t* msg) {
 
             break;
         }
-        case 0x02:
+        case 0x02: /* TCP_DISCONNECT_MSG */
             break;
-        case 0x03:
+        case 0x03: /* TCP_UPDATE_MESSAGE */
+            break;
+        case 0x04: /* TCP_ACK_MESSAGE */
+            break;
+        case 0x05: /* TCP_NAK_MESSAGE */
+            break;
+        case 0x06: /* TCP_FORCE_UPDATE_MESSAGE */
             break;
         default:
         {
@@ -334,7 +341,7 @@ err_t APNode::send_msg(uint8_t* msg) {
 
         // TODO: target = find(target_id);
         uint32_t parent;
-        tree.find_path_parent(target_id, &parent);
+        if(!tree.find_path_parent(target_id, &parent)) return -1;
         target = client_tpcbs.at(parent);
         send_tcp_data(target_id, target, msg, len);
         
@@ -354,10 +361,12 @@ err_t APNode::handle_serial_message(uint8_t *msg) {
             serial_msg.set_msg(msg);
 
             // TODO: figure which to set parent = to
+            parent = serial_msg.get_parent();
             break; 
         }
         case 0x01: /* serial_node_remove_msg */
             // If AP receives node_remove, a parent has been removed
+            parent = -1;
             break;
         case 0x02: /* Data message */
         {
