@@ -26,8 +26,6 @@ extern "C" {
 *   Client Class
 */
 
-#define DEBUG 0
-
 #define TCP_PORT 4242
 #if DEBUG 
 #define DEBUG_printf printf
@@ -39,7 +37,7 @@ extern "C" {
 #define TEST_ITERATIONS 10
 #define POLL_TIME_S 5
 
-#if 0
+#if DEBUG
  static void dump_bytes(const uint8_t *bptr, uint32_t len) {
      unsigned int i = 0;
  
@@ -588,11 +586,11 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
     bool self_reply = false;
     state->got_nak = false;
     
-    TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(buffer));
-    if (!msg) {
-       DEBUG_printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
-        ACK_flag = false;
-    } else {
+    // TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(buffer));
+    // if (!msg) {
+    //    DEBUG_printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
+    //     ACK_flag = false;
+    // } else {
 
         uint8_t msg_id = buffer[1];
         uint16_t len = *reinterpret_cast<uint16_t*>(buffer +2);
@@ -603,7 +601,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
         //dump_bytes(buffer, 100);
         switch (msg_id) {
             case 0x00: {
-                TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(msg);
+                TCP_INIT_MESSAGE* initMsg = reinterpret_cast<TCP_INIT_MESSAGE*>(buffer);
                 //does stuff
                DEBUG_printf("Received initialization message from node %u", initMsg->msg.source);
                 source_id =  initMsg->msg.source;
@@ -611,7 +609,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
                 break;
             }
             case 0x01: {
-                TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
+                TCP_DATA_MSG* dataMsg = reinterpret_cast<TCP_DATA_MSG*>(buffer);
                 DEBUG_printf("Got data message\n");
                 if (dataMsg->msg.dest == get_NodeID()) {
                     source_id =  dataMsg->msg.source;
@@ -627,12 +625,14 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
                 break;
             }
             case 0x02: {
-                TCP_DISCONNECT_MSG* discMsg = static_cast<TCP_DISCONNECT_MSG*>(msg);
+                TCP_DISCONNECT_MSG* initMsg = reinterpret_cast<TCP_DISCONNECT_MSG*>(buffer);
+                
                 //does stuff
                 break;
             }
             case 0x03: {
-                TCP_UPDATE_MESSAGE* updMsg = static_cast<TCP_UPDATE_MESSAGE*>(msg);
+                TCP_UPDATE_MESSAGE* initMsg = reinterpret_cast<TCP_UPDATE_MESSAGE*>(buffer);
+
 
                 //puts("Update packet recieved");
 
@@ -643,7 +643,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
             }
             case 0x04: {
                 DEBUG_printf("Got ACK\n");
-                TCP_ACK_MESSAGE* ackMsg = static_cast<TCP_ACK_MESSAGE*>(msg);
+                TCP_ACK_MESSAGE* ackMsg = reinterpret_cast<TCP_ACK_MESSAGE*>(buffer);
 
                 source_id = ackMsg->msg.source;
 
@@ -657,7 +657,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
                 break;
             }
             case 0x05: {
-                TCP_NAK_MESSAGE* nakMsg = static_cast<TCP_NAK_MESSAGE*>(msg);
+                TCP_NAK_MESSAGE* nakMsg = reinterpret_cast<TCP_NAK_MESSAGE*>(buffer);
                 //does stuff
                 puts("Warning! Message was not received! (Got a NAK instead of ACK)");
                 DEBUG_printf("Got NAK\n");
@@ -672,7 +672,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
                 // SEND NAK message
                 //TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), msg_id ? msg_id : 0, 0);
                 break;
-        }
+        // }
     }
 
     if (ACK_flag && !self_reply){
@@ -685,11 +685,11 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
         // identify the source from sender and send back?
         TCP_NAK_MESSAGE nakMsg(get_NodeID(), 0, p->tot_len);
         send_tcp_data(nakMsg.get_msg(), nakMsg.get_len(), true);
-        delete msg;
+        // delete msg;
         return false;
     }
 
-    delete msg;
+    // delete msg;
     return true;
 }
 

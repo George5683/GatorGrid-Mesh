@@ -7,6 +7,7 @@
 #include <cstring>
 #include <sstream>
 
+#include "Messages.hpp"
 #include "SerialMessages.hpp"
 #include "hardware/regs/rosc.h"
 #include "hardware/regs/addressmap.h"
@@ -325,9 +326,19 @@ err_t APNode::send_msg(uint8_t* msg) {
             break;
         }
         case 0x02: /* TCP_DISCONNECT_MSG */
+            // Sending this seems meaningless -> just update parent via STA
+
+            //TCP_DISCONNECT_MSG* killMsg = reinterpret_cast<TCP_DISCONNECT_MSG*>(msg);
+            //len = killMsg->get_len();
+            //target_id = killMsg->msg.;
             break;
         case 0x03: /* TCP_UPDATE_MESSAGE */
+        {
+            TCP_UPDATE_MESSAGE* updateMsg = reinterpret_cast<TCP_UPDATE_MESSAGE*>(msg);
+            len = updateMsg->get_len();
+            target_id = updateMsg->msg.dest;
             break;
+        }
         case 0x04: /* TCP_ACK_MESSAGE */
             break;
         case 0x05: /* TCP_NAK_MESSAGE */

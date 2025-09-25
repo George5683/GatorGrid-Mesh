@@ -26,6 +26,7 @@ public:
         uint8_t msg_id;
         uint16_t len;
         uint32_t source;
+        uint32_t dest;
         uint8_t child_count;
         uint32_t children_IDs[4]; //max 4
     }tcp_update_msg;
@@ -172,11 +173,12 @@ class TCP_UPDATE_MESSAGE : public TCP_MESSAGE {
 public:
     tcp_update_msg msg = {0};
 public:
-    TCP_UPDATE_MESSAGE(uint32_t id) : TCP_MESSAGE(0xFF) { 
+    TCP_UPDATE_MESSAGE(uint32_t id, uint32_t dest) : TCP_MESSAGE(0xFF) { 
         msg.priority = priority;
         msg.msg_id = 0x03;
-        msg.len = 25;
+        msg.len = 29;
         msg.source = id;
+        msg.dest = dest;
         msg.child_count = 0;
     }
 
@@ -285,6 +287,6 @@ public:
  * @param data buffer recieved over tcp
  * @return TCP_MESSAGE*  !!USER MUST DELETE!!
  */
-TCP_MESSAGE* parseMessage(uint8_t* data);
+// TCP_MESSAGE* parseMessage(uint8_t* data);
 
 #endif // MESSAGES_HPP
