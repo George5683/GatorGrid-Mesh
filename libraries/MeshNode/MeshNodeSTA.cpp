@@ -1,4 +1,5 @@
-#include "libraries/SPI/SPI.hpp"
+#include "../UART/UART.hpp"
+//#include "../SPI/SPI.hpp"
 #include "MeshNode.hpp"
 #include "Messages.hpp"
 #include <random>
@@ -26,7 +27,7 @@ extern "C" {
 *   Client Class
 */
 
-#define DEBUG 0
+#define DEBUG 1
 
 #define TCP_PORT 4242
 #if DEBUG 
@@ -257,21 +258,23 @@ bool STANode::init_sta_mode() {
 
     uint32_t AP_ID = 0;
 
-    Slave_Pico.Set_Master(false);
-    Slave_Pico.SPI_init();
+    DEBUG_printf("starting uart\n");
+    uart.picoUARTInit();
+    DEBUG_printf("uart  nitalized\n");
+    uart.picoUARTInterruptInit();
+    DEBUG_printf("uart intterupts initalized\n");
 
     vector<uint8_t> temp;
 
-    while(!Slave_Pico.SPI_POLL_MESSAGE());
+    // Wait for the AP pico to send the first message
+    
+    DEBUG_printf("Waiting for ID from AP over UART");
 
-    Slave_Pico.SPI_read_message(temp);
+    while(!uart.BufferReady());
 
-    if(temp.size() == 0) {
-        while(true) 
-            puts("Error with SPI read size.");
-    }
+    uint8_t *buffer = uart.getReadBuffer();
 
-    AP_ID = *(uint32_t*)temp.data();
+    AP_ID = *(uint32_t*)buffer;
     printf("ID char: %d\n", AP_ID);
 
     this->set_NodeID(AP_ID);

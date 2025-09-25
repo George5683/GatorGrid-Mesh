@@ -9,7 +9,8 @@
 #include <vector>
 #include "pico/cyw43_arch.h"
 
-#include "../SPI/SPI.hpp"
+#include "../UART/UART.hpp"
+//#include "../SPI/SPI.hpp"
 #include "../RingBuffer/RingBuffer.hpp"
 #include "../SPI/SerialMessages.hpp"
 #include "Messages.hpp"
@@ -57,6 +58,8 @@ public:
     MeshNode();
     virtual ~MeshNode();
 
+    PicoUART uart;
+
     // Base class functions for get/set NodeID
     void set_NodeID(uint32_t ID);
     uint32_t get_NodeID();
@@ -73,8 +76,6 @@ public:
     
     RingBuffer rb;
     ChildrenTree tree;
-
-    SPI Master_Pico;
 
     std::vector<void*> connections;
 
@@ -240,9 +241,6 @@ public:
     std::string AP_CONNECTED_IP;
 
     RingBuffer rb;
-
-    SPI Slave_Pico;
-
 
     STANode();
     ~STANode();

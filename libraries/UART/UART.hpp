@@ -16,19 +16,22 @@
 
 class PicoUART {
 private:
-    char rxBuffer[MAX_LEN];
+    uint8_t rxBuffer[MAX_LEN];
     int rxIndex = 0;
 
     static PicoUART* instance;
+
+    bool buffer_ready = false;
 
 public:
     PicoUART();
     ~PicoUART() = default;
 
     bool picoUARTInit();
+    bool BufferReady(); // check to see if we have a message waiting for us
     bool picoUARTInterruptInit();
     int sendMessage(const char* message);
-    char* getReadBuffer();
+    uint8_t* getReadBuffer();
 
     static void on_uart_rx();
 };

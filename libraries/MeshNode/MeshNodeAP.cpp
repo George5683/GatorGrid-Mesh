@@ -17,7 +17,7 @@
 #define TEST_ITERATIONS 10
 #define POLL_TIME_S 5
 
-#define DEBUG 0
+#define DEBUG 1
 
 #if DEBUG 
 #define DEBUG_printf printf
@@ -384,11 +384,11 @@ void run_tcp_server(void * arg) {
 }
 
 // APNode class constructor
-APNode::APNode() : state(nullptr), running(false), password("password"), rb(10), tree(get_NodeID()), Master_Pico()  {
+APNode::APNode() : state(nullptr), running(false), password("password"), rb(10), tree(get_NodeID())  {
     snprintf(ap_name, sizeof(ap_name), "GatorGrid_Node:%08X", get_NodeID());
 }
 
-APNode::APNode(uint32_t id) : state(nullptr), running(false), password("password"), rb(10), tree(id), Master_Pico()  {
+APNode::APNode(uint32_t id) : state(nullptr), running(false), password("password"), rb(10), tree(id) {
     set_NodeID(id);
     snprintf(ap_name, sizeof(ap_name), "GatorGrid_Node:%08X", get_NodeID());
 }
@@ -441,8 +441,13 @@ APNode::~APNode(){
 
 bool APNode::init_ap_mode() {
 
-    // initalize SPI
-    Master_Pico.Set_Master(true);
+    // initalize uart
+
+    DEBUG_printf("starting uart\n");
+    uart.picoUARTInit();
+    DEBUG_printf("uart  nitalized\n");
+    uart.picoUARTInterruptInit();
+    DEBUG_printf("uart intterupts initalized\n");
 
     // Allocate the state of the TCP server if not already allocated
     if (!state) {
@@ -533,7 +538,7 @@ bool APNode::start_ap_mode() {
      #else
      #define IP(x) (x)
      #endif
- \
+     
      ip4_addr_t mask;
      IP(state->gw).addr = PP_HTONL(CYW43_DEFAULT_IP_AP_ADDRESS);
      IP(mask).addr = PP_HTONL(CYW43_DEFAULT_IP_MASK);
@@ -555,18 +560,24 @@ bool APNode::start_ap_mode() {
     }
 
     // Start SPI
-    Master_Pico.SPI_init();
+    // Master_Pico.SPI_init();
+
+    // uint32_t ID = this->get_node_id();
+    // vector<uint8_t> temp =  { 'A', 'f', 'f', 'f', 'f', 'f', 'f', 'f',
+    //                                           'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f',
+    //                                           'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f',
+    //                                           'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f' };
+    // *(uint32_t*)temp.data() = ID;
+
+    // Master_Pico.SPI_send_message(temp);
 
     uint32_t ID = this->get_node_id();
-    vector<uint8_t> temp =  { 'A', 'f', 'f', 'f', 'f', 'f', 'f', 'f',
-                                              'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f',
-                                              'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f',
-                                              'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f' };
-    *(uint32_t*)temp.data() = ID;
 
-    Master_Pico.SPI_send_message(temp);
+    DEBUG_printf("Sending ID %d\n", ID);
 
-    puts("Message sent");
+    uart.sendMessage((char*)&ID);
+
+    DEBUG_printf("Message sent");
     //puts("entering poll test");
 
     //while(!Master_Pico.SPI_POLL_MESSAGE());
