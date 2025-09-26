@@ -5,12 +5,12 @@
       "Application": "Pcbnew",
       "Version": "9.0.0"
     },
-    "CreationDate": "2025-09-21T20:59:59-04:00"
+    "CreationDate": "2025-09-26T14:06:40-04:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
-      "Name": "Design V2.0",
-      "GUID": "44657369-676e-4205-9632-2e302e6b6963",
+      "Name": "Design V3.0",
+      "GUID": "44657369-676e-4205-9633-2e302e6b6963",
       "Revision": "rev?"
     },
     "Size": {
@@ -32,47 +32,47 @@
   ],
   "FilesAttributes": [
     {
-      "Path": "Design V2-F_Cu.gbr",
+      "Path": "Design V3-F_Cu.gbr",
       "FileFunction": "Copper,L1,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Design V2-B_Cu.gbr",
+      "Path": "Design V3-B_Cu.gbr",
       "FileFunction": "Copper,L2,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Design V2-F_Paste.gbr",
+      "Path": "Design V3-F_Paste.gbr",
       "FileFunction": "SolderPaste,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Design V2-B_Paste.gbr",
+      "Path": "Design V3-B_Paste.gbr",
       "FileFunction": "SolderPaste,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Design V2-F_Silkscreen.gbr",
+      "Path": "Design V3-F_Silkscreen.gbr",
       "FileFunction": "Legend,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Design V2-B_Silkscreen.gbr",
+      "Path": "Design V3-B_Silkscreen.gbr",
       "FileFunction": "Legend,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Design V2-F_Mask.gbr",
+      "Path": "Design V3-F_Mask.gbr",
       "FileFunction": "SolderMask,Top",
       "FilePolarity": "Negative"
     },
     {
-      "Path": "Design V2-B_Mask.gbr",
+      "Path": "Design V3-B_Mask.gbr",
       "FileFunction": "SolderMask,Bot",
       "FilePolarity": "Negative"
     },
     {
-      "Path": "Design V2-Edge_Cuts.gbr",
+      "Path": "Design V3-Edge_Cuts.gbr",
       "FileFunction": "Profile",
       "FilePolarity": "Positive"
     }
