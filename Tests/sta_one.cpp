@@ -13,13 +13,17 @@
 int main() {
     stdio_init_all();
     // initial delay to allow user to look at the serial monitor
-    sleep_ms(10000);
+
+    STANode node;
+
+    
+    sleep_ms(1000);
 
     // initiate everything
 
 
     //SPI spi;
-    STANode node;
+    
     node.init_sta_mode();
     node.start_sta_mode();
 
@@ -62,11 +66,14 @@ int main() {
 
     bool toggle = true;
     for (;;) {
+
         sleep_ms(250);
 
         //while(got_an_ack) {
             
         //}
+
+        node.poll();
 
         cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
         toggle = !toggle;

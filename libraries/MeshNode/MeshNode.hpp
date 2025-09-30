@@ -54,16 +54,18 @@ typedef struct TCP_CLIENT_T_ TCP_CLIENT_T;
 class MeshNode {
 private:
     uint32_t NodeID;
+    
 public:
+    bool is_root = false;
     MeshNode();
     virtual ~MeshNode();
-
-    PicoUART uart;
 
     // Base class functions for get/set NodeID
     void set_NodeID(uint32_t ID);
     uint32_t get_NodeID();
     void seed_rand();
+    bool get_is_root();
+    void set_is_root(bool status);
 };
 
 class APNode : public MeshNode{   
@@ -76,6 +78,8 @@ public:
     
     RingBuffer rb;
     ChildrenTree tree;
+
+    PicoUART uart;
 
     std::vector<void*> connections;
 
@@ -229,6 +233,8 @@ public:
      * @return err_t 
      */
     err_t handle_serial_message(uint8_t* msg);
+
+    
 };
 
 class STANode : public MeshNode{
@@ -252,6 +258,8 @@ public:
     bool is_connected();
     bool tcp_init();
 
+    PicoUART uart;
+
     err_t send_data(uint32_t send_id, ssize_t len, uint8_t *buf);
 
     bool send_tcp_data(uint8_t* data, uint32_t size, bool forward);
@@ -265,6 +273,8 @@ public:
 
     err_t send_msg(uint8_t *msg);
     err_t handle_serial_message(uint8_t* msg);
+
+    void poll();
 };
 
 #endif // MESH_NODE_HPP

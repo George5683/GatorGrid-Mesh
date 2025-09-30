@@ -385,10 +385,26 @@ void run_tcp_server(void * arg) {
 
 // APNode class constructor
 APNode::APNode() : state(nullptr), running(false), password("password"), rb(10), tree(get_NodeID())  {
+        // initalize uart
+
+    DEBUG_printf("starting uart\n");
+    uart.picoUARTInit();
+    DEBUG_printf("uart  nitalized\n");
+    uart.picoUARTInterruptInit();
+    DEBUG_printf("uart intterupts initalized\n");
     snprintf(ap_name, sizeof(ap_name), "GatorGrid_Node:%08X", get_NodeID());
 }
 
 APNode::APNode(uint32_t id) : state(nullptr), running(false), password("password"), rb(10), tree(id) {
+        // initalize uart
+
+    
+
+    DEBUG_printf("starting uart\n");
+    uart.picoUARTInit();
+    DEBUG_printf("uart  nitalized\n");
+    uart.picoUARTInterruptInit();
+    DEBUG_printf("uart intterupts initalized\n");
     set_NodeID(id);
     snprintf(ap_name, sizeof(ap_name), "GatorGrid_Node:%08X", get_NodeID());
 }
@@ -424,6 +440,13 @@ uint32_t MeshNode::get_NodeID(){
     return NodeID;
 }
 
+bool MeshNode::get_is_root() {
+    return is_root;
+}
+void MeshNode::set_is_root(bool status) {
+    is_root = status;
+}
+
 // APNode deconstructor
 APNode::~APNode(){
     // Make sure AP mode is stopped
@@ -441,13 +464,7 @@ APNode::~APNode(){
 
 bool APNode::init_ap_mode() {
 
-    // initalize uart
 
-    DEBUG_printf("starting uart\n");
-    uart.picoUARTInit();
-    DEBUG_printf("uart  nitalized\n");
-    uart.picoUARTInterruptInit();
-    DEBUG_printf("uart intterupts initalized\n");
 
     // Allocate the state of the TCP server if not already allocated
     if (!state) {
@@ -469,6 +486,16 @@ bool APNode::init_ap_mode() {
     if (cyw43_arch_init()) {
         DEBUG_printf("failed to initialize cyw43 driver\n");
         return false;
+    }
+
+     // Set power mode to high power
+
+
+    if(cyw43_wifi_pm(&cyw43_state, CYW43_PERFORMANCE_PM) != 0) {
+        while(true) {
+            DEBUG_printf("Failed to set power state\n");
+            sleep_ms(1000);
+        }
     }
     
     return true;
@@ -645,6 +672,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
     bool ACK_flag = true;
     bool NAK_flag = false;
     bool update_flag = false;
+    bool send_to_sta = false; // true if the message needs to be sent to the STA
     uint8_t error = 0;
     // tcp_init_msg_t *init_msg_str = reinterpret_cast <tcp_init_msg_t *>(state->buffer_recv);
     // clients_map[tpcb].id = init_msg_str->source;
@@ -715,7 +743,57 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                     //     break;
                     // }
                     // DEBUG_printf("Found path to parent, starts with %u\n", dest);
-                    if (client_tpcbs.find(dataMsg->msg.dest) == client_tpcbs.end()) {
+
+                    // Forward if node is direct child
+                    if (client_tpcbs.find(dataMsg->msg.dest) != client_tpcbs.end()) {
+                        ACK_flag = false;
+                        DEBUG_printf("Forwarding message to directly connected node\n");
+                        send_tcp_data(dataMsg->msg.dest, client_tpcbs.at(dataMsg->msg.dest), dataMsg->get_msg(), dataMsg->get_len());
+                        break;
+
+                        // Check the node tree and see if it is a child
+                    } else if (tree.node_exists(dataMsg->msg.dest)) {
+                        DEBUG_printf("Node is child and not directly connected\n");
+                       
+                        // get path
+
+                        uint32_t possible_parent = -1;
+                        uint32_t prev_node = dataMsg->msg.dest;
+                        bool not_child = false;
+
+                        // Go through the tree and get the correct node to send to
+                        // If we are hitting this point then 
+                        // mateo said this idea should work
+                        while(client_tpcbs.find(possible_parent) == client_tpcbs.end()) {
+                            if(tree.find_path_parent(prev_node, &possible_parent) == false) {
+                                DEBUG_printf("Can't find node %d\n", prev_node);
+                                not_child = true;
+                                //while(true);
+                                break;
+                            }
+                            prev_node = possible_parent;
+                        }
+
+                        if(not_child == false) {
+                            // possible parent should now be a direct child node
+                            DEBUG_printf("Forwarding message to %d because it should be a parent of %d\n", possible_parent, dataMsg->msg.dest);
+                            send_tcp_data(possible_parent, client_tpcbs.at(possible_parent), dataMsg->get_msg(), dataMsg->get_len());
+                        } else {
+                            DEBUG_printf("Fatal error this should not have been reached");
+                            while(true);
+                        }
+                        
+
+                        // if the node is not in our tree and we are not root forward it to STA to forwad up
+                    } else if (is_root == false) {
+
+                        DEBUG_printf("Node not found in our connection, forwarding to STA to forward up");
+                        
+                        // Construct serial message for STA
+                         
+
+                        // If the node is not in our tree and we are not root kill the message
+                    } else if (is_root == true) {
                         ACK_flag = false;
                         //NAK_flag = true;
                         error = 0x02; // TODO make enum for errors (id not in connected clients)
@@ -724,21 +802,68 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                         send_tcp_data(dataMsg->msg.source, client_tpcbs.at(dataMsg->msg.source), nakMsg.get_msg(), nakMsg.get_len());
                         break;
                     }
-                    ACK_flag = false;
-                    DEBUG_printf("Forwarding message to node\n");
-                    send_tcp_data(dataMsg->msg.dest, client_tpcbs.at(dataMsg->msg.dest), dataMsg->get_msg(), dataMsg->get_len());
-                    break;
                 }
                 
             }
             case 0x02: {
                 TCP_DISCONNECT_MSG* discMsg = static_cast<TCP_DISCONNECT_MSG*>(msg);
                 //does stuff
+
+                // Remove node from tree
+
+                // Tell parent that child has been removed
+
                 break;
             }
             case 0x03: {
                 TCP_UPDATE_MESSAGE* updMsg = static_cast<TCP_UPDATE_MESSAGE*>(msg);
                 //does stuff
+                
+                // These messages are to always be forwarded up the tree by sending to STA
+                if(is_root == false) {
+                    send_to_sta = true;
+                }
+                
+                // We must assume that the first one the parent gets will be from it's own children
+                int count = updMsg->get_child_count();
+
+                // Check to see if the source is a child
+                if(client_tpcbs.find(updMsg->msg.source) != client_tpcbs.end()) {
+                    // If it is then add the children to the parents tree for that child
+
+                    // Check to see if child is already in tree
+                    if(tree.node_exists(updMsg->msg.source) == false) {
+                        DEBUG_printf("Node %d was not found in tree, however it should have been added when it joined\n", updMsg->msg.source);
+                        while(true);
+                    }
+
+                    // Add nodes to child
+                    for (int i = 0; i < count; i++) {
+                        // don't add the child if it's already in the tree
+                        if(!tree.node_exists(updMsg->get_child(i))) {
+                            tree.add_any_child(updMsg->msg.source, updMsg->get_child(i));
+                        }
+                    }
+                    
+                    // If the node isn't an already connected client then we can assume that it is someones child
+                } else {
+
+                    // Check source to make sure that the parent is in our tree somewhere
+                    if(tree.node_exists(updMsg->msg.source) == false) {
+                        DEBUG_printf("Node %d was not found in tree when it was expected to already be a child\n", updMsg->msg.source);
+                        while(true);
+                    }
+
+                    // Add nodes to parent
+                    for (int i = 0; i < count; i++) {
+                        // don't add the child if it's already in the tree
+                        if(!tree.node_exists(updMsg->get_child(i))) {
+                            tree.add_any_child(updMsg->msg.source, updMsg->get_child(i));
+                        }
+                    }
+                }
+                
+
                 break;
             }
             case 0x04: {
@@ -826,7 +951,10 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
         //send_tcp_data(nakMsg.get_msg(), nakMsg.get_len());
         delete msg;
         return false;
-    } 
+    } else if (send_to_sta) {
+        // depending on the type of data forward only what is necessary
+        uart.sendMessage((const char*)msg->get_msg());
+    }
 
     delete msg;
     return true;
@@ -858,6 +986,12 @@ err_t APNode::send_msg(uint8_t* msg) {
         {           // This message should probably never be received via serial
             TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(tcp_msg);
             parent = initMsg->msg.source;
+
+            // TODO - when this message is recieved, send it to STA so STA can
+            // send it to it's parent and let it know that a new node is in the tree
+
+            // At this point the should be added to it's tree
+            //initMsg->msg.
 
             return 0;
             /* TODO: This is for STA
