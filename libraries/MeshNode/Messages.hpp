@@ -119,8 +119,8 @@ public:
         msg.source = src_id;
         msg.dest = dest_id;
     }
-    
-    TCP_DATA_MSG() : TCP_MESSAGE(0xFF) {}
+
+    TCP_DATA_MSG() : TCP_MESSAGE(0x7F) {}
 
     void add_message(uint8_t* msg_i, uint8_t msg_len) {
         memcpy(msg.msg, msg_i, msg_len > 2034 ? 2034 : msg_len);

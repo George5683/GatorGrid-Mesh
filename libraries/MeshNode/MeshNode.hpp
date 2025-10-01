@@ -85,6 +85,19 @@ typedef struct TCP_SERVER_T_ {
     uint8_t buffer_recv[BUF_SIZE];
 } TCP_SERVER_T;
 
+typedef struct TCP_CLIENT_T_ {
+    struct tcp_pcb *tcp_pcb;
+    ip_addr_t remote_addr;
+    uint8_t buffer[BUF_SIZE];
+    int buffer_len;
+    int sent_len;
+    bool complete;
+    int run_count;
+    bool connected;
+    volatile bool waiting_for_ack;
+    volatile bool got_nak;
+} TCP_CLIENT_T;
+
 struct ClientConnection {
     struct tcp_pcb *pcb;
     bool id_recved = false;

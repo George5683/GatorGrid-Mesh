@@ -397,7 +397,7 @@ err_t APNode::handle_serial_message(uint8_t *msg) {
         }
         case 0x01: /* serial_node_remove_msg */
             // If AP receives node_remove, a parent has been removed
-            parent = -1;
+            parent = UINT32_MAX;
             break;
         case 0x02: /* Data message */
         {
