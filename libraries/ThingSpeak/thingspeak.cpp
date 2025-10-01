@@ -15,7 +15,7 @@
 // ThingSpeak settings
 #define THINGSPEAK_HOST "api.thingspeak.com"
 #define THINGSPEAK_PORT 80
-#define WRITE_API_KEY "219T1QBQ77Y0GOYT"   // Your Write API Key
+#define WRITE_API_KEY "219T1QBQ77Y0GOYT"   // Write API Key
 
 void send_to_thingspeak(int value) {
     int sock;
@@ -57,6 +57,7 @@ void send_to_thingspeak(int value) {
 }
 
 int main() {
+    // initialize if you havent already
     stdio_init_all();
 
     if (cyw43_arch_init()) {
@@ -64,6 +65,7 @@ int main() {
         return -1;
     }
 
+    // NEEDS TO BE IN STA MODE
     cyw43_arch_enable_sta_mode();
 
     if (cyw43_arch_wifi_connect_timeout_ms(WIFI_SSID, WIFI_PASS, CYW43_AUTH_WPA2_AES_PSK, 30000)) {
@@ -74,7 +76,8 @@ int main() {
     printf("Connected to WiFi!\n");
 
     while (true) {
-        send_to_thingspeak(42); // Example: send the value 42
+        // Sending dummy data of 42
+        send_to_thingspeak(42);
         sleep_ms(20000);        // ThingSpeak allows 1 update every 15s
     }
 }
