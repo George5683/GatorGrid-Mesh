@@ -297,18 +297,109 @@ err_t STANode::send_data(uint32_t send_id, ssize_t len, uint8_t *buf) {
     return 0;
 }
 
-int handle_serial_message(uint8_t *msg) {
+err_t STANode::send_msg(uint8_t* msg) {
+    //TCP_MESSAGE* tcp_msg = parseMessage(msg);
+    
+    size_t len = 0;
+    uint32_t target_id = 0;
+    tcp_pcb *target = nullptr;
+
+    uint8_t id = msg[1];
+    switch (id) {
+        case 0x00:  // Init message from STA -> thus new parent has been added
+        {           // This message should probably never be received via serial
+            // TCP_INIT_MESSAGE* initMsg = reinterpret_cast<TCP_INIT_MESSAGE*>(msg);
+            // parent = initMsg->msg.source;
+
+            TCP_INIT_MESSAGE initMsg;
+            initMsg.set_msg(msg);
+
+            return 0;
+        }
+        case 0x01: /* TCP_DATA_MSG */
+        {
+            TCP_DATA_MSG dataMsg;
+            dataMsg.set_msg(msg);
+            len = dataMsg.get_len();
+            target_id = dataMsg.msg.dest;
+            DUMP_BYTES(dataMsg.get_msg(), len);
+            break;
+        }
+        case 0x02: /* TCP_DISCONNECT_MSG */
+            // Sending this seems meaningless -> just update parent via STA
+
+            //TCP_DISCONNECT_MSG* killMsg = reinterpret_cast<TCP_DISCONNECT_MSG*>(msg);
+            //len = killMsg->get_len();
+            //target_id = killMsg->msg.;
+            break;
+        case 0x03: /* TCP_UPDATE_MESSAGE */
+        {
+            TCP_UPDATE_MESSAGE updateMsg;
+            len = updateMsg.get_len();
+            target_id = updateMsg.msg.dest;
+            break;
+        }
+        case 0x04: /* TCP_ACK_MESSAGE */
+        {   
+            TCP_ACK_MESSAGE ackMsg;
+            len = ackMsg.get_len();
+            target_id = ackMsg.msg.dest;
+            break;
+        }
+        case 0x05: /* TCP_NAK_MESSAGE */
+        {
+            TCP_NAK_MESSAGE nakMsg;
+            len = nakMsg.get_len();
+            target_id = nakMsg.msg.dest;
+            break;
+        }
+        case 0x06: /* TCP_FORCE_UPDATE_MESSAGE */
+        {
+            TCP_FORCE_UPDATE_MESSAGE fUpdateMsg;
+            len = fUpdateMsg.get_len();
+            target_id = fUpdateMsg.msg.dest;
+            break;
+        }
+        default:
+        {
+            return -1;
+        }
+    }
+
+    if (!send_tcp_data_blocking(msg, len, false))
+        return -1;
+        
+    
+    return 0;
+}
+
+err_t STANode::handle_serial_message(uint8_t *msg) {
     uint8_t id = serialMessageType(msg);
 
     // TODO: Finish switch-case
     switch (id) {
         case 0x00: /* serial_node_add_msg */
         {
-            // If AP receives node_add, a parent has been added, maybe?
-            SERIAL_NODE_ADD_MESSAGE serial_msg;
-            serial_msg.set_msg(msg);
+            // If STA receives node_add, a child has been added.
+            SERIAL_NODE_ADD_MESSAGE initMsg;
+            initMsg.set_msg(msg);
+            
+            tree.add_any_child(initMsg.msg.parent, initMsg.msg.child);
+            
 
-            // TODO: figure which to set parent = to
+            uint32_t children[4];
+            uint8_t children_count = 0;
+            if (!tree.get_children(initMsg.msg.parent, children, children_count))
+            {
+                //idk die or something
+                // TODO: failure states
+            }
+
+            
+            TCP_UPDATE_MESSAGE updateMsg(initMsg.msg.parent, parent);
+            updateMsg.add_children(children_count, children);
+            
+
             break; 
         }
         case 0x01: /* serial_node_remove_msg */
@@ -316,10 +407,10 @@ int handle_serial_message(uint8_t *msg) {
             break;
         case 0x02: /* Data message */
         {
-            // SERIAL_DATA_MESSAGE serial_msg;
-            // serial_msg.set_msg(msg);
+            SERIAL_DATA_MESSAGE serial_msg;
+            serial_msg.set_msg(msg);
 
-            //send_msg(msg);
+            send_msg(serial_msg.get_msg());
             
             break;
         }

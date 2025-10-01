@@ -2,6 +2,7 @@
 //#include "../SPI/SPI.hpp"
 #include "MeshNode.hpp"
 #include "Messages.hpp"
+#include <cstdint>
 #include <random>
 #include <ctime>
 #include <cstdio>
@@ -212,7 +213,7 @@ static TCP_CLIENT_T* tcp_client_init(void) {
     return state;
 }
 
-STANode::STANode() : rb(10) {
+STANode::STANode() : rb(10), tree(0) {
     // Use hardware-based entropy sources if possible
     uint32_t ID = 0;
     
@@ -229,7 +230,7 @@ STANode::STANode() : rb(10) {
     DEBUG_printf("uart intterupts initalized\n");
     
     known_nodes.clear();
-    parent = 0xFFFFFFFF;
+    parent = UINT32_MAX;
 }
 
 STANode::~STANode() {
@@ -394,6 +395,39 @@ bool STANode::scan_for_nodes() {
     }
     
     DEBUG_printf("Scan completed successfully\n");
+    return true;
+}
+
+bool STANode::connect_to_network() {
+    if (known_nodes.size() == 0) return false;
+    printf("Knows some nodes\n");
+
+    int16_t min_rssi = known_nodes.begin()->second->rssi;
+    uint32_t min_node_id = known_nodes.begin()->first;
+
+    for (const auto& node : known_nodes) {
+        if (node.second->rssi < min_rssi) {
+            min_rssi = node.second->rssi;
+            min_node_id = node.first;
+        }
+    }
+
+    char ssid[32];  // Allocate on stack instead of heap
+    snprintf(ssid, sizeof(ssid), "GatorGrid_Node:%08X", min_node_id);  // Convert ID to uppercase hex
+
+    printf("Generated SSID: %s\n", ssid);
+
+    // Attempt to connect
+    if (cyw43_arch_wifi_connect_timeout_ms(ssid, "password", CYW43_AUTH_WPA2_AES_PSK, 20000)) {
+        for (int i = 0; i < 20; i++) {
+           printf("Failed to connect. Retrying...\n");
+            sleep_ms(1000);  
+        }
+        return false;
+    }
+
+    printf("Connected successfully.\n");
+    parent = min_node_id;
     return true;
 }
 

@@ -42,8 +42,12 @@ int main() {
         }
     }
     printf("Left searching for nodes\n");
-    if (node.connect_to_node(0)) {
-        node.tcp_init();
+    while(!node.connect_to_network()) {
+        
+    }
+
+    if (!node.tcp_init()) {
+        while(true);
     }
 
     //sleep_ms(1000);
@@ -81,24 +85,24 @@ int main() {
             printf("Not connected!\n");
         }
 
-        final_size = snprintf(send_buf, 50, "FORTNITE %d\n", count);
+        // final_size = snprintf(send_buf, 50, "FORTNITE %d\n", count);
 
-        while(node.send_data(2, final_size, (uint8_t*)send_buf) != 0) {
-            printf(ANSI_RED_TEXT "Attempting send\n");
-            sleep_ms(1000);
-        }
+        // while(node.send_data(2, final_size, (uint8_t*)send_buf) != 0) {
+        //     printf(ANSI_RED_TEXT "Attempting send\n");
+        //     sleep_ms(1000);
+        // }
 
-        printf("Sent data \"FORTNITE %i\"\n", count);
-        count++;
+        // printf("Sent data \"FORTNITE %i\"\n", count);
+        // count++;
 
-        while (node.number_of_messages() == 0) {
-            sleep_ms(2);
-        }
+        // while (node.number_of_messages() == 0) {
+        //     sleep_ms(2);
+        // }
 
-        struct data tmp = node.digest_data();
-        tmp.data[tmp.size] = 0;
-        printf(ANSI_GREEN_TEXT "Received message from node %08x: %s\n", tmp.source, (char*)tmp.data);
-        printf( ANSI_CLEAR_SCROLLBACK ANSI_CLEAR_SCREEN ANSI_CURSOR_HOME );
+        // struct data tmp = node.digest_data();
+        // tmp.data[tmp.size] = 0;
+        // printf(ANSI_GREEN_TEXT "Received message from node %08x: %s\n", tmp.source, (char*)tmp.data);
+        // printf( ANSI_CLEAR_SCROLLBACK ANSI_CLEAR_SCREEN ANSI_CURSOR_HOME );
         sleep_ms(250);
     }
     

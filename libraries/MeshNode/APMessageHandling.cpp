@@ -362,28 +362,6 @@ err_t APNode::send_msg(uint8_t* msg) {
             initMsg.set_msg(msg);
 
             return 0;
-            /* TODO: This is for STA
-                
-                // len = initMsg->get_len();
-                // target_id = initMsg->msg.source; // ??
-
-                // Will have to send Update Message to parent
-                tree.add_any_child(get_node_id(), initMsg->msg.source);
-                
-
-                uint32_t children[4];
-                uint8_t children_count = 0;
-                if (!tree.get_children(get_node_id(), children, children_count))
-                {
-                    //idk die or something
-                    // TODO: failure states
-                }
-
-                TCP_UPDATE_MESSAGE updateMsg(get_node_id());
-                updateMsg.add_children(children_count, children);
-
-                target_id = 
-            */
         }
         case 0x01: /* TCP_DATA_MSG */
         {

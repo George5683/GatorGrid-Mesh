@@ -301,6 +301,7 @@ public:
     std::string AP_CONNECTED_IP;
 
     RingBuffer rb;
+    ChildrenTree tree;
 
     STANode();
     ~STANode();
@@ -309,6 +310,7 @@ public:
     bool start_sta_mode();
     bool scan_for_nodes();
     bool connect_to_node(uint32_t id);
+    bool connect_to_network();
     bool is_connected();
     bool tcp_init();
 
