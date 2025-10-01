@@ -5,7 +5,6 @@
 #include "pico/multicore.h"
 
 bool is_wifi_connected = false;
-#define DEBUG 1
 
 int main() {
 

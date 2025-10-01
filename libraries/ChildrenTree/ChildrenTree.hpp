@@ -42,7 +42,7 @@ public:
     Node* find_node(uint32_t id, Node* head);
     bool node_exists(uint32_t id);
     bool find_path_parent(uint32_t id, uint32_t *parent);
-    bool find_parent_recursive(Node* node, uint32_t target, uint32_t *parent);
+    bool find_parent_recursive(Node* node, uint32_t target);
     void traverse();
     void get_node_details(ChildrenTree *tree);
 };
