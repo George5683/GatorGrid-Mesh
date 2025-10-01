@@ -9,7 +9,8 @@
 #include <vector>
 #include "pico/cyw43_arch.h"
 
-#include "../SPI/SPI.hpp"
+#include "../UART/UART.hpp"
+//#include "../SPI/SPI.hpp"
 #include "../RingBuffer/RingBuffer.hpp"
 #include "../SPI/SerialMessages.hpp"
 #include "Messages.hpp"
@@ -53,7 +54,9 @@ typedef struct TCP_CLIENT_T_ TCP_CLIENT_T;
 class MeshNode {
 private:
     uint32_t NodeID;
+    
 public:
+    bool is_root = false;
     MeshNode();
     virtual ~MeshNode();
 
@@ -61,6 +64,8 @@ public:
     void set_NodeID(uint32_t ID);
     uint32_t get_NodeID();
     void seed_rand();
+    bool get_is_root();
+    void set_is_root(bool status);
 };
 
 class APNode : public MeshNode{   
@@ -74,7 +79,7 @@ public:
     RingBuffer rb;
     ChildrenTree tree;
 
-    SPI Master_Pico;
+    PicoUART uart;
 
     std::vector<void*> connections;
 
@@ -228,6 +233,8 @@ public:
      * @return err_t 
      */
     err_t handle_serial_message(uint8_t* msg);
+
+    
 };
 
 class STANode : public MeshNode{
@@ -241,9 +248,6 @@ public:
 
     RingBuffer rb;
 
-    SPI Slave_Pico;
-
-
     STANode();
     ~STANode();
 
@@ -253,6 +257,8 @@ public:
     bool connect_to_node(uint32_t id);
     bool is_connected();
     bool tcp_init();
+
+    PicoUART uart;
 
     err_t send_data(uint32_t send_id, ssize_t len, uint8_t *buf);
 
@@ -267,6 +273,8 @@ public:
 
     err_t send_msg(uint8_t *msg);
     err_t handle_serial_message(uint8_t* msg);
+
+    void poll();
 };
 
 #endif // MESH_NODE_HPP

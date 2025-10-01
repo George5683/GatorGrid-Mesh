@@ -1,4 +1,5 @@
-#include "libraries/SPI/SPI.hpp"
+#include "../UART/UART.hpp"
+//#include "../SPI/SPI.hpp"
 #include "MeshNode.hpp"
 #include "Messages.hpp"
 #include <random>
@@ -26,7 +27,7 @@ extern "C" {
 *   Client Class
 */
 
-#define DEBUG 0
+#define DEBUG 1
 
 #define TCP_PORT 4242
 #if DEBUG 
@@ -236,7 +237,12 @@ STANode::STANode() : rb(10) {
    DEBUG_printf("Node ID is initially set to 0!\n");
 
     // Set SPI to be a slave 
-    //Slave_Pico.SPI_init(false);
+    DEBUG_printf("starting uart\n");
+    uart.picoUARTInit();
+    DEBUG_printf("uart  nitalized\n");
+    uart.picoUARTInterruptInit();
+    DEBUG_printf("uart intterupts initalized\n");
+    
     known_nodes.clear();
     parent = 0xFFFFFFFF;
 }
@@ -257,21 +263,15 @@ bool STANode::init_sta_mode() {
 
     uint32_t AP_ID = 0;
 
-    Slave_Pico.Set_Master(false);
-    Slave_Pico.SPI_init();
+    // Wait for the AP pico to send the first message
+    
+    DEBUG_printf("Waiting for ID from AP over UART");
 
-    vector<uint8_t> temp;
+    while(!uart.BufferReady());
 
-    while(!Slave_Pico.SPI_POLL_MESSAGE());
+    uint8_t *buffer = uart.getReadBuffer();
 
-    Slave_Pico.SPI_read_message(temp);
-
-    if(temp.size() == 0) {
-        while(true) 
-            puts("Error with SPI read size.");
-    }
-
-    AP_ID = *(uint32_t*)temp.data();
+    AP_ID = *(uint32_t*)buffer;
     printf("ID char: %d\n", AP_ID);
 
     this->set_NodeID(AP_ID);
@@ -281,6 +281,16 @@ bool STANode::init_sta_mode() {
     if (cyw43_arch_init()) {
        DEBUG_printf("failed to initialise\n");
         return false;
+    }
+
+     // Set power mode to high power
+
+
+    if(cyw43_wifi_pm(&cyw43_state, CYW43_PERFORMANCE_PM) != 0) {
+        while(true) {
+            DEBUG_printf("Failed to set power state\n");
+            sleep_ms(1000);
+        }
     }
 
    DEBUG_printf("Initiation to STA mode successful\n");
@@ -381,7 +391,7 @@ bool STANode::scan_for_nodes() {
         return false;
     }
     
-    DEBUG_printf("Scan started");
+    DEBUG_printf("Scan started\n");
     
     // Wait for scan to complete with timeout
     while (cyw43_wifi_scan_active(&cyw43_state)) {
@@ -398,7 +408,7 @@ bool STANode::scan_for_nodes() {
         #endif
     }
     
-    DEBUG_printf("Scan completed successfully");
+    DEBUG_printf("Scan completed successfully\n");
     return true;
 }
 
@@ -458,7 +468,53 @@ bool STANode::tcp_init() {
     //create_join_message(BUF_SIZE, buffer, this);
     TCP_INIT_MESSAGE init_msg(get_NodeID());
     return send_tcp_data(init_msg.get_msg(), init_msg.get_len(), false);
+}
 
+
+int handle_serial_message(uint8_t *msg) {
+    uint8_t id = serialMessageType(msg);
+
+    // TODO: Finish switch-case
+    switch (id) {
+        case 0x00: /* serial_node_add_msg */
+        {
+            // If AP receives node_add, a parent has been added, maybe?
+            SERIAL_NODE_ADD_MESSAGE serial_msg;
+            serial_msg.set_msg(msg);
+
+            // TODO: figure which to set parent = to
+            break; 
+        }
+        case 0x01: /* serial_node_remove_msg */
+            // If AP receives node_remove, a parent has been removed
+            break;
+        case 0x02: /* Data message */
+        {
+            // SERIAL_DATA_MESSAGE serial_msg;
+            // serial_msg.set_msg(msg);
+
+            //send_msg(msg);
+            
+            break;
+        }
+        case 0x03: /* serial_fatal_error_msg */
+        {
+            break;
+        }
+        default:
+        {
+            return 0;
+        }
+    }
+
+    return 0;
+}
+
+// Check for serial messages and if you have any parse them
+void STANode::poll() {
+    if(uart.BufferReady()) {
+        
+    }
 }
 
 int STANode::number_of_messages() {
@@ -586,6 +642,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
     bool ACK_flag = false;
     bool NAK_flag = false;
     bool self_reply = false;
+    bool send_to_ap = false;
     state->got_nak = false;
     
     TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(buffer));
@@ -605,6 +662,9 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
             case 0x00: {
                 TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(msg);
                 //does stuff
+
+                // TODO, when 
+
                DEBUG_printf("Received initialization message from node %u", initMsg->msg.source);
                 source_id =  initMsg->msg.source;
 
@@ -621,7 +681,8 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
                     ACK_flag = true;
                     break;
                 } else {
-                    // TODO pass msg to AP
+                    send_to_ap = true;
+
                 }
                 //does stuff
                 break;
@@ -673,6 +734,23 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
                 //TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), msg_id ? msg_id : 0, 0);
                 break;
         }
+    }
+
+    if (send_to_ap) {
+
+        uint8_t msg_id = buffer[1];
+
+        // Different message types warrent different construction
+        //switch (msg_id) {
+
+            
+        //}
+        //TCP_NAK_MESSAGE* nakMsg = static_cast<TCP_NAK_MESSAGE*>(msg); 
+
+        
+        //uart.sendMessage();
+        delete msg;
+        return true;
     }
 
     if (ACK_flag && !self_reply){

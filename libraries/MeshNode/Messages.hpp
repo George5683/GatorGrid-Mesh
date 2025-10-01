@@ -19,6 +19,7 @@ public:
         uint8_t msg_id;
         uint16_t len;
         uint32_t source;
+        uint32_t parent;
     }tcp_init_msg;
 
     typedef struct __attribute__((__packed__)) tcp_update_msg_t{
@@ -84,11 +85,12 @@ class TCP_INIT_MESSAGE : public TCP_MESSAGE {
 public:
     tcp_init_msg msg = {0};
 public:
-    TCP_INIT_MESSAGE(uint32_t id) : TCP_MESSAGE(0xFF) { 
+    TCP_INIT_MESSAGE(uint32_t id, uint32_t parent) : TCP_MESSAGE(0xFF) { 
         msg.priority = priority;
         msg.msg_id = 0x00;
         msg.len = 8;
         msg.source = id;
+        msg.parent = parent;
     }
     
 
@@ -185,6 +187,10 @@ public:
         for (int i = 0; i < children_count; i++) {
             msg.children_IDs[i] = children[i];
         }
+    }
+    
+    uint32_t get_child(int index) {
+        return msg.children_IDs[index];
     }
 
     uint8_t* get_msg() override {
