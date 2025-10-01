@@ -46,7 +46,7 @@ class SERIAL_NODE_ADD_MESSAGE : public SERIAL_MESSAGE {
 public:
     serial_node_add_msg_t msg = {0};
 public:
-    SERIAL_NODE_ADD_MESSAGE(uint32_t id, uint32_t parent, uint32_t child) : SERIAL_MESSAGE() { 
+    SERIAL_NODE_ADD_MESSAGE(uint32_t parent, uint32_t child) : SERIAL_MESSAGE() { 
         msg.msg_id = 0x00;
         msg.len = 7;
         msg.child = child;

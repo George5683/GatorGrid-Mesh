@@ -258,11 +258,12 @@ bool STANode::init_sta_mode() {
     uint8_t *buffer = uart.getReadBuffer();
 
     AP_ID = *(uint32_t*)buffer;
-    printf("ID char: %d\n", AP_ID);
+    DEBUG_printf("ID char: %d\n", AP_ID);
+    tree.edit_head(AP_ID);
 
     this->set_NodeID(AP_ID);
 
-   DEBUG_printf("STA new ID is: %08x\n", get_NodeID());
+    DEBUG_printf("STA new ID is: %08x\n", get_NodeID());
 
     if (cyw43_arch_init()) {
        DEBUG_printf("failed to initialise\n");
@@ -400,7 +401,7 @@ bool STANode::scan_for_nodes() {
 
 bool STANode::connect_to_network() {
     if (known_nodes.size() == 0) return false;
-    printf("Knows some nodes\n");
+    DEBUG_printf("Knows some nodes\n");
 
     int16_t min_rssi = known_nodes.begin()->second->rssi;
     uint32_t min_node_id = known_nodes.begin()->first;
@@ -415,18 +416,18 @@ bool STANode::connect_to_network() {
     char ssid[32];  // Allocate on stack instead of heap
     snprintf(ssid, sizeof(ssid), "GatorGrid_Node:%08X", min_node_id);  // Convert ID to uppercase hex
 
-    printf("Generated SSID: %s\n", ssid);
+    DEBUG_printf("Generated SSID: %s\n", ssid);
 
     // Attempt to connect
     if (cyw43_arch_wifi_connect_timeout_ms(ssid, "password", CYW43_AUTH_WPA2_AES_PSK, 20000)) {
         for (int i = 0; i < 20; i++) {
-           printf("Failed to connect. Retrying...\n");
+           DEBUG_printf("Failed to connect. Retrying...\n");
             sleep_ms(1000);  
         }
         return false;
     }
 
-    printf("Connected successfully.\n");
+    DEBUG_printf("Connected successfully.\n");
     parent = min_node_id;
     return true;
 }
@@ -447,8 +448,8 @@ bool STANode::connect_to_node(uint32_t id) {
    DEBUG_printf("Generated SSID: %s\n", ssid);
 
     // Attempt to connect
-    if (cyw43_arch_wifi_connect_timeout_ms(ssid, "password", CYW43_AUTH_WPA2_AES_PSK, 20000)) {
-        for (int i = 0; i < 20; i++) {
+    if (cyw43_arch_wifi_connect_timeout_ms(ssid, "password", CYW43_AUTH_WPA2_AES_PSK, 7500)) {
+        for (int i = 0; i < 8; i++) {
            DEBUG_printf("Failed to connect. Retrying...\n");
             sleep_ms(1000);  
         }
@@ -463,6 +464,7 @@ bool STANode::connect_to_node(uint32_t id) {
 bool STANode::is_connected() {
     int res = cyw43_wifi_link_status(&cyw43_state, CYW43_ITF_STA);
     if (res != CYW43_LINK_JOIN) {
+        DEBUG_printf("%d\n", res);
       return false;
     }
     return true;
@@ -492,7 +494,7 @@ bool STANode::tcp_init() {
 // Check for serial messages and if you have any parse them
 void STANode::poll() {
     if(uart.BufferReady()) {
-        
+        handle_serial_message(uart.getReadBuffer());
     }
 }
 

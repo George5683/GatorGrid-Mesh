@@ -8,6 +8,7 @@
 #include <sstream>
 
 #include "Messages.hpp"
+#include "RingBuffer.hpp"
 #include "SerialMessages.hpp"
 #include "hardware/regs/rosc.h"
 #include "hardware/regs/addressmap.h"
@@ -179,21 +180,26 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
         //dump_bytes(buffer, 100);
         switch (msg_id) {
             case 0x00: {
-                TCP_INIT_MESSAGE* initMsg = reinterpret_cast<TCP_INIT_MESSAGE*>(buffer);
+                TCP_INIT_MESSAGE initMsg;// = reinterpret_cast<TCP_INIT_MESSAGE*>(buffer);
+                initMsg.set_msg(buffer);
                 //does stuff
-               DEBUG_printf("Received initialization message from node %u", initMsg->msg.source);
-                source_id =  initMsg->msg.source;
+                DEBUG_printf("Received initialization message from node %u", initMsg.msg.source);
+                source_id =  initMsg.msg.source;
+
+                tree.add_child(source_id);
 
                 break;
             }
             case 0x01: {
-                TCP_DATA_MSG* dataMsg = reinterpret_cast<TCP_DATA_MSG*>(buffer);
+                TCP_DATA_MSG dataMsg;// = reinterpret_cast<TCP_DATA_MSG*>(buffer);
+                dataMsg.set_msg(buffer);
+
                 DEBUG_printf("Got data message\n");
-                if (dataMsg->msg.dest == get_NodeID()) {
-                    source_id =  dataMsg->msg.source;
-                    rb.insert(dataMsg->msg.msg,dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
-                    DEBUG_printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
-                    DEBUG_printf("DBG: Received message from node %08x: %s", dataMsg->msg.source, (char*)dataMsg->msg.msg);
+                if (dataMsg.msg.dest == get_NodeID()) {
+                    source_id =  dataMsg.msg.source;
+                    rb.insert(dataMsg.msg.msg,dataMsg.msg.msg_len, dataMsg.msg.source, dataMsg.msg.dest);
+                    DEBUG_printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg.msg.msg_len, dataMsg.msg.source, dataMsg.msg.dest);
+                    DEBUG_printf("DBG: Received message from node %08x: %s", dataMsg.msg.source, (char*)dataMsg.msg.msg);
                     ACK_flag = true;
                     break;
                 } else {
@@ -205,14 +211,15 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
                 break;
             }
             case 0x02: {
-                TCP_DISCONNECT_MSG* initMsg = reinterpret_cast<TCP_DISCONNECT_MSG*>(buffer);
+                TCP_DISCONNECT_MSG initMsg;// = reinterpret_cast<TCP_DISCONNECT_MSG*>(buffer);
+                initMsg.set_msg(buffer);
                 
                 //does stuff
                 break;
             }
             case 0x03: {
-                TCP_UPDATE_MESSAGE* initMsg = reinterpret_cast<TCP_UPDATE_MESSAGE*>(buffer);
-
+                TCP_UPDATE_MESSAGE initMsg;// = reinterpret_cast<TCP_UPDATE_MESSAGE*>(buffer);
+                initMsg.set_msg(buffer);
 
                 //puts("Update packet recieved");
 
@@ -223,12 +230,13 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
             }
             case 0x04: {
                 DEBUG_printf("Got ACK\n");
-                TCP_ACK_MESSAGE* ackMsg = reinterpret_cast<TCP_ACK_MESSAGE*>(buffer);
+                TCP_ACK_MESSAGE ackMsg;// = reinterpret_cast<TCP_ACK_MESSAGE*>(buffer);
+                ackMsg.set_msg(buffer);
 
-                source_id = ackMsg->msg.source;
+                source_id = ackMsg.msg.source;
 
-               DEBUG_printf("Ack is from %08x and for %08x\n", ackMsg->msg.source, ackMsg->msg.dest);
-                if (ackMsg->msg.dest == get_NodeID()) {
+               DEBUG_printf("Ack is from %08x and for %08x\n", ackMsg.msg.source, ackMsg.msg.dest);
+                if (ackMsg.msg.dest == get_NodeID()) {
                     self_reply = true;
                     DEBUG_printf("ACK is for me\n");
                     state->waiting_for_ack = false;
@@ -237,7 +245,9 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
                 break;
             }
             case 0x05: {
-                TCP_NAK_MESSAGE* nakMsg = reinterpret_cast<TCP_NAK_MESSAGE*>(buffer);
+                TCP_NAK_MESSAGE nakMsg;// = reinterpret_cast<TCP_NAK_MESSAGE*>(buffer);
+                nakMsg.set_msg(buffer);
+
                 //does stuff
                 puts("Warning! Message was not received! (Got a NAK instead of ACK)");
                 DEBUG_printf("Got NAK\n");
@@ -260,14 +270,20 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
         uint8_t msg_id = buffer[1];
 
         // Different message types warrent different construction
-        //switch (msg_id) {
+        switch (msg_id) {
+            case 0x01:
+            {  
+                SERIAL_NODE_ADD_MESSAGE msg;
+                break;
+            }
+            default:
+                break;
 
-
-        //}
+        }
         //TCP_NAK_MESSAGE* nakMsg = static_cast<TCP_NAK_MESSAGE*>(msg); 
 
 
-        //uart.sendMessage();
+        // uart.sendMessage();
         return true;
     }
 
@@ -375,11 +391,13 @@ err_t STANode::send_msg(uint8_t* msg) {
 
 err_t STANode::handle_serial_message(uint8_t *msg) {
     uint8_t id = serialMessageType(msg);
+    DEBUG_printf("Received serial message in handler\n");
 
     // TODO: Finish switch-case
     switch (id) {
         case 0x00: /* serial_node_add_msg */
         {
+            DEBUG_printf("Received serial node add message\n");
             // If STA receives node_add, a child has been added.
             SERIAL_NODE_ADD_MESSAGE initMsg;
             initMsg.set_msg(msg);

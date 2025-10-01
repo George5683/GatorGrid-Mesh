@@ -102,50 +102,62 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
 
     // TODO: Handle error checks for messages
     msg_id = buffer[1];
+    uint16_t len = (buffer[3] << 8) | buffer[2];
 
         //DUMP_BYTES(state->buffer_recv, 2048);
 
     switch (msg_id) {
         case 0x00: {
-            TCP_INIT_MESSAGE* initMsg = reinterpret_cast<TCP_INIT_MESSAGE*>(state->buffer_recv);
-            DEBUG_printf("Received initialization message from node %u", initMsg->msg.source);
+            TCP_INIT_MESSAGE initMsg;// = reinterpret_cast<TCP_INIT_MESSAGE*>(buffer);
+            initMsg.set_msg(buffer);
+
+            DEBUG_printf("Received initialization message from node %u\n", initMsg.msg.source);
+            DUMP_BYTES(initMsg.get_msg(), len);
             //does stuff
 
             // Set init node ID
             if(clients_map[tpcb].id_recved == false) {
                 ACK_flag = true;
                 clients_map[tpcb].id_recved = true;
-                clients_map[tpcb].id = initMsg->msg.source;
+                clients_map[tpcb].id = initMsg.msg.source;
             }
 
-            tree.add_child(initMsg->msg.source);
+            
+            DEBUG_printf("\nMy ID = %u\n", get_NodeID());
+            DEBUG_printf(tree.add_any_child(get_NodeID() ,initMsg.msg.source) ? "Child Added Successfully\n" : "Child Failed to be Added\n");
 
             // Insert into map of IDs to TPCB
             client_tpcbs.insert({clients_map[tpcb].id, tpcb});
+
+            SERIAL_NODE_ADD_MESSAGE addmsg(get_NodeID(), initMsg.msg.source);
+            uart.sendMessage((char*)addmsg.get_msg());
 
             update_flag = true;
             
             break;
         }
         case 0x01: {
-            TCP_DATA_MSG* dataMsg = reinterpret_cast<TCP_DATA_MSG*>(state->buffer_recv);
+            
+            TCP_DATA_MSG dataMsg;// = reinterpret_cast<TCP_DATA_MSG*>(state->buffer_recv);
+            dataMsg.set_msg(buffer);
+
             // Store messages in a ring buffer
             DEBUG_printf("Got data message\n");
-            DEBUG_printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
-            if (dataMsg->msg.dest == get_NodeID()) {
-                rb.insert(dataMsg->msg.msg,dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
+            DEBUG_printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg.msg.msg_len, dataMsg.msg.source, dataMsg.msg.dest);
+            if (dataMsg.msg.dest == get_NodeID()) {
+                rb.insert(dataMsg.msg.msg, dataMsg.msg.msg_len, dataMsg.msg.source, dataMsg.msg.dest);
                 DEBUG_printf("Successfully inserted into ring buffer\n");
                 ACK_flag = true;
                 break;
             } else {
-                uint32_t dest = dataMsg->msg.dest;
+                uint32_t dest = dataMsg.msg.dest;
                 uint32_t path_parent = 0;
-                DEBUG_printf("Message was not for me, was for dest:%08x\n", dataMsg->msg.dest);
+                DEBUG_printf("Message was not for me, was for dest:%08x\n", dataMsg.msg.dest);
 
-                if (client_tpcbs.find(dataMsg->msg.dest) != client_tpcbs.end()) {
+                if (client_tpcbs.find(dataMsg.msg.dest) != client_tpcbs.end()) {
                     ACK_flag = false;
                     DEBUG_printf("Forwarding message to directly connected node\n");
-                    send_tcp_data(dataMsg->msg.dest, client_tpcbs.at(dataMsg->msg.dest), dataMsg->get_msg(), dataMsg->get_len());
+                    send_tcp_data(dataMsg.msg.dest, client_tpcbs.at(dataMsg.msg.dest), dataMsg.get_msg(), dataMsg.get_len());
                     break;
 
                     // Check the node tree and see if it is a child
@@ -157,7 +169,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                         while(true);
                     }
 
-                    send_tcp_data(path_parent, client_tpcbs.at(path_parent), dataMsg->get_msg(), dataMsg->get_len());
+                    send_tcp_data(path_parent, client_tpcbs.at(path_parent), dataMsg.get_msg(), dataMsg.get_len());
                     
 
                     // if the node is not in our tree and we are not root forward it to STA to forwad up
@@ -175,19 +187,21 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                     error = 0x02; // TODO make enum for errors (id not in connected clients)
                     TCP_NAK_MESSAGE nakMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
                     nakMsg.set_error(error);
-                    send_tcp_data(dataMsg->msg.source, client_tpcbs.at(dataMsg->msg.source), nakMsg.get_msg(), nakMsg.get_len());
+                    send_tcp_data(dataMsg.msg.source, client_tpcbs.at(dataMsg.msg.source), nakMsg.get_msg(), nakMsg.get_len());
                     break;
                 }
             }
             
         }
         case 0x02: {
-            TCP_DISCONNECT_MSG* discMsg = reinterpret_cast<TCP_DISCONNECT_MSG*>(state->buffer_recv);
+            TCP_DISCONNECT_MSG discMsg;// = reinterpret_cast<TCP_DISCONNECT_MSG*>(state->buffer_recv);
+            discMsg.set_msg(buffer);
             //does stuff
             break;
         }
         case 0x03: {
-            TCP_UPDATE_MESSAGE* updMsg = reinterpret_cast<TCP_UPDATE_MESSAGE*>(state->buffer_recv);
+            TCP_UPDATE_MESSAGE updMsg;// = reinterpret_cast<TCP_UPDATE_MESSAGE*>(state->buffer_recv);
+            updMsg.set_msg(buffer);
             //does stuff
             
             // These messages are to always be forwarded up the tree by sending to STA
@@ -196,23 +210,23 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
             }
             
             // We must assume that the first one the parent gets will be from it's own children
-            int count = updMsg->get_child_count();
+            int count = updMsg.get_child_count();
 
             // Check to see if the source is a child
-            if(client_tpcbs.find(updMsg->msg.source) != client_tpcbs.end()) {
+            if(client_tpcbs.find(updMsg.msg.source) != client_tpcbs.end()) {
                 // If it is then add the children to the parents tree for that child
 
                 // Check to see if child is already in tree
-                if(tree.node_exists(updMsg->msg.source) == false) {
-                    DEBUG_printf("Node %d was not found in tree, however it should have been added when it joined\n", updMsg->msg.source);
+                if(tree.node_exists(updMsg.msg.source) == false) {
+                    DEBUG_printf("Node %d was not found in tree, however it should have been added when it joined\n", updMsg.msg.source);
                     while(true);
                 }
 
                 // Add nodes to child
                 for (int i = 0; i < count; i++) {
                     // don't add the child if it's already in the tree
-                    if(!tree.node_exists(updMsg->get_child(i))) {
-                        tree.add_any_child(updMsg->msg.source, updMsg->get_child(i));
+                    if(!tree.node_exists(updMsg.get_child(i))) {
+                        tree.add_any_child(updMsg.msg.source, updMsg.get_child(i));
                     }
                 }
                 
@@ -220,16 +234,16 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
             } else {
 
                 // Check source to make sure that the parent is in our tree somewhere
-                if(tree.node_exists(updMsg->msg.source) == false) {
-                    DEBUG_printf("Node %d was not found in tree when it was expected to already be a child\n", updMsg->msg.source);
+                if(tree.node_exists(updMsg.msg.source) == false) {
+                    DEBUG_printf("Node %d was not found in tree when it was expected to already be a child\n", updMsg.msg.source);
                     while(true);
                 }
 
                 // Add nodes to parent
                 for (int i = 0; i < count; i++) {
                     // don't add the child if it's already in the tree
-                    if(!tree.node_exists(updMsg->get_child(i))) {
-                        tree.add_any_child(updMsg->msg.source, updMsg->get_child(i));
+                    if(!tree.node_exists(updMsg.get_child(i))) {
+                        tree.add_any_child(updMsg.msg.source, updMsg.get_child(i));
                     }
                 }
             }
@@ -238,32 +252,33 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
             break;
         }
         case 0x04: {
-            TCP_ACK_MESSAGE* ackMsg = reinterpret_cast<TCP_ACK_MESSAGE*>(state->buffer_recv);
+            TCP_ACK_MESSAGE ackMsg; // = reinterpret_cast<TCP_ACK_MESSAGE*>(state->buffer_recv);
+            ackMsg.set_msg(buffer);
             //does stuff
             // Do not need to respond to acks
-            if (ackMsg->msg.dest == get_NodeID()) {
+            if (ackMsg.msg.dest == get_NodeID()) {
                 //rb.insert(dataMsg->msg.msg,dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
                 ACK_flag = false;
             } else {
                 uint32_t dest;
-                DEBUG_printf("Message was not for me, was for dest:%08x\n", ackMsg->msg.dest);
+                DEBUG_printf("Message was not for me, was for dest:%08x\n", ackMsg.msg.dest);
                 // if(!tree.find_path_parent(ackMsg->msg.dest, &dest)) {
                 //     ACK_flag = false;
                 //     NAK_flag = true;
                 //     error = 0x01; // TODO make enum for errors (no node in tree)
                 //     break;
                 // }
-                if (client_tpcbs.find(ackMsg->msg.dest) == client_tpcbs.end()) {
+                if (client_tpcbs.find(ackMsg.msg.dest) == client_tpcbs.end()) {
                     ACK_flag = false;
                     //NAK_flag = true;
                     error = 0x02; // TODO make enum for errors (id not in connected clients)
                     TCP_NAK_MESSAGE nakMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
                     nakMsg.set_error(error);
-                    send_tcp_data(ackMsg->msg.source, client_tpcbs.at(ackMsg->msg.source), nakMsg.get_msg(), nakMsg.get_len());
+                    send_tcp_data(ackMsg.msg.source, client_tpcbs.at(ackMsg.msg.source), nakMsg.get_msg(), nakMsg.get_len());
                     break;
                 }
                 ACK_flag = false;
-                send_tcp_data(ackMsg->msg.dest, client_tpcbs.at(ackMsg->msg.dest), ackMsg->get_msg(), ackMsg->get_len());
+                send_tcp_data(ackMsg.msg.dest, client_tpcbs.at(ackMsg.msg.dest), ackMsg.get_msg(), ackMsg.get_len());
             }
             
 
@@ -271,7 +286,9 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
             break;
         }
         case 0x05: {
-            TCP_NAK_MESSAGE* nakMsg = reinterpret_cast<TCP_NAK_MESSAGE*>(state->buffer_recv);
+            TCP_NAK_MESSAGE nakMsg; // = reinterpret_cast<TCP_NAK_MESSAGE*>(state->buffer_recv);
+            nakMsg.set_msg(buffer);
+
             ACK_flag = false;
             //does stuff
             break;

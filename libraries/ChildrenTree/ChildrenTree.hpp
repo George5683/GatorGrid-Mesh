@@ -28,6 +28,8 @@ public:
     void remove_children(int id);
     bool remove_child(uint32_t id);
 
+    void edit_head(uint32_t new_id);
+
     /**
      * @brief Get the list of children id from a given parent
      * 

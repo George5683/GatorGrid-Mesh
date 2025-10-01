@@ -90,7 +90,7 @@ public:
     TCP_INIT_MESSAGE(uint32_t id, uint32_t parent) : TCP_MESSAGE(0xFF) { 
         msg.priority = priority;
         msg.msg_id = 0x00;
-        msg.len = 8;
+        msg.len = 12;
         msg.source = id;
         msg.parent = parent;
     }

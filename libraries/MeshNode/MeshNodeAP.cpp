@@ -464,26 +464,9 @@ void APNode::set_ap_credentials(char name[32], const char* pwd) {
 }
 
 void APNode::poll(unsigned int timeout_ms) {
-    if (!running || !state) {
-        return;
+    if(uart.BufferReady()) {
+        handle_serial_message(uart.getReadBuffer());
     }
-    
-    // Check if we should stop
-    if (state->complete) {
-        running = false;
-        return;
-    }
-    
-    // Handle polling operations based on the architecture
-    #if PICO_CYW43_ARCH_POLL
-    // If using poll architecture, check for work
-    cyw43_arch_poll();
-    // Wait for work or timeout
-    cyw43_arch_wait_for_work_until(make_timeout_time_ms(timeout_ms));
-    #else
-    // If using interrupt architecture, just sleep
-    sleep_ms(timeout_ms);
-    #endif
 }
 
 void APNode::stop_ap_mode() {
