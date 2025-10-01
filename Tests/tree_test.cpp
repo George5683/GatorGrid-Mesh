@@ -14,6 +14,18 @@ int main() {
     tree->add_any_child(2, 4);
     tree->add_any_child(2, 5);
     tree->add_any_child(4, 6);
+    tree->add_child(7);
+    tree->add_child(8);
+    tree->add_child(9);
+    tree->add_any_child(2, 10);
+    tree->add_any_child(2, 11);
+    uint32_t ptr = 0;
+    tree->find_path_parent(5, &ptr);
+    std::cout<<ptr;
+
+    uint32_t *ptr = nullptr;
+    tree->find_path_parent(5, ptr);
+    std::cout<<ptr;
 
     tree->traverse();
     tree->remove_children(4);

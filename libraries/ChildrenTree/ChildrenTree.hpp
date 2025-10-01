@@ -12,8 +12,8 @@ class ChildrenTree {
         Node** children;
         uint8_t number_of_children;
 
-        Node() : id(0), parent(nullptr), children(nullptr), number_of_children(0) {}
-        Node(uint32_t id) : id(id), parent(nullptr), children(nullptr), number_of_children(0) {}
+        Node() : id(0), parent(nullptr), children(new Node*[4]), number_of_children(0) {}
+        Node(uint32_t id) : id(id), parent(nullptr), children(new Node*[4]), number_of_children(0) {}
 
     };
     Node* head;

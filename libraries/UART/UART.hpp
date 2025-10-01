@@ -4,7 +4,7 @@
 #include "hardware/uart.h"
 
 #define UART_ID    uart0
-#define BAUD_RATE  115200
+#define BAUD_RATE  9600
 #define DATA_BITS  8
 #define STOP_BITS  1
 #define PARITY     UART_PARITY_NONE
@@ -16,19 +16,22 @@
 
 class PicoUART {
 private:
-    char rxBuffer[MAX_LEN];
+    uint8_t rxBuffer[MAX_LEN];
     int rxIndex = 0;
 
     static PicoUART* instance;
+
+    bool buffer_ready = false;
 
 public:
     PicoUART();
     ~PicoUART() = default;
 
     bool picoUARTInit();
+    bool BufferReady(); // check to see if we have a message waiting for us
     bool picoUARTInterruptInit();
     int sendMessage(const char* message);
-    char* getReadBuffer();
+    uint8_t* getReadBuffer();
 
     static void on_uart_rx();
 };

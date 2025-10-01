@@ -161,6 +161,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
     bool ACK_flag = false;
     bool NAK_flag = false;
     bool self_reply = false;
+    bool send_to_ap = false;
     state->got_nak = false;
     
     // TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(buffer));
@@ -197,6 +198,8 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
                     break;
                 } else {
                     // TODO pass msg to AP
+                    send_to_ap = true;
+
                 }
                 //does stuff
                 break;
@@ -252,6 +255,22 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
         // }
     }
 
+    if (send_to_ap) {
+
+        uint8_t msg_id = buffer[1];
+
+        // Different message types warrent different construction
+        //switch (msg_id) {
+
+
+        //}
+        //TCP_NAK_MESSAGE* nakMsg = static_cast<TCP_NAK_MESSAGE*>(msg); 
+
+
+        //uart.sendMessage();
+        return true;
+    }
+
     if (ACK_flag && !self_reply){
         DEBUG_printf("Sending ack to %08x\n", source_id);
         TCP_ACK_MESSAGE ackMsg(get_NodeID(), source_id, p->tot_len);
@@ -275,5 +294,44 @@ err_t STANode::send_data(uint32_t send_id, ssize_t len, uint8_t *buf) {
     msg.add_message(buf, len);
     if (!send_tcp_data_blocking(msg.get_msg(), msg.get_len(), false))
         return -1;
+    return 0;
+}
+
+int handle_serial_message(uint8_t *msg) {
+    uint8_t id = serialMessageType(msg);
+
+    // TODO: Finish switch-case
+    switch (id) {
+        case 0x00: /* serial_node_add_msg */
+        {
+            // If AP receives node_add, a parent has been added, maybe?
+            SERIAL_NODE_ADD_MESSAGE serial_msg;
+            serial_msg.set_msg(msg);
+
+            // TODO: figure which to set parent = to
+            break; 
+        }
+        case 0x01: /* serial_node_remove_msg */
+            // If AP receives node_remove, a parent has been removed
+            break;
+        case 0x02: /* Data message */
+        {
+            // SERIAL_DATA_MESSAGE serial_msg;
+            // serial_msg.set_msg(msg);
+
+            //send_msg(msg);
+            
+            break;
+        }
+        case 0x03: /* serial_fatal_error_msg */
+        {
+            break;
+        }
+        default:
+        {
+            return 0;
+        }
+    }
+
     return 0;
 }

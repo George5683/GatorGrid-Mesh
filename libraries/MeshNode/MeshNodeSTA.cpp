@@ -1,4 +1,5 @@
-#include "libraries/SPI/SPI.hpp"
+#include "../UART/UART.hpp"
+//#include "../SPI/SPI.hpp"
 #include "MeshNode.hpp"
 #include "Messages.hpp"
 #include <random>
@@ -221,7 +222,12 @@ STANode::STANode() : rb(10) {
    DEBUG_printf("Node ID is initially set to 0!\n");
 
     // Set SPI to be a slave 
-    //Slave_Pico.SPI_init(false);
+    DEBUG_printf("starting uart\n");
+    uart.picoUARTInit();
+    DEBUG_printf("uart  nitalized\n");
+    uart.picoUARTInterruptInit();
+    DEBUG_printf("uart intterupts initalized\n");
+    
     known_nodes.clear();
     parent = 0xFFFFFFFF;
 }
@@ -242,21 +248,15 @@ bool STANode::init_sta_mode() {
 
     uint32_t AP_ID = 0;
 
-    Slave_Pico.Set_Master(false);
-    Slave_Pico.SPI_init();
+    // Wait for the AP pico to send the first message
+    
+    DEBUG_printf("Waiting for ID from AP over UART");
 
-    vector<uint8_t> temp;
+    while(!uart.BufferReady());
 
-    while(!Slave_Pico.SPI_POLL_MESSAGE());
+    uint8_t *buffer = uart.getReadBuffer();
 
-    Slave_Pico.SPI_read_message(temp);
-
-    if(temp.size() == 0) {
-        while(true) 
-            puts("Error with SPI read size.");
-    }
-
-    AP_ID = *(uint32_t*)temp.data();
+    AP_ID = *(uint32_t*)buffer;
     printf("ID char: %d\n", AP_ID);
 
     this->set_NodeID(AP_ID);
@@ -266,6 +266,16 @@ bool STANode::init_sta_mode() {
     if (cyw43_arch_init()) {
        DEBUG_printf("failed to initialise\n");
         return false;
+    }
+
+     // Set power mode to high power
+
+
+    if(cyw43_wifi_pm(&cyw43_state, CYW43_PERFORMANCE_PM) != 0) {
+        while(true) {
+            DEBUG_printf("Failed to set power state\n");
+            sleep_ms(1000);
+        }
     }
 
    DEBUG_printf("Initiation to STA mode successful\n");
@@ -366,7 +376,7 @@ bool STANode::scan_for_nodes() {
         return false;
     }
     
-    DEBUG_printf("Scan started");
+    DEBUG_printf("Scan started\n");
     
     // Wait for scan to complete with timeout
     while (cyw43_wifi_scan_active(&cyw43_state)) {
@@ -383,7 +393,7 @@ bool STANode::scan_for_nodes() {
         #endif
     }
     
-    DEBUG_printf("Scan completed successfully");
+    DEBUG_printf("Scan completed successfully\n");
     return true;
 }
 
@@ -441,12 +451,17 @@ bool STANode::tcp_init() {
 
     //uint8_t buffer[BUF_SIZE] = {};
     //create_join_message(BUF_SIZE, buffer, this);
-    TCP_INIT_MESSAGE init_msg(get_NodeID());
+    TCP_INIT_MESSAGE init_msg(get_NodeID(), parent);
     return send_tcp_data(init_msg.get_msg(), init_msg.get_len(), false);
+}
 
+// Check for serial messages and if you have any parse them
+void STANode::poll() {
+    if(uart.BufferReady()) {
+        
+    }
 }
 
 int STANode::number_of_messages() {
     return this->rb.get_size();
 }
-
