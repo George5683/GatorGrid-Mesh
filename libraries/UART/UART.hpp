@@ -16,7 +16,7 @@
 #define UART_TX_PIN 16
 #define UART_RX_PIN 17
 
-#define MAX_LEN 128
+#define MAX_LEN     128
 
 class PicoUART {
 private:

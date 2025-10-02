@@ -28,6 +28,7 @@ bool PicoUART::picoUARTInterruptInit() {
     int UART_IRQ = (UART_ID == uart0) ? UART0_IRQ : UART1_IRQ;
     irq_set_exclusive_handler(UART_IRQ, this->on_uart_rx);
     irq_set_enabled(UART_IRQ, true);
+    uart_set_fifo_enabled(UART_ID, true);
     uart_set_irq_enables(UART_ID, true, false);
 
     return true;
@@ -36,11 +37,20 @@ bool PicoUART::picoUARTInterruptInit() {
 // While reads do go out of bounds that is not likely to cause a crash on this uP
 // Send message over UART
 int PicoUART::sendMessage(const char* message) {
+
     while (!uart_is_writable(UART_ID)) {
         tight_loop_contents();
     }
+
+    // If UART FIFO has data in it then don't write yet to avoid collision
+    while(uart_is_readable(UART_ID)) {
+        tight_loop_contents();
+    }
+
     //uart_puts(UART_ID, message);
+    //uart_set_irq_enables(UART_ID, false, false);
     uart_write_blocking(UART_ID, (uint8_t *)message, MAX_LEN);
+    //uart_set_irq_enables(UART_ID, true, false);
     return 0;
 }
 
@@ -49,8 +59,9 @@ uint8_t* PicoUART::getReadBuffer() {
     uint8_t *buffer = instance->srb.buffer_get();
 
     if(buffer == nullptr) {
-        printf("Fatal Error: Serial recieved messages faster then poll could digest them\n");
-        while(1);
+        while(1) {
+            puts("Fatal Error: Serial recieved messages faster then poll could digest them\n");
+        }
     }
 
     return buffer;
@@ -77,6 +88,8 @@ void PicoUART::on_uart_rx() {
         instance->toggle = true;
         return;
     }
+
+    //puts("IRQ HIT");
 
     instance->toggle = false;
 

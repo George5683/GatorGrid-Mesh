@@ -10,7 +10,7 @@ using namespace std;
 #include <sys/types.h>
 #include <cstdio>
 
-#define MAX_SERIAL_BUF_SIZE 10
+#define MAX_SERIAL_BUF_SIZE 50
 #define MAX_SERIAL_BUF_LEN 128
 
 // MAX_LEN from UART.hpp
