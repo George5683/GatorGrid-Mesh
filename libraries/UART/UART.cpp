@@ -10,13 +10,10 @@ PicoUART::PicoUART() {
 // Initialize UART hardware
 bool PicoUART::picoUARTInit() {
     
-    printf("%d init code \n", uart_init(UART_ID, BAUD_RATE));
+    uart_init(UART_ID, BAUD_RATE);
     gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
     gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
 
-    printf("first half");
-
-    
     uart_set_format(UART_ID, DATA_BITS, STOP_BITS, PARITY);
     uart_set_hw_flow(UART_ID, false, false);
     uart_set_fifo_enabled(UART_ID, false);
@@ -68,14 +65,24 @@ bool PicoUART::BufferReady() {
     }
 }
 
+static bool toggle;
+
 // Static ISR
 void PicoUART::on_uart_rx() {
 
     if (!instance) return;
 
-    printf("ISR Called\n");
+    // ISR thrown twice, so just have a toggle gate guard it
+    if (instance->toggle == false) {
+        instance->toggle = true;
+        return;
+    }
 
-    uart_get_hw(UART_ID)->icr = UART_UARTICR_TXIC_BITS ;
+    instance->toggle = false;
+
+    //printf("ISR Called\n");
+
+    uart_get_hw(UART_ID)->icr = UART_UARTICR_TXIC_BITS;
 
     uint8_t *buffer = instance->srb.buffer_put();
 
