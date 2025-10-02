@@ -3,6 +3,8 @@
 #include "pico/stdlib.h"
 #include "hardware/uart.h"
 
+#include "../SerialRingBuffer/SerialRingBuffer.hpp"
+
 #define UART_ID    uart0
 #define BAUD_RATE  9600
 #define DATA_BITS  8
@@ -16,12 +18,9 @@
 
 class PicoUART {
 private:
-    uint8_t rxBuffer[MAX_LEN];
-    int rxIndex = 0;
-
+    //uint8_t rxBuffer[MAX_LEN];
+    SerialRingBuffer srb;
     static PicoUART* instance;
-
-    bool buffer_ready = false;
 
 public:
     PicoUART();

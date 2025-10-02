@@ -9,6 +9,7 @@ PicoUART::PicoUART() {
 
 // Initialize UART hardware
 bool PicoUART::picoUARTInit() {
+    
     printf("%d init code \n", uart_init(UART_ID, BAUD_RATE));
     gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
     gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
@@ -48,28 +49,44 @@ int PicoUART::sendMessage(const char* message) {
 
 // Return pointer to received buffer
 uint8_t* PicoUART::getReadBuffer() {
-    instance->buffer_ready = false;
-    instance->rxIndex = MAX_LEN;
-    return rxBuffer;
+    uint8_t *buffer = instance->srb.buffer_get();
+
+    if(buffer == nullptr) {
+        printf("Fatal Error: Serial recieved messages faster then poll could digest them\n");
+        while(1);
+    }
+
+    return buffer;
 }
 
 // check to see if we have a message waiting for us
 bool PicoUART::BufferReady() {
-    return instance->buffer_ready;
+    if (instance->srb.num_of_messages() > 0) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 // Static ISR
 void PicoUART::on_uart_rx() {
-    printf("ISR Called\n");
 
     if (!instance) return;
 
-    instance->buffer_ready = true;
+    printf("ISR Called\n");
+
+    uart_get_hw(UART_ID)->icr = UART_UARTICR_TXIC_BITS ;
+
+    uint8_t *buffer = instance->srb.buffer_put();
+
+    if(buffer == nullptr) {
+        while(1) {
+            printf("Fatal Error: Serial recieved messages faster then poll could digest them\n");
+        }
+    }
 
     while (uart_is_readable(UART_ID)) {
-        printf("UART READ LOOP, should only run once");
-        uart_read_blocking(UART_ID, instance->rxBuffer, MAX_LEN);
-        instance->rxIndex = MAX_LEN;
+        uart_read_blocking(UART_ID, buffer, MAX_LEN);
     }
 
     return;
