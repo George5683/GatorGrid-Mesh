@@ -47,7 +47,6 @@ int PicoUART::sendMessage(const char* message) {
         tight_loop_contents();
     }
 
-    //uart_puts(UART_ID, message);
     //uart_set_irq_enables(UART_ID, false, false);
     uart_write_blocking(UART_ID, (uint8_t *)message, MAX_LEN);
     //uart_set_irq_enables(UART_ID, true, false);
@@ -55,12 +54,14 @@ int PicoUART::sendMessage(const char* message) {
 }
 
 // Return pointer to received buffer
+// Only call while BufferReady returns true
 uint8_t* PicoUART::getReadBuffer() {
     uint8_t *buffer = instance->srb.buffer_get();
 
+    // if the ring buffer is empty and they call getReadBuffer stall because something has gone wrong
     if(buffer == nullptr) {
         while(1) {
-            puts("Fatal Error: Serial recieved messages faster then poll could digest them\n");
+            puts("Fatal Error: read buffer empty\n");
         }
     }
 
@@ -89,16 +90,13 @@ void PicoUART::on_uart_rx() {
         return;
     }
 
-    //puts("IRQ HIT");
-
     instance->toggle = false;
-
-    //printf("ISR Called\n");
 
     uart_get_hw(UART_ID)->icr = UART_UARTICR_TXIC_BITS;
 
     uint8_t *buffer = instance->srb.buffer_put();
 
+    // Should the ring buffer ever be full stall the pico
     if(buffer == nullptr) {
         while(1) {
             printf("Fatal Error: Serial recieved messages faster then poll could digest them\n");
