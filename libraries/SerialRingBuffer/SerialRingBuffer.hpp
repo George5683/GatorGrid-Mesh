@@ -13,10 +13,11 @@ using namespace std;
 #define MAX_SERIAL_BUF_SIZE 20
 #define MAX_SERIAL_BUF_LEN 128
 
-// MAX_LEN from UART.hpp
 extern uint8_t seral_bufs[MAX_SERIAL_BUF_SIZE][MAX_SERIAL_BUF_LEN];
 
-// Should only be one per pico
+// Should only be ONE per pico
+// This works by recycling the array in global memory to allow the pico
+// to quickly write the UART output to the buffer
 class SerialRingBuffer {
 
     // These two pointers point to the start of bufs
@@ -28,19 +29,20 @@ class SerialRingBuffer {
 
     SerialRingBuffer();
 
+    // See how many messages are in the Ring Buffer
     int num_of_messages();
 
-
-    // These functions are intended to use the ring buffer to get pointers to read and write to
-    // The pointers it returns are to not be freed.
-
-    // Get a message buffer position to write data to
+    // This returns a pointer to an array of size MAX_SERIAL_BUF_LEN
+    // This array is to be written to immedently with the data you want to store in the ring buffer
+    // You only need to write to the array to populate the ring buffer position
+    // Do not free the pointer passed to you
     uint8_t *buffer_put();
-    // Get a message buffer
-    uint8_t *buffer_get();
 
-    // Used in UART, take a buffer from the stack but put it to the back
-    //struct data digest_with_recycle();
+    // Get a message buffer
+    // Do not free the pointer passed to you
+    // Make sure to use the data quickly after calling buffer_get because this pointer will be overwritten after 
+    // MAX_SERIAL_BUF_SIZE number of messages have been added to the ring buffe 
+    uint8_t *buffer_get();
 };
 
 #endif

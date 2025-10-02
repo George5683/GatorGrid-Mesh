@@ -20,8 +20,6 @@ uint8_t *SerialRingBuffer::buffer_put() {
     }
 
     uint8_t *buf = &seral_bufs[putIdx][0];
-    //printf("put buf %d\n", buf);
-    //printf("put idx %d\n", putIdx);
 
     putIdx++;
     number_of_messages++;
@@ -39,8 +37,6 @@ uint8_t *SerialRingBuffer::buffer_get() {
     }
 
     uint8_t *buf = &seral_bufs[getIdx][0];
-    //printf("get buf %d\n", buf);
-    //printf("get idx %d\n", getIdx);
 
     getIdx++;
     number_of_messages--;
