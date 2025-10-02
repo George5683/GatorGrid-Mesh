@@ -157,7 +157,7 @@ bool STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward)
     return true;
 }
 
-bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
+bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
     uint32_t source_id = 0;
     bool ACK_flag = false;
     bool NAK_flag = false;
@@ -171,98 +171,99 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
     //     ACK_flag = false;
     // } else {
 
-        uint8_t msg_id = buffer[1];
-        uint16_t len = *reinterpret_cast<uint16_t*>(buffer +2);
-        DEBUG_printf("DUMPING STATE BUFFER BELOW:\n");
-        DUMP_BYTES(state->buffer, 200);
-        DEBUG_printf("DUMPING BYTES RECV BELOW:\n");
-        DUMP_BYTES(buffer, 200);
-        //dump_bytes(buffer, 100);
-        switch (msg_id) {
-            case 0x00: {
-                TCP_INIT_MESSAGE initMsg;// = reinterpret_cast<TCP_INIT_MESSAGE*>(buffer);
-                initMsg.set_msg(buffer);
-                //does stuff
-                DEBUG_printf("Received initialization message from node %u", initMsg.msg.source);
-                source_id =  initMsg.msg.source;
+    uint8_t msg_id = buffer[1];
+    uint16_t len = *reinterpret_cast<uint16_t*>(buffer +2);
+    DEBUG_printf("DUMPING STATE BUFFER BELOW:\n");
+    DUMP_BYTES(state->buffer, 200);
+    DEBUG_printf("DUMPING BYTES RECV BELOW:\n");
+    DUMP_BYTES(buffer, 200);
+    //dump_bytes(buffer, 100);
+    switch (msg_id) {
+        case 0x00: {
+            TCP_INIT_MESSAGE initMsg;// = reinterpret_cast<TCP_INIT_MESSAGE*>(buffer);
+            initMsg.set_msg(buffer);
+            //does stuff
+            DEBUG_printf("Received initialization message from node %u", initMsg.msg.source);
+            source_id =  initMsg.msg.source;
 
-                tree.add_child(source_id);
+            tree.add_child(source_id);
 
+            break;
+        }
+        case 0x01: {
+            TCP_DATA_MSG dataMsg;
+            dataMsg.set_msg(buffer);
+
+            DEBUG_printf("Got data message\n");
+            if (dataMsg.msg.dest == get_NodeID()) {
+                source_id =  dataMsg.msg.source;
+                rb.insert(dataMsg.msg.msg,dataMsg.msg.msg_len, dataMsg.msg.source, dataMsg.msg.dest);
+                DEBUG_printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg.msg.msg_len, dataMsg.msg.source, dataMsg.msg.dest);
+                DEBUG_printf("DBG: Received message from node %08x: %s", dataMsg.msg.source, (char*)dataMsg.msg.msg);
+                ACK_flag = true;
                 break;
-            }
-            case 0x01: {
-                TCP_DATA_MSG dataMsg;// = reinterpret_cast<TCP_DATA_MSG*>(buffer);
-                dataMsg.set_msg(buffer);
-
-                DEBUG_printf("Got data message\n");
-                if (dataMsg.msg.dest == get_NodeID()) {
-                    source_id =  dataMsg.msg.source;
-                    rb.insert(dataMsg.msg.msg,dataMsg.msg.msg_len, dataMsg.msg.source, dataMsg.msg.dest);
-                    DEBUG_printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg.msg.msg_len, dataMsg.msg.source, dataMsg.msg.dest);
-                    DEBUG_printf("DBG: Received message from node %08x: %s", dataMsg.msg.source, (char*)dataMsg.msg.msg);
-                    ACK_flag = true;
-                    break;
-                } else {
-                    // TODO pass msg to AP
+            } else {
+                uint32_t path = 0;
+                if (tree.find_path_parent(dataMsg.msg.dest, &path)) { // if true, needs to be passed on to AP
                     send_to_ap = true;
-
+                } else {
+                    send_msg(dataMsg.get_msg());
                 }
-                //does stuff
-                break;
             }
-            case 0x02: {
-                TCP_DISCONNECT_MSG initMsg;// = reinterpret_cast<TCP_DISCONNECT_MSG*>(buffer);
-                initMsg.set_msg(buffer);
-                
-                //does stuff
-                break;
-            }
-            case 0x03: {
-                TCP_UPDATE_MESSAGE initMsg;// = reinterpret_cast<TCP_UPDATE_MESSAGE*>(buffer);
-                initMsg.set_msg(buffer);
+            //does stuff
+            break;
+        }
+        case 0x02: {
+            TCP_DISCONNECT_MSG initMsg;// = reinterpret_cast<TCP_DISCONNECT_MSG*>(buffer);
+            initMsg.set_msg(buffer);
+            
+            //does stuff
+            break;
+        }
+        case 0x03: {
+            TCP_UPDATE_MESSAGE updateMsg;// = reinterpret_cast<TCP_UPDATE_MESSAGE*>(buffer);
+            updateMsg.set_msg(buffer);
 
-                //puts("Update packet recieved");
+            DEBUG_printf("Update packet recieved\n");
 
-                //updMsg.
+            //does stuff
+            break;
+        }
+        case 0x04: {
+            DEBUG_printf("Got ACK\n");
+            TCP_ACK_MESSAGE ackMsg;// = reinterpret_cast<TCP_ACK_MESSAGE*>(buffer);
+            ackMsg.set_msg(buffer);
 
-                //does stuff
-                break;
-            }
-            case 0x04: {
-                DEBUG_printf("Got ACK\n");
-                TCP_ACK_MESSAGE ackMsg;// = reinterpret_cast<TCP_ACK_MESSAGE*>(buffer);
-                ackMsg.set_msg(buffer);
+            source_id = ackMsg.msg.source;
 
-                source_id = ackMsg.msg.source;
-
-               DEBUG_printf("Ack is from %08x and for %08x\n", ackMsg.msg.source, ackMsg.msg.dest);
-                if (ackMsg.msg.dest == get_NodeID()) {
-                    self_reply = true;
-                    DEBUG_printf("ACK is for me\n");
-                    state->waiting_for_ack = false;
-                }
-                //does stuff
-                break;
-            }
-            case 0x05: {
-                TCP_NAK_MESSAGE nakMsg;// = reinterpret_cast<TCP_NAK_MESSAGE*>(buffer);
-                nakMsg.set_msg(buffer);
-
-                //does stuff
-                puts("Warning! Message was not received! (Got a NAK instead of ACK)");
-                DEBUG_printf("Got NAK\n");
+            DEBUG_printf("Ack is from %08x and for %08x\n", ackMsg.msg.source, ackMsg.msg.dest);
+            if (ackMsg.msg.dest == get_NodeID()) {
                 self_reply = true;
+                DEBUG_printf("ACK is for me\n");
                 state->waiting_for_ack = false;
-                state->got_nak = true;
-                break;
             }
-            default:
-               DEBUG_printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
-                ACK_flag = false;
-                // SEND NAK message
-                //TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), msg_id ? msg_id : 0, 0);
-                break;
-        // }
+            //does stuff
+            break;
+        }
+        case 0x05: {
+            TCP_NAK_MESSAGE nakMsg;// = reinterpret_cast<TCP_NAK_MESSAGE*>(buffer);
+            nakMsg.set_msg(buffer);
+
+            //does stuff
+            puts("Warning! Message was not received! (Got a NAK instead of ACK)");
+            DEBUG_printf("Got NAK\n");
+            self_reply = true;
+            state->waiting_for_ack = false;
+            state->got_nak = true;
+            break;
+        }
+        default:
+            DEBUG_printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
+            ACK_flag = false;
+            // SEND NAK message
+            //TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), msg_id ? msg_id : 0, 0);
+            break;
+    // }
     }
 
     if (send_to_ap) {
@@ -289,13 +290,13 @@ bool STANode::handle_incoming_data(unsigned char* buffer, struct pbuf *p) {
 
     if (ACK_flag && !self_reply){
         DEBUG_printf("Sending ack to %08x\n", source_id);
-        TCP_ACK_MESSAGE ackMsg(get_NodeID(), source_id, p->tot_len);
+        TCP_ACK_MESSAGE ackMsg(get_NodeID(), source_id, tot_len);
         send_tcp_data(ackMsg.get_msg(), ackMsg.get_len(), true);
         //state->waiting_for_ack = true;
     } else if (NAK_flag) {
         // TODO: Update for error handling
         // identify the source from sender and send back?
-        TCP_NAK_MESSAGE nakMsg(get_NodeID(), 0, p->tot_len);
+        TCP_NAK_MESSAGE nakMsg(get_NodeID(), 0, tot_len);
         send_tcp_data(nakMsg.get_msg(), nakMsg.get_len(), true);
         // delete msg;
         return false;
@@ -409,6 +410,8 @@ err_t STANode::handle_serial_message(uint8_t *msg) {
             uint8_t children_count = 0;
             if (!tree.get_children(initMsg.msg.parent, children, children_count))
             {
+                DEBUG_printf("Get children failed :(\n");
+                return -1;
                 //idk die or something
                 // TODO: failure states
             }
@@ -416,9 +419,8 @@ err_t STANode::handle_serial_message(uint8_t *msg) {
             
             TCP_UPDATE_MESSAGE updateMsg(initMsg.msg.parent, parent);
             updateMsg.add_children(children_count, children);
-            
 
-            break; 
+            return(send_msg(updateMsg.get_msg()));
         }
         case 0x01: /* serial_node_remove_msg */
             // If AP receives node_remove, a parent has been removed
@@ -428,7 +430,7 @@ err_t STANode::handle_serial_message(uint8_t *msg) {
             SERIAL_DATA_MESSAGE serial_msg;
             serial_msg.set_msg(msg);
 
-            send_msg(serial_msg.get_msg());
+            handle_incoming_data(serial_msg.get_data(),serial_msg.get_data_len());
             
             break;
         }

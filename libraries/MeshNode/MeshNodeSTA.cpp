@@ -165,7 +165,7 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         // Acknowledge receipt of the data
         tcp_recved(tpcb, p->tot_len);
                
-        node->handle_incoming_data(state->buffer, p);
+        node->handle_incoming_data(state->buffer, p->tot_len);
     
     }
     

@@ -247,3 +247,22 @@ bool ChildrenTree::get_children(uint32_t parent_id, uint32_t children_id[4], uin
 
     return true;
 }
+
+bool ChildrenTree::update_node(uint32_t id, uint32_t children_id[4], uint8_t &number_of_children) {
+    Node* node = find_node(id, head);
+    if (!node) { return false; }
+
+    for (int i = 0; i < number_of_children; i++) {
+        bool found = false;
+        for (int j = 0; j < node->number_of_children; j++) {
+            if (node->children[j]->id == children_id[i]) {
+                found = true;
+                break;
+            }
+        }
+        if (found) continue;
+        if (!add_any_child(node->id, children_id[i])) return false;
+    }
+
+    return true;
+}

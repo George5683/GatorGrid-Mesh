@@ -300,27 +300,27 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
     }
     // }
 
-    if (update_flag) {
-        puts("Update nodes called");
-        /*puts("Broadcasting all connected nodes to each other");
-        uint32_t ids[4] = {0};
-        int j = 0;
+    /*if (update_flag) {
+        DEBUG_printf("Update nodes called\n");
+        // DEBUG_printf("Broadcasting all connected nodes to each other\n");
+        // uint32_t ids[4] = {0};
+        // int j = 0;
 
-        // Because this is a new node, resend the list of connected nodes to everyone
-        for(auto i : client_tpcbs) {
-            ids[j] = i.first;
-            j++;
-        }
+        // // Because this is a new node, resend the list of connected nodes to everyone
+        // for(const auto& i : client_tpcbs) {
+        //     ids[j] = i.first;
+        //     j++;
+        // }
 
-        TCP_UPDATE_MESSAGE updateMsg(get_NodeID());
-        updateMsg.add_children(j, ids);
+        // TCP_UPDATE_MESSAGE updateMsg(get_NodeID());
+        // updateMsg.add_children(j, ids);
 
-        for(auto i : client_tpcbs) {
-            sleep_ms(20);
-            send_tcp_data(i.first, i.second, updateMsg.get_msg(), updateMsg.get_len());
-           DEBUG_printf("Sent update message to %08x\n", i.first);
-        }*/
-    }
+        // for(auto i : client_tpcbs) {
+        //     sleep_ms(20);
+        //     send_tcp_data(i.first, i.second, updateMsg.get_msg(), updateMsg.get_len());
+        //     DEBUG_printf("Sent update message to %08x\n", i.first);
+        // }
+    } */
 
     if (ACK_flag){
        DEBUG_printf("Sending ACK message to client %08x\n", clients_map[tpcb].id);
@@ -346,6 +346,27 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
     return true;
 }
 
+err_t APNode::handle_transfering_data(uint8_t *buffer) {
+
+    uint8_t msg_id = buffer[1];
+    switch (msg_id) {
+        case 0x00: 
+            break;
+        case 0x01: // If dataMsg is being transferred
+        {
+            TCP_DATA_MSG dataMsg; 
+            dataMsg.set_msg(buffer);
+
+            
+
+            break;
+        }
+        default:
+            break;
+    }
+
+    return 0;
+}
 
 err_t APNode::send_data(uint32_t send_id, ssize_t len, uint8_t *buf) {
     //TODO: Add tree and look whether it needs to go up or down the tree
@@ -462,7 +483,8 @@ err_t APNode::handle_serial_message(uint8_t *msg) {
         {
             SERIAL_DATA_MESSAGE serial_msg;
             serial_msg.set_msg(msg);
-            send_msg(serial_msg.get_msg());
+
+            handle_transfering_data(serial_msg.get_data());
             
             break;
         }

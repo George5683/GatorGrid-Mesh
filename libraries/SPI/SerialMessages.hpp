@@ -123,7 +123,7 @@ public:
         return reinterpret_cast<uint8_t*>(&msg);
     }
 
-    uint16_t get_msg_len()  {
+    uint16_t get_data_len()  {
         return msg.msg_len;
     }
 
