@@ -2,6 +2,7 @@
 //#include "../SPI/SPI.hpp"
 #include "MeshNode.hpp"
 #include "Messages.hpp"
+#include <cstdint>
 #include <random>
 #include <ctime>
 #include <cstdio>
@@ -164,7 +165,7 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         // Acknowledge receipt of the data
         tcp_recved(tpcb, p->tot_len);
                
-        node->handle_incoming_data(state->buffer, p);
+        node->handle_incoming_data(state->buffer, p->tot_len);
     
     }
     
@@ -212,7 +213,7 @@ static TCP_CLIENT_T* tcp_client_init(void) {
     return state;
 }
 
-STANode::STANode() : rb(10) {
+STANode::STANode() : rb(10), tree(0) {
     // Use hardware-based entropy sources if possible
     uint32_t ID = 0;
     
@@ -229,7 +230,7 @@ STANode::STANode() : rb(10) {
     DEBUG_printf("uart intterupts initalized\n");
     
     known_nodes.clear();
-    parent = 0xFFFFFFFF;
+    parent = UINT32_MAX;
 }
 
 STANode::~STANode() {
@@ -257,11 +258,12 @@ bool STANode::init_sta_mode() {
     uint8_t *buffer = uart.getReadBuffer();
 
     AP_ID = *(uint32_t*)buffer;
-    printf("ID char: %d\n", AP_ID);
+    DEBUG_printf("ID char: %d\n", AP_ID);
+    tree.edit_head(AP_ID);
 
     this->set_NodeID(AP_ID);
 
-   DEBUG_printf("STA new ID is: %08x\n", get_NodeID());
+    DEBUG_printf("STA new ID is: %08x\n", get_NodeID());
 
     if (cyw43_arch_init()) {
        DEBUG_printf("failed to initialise\n");
@@ -397,6 +399,39 @@ bool STANode::scan_for_nodes() {
     return true;
 }
 
+bool STANode::connect_to_network() {
+    if (known_nodes.size() == 0) return false;
+    DEBUG_printf("Knows some nodes\n");
+
+    int16_t min_rssi = known_nodes.begin()->second->rssi;
+    uint32_t min_node_id = known_nodes.begin()->first;
+
+    for (const auto& node : known_nodes) {
+        if (node.second->rssi < min_rssi) {
+            min_rssi = node.second->rssi;
+            min_node_id = node.first;
+        }
+    }
+
+    char ssid[32];  // Allocate on stack instead of heap
+    snprintf(ssid, sizeof(ssid), "GatorGrid_Node:%08X", min_node_id);  // Convert ID to uppercase hex
+
+    DEBUG_printf("Generated SSID: %s\n", ssid);
+
+    // Attempt to connect
+    if (cyw43_arch_wifi_connect_timeout_ms(ssid, "password", CYW43_AUTH_WPA2_AES_PSK, 20000)) {
+        for (int i = 0; i < 20; i++) {
+           DEBUG_printf("Failed to connect. Retrying...\n");
+            sleep_ms(1000);  
+        }
+        return false;
+    }
+
+    DEBUG_printf("Connected successfully.\n");
+    parent = min_node_id;
+    return true;
+}
+
 bool STANode::connect_to_node(uint32_t id) {
    DEBUG_printf("Connecting to node: %u\n", id);
 
@@ -413,8 +448,8 @@ bool STANode::connect_to_node(uint32_t id) {
    DEBUG_printf("Generated SSID: %s\n", ssid);
 
     // Attempt to connect
-    if (cyw43_arch_wifi_connect_timeout_ms(ssid, "password", CYW43_AUTH_WPA2_AES_PSK, 20000)) {
-        for (int i = 0; i < 20; i++) {
+    if (cyw43_arch_wifi_connect_timeout_ms(ssid, "password", CYW43_AUTH_WPA2_AES_PSK, 7500)) {
+        for (int i = 0; i < 8; i++) {
            DEBUG_printf("Failed to connect. Retrying...\n");
             sleep_ms(1000);  
         }
@@ -429,6 +464,7 @@ bool STANode::connect_to_node(uint32_t id) {
 bool STANode::is_connected() {
     int res = cyw43_wifi_link_status(&cyw43_state, CYW43_ITF_STA);
     if (res != CYW43_LINK_JOIN) {
+        DEBUG_printf("%d\n", res);
       return false;
     }
     return true;
@@ -458,7 +494,7 @@ bool STANode::tcp_init() {
 // Check for serial messages and if you have any parse them
 void STANode::poll() {
     if(uart.BufferReady()) {
-        
+        handle_serial_message(uart.getReadBuffer());
     }
 }
 

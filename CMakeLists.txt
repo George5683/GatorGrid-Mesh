@@ -23,12 +23,14 @@ if (EXISTS ${picoVscode})
     include(${picoVscode})
 endif()
 # ====================================================================================
-set(PICO_BOARD pico2_w CACHE STRING "Board type")
+set(PICO_BOARD pico_w CACHE STRING "Board type")
 
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
 project(picow_access_point C CXX ASM)
+
+option(APP_DEBUG "Enable app-level debug paths" OFF)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
@@ -62,6 +64,11 @@ target_link_libraries(sta_background
         hardware_spi
         )
 
+
+if (APP_DEBUG)
+  target_compile_definitions(sta_background PRIVATE DEBUG=1)
+endif()
+
 pico_enable_stdio_uart(sta_background 0)
 pico_enable_stdio_usb(sta_background 1)
         
@@ -92,6 +99,10 @@ target_link_libraries(ap_background
         hardware_spi
         )
 
+if (APP_DEBUG)
+  target_compile_definitions(ap_background PRIVATE DEBUG=1)
+endif()
+
 pico_enable_stdio_uart(ap_background 0)
 pico_enable_stdio_usb(ap_background 1)
         
@@ -121,6 +132,10 @@ target_link_libraries(sta_root
         pico_multicore
         hardware_spi
         )
+
+if (APP_DEBUG)
+  target_compile_definitions(sta_root PRIVATE DEBUG=1)
+endif()
 
 pico_enable_stdio_uart(sta_root 0)
 pico_enable_stdio_usb(sta_root 1)
@@ -153,6 +168,10 @@ target_link_libraries(ap_root
         hardware_spi
         )
 
+if (APP_DEBUG)
+  target_compile_definitions(ap_root PRIVATE DEBUG=1)
+endif()
+
 pico_enable_stdio_uart(ap_root 0)
 pico_enable_stdio_usb(ap_root 1)
         
@@ -183,6 +202,10 @@ target_link_libraries(sta_one
         pico_multicore
         hardware_spi
         )
+
+if (APP_DEBUG)
+  target_compile_definitions(sta_one PRIVATE DEBUG=1)
+endif()
 
 pico_enable_stdio_uart(sta_one 0)
 pico_enable_stdio_usb(sta_one 1)
@@ -215,6 +238,10 @@ target_link_libraries(ap_one
         hardware_spi
         )
 
+if (APP_DEBUG)
+  target_compile_definitions(ap_one PRIVATE DEBUG=1)
+endif()
+
 pico_enable_stdio_uart(ap_one 0)
 pico_enable_stdio_usb(ap_one 1)
         
@@ -246,6 +273,10 @@ target_link_libraries(sta_two
         hardware_i2c
         )
 
+if (APP_DEBUG)
+  target_compile_definitions(sta_two PRIVATE DEBUG=1)
+endif()
+
 pico_enable_stdio_uart(sta_two 0)
 pico_enable_stdio_usb(sta_two 1)
         
@@ -276,6 +307,10 @@ target_link_libraries(ap_two
         pico_multicore
         hardware_spi
         )
+
+if (APP_DEBUG)
+  target_compile_definitions(ap_two PRIVATE DEBUG=1)
+endif()
 
 pico_enable_stdio_uart(ap_two 0)
 pico_enable_stdio_usb(ap_two 1)

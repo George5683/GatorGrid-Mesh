@@ -1,5 +1,11 @@
 #include "UART.hpp"
 
+#if DEBUG 
+#define DEBUG_printf printf
+#else
+#define DEBUG_printf
+#endif
+
 PicoUART* PicoUART::instance = nullptr;
 
 // Constructor
@@ -9,11 +15,11 @@ PicoUART::PicoUART() {
 
 // Initialize UART hardware
 bool PicoUART::picoUARTInit() {
-    printf("%d init code \n", uart_init(UART_ID, BAUD_RATE));
+    DEBUG_printf("%d init code \n", uart_init(UART_ID, BAUD_RATE));
     gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
     gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
 
-    printf("first half");
+    DEBUG_printf("first half");
 
     
     uart_set_format(UART_ID, DATA_BITS, STOP_BITS, PARITY);
@@ -60,14 +66,14 @@ bool PicoUART::BufferReady() {
 
 // Static ISR
 void PicoUART::on_uart_rx() {
-    printf("ISR Called\n");
+    DEBUG_printf("ISR Called\n");
 
     if (!instance) return;
 
     instance->buffer_ready = true;
 
     while (uart_is_readable(UART_ID)) {
-        printf("UART READ LOOP, should only run once");
+        DEBUG_printf("UART READ LOOP, should only run once");
         uart_read_blocking(UART_ID, instance->rxBuffer, MAX_LEN);
         instance->rxIndex = MAX_LEN;
     }
