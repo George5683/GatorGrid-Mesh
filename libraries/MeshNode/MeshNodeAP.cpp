@@ -359,7 +359,7 @@ APNode::APNode(uint32_t id) : state(nullptr), running(false), password("password
 
     DEBUG_printf("starting uart\n");
     uart.picoUARTInit();
-    DEBUG_printf("uart  nitalized\n");
+    DEBUG_printf("uart initalized\n");
     uart.picoUARTInterruptInit();
     DEBUG_printf("uart intterupts initalized\n");
     set_NodeID(id);

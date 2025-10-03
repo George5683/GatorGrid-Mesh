@@ -225,7 +225,7 @@ STANode::STANode() : rb(10), tree(0) {
     // Set SPI to be a slave 
     DEBUG_printf("starting uart\n");
     uart.picoUARTInit();
-    DEBUG_printf("uart  nitalized\n");
+    DEBUG_printf("uart initalized\n");
     uart.picoUARTInterruptInit();
     DEBUG_printf("uart intterupts initalized\n");
     
@@ -251,7 +251,7 @@ bool STANode::init_sta_mode() {
 
     // Wait for the AP pico to send the first message
     
-    DEBUG_printf("Waiting for ID from AP over UART");
+    DEBUG_printf("Waiting for ID from AP over UART\n");
 
     while(!uart.BufferReady()) {
         sleep_ms(10);

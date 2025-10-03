@@ -15,6 +15,7 @@ PicoUART::PicoUART() {
 
 // Initialize UART hardware
 bool PicoUART::picoUARTInit() {
+    instance = this;
     
     uart_init(UART_ID, BAUD_RATE);
     gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
@@ -22,6 +23,7 @@ bool PicoUART::picoUARTInit() {
 
     uart_set_format(UART_ID, DATA_BITS, STOP_BITS, PARITY);
     uart_set_hw_flow(UART_ID, false, false);
+    uart_set_fifo_enabled(UART_ID, false);
 
     return true;
 }
@@ -87,19 +89,30 @@ static bool toggle;
 // Static ISR
 void PicoUART::on_uart_rx() {
 
-    if (!instance) return;
+    DEBUG_printf("ISR Triggered\n");
+
+    if (!instance) {
+        DEBUG_printf("instance is nullptr\n");
+        return;
+    }
 
     // ISR thrown twice, so just have a toggle gate guard it
     if (instance->toggle == false) {
         instance->toggle = true;
+        DEBUG_printf("Toggle protection thrown\n");
         return;
     }
 
     instance->toggle = false;
 
-    uart_get_hw(UART_ID)->icr = UART_UARTICR_TXIC_BITS;
+    uart_get_hw(UART_ID)->icr = UART_UARTICR_RXIC_BITS;
+    DEBUG_printf("get hw successful\n");
+
+    
 
     uint8_t *buffer = instance->srb.buffer_put();
+
+    DEBUG_printf("got ISR buffer\n");
 
     // Should the ring buffer ever be full stall the pico
     if(buffer == nullptr) {
