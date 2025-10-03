@@ -1,6 +1,7 @@
 #include "pico/stdlib.h"
 #include "libraries/MeshNode/MeshNode.hpp"
 #include "libraries/MeshNode/Messages.hpp"
+#include <cstdint>
 #include <cstdio>
 #include "pico/cyw43_arch.h"
 
@@ -69,17 +70,17 @@ int main() {
     // initial delay to allow user to look at the serial monitor
     sleep_ms(10000);
 
-    i2c_init(i2c_default, 400 * 1000);
-    gpio_set_function(PICO_DEFAULT_I2C_SDA_PIN, GPIO_FUNC_I2C);
-    gpio_set_function(PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C);
-    gpio_pull_up(PICO_DEFAULT_I2C_SDA_PIN);
-    gpio_pull_up(PICO_DEFAULT_I2C_SCL_PIN);
+    // i2c_init(i2c_default, 400 * 1000);
+    // gpio_set_function(PICO_DEFAULT_I2C_SDA_PIN, GPIO_FUNC_I2C);
+    // gpio_set_function(PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C);
+    // gpio_pull_up(PICO_DEFAULT_I2C_SDA_PIN);
+    // gpio_pull_up(PICO_DEFAULT_I2C_SCL_PIN);
 
-    bi_decl(bi_2pins_with_func(PICO_DEFAULT_I2C_SDA_PIN, PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C));
+    // bi_decl(bi_2pins_with_func(PICO_DEFAULT_I2C_SDA_PIN, PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C));
 
-    mpu6050_reset();
+    // mpu6050_reset();
 
-    int16_t acceleration[3], gyro[3], temp;
+    // int16_t acceleration[3], gyro[3], temp;
 
     //SPI spi;
     STANode node;
@@ -116,13 +117,21 @@ int main() {
    bool got_an_ack = false;
    int count = 0;
    uint32_t children_ids[4] = {};
-uint8_t number_of_children = 0;
+    uint8_t number_of_children = 0;
+    TCP_DATA_MSG msg(node.get_NodeID(), 0);
 
     bool toggle = true;
+    uint32_t send_count = 0;
     for (;;) {
         node.poll();
 
-        if (count++ >= 500) {
+        if (count == 500) {
+            msg.add_message(reinterpret_cast<uint8_t*>(&send_count), 4);
+            node.send_msg(msg.get_msg());
+            send_count++;
+        }
+
+        if (count++ >= 1000) {
             cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
             toggle = !toggle;
             if(!node.is_connected()) {
