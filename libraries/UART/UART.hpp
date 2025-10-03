@@ -2,9 +2,13 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/uart.h"
+#include "hardware/dma.h"
+#include "hardware/irq.h"
+
+#include "../SerialRingBuffer/SerialRingBuffer.hpp"
 
 #define UART_ID    uart0
-#define BAUD_RATE  9600
+#define BAUD_RATE  115200
 #define DATA_BITS  8
 #define STOP_BITS  1
 #define PARITY     UART_PARITY_NONE
@@ -12,16 +16,17 @@
 #define UART_TX_PIN 16
 #define UART_RX_PIN 17
 
-#define MAX_LEN 128
+#define MAX_LEN     128
 
 class PicoUART {
 private:
-    uint8_t rxBuffer[MAX_LEN];
-    int rxIndex = 0;
-
+    //uint8_t rxBuffer[MAX_LEN];
+    SerialRingBuffer srb;
     static PicoUART* instance;
+    static int    dma_chan;
 
-    bool buffer_ready = false;
+    bool toggle = true;
+
 
 public:
     PicoUART();
