@@ -27,7 +27,6 @@ private:
 
     bool toggle = true;
 
-
 public:
     PicoUART();
     ~PicoUART() = default;

@@ -253,7 +253,9 @@ bool STANode::init_sta_mode() {
     
     DEBUG_printf("Waiting for ID from AP over UART");
 
-    while(!uart.BufferReady());
+    while(!uart.BufferReady()) {
+        sleep_ms(10);
+    }
 
     uint8_t *buffer = uart.getReadBuffer();
 
@@ -286,7 +288,14 @@ bool STANode::init_sta_mode() {
 
 bool STANode::start_sta_mode() {
     cyw43_arch_enable_sta_mode();
-   DEBUG_printf("Starting STA mode\n");
+    DEBUG_printf("Starting STA mode\n");
+
+    // tell AP that it has fully started
+    uint8_t buf[300];
+    *(uint32_t*)buf = this->get_NodeID();
+
+    uart.sendMessage((char*)buf);
+    
     return true; // ggwp
 }
 

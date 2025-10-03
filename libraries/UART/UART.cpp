@@ -22,7 +22,6 @@ bool PicoUART::picoUARTInit() {
 
     uart_set_format(UART_ID, DATA_BITS, STOP_BITS, PARITY);
     uart_set_hw_flow(UART_ID, false, false);
-    //uart_set_fifo_enabled(UART_ID, false);
 
     return true;
 }

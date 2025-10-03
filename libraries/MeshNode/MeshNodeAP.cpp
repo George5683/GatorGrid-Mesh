@@ -543,11 +543,25 @@ bool APNode::start_ap_mode() {
     DEBUG_printf("Sending ID %d\n", ID);
 
     uart.sendMessage((char*)&ID);
+    
 
-    DEBUG_printf("Message sent");
+    //DEBUG_printf("Message sent");
     //puts("entering poll test");
 
     //while(!Master_Pico.SPI_POLL_MESSAGE());
+
+    // wait for sta to fully start
+    while(!uart.BufferReady()) {
+        sleep_ms(10);
+    }
+
+    uint8_t *tmp = uart.getReadBuffer();
+
+    if(*(uint32_t *)tmp != this->get_NodeID()) {
+        while(1) {
+            printf("ERROR: Node ID DIFFERENT, This should not ever be hit");
+        }
+    }
 
     running = true;
     return true;
