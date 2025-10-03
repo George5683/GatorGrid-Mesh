@@ -1,6 +1,7 @@
 #ifndef SERIAL_MESSAGE_HPP
 #define SERIAL_MESSAGE_HPP
 
+#include "Messages.hpp"
 #include <cstdint>
 #include <cstring>
 
@@ -48,7 +49,7 @@ public:
 public:
     SERIAL_NODE_ADD_MESSAGE(uint32_t parent, uint32_t child) : SERIAL_MESSAGE() { 
         msg.msg_id = 0x00;
-        msg.len = 7;
+        msg.len = 11;
         msg.child = child;
         msg.parent = parent;
     }
@@ -109,8 +110,8 @@ public:
     }
 
     void add_message(uint8_t* msg_i, uint8_t msg_len) {
-        memcpy(msg.msg, msg_i, msg_len > 512 - 5 ? 512 - 5 : msg_len);
-        msg.msg_len = msg_len > 512 - 5 ? 512 - 5 : msg_len;
+        memcpy(msg.msg, msg_i, msg_len > MAX_MESSAGE_LENGTH - 5 ? MAX_MESSAGE_LENGTH - 5 : msg_len);
+        msg.msg_len = msg_len > MAX_MESSAGE_LENGTH - 5 ? MAX_MESSAGE_LENGTH - 5 : msg_len;
         msg.len = msg.msg_len + 5;
     }
 

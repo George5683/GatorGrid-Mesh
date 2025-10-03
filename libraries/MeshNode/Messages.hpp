@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <cstring>
 
-#define MAX_MESSAGE_LENGTH 256
+#define MAX_MESSAGE_LENGTH 128
 
 class TCP_MESSAGE {
 protected:

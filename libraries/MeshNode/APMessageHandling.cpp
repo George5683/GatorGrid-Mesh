@@ -335,7 +335,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
     } else if (send_to_sta) {
         // depending on the type of data forward only what is necessary
         SERIAL_DATA_MESSAGE msg;
-        msg.set_msg(buffer);
+        msg.add_message(buffer, p->tot_len);
         uart.sendMessage((const char*)msg.get_msg());
     }
 
@@ -343,7 +343,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
 }
 
 err_t APNode::handle_transfering_data(uint8_t *buffer) {
-    DEBUG_printf("Entered handle_trafering_data\n");
+    DEBUG_printf("Entered handle_transfering_data\n");
 
     uint8_t msg_id = buffer[1];
     if (DATA_MSG == msg_id) {

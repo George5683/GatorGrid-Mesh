@@ -142,10 +142,11 @@ bool STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward)
     while(state->waiting_for_ack)
     {
         sleep_ms(2);
+        DEBUG_printf(".");
         count++;
         if(count == 1000) {
             state->waiting_for_ack = false;
-            DEBUG_printf("Timeout\n");
+            DEBUG_printf("\nTimeout\n");
             return false;
         }
             
@@ -352,6 +353,7 @@ err_t STANode::send_msg(uint8_t* msg) {
         case 0x03: /* TCP_UPDATE_MESSAGE */
         {
             TCP_UPDATE_MESSAGE updateMsg;
+            updateMsg.set_msg(msg);
             len = updateMsg.get_len();
             target_id = updateMsg.msg.dest;
             break;
@@ -393,7 +395,7 @@ err_t STANode::send_msg(uint8_t* msg) {
 err_t STANode::handle_serial_message(uint8_t *msg) {
     uint8_t id = serialMessageType(msg);
     DEBUG_printf("Received serial message in handler\n");
-    DUMP_BYTES(msg, msg[1]);
+    DUMP_BYTES(msg, msg[2]);
 
     // TODO: Finish switch-case
     switch (id) {
@@ -428,6 +430,7 @@ err_t STANode::handle_serial_message(uint8_t *msg) {
             break;
         case 0x02: /* Data message */
         {
+            DEBUG_printf("Got DATA SERIAL MESSAGE\n");
             SERIAL_DATA_MESSAGE serial_msg;
             serial_msg.set_msg(msg);
 
