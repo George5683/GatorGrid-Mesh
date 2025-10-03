@@ -393,6 +393,7 @@ err_t STANode::send_msg(uint8_t* msg) {
 err_t STANode::handle_serial_message(uint8_t *msg) {
     uint8_t id = serialMessageType(msg);
     DEBUG_printf("Received serial message in handler\n");
+    DUMP_BYTES(msg, msg[1]);
 
     // TODO: Finish switch-case
     switch (id) {

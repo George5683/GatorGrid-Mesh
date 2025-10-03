@@ -105,7 +105,7 @@ void PicoUART::on_uart_rx() {
 
     instance->toggle = false;
 
-    uart_get_hw(UART_ID)->icr = UART_UARTICR_RXIC_BITS;
+    
     DEBUG_printf("get hw successful\n");
 
     
@@ -124,6 +124,9 @@ void PicoUART::on_uart_rx() {
     while (uart_is_readable(UART_ID)) {
         uart_read_blocking(UART_ID, buffer, MAX_LEN);
     }
+
+    // only clear flag after ISR has ran
+    uart_get_hw(UART_ID)->icr = UART_UARTICR_RXIC_BITS;
 
     return;
 }

@@ -31,7 +31,7 @@ public:
         uint8_t msg_id;
         uint16_t len;
         uint16_t msg_len;
-        uint8_t msg[512-5]; //max message len left for 512 bytes
+        uint8_t msg[128-5]; //max message len left for 512 bytes
     }serial_data_msg;
 
     typedef struct __attribute__((__packed__)) serial_fatal_error_msg_t{

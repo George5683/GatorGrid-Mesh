@@ -270,7 +270,7 @@ err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
     tcp_arg(client_pcb, state);
     tcp_sent(client_pcb, tcp_server_sent);
     tcp_recv(client_pcb, tcp_server_recv);
-    tcp_poll(client_pcb, tcp_server_poll, POLL_TIME_S * 2);
+    // tcp_poll(client_pcb, tcp_server_poll, POLL_TIME_S * 2);
     tcp_err(client_pcb, tcp_server_err);
 
     //return tcp_server_send_data(arg, state->client_pcb);

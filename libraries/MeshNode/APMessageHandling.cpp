@@ -12,6 +12,8 @@
 #include "hardware/regs/rosc.h"
 #include "hardware/regs/addressmap.h"
 
+#define DATA_MSG 0x01
+
 #if DEBUG 
 #define DEBUG_printf printf
 #else
@@ -161,23 +163,15 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                     break;
 
                     // Check the node tree and see if it is a child
-                } else if (tree.find_path_parent(dest, &path_parent)) {
-                    DEBUG_printf("Node is child and not directly connected, but connected to %08x\n", path_parent);
-                    
-                    if (path_parent == UINT32_MAX) {
-                        DEBUG_printf("Fatal error this should not have been reached");
-                        while(true);
-                    }
-
-                    send_tcp_data(path_parent, client_tpcbs.at(path_parent), dataMsg.get_msg(), dataMsg.get_len());
-                    
-
-                    // if the node is not in our tree and we are not root forward it to STA to forwad up
                 } else if (is_root == false) {
 
                     DEBUG_printf("Node not found in our connection, forwarding to STA to forward up");
                     
                     // Construct serial message for STA
+                    ACK_flag = false;
+                    NAK_flag = false;
+
+                    send_to_sta = true;
                         
 
                     // If the node is not in our tree and we are not root kill the message
@@ -340,29 +334,23 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
         return false;
     } else if (send_to_sta) {
         // depending on the type of data forward only what is necessary
-        uart.sendMessage((const char*)state->buffer_recv);
+        SERIAL_DATA_MESSAGE msg;
+        msg.set_msg(buffer);
+        uart.sendMessage((const char*)msg.get_msg());
     }
 
     return true;
 }
 
 err_t APNode::handle_transfering_data(uint8_t *buffer) {
+    DEBUG_printf("Entered handle_trafering_data\n");
 
     uint8_t msg_id = buffer[1];
-    switch (msg_id) {
-        case 0x00: 
-            break;
-        case 0x01: // If dataMsg is being transferred
-        {
-            TCP_DATA_MSG dataMsg; 
-            dataMsg.set_msg(buffer);
+    if (DATA_MSG == msg_id) {
+        TCP_DATA_MSG msg;
+        msg.set_msg(buffer);
 
-            
-
-            break;
-        }
-        default:
-            break;
+        
     }
 
     return 0;
@@ -462,6 +450,7 @@ err_t APNode::send_msg(uint8_t* msg) {
 
 err_t APNode::handle_serial_message(uint8_t *msg) {
     uint8_t id = serialMessageType(msg);
+    DEBUG_printf("Got serial message\n");
 
     // TODO: Finish switch-case
     switch (id) {
@@ -481,6 +470,7 @@ err_t APNode::handle_serial_message(uint8_t *msg) {
             break;
         case 0x02: /* Data message */
         {
+            DEBUG_printf("Got DATA SERIAL MESSAGE\n");
             SERIAL_DATA_MESSAGE serial_msg;
             serial_msg.set_msg(msg);
 

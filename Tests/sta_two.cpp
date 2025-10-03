@@ -118,7 +118,7 @@ int main() {
    int count = 0;
    uint32_t children_ids[4] = {};
     uint8_t number_of_children = 0;
-    TCP_DATA_MSG msg(node.get_NodeID(), 0);
+    
 
     bool toggle = true;
     uint32_t send_count = 0;
@@ -126,6 +126,7 @@ int main() {
         node.poll();
 
         if (count == 500) {
+            TCP_DATA_MSG msg(node.get_NodeID(), 0);
             msg.add_message(reinterpret_cast<uint8_t*>(&send_count), 4);
             node.send_msg(msg.get_msg());
             send_count++;

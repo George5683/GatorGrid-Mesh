@@ -100,7 +100,7 @@ static err_t tcp_client_sent(void *arg, struct tcp_pcb *tpcb, u16_t len) {
     DEBUG_printf("tcp_client_sent %u\n", len);
 
     DEBUG_printf("TCP_CLIENT_SENT DUMP BYTES\n");
-    DUMP_BYTES(state->buffer, 100);
+    DUMP_BYTES(state->buffer, len);
 
     //state->sent_len += len;
 
@@ -387,7 +387,7 @@ bool STANode::scan_for_nodes() {
         return false;
     }
     
-    DEBUG_printf("Scan started\n");
+    DEBUG_printf("...");
     
     // Wait for scan to complete with timeout
     while (cyw43_wifi_scan_active(&cyw43_state)) {
@@ -404,19 +404,20 @@ bool STANode::scan_for_nodes() {
         #endif
     }
     
-    DEBUG_printf("Scan completed successfully\n");
+    DEBUG_printf("---");
     return true;
 }
 
 bool STANode::connect_to_network() {
     if (known_nodes.size() == 0) return false;
+    scan_for_nodes(); 
     DEBUG_printf("Knows some nodes\n");
 
     int16_t min_rssi = known_nodes.begin()->second->rssi;
     uint32_t min_node_id = known_nodes.begin()->first;
 
     for (const auto& node : known_nodes) {
-        if (node.second->rssi < min_rssi) {
+        if (node.second->rssi > min_rssi) {
             min_rssi = node.second->rssi;
             min_node_id = node.first;
         }
