@@ -264,13 +264,23 @@ public:
      * @details Manages operations for dealing with different types of messages
      *          being received. 
      * 
-     * @param buffer    - dara buffer
+     * @param buffer    - data buffer
      * @param tpcb      - tcp_pcb* of source
      * @param p         - description of buffer
      * @return true 
      * @return false 
      */
     bool handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct pbuf *p);
+
+    /**
+     * @brief Handles data being transferred over serial
+     *
+     * @details Made to work with data lacking the tpcb point to the client
+     * 
+     * @param buffer     - data buffer
+     * @return err_t 
+     */
+    err_t handle_transfering_data(uint8_t *buffer);
 
     /**
      * @brief Sends formatted Messages(Under construction)
@@ -301,6 +311,7 @@ public:
     std::string AP_CONNECTED_IP;
 
     RingBuffer rb;
+    ChildrenTree tree;
 
     STANode();
     ~STANode();
@@ -309,6 +320,7 @@ public:
     bool start_sta_mode();
     bool scan_for_nodes();
     bool connect_to_node(uint32_t id);
+    bool connect_to_network();
     bool is_connected();
     bool tcp_init();
 
@@ -323,7 +335,7 @@ public:
     int number_of_messages();
 
     static int scan_result(void* env, const cyw43_ev_scan_result_t* result);
-    bool handle_incoming_data(unsigned char* buffer, struct pbuf *p);
+    bool handle_incoming_data(unsigned char* buffer, uint16_t tot_len);
 
     err_t send_msg(uint8_t *msg);
     err_t handle_serial_message(uint8_t* msg);

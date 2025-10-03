@@ -28,6 +28,10 @@ public:
     void remove_children(int id);
     bool remove_child(uint32_t id);
 
+    bool update_node(uint32_t id, uint32_t children_id[4], uint8_t &number_of_children);
+
+    void edit_head(uint32_t new_id);
+
     /**
      * @brief Get the list of children id from a given parent
      * 

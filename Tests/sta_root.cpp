@@ -1,6 +1,7 @@
 #include "pico/stdlib.h"
 #include "libraries/MeshNode/MeshNode.hpp"
 #include "libraries/MeshNode/Messages.hpp"
+#include <cstdint>
 #include <cstdio>
 #include "pico/cyw43_arch.h"
 #include "pico/multicore.h"
@@ -44,13 +45,25 @@ int main() {
 
 
     bool toggle = true;
+    
     for (;;) {
+
         cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
         toggle = !toggle;
         if(!node.is_connected()) {
             printf("Not connected!\n");
+        } else {
+            break;
         }
         sleep_ms(5000);
+    }
+
+    for (;;) {
+
+        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
+        toggle = !toggle;
+
+        sleep_ms(1000);
     }
 
     return 0;

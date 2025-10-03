@@ -12,6 +12,10 @@ ChildrenTree::~ChildrenTree() {
     head = nullptr;
 }
 
+void ChildrenTree::edit_head(uint32_t new_id) {
+    head->id = new_id;
+}
+
 /*
 void ChildrenTree::remove_children(Node* node) {
     if (!node) {
@@ -101,12 +105,15 @@ bool ChildrenTree::add_any_child(uint32_t parent_id, uint32_t child_id) {
     if(head == nullptr) {return false;}
     Node *parent = find_node(parent_id, head);
     
+    
     if (parent ==  nullptr) {return false;}
+    std::cout << "found parent node\n";
     if (parent->number_of_children > 3) {
         std::cout<<"Max number of children already reached for node " << parent->id;
         return false;
     }
     Node* child = new Node(child_id);
+    std::cout << "Made new node\n";
     parent->children[parent->number_of_children] = child;
     parent->number_of_children++;
     child->parent = parent;
@@ -115,6 +122,7 @@ bool ChildrenTree::add_any_child(uint32_t parent_id, uint32_t child_id) {
 
 ChildrenTree::Node* ChildrenTree::find_node(uint32_t id, Node* head) {
     if (head == nullptr) {return nullptr;}
+    if (head->id == id) {return head;}
     if (head->number_of_children == 0) {
         return nullptr;
     }
@@ -225,4 +233,36 @@ void ChildrenTree::get_node_details(ChildrenTree* tree) {
     std::cout << "Number of Children: "<<(int)node->number_of_children;
     if(node->number_of_children == 0) std::cout << "No Children";
     std::cout << "\nID: " << node->id;
+}
+
+bool ChildrenTree::get_children(uint32_t parent_id, uint32_t children_id[4], uint8_t &number_of_children) {
+    Node* node = find_node(parent_id, head);
+
+    if (!node) return false;
+
+    for (int i = 0; i < node->number_of_children; i++) {
+        children_id[i] = node->children[i]->id;
+    }
+    number_of_children = node->number_of_children;
+
+    return true;
+}
+
+bool ChildrenTree::update_node(uint32_t id, uint32_t children_id[4], uint8_t &number_of_children) {
+    Node* node = find_node(id, head);
+    if (!node) { return false; }
+
+    for (int i = 0; i < number_of_children; i++) {
+        bool found = false;
+        for (int j = 0; j < node->number_of_children; j++) {
+            if (node->children[j]->id == children_id[i]) {
+                found = true;
+                break;
+            }
+        }
+        if (found) continue;
+        if (!add_any_child(node->id, children_id[i])) return false;
+    }
+
+    return true;
 }
