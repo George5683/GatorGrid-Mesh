@@ -11,7 +11,7 @@ using namespace std;
 #include <cstdio>
 
 #define MAX_SERIAL_BUF_SIZE 15
-#define MAX_SERIAL_BUF_LEN 300
+#define MAX_SERIAL_BUF_LEN 128
 
 extern uint8_t seral_bufs[MAX_SERIAL_BUF_SIZE][MAX_SERIAL_BUF_LEN];
 
