@@ -1,10 +1,5 @@
 #include "UART.hpp"
-
-#if DEBUG 
-#define DEBUG_printf printf
-#else
-#define DEBUG_printf
-#endif
+#include "display.hpp"
 
 PicoUART* PicoUART::instance = nullptr;
 
@@ -68,7 +63,7 @@ uint8_t* PicoUART::getReadBuffer() {
     // if the ring buffer is empty and they call getReadBuffer stall because something has gone wrong
     if(buffer == nullptr) {
         while(1) {
-            puts("Fatal Error: read buffer empty\n");
+            ERROR_printf("Fatal Error: read buffer empty\n");
         }
     }
 
@@ -89,7 +84,7 @@ static bool toggle;
 // Static ISR
 void PicoUART::on_uart_rx() {
 
-    DEBUG_printf("ISR Triggered\n");
+    // DEBUG_printf("ISR Triggered\n");
 
     if (!instance) {
         DEBUG_printf("instance is nullptr\n");
@@ -99,25 +94,25 @@ void PicoUART::on_uart_rx() {
     // ISR thrown twice, so just have a toggle gate guard it
     if (instance->toggle == false) {
         instance->toggle = true;
-        DEBUG_printf("Toggle protection thrown\n");
+        // DEBUG_printf("Toggle protection thrown\n");
         return;
     }
 
     instance->toggle = false;
 
     
-    DEBUG_printf("get hw successful\n");
+    // DEBUG_printf("get hw successful\n");
 
     
 
     uint8_t *buffer = instance->srb.buffer_put();
 
-    DEBUG_printf("got ISR buffer\n");
+    // DEBUG_printf("got ISR buffer\n");
 
     // Should the ring buffer ever be full stall the pico
     if(buffer == nullptr) {
         while(1) {
-            printf("Fatal Error: Serial recieved messages faster then poll could digest them\n");
+            ERROR_printf("Serial recieved messages faster then poll could digest them\n");
         }
     }
 
@@ -125,7 +120,7 @@ void PicoUART::on_uart_rx() {
         uart_read_blocking(UART_ID, buffer, MAX_LEN);
     }
 
-    DEBUG_printf("%02X %02X %02X %02X %02X\n", buffer[0],buffer[1],buffer[2],buffer[3],buffer[4]);
+    // DEBUG_printf("%02X %02X %02X %02X %02X\n", buffer[0],buffer[1],buffer[2],buffer[3],buffer[4]);
 
     // only clear flag after ISR has ran
     uart_get_hw(UART_ID)->icr = UART_UARTICR_RXIC_BITS;
