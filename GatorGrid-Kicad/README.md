@@ -1,10 +1,15 @@
 ## Kicad Designs
 
-Design are seperated into versions based on functionality and Design stages 
+Design are separated into versions based on functionality and Design stages 
 
-*Start from BETA BUILD the first design V(X.0) is always the dev kit with extra Pico pinouts sockets for monitoring*
+*Starting from BETA BUILD the first design V(X.0) is always the dev kit with extra Pico pinouts sockets for monitoring*
 
 # Kicad Stages
-- Alpha Build (V1.0+)
-- Beta Build (V2.0+)
-- Final Build (V3.0+)
+- INITIAL BUILD (V0.1 & V1.0)
+- ALPHA BUILD (V2.0+)
+- BETA BUILD (V3.0+)
+- FINAL BUILD (V4.0+)
+
+# External Sensor
+At the moment the external sensor list is limited but can be expanded as needed
+- DHT11 external PCB extension

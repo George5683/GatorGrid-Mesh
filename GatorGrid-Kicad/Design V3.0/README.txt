@@ -9,8 +9,10 @@
 
 ## Schematic Update:
 
-- added JST for external Sensor
+- added JST-XH for external Sensor
 - added M3 holes on each corner
 - added M3 hole for external sensor PCB
+- connected GPIO22 to the external sensor connected
+- connected TP4056 TEMP pin to ground (previous bug fix)
 
 
