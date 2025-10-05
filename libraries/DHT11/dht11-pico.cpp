@@ -9,7 +9,6 @@
  */
 
 #include "dht11-pico.h"
-#include <cstdio>
 
 Dht11::Dht11(uint pin){
     gpioPin=pin;
@@ -24,59 +23,36 @@ Dht11::~Dht11(){
 long long Dht11::read(){
     int count=0;
     long long raw=0;
-    
-    printf("DHT11: Starting communication...\n");
-    
-    // Send start signal
     gpio_set_dir(gpioPin, GPIO_OUT);
     gpio_put(gpioPin,0);
-    printf("DHT11: Sent start signal (LOW for 20ms)\n");
     sleep_ms(20);
     gpio_set_dir(gpioPin, GPIO_IN);
-    printf("DHT11: Switch to input mode\n");
-    
-    // Check initial state
-    int initial_state = gpio_get(gpioPin);
-    printf("DHT11: Initial pin state: %d\n", initial_state);
 
-    // Wait for DHT11 to respond (pull low)
-    printf("DHT11: Waiting for response (pin to go LOW)...\n");
     while(gpio_get(gpioPin)==1){
         count++;
         sleep_us(5);
         if(count==POLLING_LIMIT){
-            printf("DHT11: TIMEOUT waiting for response start (pin stayed HIGH)\n");
-            printf("DHT11: This usually means sensor is not connected or not powered\n");
             return TRANSMISSION_ERROR;
         }
     }
-    printf("DHT11: Response detected (pin went LOW after %d loops)\n", count);
 
-    // Wait for DHT11 response high phase
     count=0;
-    printf("DHT11: Waiting for response HIGH phase...\n");
     while(gpio_get(gpioPin)==0){
         count++;
         sleep_us(5);
         if(count==POLLING_LIMIT){
-            printf("DHT11: TIMEOUT in response LOW phase\n");
             return TRANSMISSION_ERROR;
         }
     }
-    printf("DHT11: Response HIGH phase detected (after %d loops)\n", count);
 
-    // Wait for data transmission start
     count=0;
-    printf("DHT11: Waiting for data transmission start...\n");
     while(gpio_get(gpioPin)==1){
         count++;
         sleep_us(5);
         if(count==POLLING_LIMIT){
-            printf("DHT11: TIMEOUT waiting for data start\n");
             return TRANSMISSION_ERROR;
         }
     }
-    printf("DHT11: Data transmission started (after %d loops)\n", count);
 
     //transmission start
     for(int i=0;i<40;i++){
@@ -146,3 +122,33 @@ void Dht11::readRHT(double *temp, double *rh){
     *temp           =    temp_int + 0.1*temp_dec;
     *rh             =    rh_int + 0.1*rh_dec; 
 }
+
+/*
+ * An example program that demonstrates the usage of the DHT11 sensor library
+ * for Raspberry Pi Pico. It initializes the DHT11 sensor, reads temperature 
+ * and humidity values and prints them to the console.
+ */
+// #include "pico/stdlib.h"
+// #include <iostream>
+
+// #include "libraries/DHT11/dht11-pico.h"
+
+// const uint DHT_PIN = 22;
+
+// int main() {
+//     stdio_init_all();
+//     sleep_ms(2000);
+//     Dht11 dht11_sensor(DHT_PIN);
+//     double temperature;
+//     double rel_humidity;
+//     while(1){
+//     std::cout<<"Temp:"<<dht11_sensor.readT()<<" °C"<<std::endl;
+//     sleep_ms(1000);
+//     std::cout<<"RH:"<<dht11_sensor.readRH()<<" %"<<std::endl;
+//     sleep_ms(1000);
+//     dht11_sensor.readRHT(&temperature, &rel_humidity);
+//     std::cout<<"Temp:"<<temperature<<"°C"<<"   RH:"<<rel_humidity<<" %"<<std::endl;
+//     sleep_ms(1000);
+//     }
+//     return 0;
+// }
