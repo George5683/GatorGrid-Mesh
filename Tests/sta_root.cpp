@@ -83,6 +83,8 @@ int main() {
             }
             printf("\n");
 
+            node.tree.send_tree_serial();
+
             count = 0;
         }
        
