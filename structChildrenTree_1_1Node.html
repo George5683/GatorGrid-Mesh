@@ -131,11 +131,12 @@ Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">   15</span>: <a class="code hl_variable" href="structChildrenTree_1_1Node.html#a6f0c353622df27bbaa890bf0a01b9fb4">id</a>(0), <a class="code hl_variable" href="structChildrenTree_1_1Node.html#ab2e4c4de9c664c0511e92aad8a10251e">parent</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="structChildrenTree_1_1Node.html#a717075345af452127d0b11291ebea7a3">children</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="structChildrenTree_1_1Node.html#abddeb659f81a6935189362b06edee56e">number_of_children</a>(0) {}</div>
+<div class="fragment"><div class="line"><span class="lineno">   15</span>: <a class="code hl_variable" href="structChildrenTree_1_1Node.html#a6f0c353622df27bbaa890bf0a01b9fb4">id</a>(0), <a class="code hl_variable" href="structChildrenTree_1_1Node.html#ab2e4c4de9c664c0511e92aad8a10251e">parent</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="structChildrenTree_1_1Node.html#a717075345af452127d0b11291ebea7a3">children</a>(<span class="keyword">new</span> <a class="code hl_function" href="structChildrenTree_1_1Node.html#acaf9b7f010372cfdbef4e937623d2402">Node</a>*[4]), <a class="code hl_variable" href="structChildrenTree_1_1Node.html#abddeb659f81a6935189362b06edee56e">number_of_children</a>(0) {}</div>
 <div class="ttc" id="astructChildrenTree_1_1Node_html_a6f0c353622df27bbaa890bf0a01b9fb4"><div class="ttname"><a href="structChildrenTree_1_1Node.html#a6f0c353622df27bbaa890bf0a01b9fb4">ChildrenTree::Node::id</a></div><div class="ttdeci">uint32_t id</div><div class="ttdef"><b>Definition:</b> ChildrenTree.hpp:10</div></div>
 <div class="ttc" id="astructChildrenTree_1_1Node_html_a717075345af452127d0b11291ebea7a3"><div class="ttname"><a href="structChildrenTree_1_1Node.html#a717075345af452127d0b11291ebea7a3">ChildrenTree::Node::children</a></div><div class="ttdeci">Node ** children</div><div class="ttdef"><b>Definition:</b> ChildrenTree.hpp:12</div></div>
 <div class="ttc" id="astructChildrenTree_1_1Node_html_ab2e4c4de9c664c0511e92aad8a10251e"><div class="ttname"><a href="structChildrenTree_1_1Node.html#ab2e4c4de9c664c0511e92aad8a10251e">ChildrenTree::Node::parent</a></div><div class="ttdeci">Node * parent</div><div class="ttdef"><b>Definition:</b> ChildrenTree.hpp:11</div></div>
 <div class="ttc" id="astructChildrenTree_1_1Node_html_abddeb659f81a6935189362b06edee56e"><div class="ttname"><a href="structChildrenTree_1_1Node.html#abddeb659f81a6935189362b06edee56e">ChildrenTree::Node::number_of_children</a></div><div class="ttdeci">uint8_t number_of_children</div><div class="ttdef"><b>Definition:</b> ChildrenTree.hpp:13</div></div>
+<div class="ttc" id="astructChildrenTree_1_1Node_html_acaf9b7f010372cfdbef4e937623d2402"><div class="ttname"><a href="structChildrenTree_1_1Node.html#acaf9b7f010372cfdbef4e937623d2402">ChildrenTree::Node::Node</a></div><div class="ttdeci">Node()</div><div class="ttdef"><b>Definition:</b> ChildrenTree.hpp:15</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -162,7 +163,7 @@ Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">   16</span>: <a class="code hl_variable" href="structChildrenTree_1_1Node.html#a6f0c353622df27bbaa890bf0a01b9fb4">id</a>(<span class="keywordtype">id</span>), <a class="code hl_variable" href="structChildrenTree_1_1Node.html#ab2e4c4de9c664c0511e92aad8a10251e">parent</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="structChildrenTree_1_1Node.html#a717075345af452127d0b11291ebea7a3">children</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="structChildrenTree_1_1Node.html#abddeb659f81a6935189362b06edee56e">number_of_children</a>(0) {}</div>
+<div class="fragment"><div class="line"><span class="lineno">   16</span>: <a class="code hl_variable" href="structChildrenTree_1_1Node.html#a6f0c353622df27bbaa890bf0a01b9fb4">id</a>(<span class="keywordtype">id</span>), <a class="code hl_variable" href="structChildrenTree_1_1Node.html#ab2e4c4de9c664c0511e92aad8a10251e">parent</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="structChildrenTree_1_1Node.html#a717075345af452127d0b11291ebea7a3">children</a>(<span class="keyword">new</span> <a class="code hl_function" href="structChildrenTree_1_1Node.html#acaf9b7f010372cfdbef4e937623d2402">Node</a>*[4]), <a class="code hl_variable" href="structChildrenTree_1_1Node.html#abddeb659f81a6935189362b06edee56e">number_of_children</a>(0) {}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -179,7 +180,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="classChildrenTree.html#a27a1a1a1d453ccc60e9844671e221fb2">ChildrenTree::add_any_child()</a>, <a class="el" href="classChildrenTree.html#a3523b166ae262b00ad195f5e0a509250">ChildrenTree::add_child()</a>, <a class="el" href="classChildrenTree.html#aa2ac6227c240f9999383cd1570f7d8fe">ChildrenTree::find_node()</a>, <a class="el" href="classChildrenTree.html#a049986916dbe3d40ca969c6234403856">ChildrenTree::find_parent_recursive()</a>, and <a class="el" href="classChildrenTree.html#a7dab7e985e65a14a1dda879866c196f3">ChildrenTree::remove_children()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classChildrenTree.html#a27a1a1a1d453ccc60e9844671e221fb2">ChildrenTree::add_any_child()</a>, <a class="el" href="classChildrenTree.html#a3523b166ae262b00ad195f5e0a509250">ChildrenTree::add_child()</a>, <a class="el" href="classChildrenTree.html#aa2ac6227c240f9999383cd1570f7d8fe">ChildrenTree::find_node()</a>, <a class="el" href="classChildrenTree.html#aa60e54a2c46404ed725eb9b7b10e1e2c">ChildrenTree::find_parent_recursive()</a>, <a class="el" href="classChildrenTree.html#af6ca6ba5a0ca4b85604af7c002abef9e">ChildrenTree::find_path_parent()</a>, <a class="el" href="classChildrenTree.html#ae6fa837c2a0640fba0c4d0d21e7e0877">ChildrenTree::get_children()</a>, <a class="el" href="classChildrenTree.html#a9ae823ba04523b1b88be84652ecfda9f">ChildrenTree::remove_children()</a>, <a class="el" href="classChildrenTree.html#a265baaf33adbdfc17f416d6f7162b9aa">ChildrenTree::serialize_node()</a>, <a class="el" href="classChildrenTree.html#a8377d09d6683bba9b47f9b964894900c">ChildrenTree::traverse()</a>, and <a class="el" href="classChildrenTree.html#a9a4c749c0e9264219a1a70474692905f">ChildrenTree::update_node()</a>.</p>
 
 </div>
 </div>
@@ -195,7 +196,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="classChildrenTree.html#aa2ac6227c240f9999383cd1570f7d8fe">ChildrenTree::find_node()</a>, and <a class="el" href="classChildrenTree.html#a049986916dbe3d40ca969c6234403856">ChildrenTree::find_parent_recursive()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classChildrenTree.html#a27a1a1a1d453ccc60e9844671e221fb2">ChildrenTree::add_any_child()</a>, <a class="el" href="classChildrenTree.html#a909286e9222e99be5d535056502af74b">ChildrenTree::edit_head()</a>, <a class="el" href="classChildrenTree.html#aa2ac6227c240f9999383cd1570f7d8fe">ChildrenTree::find_node()</a>, <a class="el" href="classChildrenTree.html#aa60e54a2c46404ed725eb9b7b10e1e2c">ChildrenTree::find_parent_recursive()</a>, <a class="el" href="classChildrenTree.html#af6ca6ba5a0ca4b85604af7c002abef9e">ChildrenTree::find_path_parent()</a>, <a class="el" href="classChildrenTree.html#ae6fa837c2a0640fba0c4d0d21e7e0877">ChildrenTree::get_children()</a>, <a class="el" href="classChildrenTree.html#a0950fa26d6329d4f61dbf9112444a2b0">ChildrenTree::get_node_details()</a>, <a class="el" href="classChildrenTree.html#a9ae823ba04523b1b88be84652ecfda9f">ChildrenTree::remove_children()</a>, <a class="el" href="classChildrenTree.html#a265baaf33adbdfc17f416d6f7162b9aa">ChildrenTree::serialize_node()</a>, <a class="el" href="classChildrenTree.html#a8377d09d6683bba9b47f9b964894900c">ChildrenTree::traverse()</a>, <a class="el" href="classChildrenTree.html#a9a4c749c0e9264219a1a70474692905f">ChildrenTree::update_node()</a>, and <a class="el" href="classChildrenTree.html#acb6b623ae889ac87d6f4b235bea46324">ChildrenTree::~ChildrenTree()</a>.</p>
 
 </div>
 </div>
@@ -211,7 +212,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="classChildrenTree.html#a27a1a1a1d453ccc60e9844671e221fb2">ChildrenTree::add_any_child()</a>, <a class="el" href="classChildrenTree.html#a3523b166ae262b00ad195f5e0a509250">ChildrenTree::add_child()</a>, <a class="el" href="classChildrenTree.html#aa2ac6227c240f9999383cd1570f7d8fe">ChildrenTree::find_node()</a>, <a class="el" href="classChildrenTree.html#a049986916dbe3d40ca969c6234403856">ChildrenTree::find_parent_recursive()</a>, and <a class="el" href="classChildrenTree.html#a7dab7e985e65a14a1dda879866c196f3">ChildrenTree::remove_children()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classChildrenTree.html#a27a1a1a1d453ccc60e9844671e221fb2">ChildrenTree::add_any_child()</a>, <a class="el" href="classChildrenTree.html#a3523b166ae262b00ad195f5e0a509250">ChildrenTree::add_child()</a>, <a class="el" href="classChildrenTree.html#aa2ac6227c240f9999383cd1570f7d8fe">ChildrenTree::find_node()</a>, <a class="el" href="classChildrenTree.html#aa60e54a2c46404ed725eb9b7b10e1e2c">ChildrenTree::find_parent_recursive()</a>, <a class="el" href="classChildrenTree.html#af6ca6ba5a0ca4b85604af7c002abef9e">ChildrenTree::find_path_parent()</a>, <a class="el" href="classChildrenTree.html#ae6fa837c2a0640fba0c4d0d21e7e0877">ChildrenTree::get_children()</a>, <a class="el" href="classChildrenTree.html#a0950fa26d6329d4f61dbf9112444a2b0">ChildrenTree::get_node_details()</a>, <a class="el" href="classChildrenTree.html#a9ae823ba04523b1b88be84652ecfda9f">ChildrenTree::remove_children()</a>, <a class="el" href="classChildrenTree.html#a265baaf33adbdfc17f416d6f7162b9aa">ChildrenTree::serialize_node()</a>, <a class="el" href="classChildrenTree.html#a8377d09d6683bba9b47f9b964894900c">ChildrenTree::traverse()</a>, and <a class="el" href="classChildrenTree.html#a9a4c749c0e9264219a1a70474692905f">ChildrenTree::update_node()</a>.</p>
 
 </div>
 </div>
@@ -226,6 +227,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="classChildrenTree.html#a27a1a1a1d453ccc60e9844671e221fb2">ChildrenTree::add_any_child()</a>, <a class="el" href="classChildrenTree.html#a3523b166ae262b00ad195f5e0a509250">ChildrenTree::add_child()</a>, and <a class="el" href="classChildrenTree.html#a8377d09d6683bba9b47f9b964894900c">ChildrenTree::traverse()</a>.</p>
 
 </div>
 </div>

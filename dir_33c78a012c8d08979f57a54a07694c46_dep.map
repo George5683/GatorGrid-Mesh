@@ -1,6 +1,10 @@
 <map id="Tests" name="Tests">
-<area shape="rect" id="node3" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html" title="libraries" alt="" coords="163,100,237,125"/>
-<area shape="rect" id="edge1-headlabel" href="dir_000011_000004.html" title="18" alt="" coords="200,74,217,89"/>
-<area shape="rect" id="node2" href="dir_a2412d28b687c7aa79004beeed71109a.html" title="mpuSensorTest" alt="" coords="27,27,149,52"/>
-<area shape="rect" id="clust1" href="dir_33c78a012c8d08979f57a54a07694c46.html" alt="" coords="16,16,239,63"/>
+<area shape="rect" id="node5" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html" title="libraries" alt="" coords="219,100,293,125"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000015_000005.html" title="28" alt="" coords="304,107,321,122"/>
+<area shape="rect" id="node2" href="dir_a2412d28b687c7aa79004beeed71109a.html" title="mpuSensorTest" alt="" coords="374,27,495,52"/>
+<area shape="rect" id="node3" href="dir_8d96fcec7f534a84e025b43f452edde4.html" title="PicoUARTSerialBufferTest" alt="" coords="163,27,349,52"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000009_000005.html" title="4" alt="" coords="260,74,269,89"/>
+<area shape="rect" id="node4" href="dir_8c0560f5a6a4f344983dc0c076f5791a.html" title="PicoUARTTest" alt="" coords="27,27,138,52"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000010_000005.html" title="2" alt="" coords="209,78,219,92"/>
+<area shape="rect" id="clust1" href="dir_33c78a012c8d08979f57a54a07694c46.html" alt="" coords="16,16,585,63"/>
 </map>

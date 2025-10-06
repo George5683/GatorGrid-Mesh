@@ -80,15 +80,32 @@ $(function() {
   <div class="headertitle"><div class="title">display.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><div class="dynheader">
+<div class="textblock"><code>#include &lt;cstdint&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for display.hpp:</div>
+<div class="dyncontent">
+<div class="center"><img src="display_8hpp__incl.png" border="0" usemap="#alibraries_2display_2display_8hpp" alt=""/></div>
+<map name="alibraries_2display_2display_8hpp" id="alibraries_2display_2display_8hpp">
+<area shape="rect" title=" " alt="" coords="5,5,208,31"/>
+<area shape="rect" title=" " alt="" coords="73,79,140,104"/>
+</map>
+</div>
+</div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="display_8hpp__dep__incl.png" border="0" usemap="#alibraries_2display_2display_8hppdep" alt=""/></div>
 <map name="alibraries_2display_2display_8hppdep" id="alibraries_2display_2display_8hppdep">
-<area shape="rect" title=" " alt="" coords="131,5,334,31"/>
-<area shape="rect" href="ap__root_8cpp.html" title=" " alt="" coords="5,79,140,104"/>
-<area shape="rect" href="sta__one_8cpp.html" title=" " alt="" coords="164,79,301,104"/>
-<area shape="rect" href="display_8cpp.html" title=" " alt="" coords="326,79,529,104"/>
+<area shape="rect" title=" " alt="" coords="820,5,1023,31"/>
+<area shape="rect" href="PicoUARTSerialBufferTest_2ap__root_8cpp.html" title=" " alt="" coords="5,79,203,119"/>
+<area shape="rect" href="ap__root_8cpp.html" title=" " alt="" coords="227,86,362,111"/>
+<area shape="rect" href="sta__one_8cpp.html" title=" " alt="" coords="386,86,523,111"/>
+<area shape="rect" href="ChildrenTree_8cpp.html" title=" " alt="" coords="548,79,708,119"/>
+<area shape="rect" href="APMessageHandling_8cpp.html" title=" " alt="" coords="732,79,919,119"/>
+<area shape="rect" href="MeshNodeAP_8cpp.html" title=" " alt="" coords="943,79,1091,119"/>
+<area shape="rect" href="MeshNodeSTA_8cpp.html" title=" " alt="" coords="1115,79,1263,119"/>
+<area shape="rect" href="STAMessageHandling_8cpp.html" title=" " alt="" coords="1287,79,1481,119"/>
+<area shape="rect" href="UART_8cpp.html" title=" " alt="" coords="1505,86,1684,111"/>
+<area shape="rect" href="display_8cpp.html" title=" " alt="" coords="1708,86,1911,111"/>
 </map>
 </div>
 </div>
@@ -116,6 +133,14 @@ Macros</h2></td></tr>
 <tr class="separator:a1da4bda31c0ad0830be3266118d5d4da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cf82196accb92a28f5208f8996c7d2c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="display_8hpp.html#a4cf82196accb92a28f5208f8996c7d2c">ANSI_BLUE_TEXT</a>&#160;&#160;&#160;&quot;\x1B[34m&quot;</td></tr>
 <tr class="separator:a4cf82196accb92a28f5208f8996c7d2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d5583f24a4a8bae2614559922c31eff"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="display_8hpp.html#a8d5583f24a4a8bae2614559922c31eff">ANSI_GRAY_TEXT</a>&#160;&#160;&#160;&quot;\x1B[90m&quot;</td></tr>
+<tr class="separator:a8d5583f24a4a8bae2614559922c31eff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac89417d7938b9539c92a9ad3c36b5dd3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="display_8hpp.html#ac89417d7938b9539c92a9ad3c36b5dd3">DEBUG_printf</a>(...)&#160;&#160;&#160;do{}while(0)</td></tr>
+<tr class="separator:ac89417d7938b9539c92a9ad3c36b5dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc859f4ed4d95410e8fc8df10452ce4b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="display_8hpp.html#afc859f4ed4d95410e8fc8df10452ce4b">ERROR_printf</a>(...)&#160;&#160;&#160;do{}while(0)</td></tr>
+<tr class="separator:afc859f4ed4d95410e8fc8df10452ce4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7eabf6ad116d0e4227445facf152d76"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="display_8hpp.html#ad7eabf6ad116d0e4227445facf152d76">DUMP_BYTES</a>(A,  B)</td></tr>
+<tr class="separator:ad7eabf6ad116d0e4227445facf152d76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -193,6 +218,20 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a8d5583f24a4a8bae2614559922c31eff" name="a8d5583f24a4a8bae2614559922c31eff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d5583f24a4a8bae2614559922c31eff">&#9670;&#160;</a></span>ANSI_GRAY_TEXT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ANSI_GRAY_TEXT&#160;&#160;&#160;&quot;\x1B[90m&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a92140f5f8c1edd5de7c9bf0f5706974c" name="a92140f5f8c1edd5de7c9bf0f5706974c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a92140f5f8c1edd5de7c9bf0f5706974c">&#9670;&#160;</a></span>ANSI_GREEN_TEXT</h2>
 
@@ -263,6 +302,70 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ac89417d7938b9539c92a9ad3c36b5dd3" name="ac89417d7938b9539c92a9ad3c36b5dd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac89417d7938b9539c92a9ad3c36b5dd3">&#9670;&#160;</a></span>DEBUG_printf</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DEBUG_printf</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em></td><td>)</td>
+          <td>&#160;&#160;&#160;do{}while(0)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad7eabf6ad116d0e4227445facf152d76" name="ad7eabf6ad116d0e4227445facf152d76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7eabf6ad116d0e4227445facf152d76">&#9670;&#160;</a></span>DUMP_BYTES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DUMP_BYTES</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">A, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">B&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afc859f4ed4d95410e8fc8df10452ce4b" name="afc859f4ed4d95410e8fc8df10452ce4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc859f4ed4d95410e8fc8df10452ce4b">&#9670;&#160;</a></span>ERROR_printf</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ERROR_printf</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em></td><td>)</td>
+          <td>&#160;&#160;&#160;do{}while(0)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a506710a2f9a307666f3e0e7b38f71517" name="a506710a2f9a307666f3e0e7b38f71517"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a506710a2f9a307666f3e0e7b38f71517">&#9670;&#160;</a></span>display_test()</h2>
@@ -283,12 +386,12 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">    6</span>    printf( <a class="code hl_define" href="display_8hpp.html#a92140f5f8c1edd5de7c9bf0f5706974c">ANSI_GREEN_TEXT</a> <span class="stringliteral">&quot;OK: all systems go!\r\n&quot;</span> <a class="code hl_define" href="display_8hpp.html#af77a445894f2f750d43cf2182cd29e55">ANSI_RESET</a> );</div>
 <div class="line"><span class="lineno">    7</span>    printf( <a class="code hl_define" href="display_8hpp.html#a05bc43609eba12c34e413ee1c9b6c4f9">ANSI_RED_TEXT</a>   <span class="stringliteral">&quot;ERR: sensor failure!\r\n&quot;</span> <a class="code hl_define" href="display_8hpp.html#af77a445894f2f750d43cf2182cd29e55">ANSI_RESET</a> );</div>
 <div class="line"><span class="lineno">    8</span>}</div>
-<div class="ttc" id="adisplay_8hpp_html_a05bc43609eba12c34e413ee1c9b6c4f9"><div class="ttname"><a href="display_8hpp.html#a05bc43609eba12c34e413ee1c9b6c4f9">ANSI_RED_TEXT</a></div><div class="ttdeci">#define ANSI_RED_TEXT</div><div class="ttdef"><b>Definition:</b> display.hpp:8</div></div>
-<div class="ttc" id="adisplay_8hpp_html_a4bda262c39a1cce7632b62644fdee97b"><div class="ttname"><a href="display_8hpp.html#a4bda262c39a1cce7632b62644fdee97b">ANSI_CLEAR_SCREEN</a></div><div class="ttdeci">#define ANSI_CLEAR_SCREEN</div><div class="ttdef"><b>Definition:</b> display.hpp:1</div></div>
-<div class="ttc" id="adisplay_8hpp_html_a92140f5f8c1edd5de7c9bf0f5706974c"><div class="ttname"><a href="display_8hpp.html#a92140f5f8c1edd5de7c9bf0f5706974c">ANSI_GREEN_TEXT</a></div><div class="ttdeci">#define ANSI_GREEN_TEXT</div><div class="ttdef"><b>Definition:</b> display.hpp:9</div></div>
-<div class="ttc" id="adisplay_8hpp_html_ad12e26d0a3f5493a3b74139916da1e4a"><div class="ttname"><a href="display_8hpp.html#ad12e26d0a3f5493a3b74139916da1e4a">ANSI_CLEAR_SCROLLBACK</a></div><div class="ttdeci">#define ANSI_CLEAR_SCROLLBACK</div><div class="ttdef"><b>Definition:</b> display.hpp:3</div></div>
-<div class="ttc" id="adisplay_8hpp_html_ad3e3a001314abfa09813d9f3c433ace9"><div class="ttname"><a href="display_8hpp.html#ad3e3a001314abfa09813d9f3c433ace9">ANSI_CURSOR_HOME</a></div><div class="ttdeci">#define ANSI_CURSOR_HOME</div><div class="ttdef"><b>Definition:</b> display.hpp:2</div></div>
-<div class="ttc" id="adisplay_8hpp_html_af77a445894f2f750d43cf2182cd29e55"><div class="ttname"><a href="display_8hpp.html#af77a445894f2f750d43cf2182cd29e55">ANSI_RESET</a></div><div class="ttdeci">#define ANSI_RESET</div><div class="ttdef"><b>Definition:</b> display.hpp:4</div></div>
+<div class="ttc" id="adisplay_8hpp_html_a05bc43609eba12c34e413ee1c9b6c4f9"><div class="ttname"><a href="display_8hpp.html#a05bc43609eba12c34e413ee1c9b6c4f9">ANSI_RED_TEXT</a></div><div class="ttdeci">#define ANSI_RED_TEXT</div><div class="ttdef"><b>Definition:</b> display.hpp:10</div></div>
+<div class="ttc" id="adisplay_8hpp_html_a4bda262c39a1cce7632b62644fdee97b"><div class="ttname"><a href="display_8hpp.html#a4bda262c39a1cce7632b62644fdee97b">ANSI_CLEAR_SCREEN</a></div><div class="ttdeci">#define ANSI_CLEAR_SCREEN</div><div class="ttdef"><b>Definition:</b> display.hpp:3</div></div>
+<div class="ttc" id="adisplay_8hpp_html_a92140f5f8c1edd5de7c9bf0f5706974c"><div class="ttname"><a href="display_8hpp.html#a92140f5f8c1edd5de7c9bf0f5706974c">ANSI_GREEN_TEXT</a></div><div class="ttdeci">#define ANSI_GREEN_TEXT</div><div class="ttdef"><b>Definition:</b> display.hpp:11</div></div>
+<div class="ttc" id="adisplay_8hpp_html_ad12e26d0a3f5493a3b74139916da1e4a"><div class="ttname"><a href="display_8hpp.html#ad12e26d0a3f5493a3b74139916da1e4a">ANSI_CLEAR_SCROLLBACK</a></div><div class="ttdeci">#define ANSI_CLEAR_SCROLLBACK</div><div class="ttdef"><b>Definition:</b> display.hpp:5</div></div>
+<div class="ttc" id="adisplay_8hpp_html_ad3e3a001314abfa09813d9f3c433ace9"><div class="ttname"><a href="display_8hpp.html#ad3e3a001314abfa09813d9f3c433ace9">ANSI_CURSOR_HOME</a></div><div class="ttdeci">#define ANSI_CURSOR_HOME</div><div class="ttdef"><b>Definition:</b> display.hpp:4</div></div>
+<div class="ttc" id="adisplay_8hpp_html_af77a445894f2f750d43cf2182cd29e55"><div class="ttname"><a href="display_8hpp.html#af77a445894f2f750d43cf2182cd29e55">ANSI_RESET</a></div><div class="ttdeci">#define ANSI_RESET</div><div class="ttdef"><b>Definition:</b> display.hpp:6</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="display_8hpp.html#a4bda262c39a1cce7632b62644fdee97b">ANSI_CLEAR_SCREEN</a>, <a class="el" href="display_8hpp.html#ad12e26d0a3f5493a3b74139916da1e4a">ANSI_CLEAR_SCROLLBACK</a>, <a class="el" href="display_8hpp.html#ad3e3a001314abfa09813d9f3c433ace9">ANSI_CURSOR_HOME</a>, <a class="el" href="display_8hpp.html#a92140f5f8c1edd5de7c9bf0f5706974c">ANSI_GREEN_TEXT</a>, <a class="el" href="display_8hpp.html#a05bc43609eba12c34e413ee1c9b6c4f9">ANSI_RED_TEXT</a>, and <a class="el" href="display_8hpp.html#af77a445894f2f750d43cf2182cd29e55">ANSI_RESET</a>.</p>
 

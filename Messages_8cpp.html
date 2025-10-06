@@ -74,8 +74,6 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
-  <div class="summary">
-<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Messages.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -95,128 +93,7 @@ Include dependency graph for Messages.cpp:</div>
 <area shape="rect" href="Messages_8hpp.html" title=" " alt="" coords="75,93,189,119"/>
 </map>
 </div>
-</div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:af38d02b60aa8d13a179c24ca5d9ad8d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTCP__MESSAGE.html">TCP_MESSAGE</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Messages_8cpp.html#af38d02b60aa8d13a179c24ca5d9ad8d1">parseMessage</a> (uint8_t *<a class="el" href="structdata.html">data</a>)</td></tr>
-<tr class="memdesc:af38d02b60aa8d13a179c24ca5d9ad8d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Takes in some tcp message buffer and returns a pointer to a new <a class="el" href="classTCP__MESSAGE.html">TCP_MESSAGE</a>.  <br /></td></tr>
-<tr class="separator:af38d02b60aa8d13a179c24ca5d9ad8d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="af38d02b60aa8d13a179c24ca5d9ad8d1" name="af38d02b60aa8d13a179c24ca5d9ad8d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af38d02b60aa8d13a179c24ca5d9ad8d1">&#9670;&#160;</a></span>parseMessage()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classTCP__MESSAGE.html">TCP_MESSAGE</a> * parseMessage </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>data</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Takes in some tcp message buffer and returns a pointer to a new <a class="el" href="classTCP__MESSAGE.html">TCP_MESSAGE</a>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">data</td><td>buffer recieved over tcp </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>TCP_MESSAGE* !!USER MUST DELETE!! </dd></dl>
-<div class="fragment"><div class="line"><span class="lineno">    7</span>                                         {</div>
-<div class="line"><span class="lineno">    8</span>    <span class="comment">//printf(&quot;Called parseMessage()&quot;);</span></div>
-<div class="line"><span class="lineno">    9</span>    uint8_t msg_id = <a class="code hl_struct" href="structdata.html">data</a>[1];</div>
-<div class="line"><span class="lineno">   10</span>    <span class="keywordtype">size_t</span> data_len = *(<span class="keyword">reinterpret_cast&lt;</span>uint16_t*<span class="keyword">&gt;</span>(<a class="code hl_struct" href="structdata.html">data</a>+2));</div>
-<div class="line"><span class="lineno">   11</span> </div>
-<div class="line"><span class="lineno">   12</span>    <span class="keywordflow">if</span> (data_len &lt; 4) {</div>
-<div class="line"><span class="lineno">   13</span>        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   14</span>    }</div>
-<div class="line"><span class="lineno">   15</span> </div>
-<div class="line"><span class="lineno">   16</span>    </div>
-<div class="line"><span class="lineno">   17</span> </div>
-<div class="line"><span class="lineno">   18</span>    <span class="keywordflow">switch</span> (msg_id) {</div>
-<div class="line"><span class="lineno">   19</span>        <span class="keywordflow">case</span> 0x00: {  <span class="comment">// TCP_INIT_MESSAGE</span></div>
-<div class="line"><span class="lineno">   20</span>            <span class="keywordflow">if</span> (data_len &lt; <span class="keyword">sizeof</span>(<a class="code hl_variable" href="classTCP__MESSAGE.html#a8fcdab2ad33839d620e10d3759578fc4">TCP_MESSAGE::tcp_init_msg</a>))</div>
-<div class="line"><span class="lineno">   21</span>                <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   22</span>            <span class="keyword">const</span> <span class="keyword">auto</span>* rawInit = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><a class="code hl_variable" href="classTCP__MESSAGE.html#a8fcdab2ad33839d620e10d3759578fc4">TCP_MESSAGE::tcp_init_msg</a>*<span class="keyword">&gt;</span>(<a class="code hl_struct" href="structdata.html">data</a>);</div>
-<div class="line"><span class="lineno">   23</span>            <a class="code hl_class" href="classTCP__INIT__MESSAGE.html">TCP_INIT_MESSAGE</a>* msg = <span class="keyword">new</span> <a class="code hl_class" href="classTCP__INIT__MESSAGE.html">TCP_INIT_MESSAGE</a>(rawInit-&gt;source);</div>
-<div class="line"><span class="lineno">   24</span>            msg-&gt;<a class="code hl_function" href="classTCP__INIT__MESSAGE.html#a8db9cf8ce0c0e4fe20f01b6a01a1238d">set_msg</a>((<span class="keywordtype">void</span>*)<a class="code hl_struct" href="structdata.html">data</a>);</div>
-<div class="line"><span class="lineno">   25</span>            <span class="keywordflow">return</span> msg;</div>
-<div class="line"><span class="lineno">   26</span>        }</div>
-<div class="line"><span class="lineno">   27</span>        <span class="keywordflow">case</span> 0x01: {  <span class="comment">// TCP_DATA_MSG</span></div>
-<div class="line"><span class="lineno">   28</span>            <span class="keyword">const</span> <span class="keyword">auto</span>* rawData = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><a class="code hl_variable" href="classTCP__MESSAGE.html#ac4e8b9818a893c7fa1d210901b8f5049">TCP_MESSAGE::tcp_data_msg</a>*<span class="keyword">&gt;</span>(<a class="code hl_struct" href="structdata.html">data</a>);</div>
-<div class="line"><span class="lineno">   29</span>            <a class="code hl_class" href="classTCP__DATA__MSG.html">TCP_DATA_MSG</a>* msg = <span class="keyword">new</span> <a class="code hl_class" href="classTCP__DATA__MSG.html">TCP_DATA_MSG</a>(rawData-&gt;source, rawData-&gt;dest);</div>
-<div class="line"><span class="lineno">   30</span>            msg-&gt;<a class="code hl_function" href="classTCP__DATA__MSG.html#a8ea6eef2b8845e1b4b4b08f67fd6c279">set_msg</a>((<span class="keywordtype">void</span>*)<a class="code hl_struct" href="structdata.html">data</a>);</div>
-<div class="line"><span class="lineno">   31</span>            <span class="keywordflow">return</span> msg;</div>
-<div class="line"><span class="lineno">   32</span>        }</div>
-<div class="line"><span class="lineno">   33</span>        <span class="keywordflow">case</span> 0x02: {  <span class="comment">// TCP_DISCONNECT_MSG</span></div>
-<div class="line"><span class="lineno">   34</span>            <span class="keywordflow">if</span> (data_len &lt; <span class="keyword">sizeof</span>(<a class="code hl_variable" href="classTCP__MESSAGE.html#a3af139517fccf7e20c41f9a2e741f811">TCP_MESSAGE::tcp_disconnect_msg</a>))</div>
-<div class="line"><span class="lineno">   35</span>                <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   36</span>            <span class="keyword">const</span> <span class="keyword">auto</span>* rawDisc = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><a class="code hl_variable" href="classTCP__MESSAGE.html#a3af139517fccf7e20c41f9a2e741f811">TCP_MESSAGE::tcp_disconnect_msg</a>*<span class="keyword">&gt;</span>(<a class="code hl_struct" href="structdata.html">data</a>);</div>
-<div class="line"><span class="lineno">   37</span>            <a class="code hl_class" href="classTCP__DISCONNECT__MSG.html">TCP_DISCONNECT_MSG</a>* msg = <span class="keyword">new</span> <a class="code hl_class" href="classTCP__DISCONNECT__MSG.html">TCP_DISCONNECT_MSG</a>(rawDisc-&gt;source);</div>
-<div class="line"><span class="lineno">   38</span>            msg-&gt;<a class="code hl_function" href="classTCP__DISCONNECT__MSG.html#a2bd9635410f605b01a112988f289ab4a">set_msg</a>((<span class="keywordtype">void</span>*)<a class="code hl_struct" href="structdata.html">data</a>);</div>
-<div class="line"><span class="lineno">   39</span>            <span class="keywordflow">return</span> msg;</div>
-<div class="line"><span class="lineno">   40</span>        }</div>
-<div class="line"><span class="lineno">   41</span>        <span class="keywordflow">case</span> 0x03: {  <span class="comment">// TCP_UPDATE_MESSAGE</span></div>
-<div class="line"><span class="lineno">   42</span>            <span class="keywordflow">if</span> (data_len &lt; <span class="keyword">sizeof</span>(<a class="code hl_variable" href="classTCP__MESSAGE.html#aeeff82c2a9363bf5d1358e5b1ee628a8">TCP_MESSAGE::tcp_update_msg</a>))</div>
-<div class="line"><span class="lineno">   43</span>                <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   44</span>            <span class="keyword">const</span> <span class="keyword">auto</span>* rawUpdate = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><a class="code hl_variable" href="classTCP__MESSAGE.html#aeeff82c2a9363bf5d1358e5b1ee628a8">TCP_MESSAGE::tcp_update_msg</a>*<span class="keyword">&gt;</span>(<a class="code hl_struct" href="structdata.html">data</a>);</div>
-<div class="line"><span class="lineno">   45</span>            <a class="code hl_class" href="classTCP__UPDATE__MESSAGE.html">TCP_UPDATE_MESSAGE</a>* msg = <span class="keyword">new</span> <a class="code hl_class" href="classTCP__UPDATE__MESSAGE.html">TCP_UPDATE_MESSAGE</a>(rawUpdate-&gt;source);</div>
-<div class="line"><span class="lineno">   46</span>            msg-&gt;<a class="code hl_function" href="classTCP__UPDATE__MESSAGE.html#a6faef8b91f098506b095932ea0f03af4">set_msg</a>((<span class="keywordtype">void</span>*)<a class="code hl_struct" href="structdata.html">data</a>);</div>
-<div class="line"><span class="lineno">   47</span>            <span class="keywordflow">return</span> msg;</div>
-<div class="line"><span class="lineno">   48</span>        }</div>
-<div class="line"><span class="lineno">   49</span>        <span class="keywordflow">case</span> 0x04: {  <span class="comment">// TCP_ACK_MESSAGE</span></div>
-<div class="line"><span class="lineno">   50</span>            <span class="keywordflow">if</span> (data_len &lt; <span class="keyword">sizeof</span>(<a class="code hl_variable" href="classTCP__MESSAGE.html#a80772abbde025a0b62a485a94684df6e">TCP_MESSAGE::tcp_acknowledge_msg</a>))</div>
-<div class="line"><span class="lineno">   51</span>                <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   52</span>            <span class="keyword">const</span> <span class="keyword">auto</span>* rawAck = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><a class="code hl_variable" href="classTCP__MESSAGE.html#a80772abbde025a0b62a485a94684df6e">TCP_MESSAGE::tcp_acknowledge_msg</a>*<span class="keyword">&gt;</span>(<a class="code hl_struct" href="structdata.html">data</a>);</div>
-<div class="line"><span class="lineno">   53</span>            <a class="code hl_class" href="classTCP__ACK__MESSAGE.html">TCP_ACK_MESSAGE</a>* msg = <span class="keyword">new</span> <a class="code hl_class" href="classTCP__ACK__MESSAGE.html">TCP_ACK_MESSAGE</a>(rawAck-&gt;source, rawAck-&gt;dest, rawAck-&gt;bytes_received);</div>
-<div class="line"><span class="lineno">   54</span>            msg-&gt;<a class="code hl_function" href="classTCP__ACK__MESSAGE.html#a9244e8fae020ec01984b8a1bc6f0c2cc">set_msg</a>((<span class="keywordtype">void</span>*)<a class="code hl_struct" href="structdata.html">data</a>);</div>
-<div class="line"><span class="lineno">   55</span>            <span class="keywordflow">return</span> msg;</div>
-<div class="line"><span class="lineno">   56</span>        }</div>
-<div class="line"><span class="lineno">   57</span>        <span class="keywordflow">case</span> 0x05: {  <span class="comment">// TCP_NAK_MESSAGE</span></div>
-<div class="line"><span class="lineno">   58</span>            <span class="keywordflow">if</span> (data_len &lt; <span class="keyword">sizeof</span>(<a class="code hl_variable" href="classTCP__MESSAGE.html#a3c97924539674d96074bc33caaaa3a12">TCP_MESSAGE::tcp_failed_msg</a>))</div>
-<div class="line"><span class="lineno">   59</span>                <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   60</span>            <span class="keyword">const</span> <span class="keyword">auto</span>* rawAck = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><a class="code hl_variable" href="classTCP__MESSAGE.html#a3c97924539674d96074bc33caaaa3a12">TCP_MESSAGE::tcp_failed_msg</a>*<span class="keyword">&gt;</span>(<a class="code hl_struct" href="structdata.html">data</a>);</div>
-<div class="line"><span class="lineno">   61</span>            <a class="code hl_class" href="classTCP__NAK__MESSAGE.html">TCP_NAK_MESSAGE</a>* msg = <span class="keyword">new</span> <a class="code hl_class" href="classTCP__NAK__MESSAGE.html">TCP_NAK_MESSAGE</a>(rawAck-&gt;source, rawAck-&gt;dest, rawAck-&gt;bytes_received);</div>
-<div class="line"><span class="lineno">   62</span>            msg-&gt;<a class="code hl_function" href="classTCP__NAK__MESSAGE.html#a46b69ed413bea8d00861b29452178284">set_msg</a>((<span class="keywordtype">void</span>*)<a class="code hl_struct" href="structdata.html">data</a>);</div>
-<div class="line"><span class="lineno">   63</span>            <span class="keywordflow">return</span> msg;</div>
-<div class="line"><span class="lineno">   64</span>        }</div>
-<div class="line"><span class="lineno">   65</span>        <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   66</span>            <span class="comment">// Unknown msg_id</span></div>
-<div class="line"><span class="lineno">   67</span>            <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   68</span>    }</div>
-<div class="line"><span class="lineno">   69</span>}</div>
-<div class="ttc" id="aclassTCP__ACK__MESSAGE_html"><div class="ttname"><a href="classTCP__ACK__MESSAGE.html">TCP_ACK_MESSAGE</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:204</div></div>
-<div class="ttc" id="aclassTCP__ACK__MESSAGE_html_a9244e8fae020ec01984b8a1bc6f0c2cc"><div class="ttname"><a href="classTCP__ACK__MESSAGE.html#a9244e8fae020ec01984b8a1bc6f0c2cc">TCP_ACK_MESSAGE::set_msg</a></div><div class="ttdeci">void set_msg(void *msg) override</div><div class="ttdef"><b>Definition:</b> Messages.hpp:225</div></div>
-<div class="ttc" id="aclassTCP__DATA__MSG_html"><div class="ttname"><a href="classTCP__DATA__MSG.html">TCP_DATA_MSG</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:107</div></div>
-<div class="ttc" id="aclassTCP__DATA__MSG_html_a8ea6eef2b8845e1b4b4b08f67fd6c279"><div class="ttname"><a href="classTCP__DATA__MSG.html#a8ea6eef2b8845e1b4b4b08f67fd6c279">TCP_DATA_MSG::set_msg</a></div><div class="ttdeci">void set_msg(void *msg) override</div><div class="ttdef"><b>Definition:</b> Messages.hpp:131</div></div>
-<div class="ttc" id="aclassTCP__DISCONNECT__MSG_html"><div class="ttname"><a href="classTCP__DISCONNECT__MSG.html">TCP_DISCONNECT_MSG</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:137</div></div>
-<div class="ttc" id="aclassTCP__DISCONNECT__MSG_html_a2bd9635410f605b01a112988f289ab4a"><div class="ttname"><a href="classTCP__DISCONNECT__MSG.html#a2bd9635410f605b01a112988f289ab4a">TCP_DISCONNECT_MSG::set_msg</a></div><div class="ttdeci">void set_msg(void *msg) override</div><div class="ttdef"><b>Definition:</b> Messages.hpp:166</div></div>
-<div class="ttc" id="aclassTCP__INIT__MESSAGE_html"><div class="ttname"><a href="classTCP__INIT__MESSAGE.html">TCP_INIT_MESSAGE</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:83</div></div>
-<div class="ttc" id="aclassTCP__INIT__MESSAGE_html_a8db9cf8ce0c0e4fe20f01b6a01a1238d"><div class="ttname"><a href="classTCP__INIT__MESSAGE.html#a8db9cf8ce0c0e4fe20f01b6a01a1238d">TCP_INIT_MESSAGE::set_msg</a></div><div class="ttdeci">void set_msg(void *msg) override</div><div class="ttdef"><b>Definition:</b> Messages.hpp:102</div></div>
-<div class="ttc" id="aclassTCP__MESSAGE_html_a3af139517fccf7e20c41f9a2e741f811"><div class="ttname"><a href="classTCP__MESSAGE.html#a3af139517fccf7e20c41f9a2e741f811">TCP_MESSAGE::tcp_disconnect_msg</a></div><div class="ttdeci">tcp_disconnect_msg</div><div class="ttdef"><b>Definition:</b> Messages.hpp:53</div></div>
-<div class="ttc" id="aclassTCP__MESSAGE_html_a3c97924539674d96074bc33caaaa3a12"><div class="ttname"><a href="classTCP__MESSAGE.html#a3c97924539674d96074bc33caaaa3a12">TCP_MESSAGE::tcp_failed_msg</a></div><div class="ttdeci">tcp_failed_msg</div><div class="ttdef"><b>Definition:</b> Messages.hpp:72</div></div>
-<div class="ttc" id="aclassTCP__MESSAGE_html_a80772abbde025a0b62a485a94684df6e"><div class="ttname"><a href="classTCP__MESSAGE.html#a80772abbde025a0b62a485a94684df6e">TCP_MESSAGE::tcp_acknowledge_msg</a></div><div class="ttdeci">tcp_acknowledge_msg</div><div class="ttdef"><b>Definition:</b> Messages.hpp:62</div></div>
-<div class="ttc" id="aclassTCP__MESSAGE_html_a8fcdab2ad33839d620e10d3759578fc4"><div class="ttname"><a href="classTCP__MESSAGE.html#a8fcdab2ad33839d620e10d3759578fc4">TCP_MESSAGE::tcp_init_msg</a></div><div class="ttdeci">tcp_init_msg</div><div class="ttdef"><b>Definition:</b> Messages.hpp:22</div></div>
-<div class="ttc" id="aclassTCP__MESSAGE_html_ac4e8b9818a893c7fa1d210901b8f5049"><div class="ttname"><a href="classTCP__MESSAGE.html#ac4e8b9818a893c7fa1d210901b8f5049">TCP_MESSAGE::tcp_data_msg</a></div><div class="ttdeci">tcp_data_msg</div><div class="ttdef"><b>Definition:</b> Messages.hpp:41</div></div>
-<div class="ttc" id="aclassTCP__MESSAGE_html_aeeff82c2a9363bf5d1358e5b1ee628a8"><div class="ttname"><a href="classTCP__MESSAGE.html#aeeff82c2a9363bf5d1358e5b1ee628a8">TCP_MESSAGE::tcp_update_msg</a></div><div class="ttdeci">tcp_update_msg</div><div class="ttdef"><b>Definition:</b> Messages.hpp:31</div></div>
-<div class="ttc" id="aclassTCP__NAK__MESSAGE_html"><div class="ttname"><a href="classTCP__NAK__MESSAGE.html">TCP_NAK_MESSAGE</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:230</div></div>
-<div class="ttc" id="aclassTCP__NAK__MESSAGE_html_a46b69ed413bea8d00861b29452178284"><div class="ttname"><a href="classTCP__NAK__MESSAGE.html#a46b69ed413bea8d00861b29452178284">TCP_NAK_MESSAGE::set_msg</a></div><div class="ttdeci">void set_msg(void *msg) override</div><div class="ttdef"><b>Definition:</b> Messages.hpp:254</div></div>
-<div class="ttc" id="aclassTCP__UPDATE__MESSAGE_html"><div class="ttname"><a href="classTCP__UPDATE__MESSAGE.html">TCP_UPDATE_MESSAGE</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:171</div></div>
-<div class="ttc" id="aclassTCP__UPDATE__MESSAGE_html_a6faef8b91f098506b095932ea0f03af4"><div class="ttname"><a href="classTCP__UPDATE__MESSAGE.html#a6faef8b91f098506b095932ea0f03af4">TCP_UPDATE_MESSAGE::set_msg</a></div><div class="ttdeci">void set_msg(void *msg) override</div><div class="ttdef"><b>Definition:</b> Messages.hpp:199</div></div>
-<div class="ttc" id="astructdata_html"><div class="ttname"><a href="structdata.html">data</a></div><div class="ttdef"><b>Definition:</b> RingBuffer.hpp:11</div></div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="classTCP__INIT__MESSAGE.html#a8db9cf8ce0c0e4fe20f01b6a01a1238d">TCP_INIT_MESSAGE::set_msg()</a>, <a class="el" href="classTCP__DATA__MSG.html#a8ea6eef2b8845e1b4b4b08f67fd6c279">TCP_DATA_MSG::set_msg()</a>, <a class="el" href="classTCP__DISCONNECT__MSG.html#a2bd9635410f605b01a112988f289ab4a">TCP_DISCONNECT_MSG::set_msg()</a>, <a class="el" href="classTCP__UPDATE__MESSAGE.html#a6faef8b91f098506b095932ea0f03af4">TCP_UPDATE_MESSAGE::set_msg()</a>, <a class="el" href="classTCP__ACK__MESSAGE.html#a9244e8fae020ec01984b8a1bc6f0c2cc">TCP_ACK_MESSAGE::set_msg()</a>, <a class="el" href="classTCP__NAK__MESSAGE.html#a46b69ed413bea8d00861b29452178284">TCP_NAK_MESSAGE::set_msg()</a>, <a class="el" href="classTCP__MESSAGE.html#a80772abbde025a0b62a485a94684df6e">TCP_MESSAGE::tcp_acknowledge_msg</a>, <a class="el" href="classTCP__MESSAGE.html#ac4e8b9818a893c7fa1d210901b8f5049">TCP_MESSAGE::tcp_data_msg</a>, <a class="el" href="classTCP__MESSAGE.html#a3af139517fccf7e20c41f9a2e741f811">TCP_MESSAGE::tcp_disconnect_msg</a>, <a class="el" href="classTCP__MESSAGE.html#a3c97924539674d96074bc33caaaa3a12">TCP_MESSAGE::tcp_failed_msg</a>, <a class="el" href="classTCP__MESSAGE.html#a8fcdab2ad33839d620e10d3759578fc4">TCP_MESSAGE::tcp_init_msg</a>, and <a class="el" href="classTCP__MESSAGE.html#aeeff82c2a9363bf5d1358e5b1ee628a8">TCP_MESSAGE::tcp_update_msg</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="classSTANode.html#a07f1bd97bed2342b18886377eab36ace">STANode::handle_incoming_data()</a>, and <a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">APNode::handle_incoming_data()</a>.</p>
-
-</div>
-</div>
-</div><!-- contents -->
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6

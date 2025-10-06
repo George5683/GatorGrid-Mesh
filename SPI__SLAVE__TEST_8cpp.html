@@ -81,20 +81,26 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="SPI_8hpp_source.html">libraries/SPI/SPI.hpp</a>&quot;</code><br />
 <code>#include &lt;stdio.h&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for SPI_SLAVE_TEST.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="SPI__SLAVE__TEST_8cpp__incl.png" border="0" usemap="#aTests_2SPI__SLAVE__TEST_8cpp" alt=""/></div>
 <map name="aTests_2SPI__SLAVE__TEST_8cpp" id="aTests_2SPI__SLAVE__TEST_8cpp">
-<area shape="rect" title=" " alt="" coords="51,5,243,31"/>
+<area shape="rect" title=" " alt="" coords="98,5,290,31"/>
 <area shape="rect" href="SPI_8hpp.html" title=" " alt="" coords="5,79,156,104"/>
-<area shape="rect" title=" " alt="" coords="181,79,247,104"/>
+<area shape="rect" title=" " alt="" coords="159,152,221,177"/>
+<area shape="rect" title=" " alt="" coords="231,79,298,104"/>
 <area shape="rect" title=" " alt="" coords="30,152,131,177"/>
 </map>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a858929d2e8d6035be88e6cb8e913a147"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="SPI__SLAVE__TEST_8cpp.html#a858929d2e8d6035be88e6cb8e913a147">Test1</a> (<a class="el" href="classSPI.html">SPI</a> Slave_Pico)</td></tr>
+<tr class="separator:a858929d2e8d6035be88e6cb8e913a147"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a382174f673143e47177ce0e9f33ed7a7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="SPI__SLAVE__TEST_8cpp.html#a382174f673143e47177ce0e9f33ed7a7">Test2</a> (<a class="el" href="classSPI.html">SPI</a> &amp;Slave_Pico)</td></tr>
+<tr class="separator:a382174f673143e47177ce0e9f33ed7a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="SPI__SLAVE__TEST_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a> ()</td></tr>
 <tr class="separator:ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -113,37 +119,124 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">    5</span>           {</div>
-<div class="line"><span class="lineno">    6</span>    stdio_init_all();</div>
-<div class="line"><span class="lineno">    7</span> </div>
-<div class="line"><span class="lineno">    8</span>    <span class="comment">// Delay to allow time to view serial monitor</span></div>
-<div class="line"><span class="lineno">    9</span>    sleep_ms(10000);</div>
-<div class="line"><span class="lineno">   10</span> </div>
-<div class="line"><span class="lineno">   11</span>    <a class="code hl_class" href="classSPI.html">SPI</a> Slave_Pico;</div>
-<div class="line"><span class="lineno">   12</span> </div>
-<div class="line"><span class="lineno">   13</span>    <span class="comment">// set as the slave </span></div>
-<div class="line"><span class="lineno">   14</span>    Slave_Pico.<a class="code hl_function" href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI_init</a>(<span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">   15</span>    </div>
-<div class="line"><span class="lineno">   16</span>    uint8_t send_string[] = <span class="stringliteral">&quot;Herobrine&quot;</span>;</div>
-<div class="line"><span class="lineno">   17</span>    uint8_t recv_buffer[<span class="keyword">sizeof</span>(send_string)] = {0};</div>
-<div class="line"><span class="lineno">   18</span>    </div>
-<div class="line"><span class="lineno">   19</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 2; i++) {</div>
-<div class="line"><span class="lineno">   20</span>        <span class="keywordflow">while</span>(!Slave_Pico.<a class="code hl_function" href="classSPI.html#afbf1bd96c0cbc54a523c93abe264206a">SPI_is_read_available</a>());</div>
-<div class="line"><span class="lineno">   21</span>        <span class="keywordflow">if</span>(Slave_Pico.<a class="code hl_function" href="classSPI.html#afbf1bd96c0cbc54a523c93abe264206a">SPI_is_read_available</a>()){</div>
-<div class="line"><span class="lineno">   22</span>            printf(<span class="stringliteral">&quot;Read available\n&quot;</span>);</div>
-<div class="line"><span class="lineno">   23</span>            Slave_Pico.<a class="code hl_function" href="classSPI.html#ae1b382e51be9b97ea313dca4ad797993">SPI_read_message</a>(recv_buffer, <span class="keyword">sizeof</span>(recv_buffer));</div>
-<div class="line"><span class="lineno">   24</span>        }</div>
-<div class="line"><span class="lineno">   25</span>        Slave_Pico.<a class="code hl_function" href="classSPI.html#a7dafbdd194b14feafa6bc4abf95114ee">SPI_send_message</a>(send_string, <span class="keyword">sizeof</span>(send_string));</div>
-<div class="line"><span class="lineno">   26</span>        }</div>
-<div class="line"><span class="lineno">   27</span>        sleep_ms(1000);  <span class="comment">// Wait before next transmission</span></div>
-<div class="line"><span class="lineno">   28</span>    }</div>
-<div class="ttc" id="aclassSPI_html"><div class="ttname"><a href="classSPI.html">SPI</a></div><div class="ttdef"><b>Definition:</b> SPI.hpp:5</div></div>
-<div class="ttc" id="aclassSPI_html_a7dafbdd194b14feafa6bc4abf95114ee"><div class="ttname"><a href="classSPI.html#a7dafbdd194b14feafa6bc4abf95114ee">SPI::SPI_send_message</a></div><div class="ttdeci">int SPI_send_message(uint8_t *message, size_t length)</div><div class="ttdef"><b>Definition:</b> SPI.cpp:51</div></div>
-<div class="ttc" id="aclassSPI_html_ab72f8834e97185f2f5ec4ca06f51dbfd"><div class="ttname"><a href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI::SPI_init</a></div><div class="ttdeci">bool SPI_init(bool mode)</div><div class="ttdef"><b>Definition:</b> SPI.cpp:17</div></div>
-<div class="ttc" id="aclassSPI_html_ae1b382e51be9b97ea313dca4ad797993"><div class="ttname"><a href="classSPI.html#ae1b382e51be9b97ea313dca4ad797993">SPI::SPI_read_message</a></div><div class="ttdeci">int SPI_read_message(uint8_t *buffer, size_t buffer_size)</div><div class="ttdef"><b>Definition:</b> SPI.cpp:80</div></div>
-<div class="ttc" id="aclassSPI_html_afbf1bd96c0cbc54a523c93abe264206a"><div class="ttname"><a href="classSPI.html#afbf1bd96c0cbc54a523c93abe264206a">SPI::SPI_is_read_available</a></div><div class="ttdeci">bool SPI_is_read_available()</div><div class="ttdef"><b>Definition:</b> SPI.cpp:121</div></div>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>           {</div>
+<div class="line"><span class="lineno">   58</span>    stdio_init_all();</div>
+<div class="line"><span class="lineno">   59</span> </div>
+<div class="line"><span class="lineno">   60</span>    <span class="comment">// Delay to allow time to view serial monitor</span></div>
+<div class="line"><span class="lineno">   61</span>    sleep_ms(10000);</div>
+<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span>    <span class="comment">// Create the SPI object</span></div>
+<div class="line"><span class="lineno">   64</span>    <a class="code hl_class" href="classSPI.html">SPI</a> Slave_Pico;</div>
+<div class="line"><span class="lineno">   65</span> </div>
+<div class="line"><span class="lineno">   66</span>    printf(<span class="stringliteral">&quot;This is the Slave\n&quot;</span>);</div>
+<div class="line"><span class="lineno">   67</span> </div>
+<div class="line"><span class="lineno">   68</span>    <span class="comment">// Run Test1</span></div>
+<div class="line"><span class="lineno">   69</span>    <a class="code hl_function" href="SPI__SLAVE__TEST_8cpp.html#a858929d2e8d6035be88e6cb8e913a147">Test1</a>(Slave_Pico);</div>
+<div class="line"><span class="lineno">   70</span> </div>
+<div class="line"><span class="lineno">   71</span>    <span class="comment">// Run Test2</span></div>
+<div class="line"><span class="lineno">   72</span>    <a class="code hl_function" href="SPI__SLAVE__TEST_8cpp.html#a382174f673143e47177ce0e9f33ed7a7">Test2</a>(Slave_Pico);</div>
+<div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   74</span>}</div>
+<div class="ttc" id="aSPI__SLAVE__TEST_8cpp_html_a382174f673143e47177ce0e9f33ed7a7"><div class="ttname"><a href="SPI__SLAVE__TEST_8cpp.html#a382174f673143e47177ce0e9f33ed7a7">Test2</a></div><div class="ttdeci">bool Test2(SPI &amp;Slave_Pico)</div><div class="ttdef"><b>Definition:</b> SPI_SLAVE_TEST.cpp:36</div></div>
+<div class="ttc" id="aSPI__SLAVE__TEST_8cpp_html_a858929d2e8d6035be88e6cb8e913a147"><div class="ttname"><a href="SPI__SLAVE__TEST_8cpp.html#a858929d2e8d6035be88e6cb8e913a147">Test1</a></div><div class="ttdeci">bool Test1(SPI Slave_Pico)</div><div class="ttdef"><b>Definition:</b> SPI_SLAVE_TEST.cpp:7</div></div>
+<div class="ttc" id="aclassSPI_html"><div class="ttname"><a href="classSPI.html">SPI</a></div><div class="ttdef"><b>Definition:</b> SPI.hpp:6</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="classSPI.html#ab72f8834e97185f2f5ec4ca06f51dbfd">SPI::SPI_init()</a>, <a class="el" href="classSPI.html#afbf1bd96c0cbc54a523c93abe264206a">SPI::SPI_is_read_available()</a>, <a class="el" href="classSPI.html#ae1b382e51be9b97ea313dca4ad797993">SPI::SPI_read_message()</a>, and <a class="el" href="classSPI.html#a7dafbdd194b14feafa6bc4abf95114ee">SPI::SPI_send_message()</a>.</p>
+<p class="reference">References <a class="el" href="SPI__SLAVE__TEST_8cpp.html#a858929d2e8d6035be88e6cb8e913a147">Test1()</a>, and <a class="el" href="SPI__SLAVE__TEST_8cpp.html#a382174f673143e47177ce0e9f33ed7a7">Test2()</a>.</p>
+
+</div>
+</div>
+<a id="a858929d2e8d6035be88e6cb8e913a147" name="a858929d2e8d6035be88e6cb8e913a147"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a858929d2e8d6035be88e6cb8e913a147">&#9670;&#160;</a></span>Test1()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Test1 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSPI.html">SPI</a>&#160;</td>
+          <td class="paramname"><em>Slave_Pico</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">    7</span>                          {</div>
+<div class="line"><span class="lineno">    8</span>    printf(<span class="stringliteral">&quot;Running Test 1\n&quot;</span>);</div>
+<div class="line"><span class="lineno">    9</span> </div>
+<div class="line"><span class="lineno">   10</span>    <span class="comment">// set as the slave </span></div>
+<div class="line"><span class="lineno">   11</span>    Slave_Pico.<a class="code hl_function" href="classSPI.html#a912287d6166b4b60bcd06566623d8e2f">Set_Master</a>(<span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">   12</span> </div>
+<div class="line"><span class="lineno">   13</span>    printf(<span class="stringliteral">&quot;Set Slave\n&quot;</span>);</div>
+<div class="line"><span class="lineno">   14</span> </div>
+<div class="line"><span class="lineno">   15</span>    <span class="keywordflow">while</span>(<span class="keyword">true</span>){</div>
+<div class="line"><span class="lineno">   16</span>        <span class="comment">// constantly poll for a message</span></div>
+<div class="line"><span class="lineno">   17</span>        printf(<span class="stringliteral">&quot;Polling for message from Master...\n&quot;</span>);</div>
+<div class="line"><span class="lineno">   18</span>        <span class="keywordflow">if</span>(Slave_Pico.<a class="code hl_function" href="classSPI.html#abf7f2f889487bcb773485a8e4b991aa1">SPI_POLL_MESSAGE</a>()){</div>
+<div class="line"><span class="lineno">   19</span>            printf(<span class="stringliteral">&quot;Message received from Master\n&quot;</span>);</div>
+<div class="line"><span class="lineno">   20</span>            std::vector&lt;uint8_t&gt; response;</div>
+<div class="line"><span class="lineno">   21</span>            Slave_Pico.<a class="code hl_function" href="classSPI.html#a100ba6a71b9b40005e95ad0be0cf617d">SPI_read_message</a>(response);</div>
+<div class="line"><span class="lineno">   22</span> </div>
+<div class="line"><span class="lineno">   23</span>            printf(<span class="stringliteral">&quot;Received Message from Master: &quot;</span>);</div>
+<div class="line"><span class="lineno">   24</span>            <span class="keywordflow">for</span>(<span class="keywordtype">char</span> c : response){</div>
+<div class="line"><span class="lineno">   25</span>                printf(<span class="stringliteral">&quot;%c&quot;</span>, c);</div>
+<div class="line"><span class="lineno">   26</span>            }</div>
+<div class="line"><span class="lineno">   27</span>            printf(<span class="stringliteral">&quot;\n&quot;</span>);</div>
+<div class="line"><span class="lineno">   28</span>            <span class="keywordflow">break</span>; <span class="comment">// Exit after receiving one message</span></div>
+<div class="line"><span class="lineno">   29</span>        }</div>
+<div class="line"><span class="lineno">   30</span>    }</div>
+<div class="line"><span class="lineno">   31</span> </div>
+<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   33</span>}</div>
+<div class="ttc" id="aclassSPI_html_a100ba6a71b9b40005e95ad0be0cf617d"><div class="ttname"><a href="classSPI.html#a100ba6a71b9b40005e95ad0be0cf617d">SPI::SPI_read_message</a></div><div class="ttdeci">void SPI_read_message(std::vector&lt; uint8_t &gt; &amp;response)</div><div class="ttdef"><b>Definition:</b> SPI.cpp:202</div></div>
+<div class="ttc" id="aclassSPI_html_a912287d6166b4b60bcd06566623d8e2f"><div class="ttname"><a href="classSPI.html#a912287d6166b4b60bcd06566623d8e2f">SPI::Set_Master</a></div><div class="ttdeci">void Set_Master(bool master)</div><div class="ttdef"><b>Definition:</b> SPI.cpp:22</div></div>
+<div class="ttc" id="aclassSPI_html_abf7f2f889487bcb773485a8e4b991aa1"><div class="ttname"><a href="classSPI.html#abf7f2f889487bcb773485a8e4b991aa1">SPI::SPI_POLL_MESSAGE</a></div><div class="ttdeci">bool SPI_POLL_MESSAGE()</div><div class="ttdef"><b>Definition:</b> SPI.cpp:209</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classSPI.html#a912287d6166b4b60bcd06566623d8e2f">SPI::Set_Master()</a>, <a class="el" href="classSPI.html#abf7f2f889487bcb773485a8e4b991aa1">SPI::SPI_POLL_MESSAGE()</a>, and <a class="el" href="classSPI.html#a100ba6a71b9b40005e95ad0be0cf617d">SPI::SPI_read_message()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="SPI__SLAVE__TEST_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>.</p>
+
+</div>
+</div>
+<a id="a382174f673143e47177ce0e9f33ed7a7" name="a382174f673143e47177ce0e9f33ed7a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a382174f673143e47177ce0e9f33ed7a7">&#9670;&#160;</a></span>Test2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Test2 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSPI.html">SPI</a> &amp;&#160;</td>
+          <td class="paramname"><em>Slave_Pico</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">   36</span>                            {</div>
+<div class="line"><span class="lineno">   37</span>    printf(<span class="stringliteral">&quot;Running Test 2\n&quot;</span>);</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span>    <span class="comment">// set as the slave</span></div>
+<div class="line"><span class="lineno">   40</span>    Slave_Pico.<a class="code hl_function" href="classSPI.html#a912287d6166b4b60bcd06566623d8e2f">Set_Master</a>(<span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">   41</span> </div>
+<div class="line"><span class="lineno">   42</span>    <span class="comment">// create the string to send</span></div>
+<div class="line"><span class="lineno">   43</span>    std::vector&lt;uint8_t&gt; send_string = {<span class="charliteral">&#39;T&#39;</span>, <span class="charliteral">&#39;E&#39;</span>, <span class="charliteral">&#39;S&#39;</span>, <span class="charliteral">&#39;T&#39;</span>, <span class="charliteral">&#39;2&#39;</span>};</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   45</span>    <span class="comment">// Pad the string to be 32 bytes</span></div>
+<div class="line"><span class="lineno">   46</span>    send_string.resize(32, 0);</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>    printf(<span class="stringliteral">&quot;About to Send to Master\n&quot;</span>);</div>
+<div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   50</span>    Slave_Pico.<a class="code hl_function" href="classSPI.html#a89f5b4dbe1a27fa8cf5bf98de1e40b6f">SPI_send_message</a>(send_string);</div>
+<div class="line"><span class="lineno">   51</span> </div>
+<div class="line"><span class="lineno">   52</span>    printf(<span class="stringliteral">&quot;Message Sent from Slave to Master\n&quot;</span>);</div>
+<div class="line"><span class="lineno">   53</span> </div>
+<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   55</span>}</div>
+<div class="ttc" id="aclassSPI_html_a89f5b4dbe1a27fa8cf5bf98de1e40b6f"><div class="ttname"><a href="classSPI.html#a89f5b4dbe1a27fa8cf5bf98de1e40b6f">SPI::SPI_send_message</a></div><div class="ttdeci">int SPI_send_message(std::vector&lt; uint8_t &gt; &amp;message)</div><div class="ttdef"><b>Definition:</b> SPI.cpp:79</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classSPI.html#a912287d6166b4b60bcd06566623d8e2f">SPI::Set_Master()</a>, and <a class="el" href="classSPI.html#a89f5b4dbe1a27fa8cf5bf98de1e40b6f">SPI::SPI_send_message()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="SPI__SLAVE__TEST_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>.</p>
 
 </div>
 </div>

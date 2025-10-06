@@ -84,7 +84,7 @@ Inheritance diagram for TCP_NAK_MESSAGE:</div>
 <div class="dyncontent">
 <div class="center"><img src="classTCP__NAK__MESSAGE__inherit__graph.png" border="0" usemap="#aTCP__NAK__MESSAGE_inherit__map" alt="Inheritance graph"/></div>
 <map name="aTCP__NAK__MESSAGE_inherit__map" id="aTCP__NAK__MESSAGE_inherit__map">
-<area shape="rect" title=" " alt="" coords="9,395,187,531"/>
+<area shape="rect" title=" " alt="" coords="9,395,187,545"/>
 <area shape="rect" href="classTCP__MESSAGE.html" title=" " alt="" coords="5,5,191,347"/>
 </map>
 </div>
@@ -93,7 +93,7 @@ Collaboration diagram for TCP_NAK_MESSAGE:</div>
 <div class="dyncontent">
 <div class="center"><img src="classTCP__NAK__MESSAGE__coll__graph.png" border="0" usemap="#aTCP__NAK__MESSAGE_coll__map" alt="Collaboration graph"/></div>
 <map name="aTCP__NAK__MESSAGE_coll__map" id="aTCP__NAK__MESSAGE_coll__map">
-<area shape="rect" title=" " alt="" coords="9,395,187,531"/>
+<area shape="rect" title=" " alt="" coords="9,395,187,545"/>
 <area shape="rect" href="classTCP__MESSAGE.html" title=" " alt="" coords="5,5,191,347"/>
 </map>
 </div>
@@ -102,6 +102,8 @@ Collaboration diagram for TCP_NAK_MESSAGE:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a941b37b7f3527d89e8a243d6798b85aa"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTCP__NAK__MESSAGE.html#a941b37b7f3527d89e8a243d6798b85aa">TCP_NAK_MESSAGE</a> (uint32_t src_id, uint32_t dest_id, uint16_t bytes_received)</td></tr>
 <tr class="separator:a941b37b7f3527d89e8a243d6798b85aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcc29e6edb4b00603ded4ac1e1bc3cf7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTCP__NAK__MESSAGE.html#afcc29e6edb4b00603ded4ac1e1bc3cf7">TCP_NAK_MESSAGE</a> ()</td></tr>
+<tr class="separator:afcc29e6edb4b00603ded4ac1e1bc3cf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20f5c9b1cab26158a334330e5bd6853b"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTCP__NAK__MESSAGE.html#a20f5c9b1cab26158a334330e5bd6853b">get_msg</a> () override</td></tr>
 <tr class="separator:a20f5c9b1cab26158a334330e5bd6853b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6746520a94996327fdab3dca47e9f16f"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTCP__NAK__MESSAGE.html#a6746520a94996327fdab3dca47e9f16f">get_len</a> () override</td></tr>
@@ -164,7 +166,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a941b37b7f3527d89e8a243d6798b85aa" name="a941b37b7f3527d89e8a243d6798b85aa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a941b37b7f3527d89e8a243d6798b85aa">&#9670;&#160;</a></span>TCP_NAK_MESSAGE()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a941b37b7f3527d89e8a243d6798b85aa">&#9670;&#160;</a></span>TCP_NAK_MESSAGE() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -202,20 +204,46 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  234</span>                                                                                : <a class="code hl_class" href="classTCP__MESSAGE.html">TCP_MESSAGE</a>(0xFF) { </div>
-<div class="line"><span class="lineno">  235</span>        <a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>.priority = <a class="code hl_variable" href="classTCP__MESSAGE.html#a5909df8df2f339dfe61373cdf2644eec">priority</a>;</div>
-<div class="line"><span class="lineno">  236</span>        <a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>.msg_id = 0x05;</div>
-<div class="line"><span class="lineno">  237</span>        <a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>.len = 15;</div>
-<div class="line"><span class="lineno">  238</span>        <a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>.source = src_id;</div>
-<div class="line"><span class="lineno">  239</span>        <a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>.dest = dest_id;</div>
-<div class="line"><span class="lineno">  240</span>        <a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>.bytes_received = bytes_received;</div>
-<div class="line"><span class="lineno">  241</span>    }</div>
-<div class="ttc" id="aclassTCP__MESSAGE_html"><div class="ttname"><a href="classTCP__MESSAGE.html">TCP_MESSAGE</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:7</div></div>
-<div class="ttc" id="aclassTCP__MESSAGE_html_a5909df8df2f339dfe61373cdf2644eec"><div class="ttname"><a href="classTCP__MESSAGE.html#a5909df8df2f339dfe61373cdf2644eec">TCP_MESSAGE::priority</a></div><div class="ttdeci">uint8_t priority</div><div class="ttdef"><b>Definition:</b> Messages.hpp:9</div></div>
-<div class="ttc" id="aclassTCP__NAK__MESSAGE_html_a3225ec52bab50adf81817eab4cf59e7a"><div class="ttname"><a href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">TCP_NAK_MESSAGE::msg</a></div><div class="ttdeci">tcp_failed_msg msg</div><div class="ttdef"><b>Definition:</b> Messages.hpp:232</div></div>
+<div class="fragment"><div class="line"><span class="lineno">  255</span>                                                                                : <a class="code hl_class" href="classTCP__MESSAGE.html">TCP_MESSAGE</a>(0xFF) { </div>
+<div class="line"><span class="lineno">  256</span>        <a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>.priority = <a class="code hl_variable" href="classTCP__MESSAGE.html#a5909df8df2f339dfe61373cdf2644eec">priority</a>;</div>
+<div class="line"><span class="lineno">  257</span>        <a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>.msg_id = 0x05;</div>
+<div class="line"><span class="lineno">  258</span>        <a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>.len = 15;</div>
+<div class="line"><span class="lineno">  259</span>        <a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>.source = src_id;</div>
+<div class="line"><span class="lineno">  260</span>        <a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>.dest = dest_id;</div>
+<div class="line"><span class="lineno">  261</span>        <a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>.bytes_received = bytes_received;</div>
+<div class="line"><span class="lineno">  262</span>    }</div>
+<div class="ttc" id="aclassTCP__MESSAGE_html"><div class="ttname"><a href="classTCP__MESSAGE.html">TCP_MESSAGE</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:9</div></div>
+<div class="ttc" id="aclassTCP__MESSAGE_html_a5909df8df2f339dfe61373cdf2644eec"><div class="ttname"><a href="classTCP__MESSAGE.html#a5909df8df2f339dfe61373cdf2644eec">TCP_MESSAGE::priority</a></div><div class="ttdeci">uint8_t priority</div><div class="ttdef"><b>Definition:</b> Messages.hpp:11</div></div>
+<div class="ttc" id="aclassTCP__NAK__MESSAGE_html_a3225ec52bab50adf81817eab4cf59e7a"><div class="ttname"><a href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">TCP_NAK_MESSAGE::msg</a></div><div class="ttdeci">tcp_failed_msg msg</div><div class="ttdef"><b>Definition:</b> Messages.hpp:253</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>, and <a class="el" href="classTCP__MESSAGE.html#a5909df8df2f339dfe61373cdf2644eec">TCP_MESSAGE::priority</a>.</p>
 
+</div>
+</div>
+<a id="afcc29e6edb4b00603ded4ac1e1bc3cf7" name="afcc29e6edb4b00603ded4ac1e1bc3cf7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcc29e6edb4b00603ded4ac1e1bc3cf7">&#9670;&#160;</a></span>TCP_NAK_MESSAGE() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TCP_NAK_MESSAGE::TCP_NAK_MESSAGE </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  264</span>: <a class="code hl_class" href="classTCP__MESSAGE.html">TCP_MESSAGE</a>(0xFF) {}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -243,13 +271,13 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="classTCP__MESSAGE.html#aa18b7e6503819d7db7617b66682882c9">TCP_MESSAGE</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  248</span>                                {</div>
-<div class="line"><span class="lineno">  249</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>.len;</div>
-<div class="line"><span class="lineno">  250</span>    }</div>
+<div class="fragment"><div class="line"><span class="lineno">  269</span>                                {</div>
+<div class="line"><span class="lineno">  270</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>.len;</div>
+<div class="line"><span class="lineno">  271</span>    }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="classSTANode.html#a07f1bd97bed2342b18886377eab36ace">STANode::handle_incoming_data()</a>, and <a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">APNode::handle_incoming_data()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classSTANode.html#a6c275aa681ece0f194944ef6d54bf513">STANode::handle_incoming_data()</a>, <a class="el" href="classAPNode.html#a8d3d647a3994e5de9d4695e94e83244c">APNode::send_msg()</a>, and <a class="el" href="classSTANode.html#a01684bc83d93ba41477be2cea83aa967">STANode::send_msg()</a>.</p>
 
 </div>
 </div>
@@ -277,13 +305,13 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="classTCP__MESSAGE.html#a6657649993aa36bd1ab5c7e85a5b4f16">TCP_MESSAGE</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  245</span>                                {</div>
-<div class="line"><span class="lineno">  246</span>        <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span>uint8_t*<span class="keyword">&gt;</span>(&amp;<a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>);</div>
-<div class="line"><span class="lineno">  247</span>    }</div>
+<div class="fragment"><div class="line"><span class="lineno">  266</span>                                {</div>
+<div class="line"><span class="lineno">  267</span>        <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span>uint8_t*<span class="keyword">&gt;</span>(&amp;<a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>);</div>
+<div class="line"><span class="lineno">  268</span>    }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="classSTANode.html#a07f1bd97bed2342b18886377eab36ace">STANode::handle_incoming_data()</a>, and <a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">APNode::handle_incoming_data()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">APNode::handle_incoming_data()</a>, <a class="el" href="classSTANode.html#a6c275aa681ece0f194944ef6d54bf513">STANode::handle_incoming_data()</a>, and <a class="el" href="classAPNode.html#aeecf3ce9773fe84f1fbe6a1e1c8ba497">APNode::handle_transfering_data()</a>.</p>
 
 </div>
 </div>
@@ -310,9 +338,9 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  251</span>                                {</div>
-<div class="line"><span class="lineno">  252</span>        <a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>.error = err;</div>
-<div class="line"><span class="lineno">  253</span>    }</div>
+<div class="fragment"><div class="line"><span class="lineno">  272</span>                                {</div>
+<div class="line"><span class="lineno">  273</span>        <a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>.error = err;</div>
+<div class="line"><span class="lineno">  274</span>    }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>.</p>
 
@@ -345,14 +373,14 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="classTCP__MESSAGE.html#aecb87ea9b0ba8c995ef4834bdfbbf353">TCP_MESSAGE</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  254</span>                                     {</div>
-<div class="line"><span class="lineno">  255</span>        this-&gt;<a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a> = *(<span class="keyword">reinterpret_cast&lt;</span><a class="code hl_variable" href="classTCP__MESSAGE.html#a3c97924539674d96074bc33caaaa3a12">tcp_failed_msg</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>));</div>
-<div class="line"><span class="lineno">  256</span>    }</div>
-<div class="ttc" id="aclassTCP__MESSAGE_html_a3c97924539674d96074bc33caaaa3a12"><div class="ttname"><a href="classTCP__MESSAGE.html#a3c97924539674d96074bc33caaaa3a12">TCP_MESSAGE::tcp_failed_msg</a></div><div class="ttdeci">tcp_failed_msg</div><div class="ttdef"><b>Definition:</b> Messages.hpp:72</div></div>
+<div class="fragment"><div class="line"><span class="lineno">  275</span>                                     {</div>
+<div class="line"><span class="lineno">  276</span>        this-&gt;<a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a> = *(<span class="keyword">reinterpret_cast&lt;</span><a class="code hl_variable" href="classTCP__MESSAGE.html#a3c97924539674d96074bc33caaaa3a12">tcp_failed_msg</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>));</div>
+<div class="line"><span class="lineno">  277</span>    }</div>
+<div class="ttc" id="aclassTCP__MESSAGE_html_a3c97924539674d96074bc33caaaa3a12"><div class="ttname"><a href="classTCP__MESSAGE.html#a3c97924539674d96074bc33caaaa3a12">TCP_MESSAGE::tcp_failed_msg</a></div><div class="ttdeci">tcp_failed_msg</div><div class="ttdef"><b>Definition:</b> Messages.hpp:76</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classTCP__NAK__MESSAGE.html#a3225ec52bab50adf81817eab4cf59e7a">msg</a>, and <a class="el" href="classTCP__MESSAGE.html#a3c97924539674d96074bc33caaaa3a12">TCP_MESSAGE::tcp_failed_msg</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Messages_8cpp.html#af38d02b60aa8d13a179c24ca5d9ad8d1">parseMessage()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">APNode::handle_incoming_data()</a>, <a class="el" href="classSTANode.html#a6c275aa681ece0f194944ef6d54bf513">STANode::handle_incoming_data()</a>, <a class="el" href="classAPNode.html#aeecf3ce9773fe84f1fbe6a1e1c8ba497">APNode::handle_transfering_data()</a>, <a class="el" href="classAPNode.html#a8d3d647a3994e5de9d4695e94e83244c">APNode::send_msg()</a>, and <a class="el" href="classSTANode.html#a01684bc83d93ba41477be2cea83aa967">STANode::send_msg()</a>.</p>
 
 </div>
 </div>
@@ -369,7 +397,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="classTCP__NAK__MESSAGE.html#a6746520a94996327fdab3dca47e9f16f">get_len()</a>, <a class="el" href="classTCP__NAK__MESSAGE.html#a20f5c9b1cab26158a334330e5bd6853b">get_msg()</a>, <a class="el" href="classTCP__NAK__MESSAGE.html#aa972b07555290e7dc8318a44141e2413">set_error()</a>, <a class="el" href="classTCP__NAK__MESSAGE.html#a46b69ed413bea8d00861b29452178284">set_msg()</a>, and <a class="el" href="classTCP__NAK__MESSAGE.html#a941b37b7f3527d89e8a243d6798b85aa">TCP_NAK_MESSAGE()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classTCP__NAK__MESSAGE.html#a6746520a94996327fdab3dca47e9f16f">get_len()</a>, <a class="el" href="classTCP__NAK__MESSAGE.html#a20f5c9b1cab26158a334330e5bd6853b">get_msg()</a>, <a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">APNode::handle_incoming_data()</a>, <a class="el" href="classAPNode.html#a8d3d647a3994e5de9d4695e94e83244c">APNode::send_msg()</a>, <a class="el" href="classSTANode.html#a01684bc83d93ba41477be2cea83aa967">STANode::send_msg()</a>, <a class="el" href="classTCP__NAK__MESSAGE.html#aa972b07555290e7dc8318a44141e2413">set_error()</a>, <a class="el" href="classTCP__NAK__MESSAGE.html#a46b69ed413bea8d00861b29452178284">set_msg()</a>, and <a class="el" href="classTCP__NAK__MESSAGE.html#a941b37b7f3527d89e8a243d6798b85aa">TCP_NAK_MESSAGE()</a>.</p>
 
 </div>
 </div>

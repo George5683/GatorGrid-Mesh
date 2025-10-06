@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['init_5fap_5fmode_0',['init_ap_mode',['../classAPNode.html#a18d893cc18ed0b777328f2206b5e2219',1,'APNode']]],
-  ['init_5fsta_5fmode_1',['init_sta_mode',['../classSTANode.html#afa7df9532e1f864c077148c3fc8295bc',1,'STANode']]],
-  ['insert_2',['insert',['../classRingBuffer.html#a26f24ba18ecad8fc3df4b848f35724c5',1,'RingBuffer']]],
-  ['is_5fconnected_3',['is_connected',['../classSTANode.html#aede68dcdc66ff3fbb7323d73acd3eb94',1,'STANode']]]
+  ['handle_5fincoming_5fdata_0',['handle_incoming_data',['../classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1',1,'APNode::handle_incoming_data()'],['../classSTANode.html#a6c275aa681ece0f194944ef6d54bf513',1,'STANode::handle_incoming_data()']]],
+  ['handle_5fserial_5fmessage_1',['handle_serial_message',['../classAPNode.html#aa2cecbe4adcfb1ae4aeb24386946a80e',1,'APNode::handle_serial_message()'],['../classSTANode.html#a0b3b9e7b666c5cbb63efc5da3829cae0',1,'STANode::handle_serial_message()']]],
+  ['handle_5ftransfering_5fdata_2',['handle_transfering_data',['../classAPNode.html#aeecf3ce9773fe84f1fbe6a1e1c8ba497',1,'APNode']]],
+  ['handleoperation_3',['handleOperation',['../classpicoNodeVector.html#a3d7bf0d6356962b22d9cb6f21a622f17',1,'picoNodeVector']]],
+  ['has_5fclient_5fdata_4',['has_client_data',['../classAPNode.html#af1c02af9da183625721288410c565f66',1,'APNode']]]
 ];

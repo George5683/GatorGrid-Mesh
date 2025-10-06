@@ -6,6 +6,7 @@ var searchData=
   ['nodeid_3',['NodeID',['../classMeshNode.html#afc76dc2a222169caffd458dfb748a986',1,'MeshNode']]],
   ['nodeid_4',['nodeID',['../classpicoNodeVector.html#aa94ef162b47dae1e0f1251b79af144dc',1,'picoNodeVector']]],
   ['nodeidvector_5',['nodeIDVector',['../classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58',1,'picoNodeVector']]],
-  ['number_5fof_5fchildren_6',['number_of_children',['../structChildrenTree_1_1Node.html#abddeb659f81a6935189362b06edee56e',1,'ChildrenTree::Node']]],
-  ['number_5fof_5fmessages_7',['number_of_messages',['../classRingBuffer.html#a5615e24d141b5b58c335b31b355e2483',1,'RingBuffer::number_of_messages()'],['../classAPNode.html#a1eb8b7163387b293008b3903cc651c90',1,'APNode::number_of_messages()'],['../classSTANode.html#a85f3bd0e6d9c50fbf84756c8d6fcd618',1,'STANode::number_of_messages()']]]
+  ['num_5fof_5fmessages_6',['num_of_messages',['../classSerialRingBuffer.html#a85021ab663405f6fd05dc5774beda74d',1,'SerialRingBuffer']]],
+  ['number_5fof_5fchildren_7',['number_of_children',['../structChildrenTree_1_1Node.html#abddeb659f81a6935189362b06edee56e',1,'ChildrenTree::Node']]],
+  ['number_5fof_5fmessages_8',['number_of_messages',['../classRingBuffer.html#a5615e24d141b5b58c335b31b355e2483',1,'RingBuffer::number_of_messages()'],['../classSerialRingBuffer.html#a8ccb79e223c33376bdd82808f6b2db5d',1,'SerialRingBuffer::number_of_messages()'],['../classAPNode.html#a1eb8b7163387b293008b3903cc651c90',1,'APNode::number_of_messages()'],['../classSTANode.html#a85f3bd0e6d9c50fbf84756c8d6fcd618',1,'STANode::number_of_messages()']]]
 ];

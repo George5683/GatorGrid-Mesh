@@ -76,6 +76,8 @@ $(function() {
   <div class="headertitle"><div class="title">TCP_SERVER_T_ Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="MeshNode_8hpp_source.html">MeshNode.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for TCP_SERVER_T_:</div>
 <div class="dyncontent">
@@ -110,9 +112,9 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a96c913acdc8fac8304296bd845a14f2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace20e38cf2ba7dbe1ed13c0ff1dc9de4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="dnsserver_8h.html#a0a0c4b923d60abeb7717edde37211686">dns_server_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTCP__SERVER__T__.html#ace20e38cf2ba7dbe1ed13c0ff1dc9de4">dns_server</a></td></tr>
 <tr class="separator:ace20e38cf2ba7dbe1ed13c0ff1dc9de4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a783d2447ab4ef207341856b04d532a0d"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTCP__SERVER__T__.html#a783d2447ab4ef207341856b04d532a0d">buffer_sent</a> [<a class="el" href="MeshNodeAP_8cpp.html#a6821bafc3c88dfb2e433a095df9940c6">BUF_SIZE</a>]</td></tr>
+<tr class="memitem:a783d2447ab4ef207341856b04d532a0d"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTCP__SERVER__T__.html#a783d2447ab4ef207341856b04d532a0d">buffer_sent</a> [<a class="el" href="MeshNode_8hpp.html#a6821bafc3c88dfb2e433a095df9940c6">BUF_SIZE</a>]</td></tr>
 <tr class="separator:a783d2447ab4ef207341856b04d532a0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1ed039fe3ef2265ae3515ac667c1a0f"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTCP__SERVER__T__.html#aa1ed039fe3ef2265ae3515ac667c1a0f">buffer_recv</a> [<a class="el" href="MeshNodeAP_8cpp.html#a6821bafc3c88dfb2e433a095df9940c6">BUF_SIZE</a>]</td></tr>
+<tr class="memitem:aa1ed039fe3ef2265ae3515ac667c1a0f"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTCP__SERVER__T__.html#aa1ed039fe3ef2265ae3515ac667c1a0f">buffer_recv</a> [<a class="el" href="MeshNode_8hpp.html#a6821bafc3c88dfb2e433a095df9940c6">BUF_SIZE</a>]</td></tr>
 <tr class="separator:aa1ed039fe3ef2265ae3515ac667c1a0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -128,7 +130,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="classAPNode.html#a18d893cc18ed0b777328f2206b5e2219">APNode::init_ap_mode()</a>, and <a class="el" href="MeshNodeAP_8cpp.html#aeec1738f732fee7feac27d72efee0fa2">tcp_server_recv()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classAPNode.html#a18d893cc18ed0b777328f2206b5e2219">APNode::init_ap_mode()</a>, <a class="el" href="MeshNodeAP_8cpp.html#a99d5b5f1616f9e67828ccd0f94a83367">tcp_server_accept()</a>, and <a class="el" href="MeshNodeAP_8cpp.html#aeec1738f732fee7feac27d72efee0fa2">tcp_server_recv()</a>.</p>
 
 </div>
 </div>
@@ -139,12 +141,12 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t TCP_SERVER_T_::buffer_recv[<a class="el" href="MeshNodeAP_8cpp.html#a6821bafc3c88dfb2e433a095df9940c6">BUF_SIZE</a>]</td>
+          <td class="memname">uint8_t TCP_SERVER_T_::buffer_recv[<a class="el" href="MeshNode_8hpp.html#a6821bafc3c88dfb2e433a095df9940c6">BUF_SIZE</a>]</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">APNode::handle_incoming_data()</a>, and <a class="el" href="MeshNodeAP_8cpp.html#aeec1738f732fee7feac27d72efee0fa2">tcp_server_recv()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="MeshNodeAP_8cpp.html#aeec1738f732fee7feac27d72efee0fa2">tcp_server_recv()</a>.</p>
 
 </div>
 </div>
@@ -155,7 +157,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t TCP_SERVER_T_::buffer_sent[<a class="el" href="MeshNodeAP_8cpp.html#a6821bafc3c88dfb2e433a095df9940c6">BUF_SIZE</a>]</td>
+          <td class="memname">uint8_t TCP_SERVER_T_::buffer_sent[<a class="el" href="MeshNode_8hpp.html#a6821bafc3c88dfb2e433a095df9940c6">BUF_SIZE</a>]</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -192,7 +194,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="classAPNode.html#a18d893cc18ed0b777328f2206b5e2219">APNode::init_ap_mode()</a>, <a class="el" href="classAPNode.html#aeb770e3913b5027d76771517446dcce0">APNode::poll()</a>, <a class="el" href="MeshNodeAP_8cpp.html#a012bff17b060f420fb99523abed970b0">run_tcp_server()</a>, <a class="el" href="classAPNode.html#aa02e0b6dcbc9a8f06c769c4277f30482">APNode::server_running()</a>, and <a class="el" href="MeshNodeAP_8cpp.html#aa770ff9e047fdd2a26da33220aa9354d">tcp_server_result()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classAPNode.html#a18d893cc18ed0b777328f2206b5e2219">APNode::init_ap_mode()</a>, <a class="el" href="MeshNodeAP_8cpp.html#a012bff17b060f420fb99523abed970b0">run_tcp_server()</a>, <a class="el" href="classAPNode.html#aa02e0b6dcbc9a8f06c769c4277f30482">APNode::server_running()</a>, and <a class="el" href="MeshNodeAP_8cpp.html#aa770ff9e047fdd2a26da33220aa9354d">tcp_server_result()</a>.</p>
 
 </div>
 </div>
@@ -305,7 +307,7 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>libraries/MeshNode/<a class="el" href="MeshNodeAP_8cpp.html">MeshNodeAP.cpp</a></li>
+<li>libraries/MeshNode/<a class="el" href="MeshNode_8hpp_source.html">MeshNode.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

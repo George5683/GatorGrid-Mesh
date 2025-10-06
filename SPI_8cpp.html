@@ -84,18 +84,21 @@ $(function() {
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;cstring&gt;</code><br />
 <code>#include &quot;hardware/spi.h&quot;</code><br />
+<code>#include &quot;hardware/sync.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for SPI.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="SPI_8cpp__incl.png" border="0" usemap="#alibraries_2SPI_2SPI_8cpp" alt=""/></div>
 <map name="alibraries_2SPI_2SPI_8cpp" id="alibraries_2SPI_2SPI_8cpp">
-<area shape="rect" title=" " alt="" coords="161,5,311,31"/>
-<area shape="rect" href="SPI_8hpp.html" title=" " alt="" coords="21,79,91,104"/>
-<area shape="rect" title=" " alt="" coords="116,79,183,104"/>
-<area shape="rect" title=" " alt="" coords="207,79,265,104"/>
-<area shape="rect" title=" " alt="" coords="289,79,356,104"/>
-<area shape="rect" title=" " alt="" coords="381,79,499,104"/>
+<area shape="rect" title=" " alt="" coords="257,5,407,31"/>
+<area shape="rect" href="SPI_8hpp.html" title=" " alt="" coords="74,79,145,104"/>
+<area shape="rect" title=" " alt="" coords="169,79,236,104"/>
+<area shape="rect" title=" " alt="" coords="260,79,319,104"/>
+<area shape="rect" title=" " alt="" coords="343,79,409,104"/>
+<area shape="rect" title=" " alt="" coords="434,79,553,104"/>
+<area shape="rect" title=" " alt="" coords="577,79,706,104"/>
 <area shape="rect" title=" " alt="" coords="5,152,107,177"/>
+<area shape="rect" title=" " alt="" coords="131,152,194,177"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -105,12 +108,20 @@ Macros</h2></td></tr>
 <tr class="separator:a8112c985f7444e82198d7571ce0a9160"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46bdd417480dec5cb9cf196af3c7489c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="SPI_8cpp.html#a46bdd417480dec5cb9cf196af3c7489c">PIN_MISO</a>&#160;&#160;&#160;16</td></tr>
 <tr class="separator:a46bdd417480dec5cb9cf196af3c7489c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abaeddda4b992af7165ed898ab8b2b4ac"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="SPI_8cpp.html#abaeddda4b992af7165ed898ab8b2b4ac">PIN_MOSI</a>&#160;&#160;&#160;19</td></tr>
+<tr class="separator:abaeddda4b992af7165ed898ab8b2b4ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebb7b32363762e17fbe2ec7ae8f3e170"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="SPI_8cpp.html#aebb7b32363762e17fbe2ec7ae8f3e170">PIN_MISO_MASTER</a>&#160;&#160;&#160;16</td></tr>
+<tr class="separator:aebb7b32363762e17fbe2ec7ae8f3e170"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac167ebbdb9e579c7716ee6f906e6dc7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="SPI_8cpp.html#aac167ebbdb9e579c7716ee6f906e6dc7">PIN_MOSI_MASTER</a>&#160;&#160;&#160;19</td></tr>
+<tr class="separator:aac167ebbdb9e579c7716ee6f906e6dc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a164862ad7cb94281ef381147f57b772d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="SPI_8cpp.html#a164862ad7cb94281ef381147f57b772d">PIN_MISO_SLAVE</a>&#160;&#160;&#160;19</td></tr>
+<tr class="separator:a164862ad7cb94281ef381147f57b772d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9808eca82608dd2100b53f39dedcdf25"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="SPI_8cpp.html#a9808eca82608dd2100b53f39dedcdf25">PIN_MOSI_SLAVE</a>&#160;&#160;&#160;16</td></tr>
+<tr class="separator:a9808eca82608dd2100b53f39dedcdf25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa592f8fcb7a301edfe97aa121fd28ce"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="SPI_8cpp.html#afa592f8fcb7a301edfe97aa121fd28ce">PIN_CS</a>&#160;&#160;&#160;17</td></tr>
 <tr class="separator:afa592f8fcb7a301edfe97aa121fd28ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a1a3e97267377d1b18bb9073192fdf1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="SPI_8cpp.html#a6a1a3e97267377d1b18bb9073192fdf1">PIN_SCK</a>&#160;&#160;&#160;18</td></tr>
 <tr class="separator:a6a1a3e97267377d1b18bb9073192fdf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abaeddda4b992af7165ed898ab8b2b4ac"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="SPI_8cpp.html#abaeddda4b992af7165ed898ab8b2b4ac">PIN_MOSI</a>&#160;&#160;&#160;19</td></tr>
-<tr class="separator:abaeddda4b992af7165ed898ab8b2b4ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="afa592f8fcb7a301edfe97aa121fd28ce" name="afa592f8fcb7a301edfe97aa121fd28ce"></a>
@@ -141,6 +152,34 @@ Macros</h2></td></tr>
 
 </div>
 </div>
+<a id="aebb7b32363762e17fbe2ec7ae8f3e170" name="aebb7b32363762e17fbe2ec7ae8f3e170"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebb7b32363762e17fbe2ec7ae8f3e170">&#9670;&#160;</a></span>PIN_MISO_MASTER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PIN_MISO_MASTER&#160;&#160;&#160;16</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a164862ad7cb94281ef381147f57b772d" name="a164862ad7cb94281ef381147f57b772d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a164862ad7cb94281ef381147f57b772d">&#9670;&#160;</a></span>PIN_MISO_SLAVE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PIN_MISO_SLAVE&#160;&#160;&#160;19</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="abaeddda4b992af7165ed898ab8b2b4ac" name="abaeddda4b992af7165ed898ab8b2b4ac"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abaeddda4b992af7165ed898ab8b2b4ac">&#9670;&#160;</a></span>PIN_MOSI</h2>
 
@@ -149,6 +188,34 @@ Macros</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">#define PIN_MOSI&#160;&#160;&#160;19</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aac167ebbdb9e579c7716ee6f906e6dc7" name="aac167ebbdb9e579c7716ee6f906e6dc7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac167ebbdb9e579c7716ee6f906e6dc7">&#9670;&#160;</a></span>PIN_MOSI_MASTER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PIN_MOSI_MASTER&#160;&#160;&#160;19</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9808eca82608dd2100b53f39dedcdf25" name="a9808eca82608dd2100b53f39dedcdf25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9808eca82608dd2100b53f39dedcdf25">&#9670;&#160;</a></span>PIN_MOSI_SLAVE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PIN_MOSI_SLAVE&#160;&#160;&#160;16</td>
         </tr>
       </table>
 </div><div class="memdoc">

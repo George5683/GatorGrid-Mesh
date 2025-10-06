@@ -77,20 +77,64 @@ $(function() {
   <div class="headertitle"><div class="title">display.hpp</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="display_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="display_8hpp.html#a4bda262c39a1cce7632b62644fdee97b">    1</a></span><span class="preprocessor">#define ANSI_CLEAR_SCREEN  &quot;\x1B[2J&quot;</span>   <span class="comment">// Erase entire screen</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno"><a class="line" href="display_8hpp.html#ad3e3a001314abfa09813d9f3c433ace9">    2</a></span><span class="preprocessor">#define ANSI_CURSOR_HOME   &quot;\x1B[H&quot;</span>    <span class="comment">// Move cursor to upper‑left</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno"><a class="line" href="display_8hpp.html#ad12e26d0a3f5493a3b74139916da1e4a">    3</a></span><span class="preprocessor">#define ANSI_CLEAR_SCROLLBACK  &quot;\x1B[3J&quot;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno"><a class="line" href="display_8hpp.html#af77a445894f2f750d43cf2182cd29e55">    4</a></span><span class="preprocessor">#define ANSI_RESET       &quot;\x1B[0m&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="display_8hpp.html#a46587b83544b8e9be045bb93f644ac82">    5</a></span><span class="preprocessor">#define ANSI_BOLD        &quot;\x1B[1m&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="display_8hpp.html#ab9e3d5230787ccc126d1a1d8b739c740">    6</a></span><span class="preprocessor">#define ANSI_UNDERLINE   &quot;\x1B[4m&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="display_8hpp.html#a05bc43609eba12c34e413ee1c9b6c4f9">    8</a></span><span class="preprocessor">#define ANSI_RED_TEXT    &quot;\x1B[31m&quot;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="display_8hpp.html#a92140f5f8c1edd5de7c9bf0f5706974c">    9</a></span><span class="preprocessor">#define ANSI_GREEN_TEXT  &quot;\x1B[32m&quot;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="display_8hpp.html#a1da4bda31c0ad0830be3266118d5d4da">   10</a></span><span class="preprocessor">#define ANSI_YELLOW_TEXT &quot;\x1B[33m&quot;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="display_8hpp.html#a4cf82196accb92a28f5208f8996c7d2c">   11</a></span><span class="preprocessor">#define ANSI_BLUE_TEXT   &quot;\x1B[34m&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keywordtype">void</span> <a class="code hl_function" href="display_8hpp.html#a506710a2f9a307666f3e0e7b38f71517">display_test</a>();</div>
+<a href="display_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno"><a class="line" href="display_8hpp.html#a4bda262c39a1cce7632b62644fdee97b">    3</a></span><span class="preprocessor">#define ANSI_CLEAR_SCREEN  &quot;\x1B[2J&quot;</span>   <span class="comment">// Erase entire screen</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno"><a class="line" href="display_8hpp.html#ad3e3a001314abfa09813d9f3c433ace9">    4</a></span><span class="preprocessor">#define ANSI_CURSOR_HOME   &quot;\x1B[H&quot;</span>    <span class="comment">// Move cursor to upper‑left</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="display_8hpp.html#ad12e26d0a3f5493a3b74139916da1e4a">    5</a></span><span class="preprocessor">#define ANSI_CLEAR_SCROLLBACK  &quot;\x1B[3J&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="display_8hpp.html#af77a445894f2f750d43cf2182cd29e55">    6</a></span><span class="preprocessor">#define ANSI_RESET       &quot;\x1B[0m&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="display_8hpp.html#a46587b83544b8e9be045bb93f644ac82">    7</a></span><span class="preprocessor">#define ANSI_BOLD        &quot;\x1B[1m&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="display_8hpp.html#ab9e3d5230787ccc126d1a1d8b739c740">    8</a></span><span class="preprocessor">#define ANSI_UNDERLINE   &quot;\x1B[4m&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="display_8hpp.html#a05bc43609eba12c34e413ee1c9b6c4f9">   10</a></span><span class="preprocessor">#define ANSI_RED_TEXT    &quot;\x1B[31m&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="display_8hpp.html#a92140f5f8c1edd5de7c9bf0f5706974c">   11</a></span><span class="preprocessor">#define ANSI_GREEN_TEXT  &quot;\x1B[32m&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="display_8hpp.html#a1da4bda31c0ad0830be3266118d5d4da">   12</a></span><span class="preprocessor">#define ANSI_YELLOW_TEXT &quot;\x1B[33m&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="display_8hpp.html#a4cf82196accb92a28f5208f8996c7d2c">   13</a></span><span class="preprocessor">#define ANSI_BLUE_TEXT   &quot;\x1B[34m&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="display_8hpp.html#a8d5583f24a4a8bae2614559922c31eff">   14</a></span><span class="preprocessor">#define ANSI_GRAY_TEXT   &quot;\x1B[90m&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#if DEBUG</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">  #define DEBUG_printf(fmt, ...) do {                                        \</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">    printf(ANSI_GRAY_TEXT &quot;[DEBUG] %s: &quot;</span>, __func__);                         \</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    printf(fmt, ##__VA_ARGS__);                                              \</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    printf(ANSI_RESET &quot;\n&quot;);                                                 \</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  } while (0)</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">  #define ERROR_printf(fmt, ...) do {                                        \</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">    printf(ANSI_RED_TEXT &quot;[ERROR] %s: &quot;</span>, __func__);                          \</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    printf(fmt, ##__VA_ARGS__);                                              \</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    printf(ANSI_RESET &quot;\n&quot;);                                                 \</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  } while (0)</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="display_8hpp.html#ac89417d7938b9539c92a9ad3c36b5dd3">   31</a></span><span class="preprocessor">  #define DEBUG_printf(...) do{}while(0)</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="display_8hpp.html#afc859f4ed4d95410e8fc8df10452ce4b">   32</a></span><span class="preprocessor">  #define ERROR_printf(...) do{}while(0)</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#if DEBUG</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> <span class="keyword">static</span> <span class="keywordtype">void</span> dump_bytes(<span class="keyword">const</span> uint8_t *bptr, uint32_t len) {</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    printf(<a class="code hl_define" href="display_8hpp.html#a8d5583f24a4a8bae2614559922c31eff">ANSI_GRAY_TEXT</a>  <span class="stringliteral">&quot;dump_bytes %d&quot;</span>, len);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>     <span class="keywordflow">for</span> (i = 0; i &lt; len;) {</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>         <span class="keywordflow">if</span> ((i &amp; 0x0f) == 0) {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            printf(<span class="stringliteral">&quot;\n&quot;</span>);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((i &amp; 0x07) == 0) {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>            printf(<span class="stringliteral">&quot; &quot;</span>);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>         }</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        printf(<span class="stringliteral">&quot;%02x &quot;</span>, bptr[i++]);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>     }</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    printf(<a class="code hl_define" href="display_8hpp.html#af77a445894f2f750d43cf2182cd29e55">ANSI_RESET</a> <span class="stringliteral">&quot;\n&quot;</span>);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> }</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor"> #define DUMP_BYTES dump_bytes</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor"> #else</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="display_8hpp.html#ad7eabf6ad116d0e4227445facf152d76">   52</a></span><span class="preprocessor"> #define DUMP_BYTES(A,B)</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor"> #endif</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keywordtype">void</span> <a class="code hl_function" href="display_8hpp.html#a506710a2f9a307666f3e0e7b38f71517">display_test</a>();</div>
 <div class="ttc" id="adisplay_8hpp_html_a506710a2f9a307666f3e0e7b38f71517"><div class="ttname"><a href="display_8hpp.html#a506710a2f9a307666f3e0e7b38f71517">display_test</a></div><div class="ttdeci">void display_test()</div><div class="ttdef"><b>Definition:</b> display.cpp:4</div></div>
+<div class="ttc" id="adisplay_8hpp_html_a8d5583f24a4a8bae2614559922c31eff"><div class="ttname"><a href="display_8hpp.html#a8d5583f24a4a8bae2614559922c31eff">ANSI_GRAY_TEXT</a></div><div class="ttdeci">#define ANSI_GRAY_TEXT</div><div class="ttdef"><b>Definition:</b> display.hpp:14</div></div>
+<div class="ttc" id="adisplay_8hpp_html_af77a445894f2f750d43cf2182cd29e55"><div class="ttname"><a href="display_8hpp.html#af77a445894f2f750d43cf2182cd29e55">ANSI_RESET</a></div><div class="ttdeci">#define ANSI_RESET</div><div class="ttdef"><b>Definition:</b> display.hpp:6</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

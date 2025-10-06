@@ -1,0 +1,7 @@
+<map id="SERIAL_MESSAGE" name="SERIAL_MESSAGE">
+<area shape="rect" id="node1" title=" " alt="" coords="339,5,543,259"/>
+<area shape="rect" id="node2" href="$classSERIAL__DATA__MESSAGE.html" title=" " alt="" coords="5,307,209,472"/>
+<area shape="rect" id="node3" href="$classSERIAL__FATAL__ERROR__MESSAGE.html" title=" " alt="" coords="234,307,413,472"/>
+<area shape="rect" id="node4" href="$classSERIAL__NODE__ADD__MESSAGE.html" title=" " alt="" coords="437,307,681,472"/>
+<area shape="rect" id="node5" href="$classSERIAL__NODE__REMOVE__MESSAGE.html" title=" " alt="" coords="705,314,896,465"/>
+</map>

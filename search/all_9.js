@@ -6,10 +6,12 @@ var searchData=
   ['init_5fap_5fmode_3',['init_ap_mode',['../classAPNode.html#a18d893cc18ed0b777328f2206b5e2219',1,'APNode']]],
   ['init_5fsta_5fmode_4',['init_sta_mode',['../classSTANode.html#afa7df9532e1f864c077148c3fc8295bc',1,'STANode']]],
   ['insert_5',['insert',['../classRingBuffer.html#a26f24ba18ecad8fc3df4b848f35724c5',1,'RingBuffer']]],
-  ['ip_6',['ip',['../struct__dhcp__server__t.html#a42b066beb483d092b81430bffdec0c23',1,'_dhcp_server_t']]],
-  ['ip_7',['IP',['../MeshNodeAP_8cpp.html#ab1e9ec157fb9c086690a2ad3f1a5b172',1,'MeshNodeAP.cpp']]],
-  ['ip_8',['ip',['../structdns__server__t__.html#a9bee05147434f171cab0631bec3b62e2',1,'dns_server_t_']]],
-  ['is_5fconnected_9',['is_connected',['../classSTANode.html#aede68dcdc66ff3fbb7323d73acd3eb94',1,'STANode']]],
-  ['is_5fmaster_10',['is_master',['../classSPI.html#ae775889618b83e2b9c08a1f48770e99b',1,'SPI']]],
-  ['is_5fwifi_5fconnected_11',['is_wifi_connected',['../ap__one_8cpp.html#a37e5c9d2aeaeee2470e48d0722c24323',1,'is_wifi_connected():&#160;ap_one.cpp'],['../ap__root_8cpp.html#a37e5c9d2aeaeee2470e48d0722c24323',1,'is_wifi_connected():&#160;ap_root.cpp'],['../AP__Test_8cpp.html#a37e5c9d2aeaeee2470e48d0722c24323',1,'is_wifi_connected():&#160;AP_Test.cpp'],['../ap__two_8cpp.html#a37e5c9d2aeaeee2470e48d0722c24323',1,'is_wifi_connected():&#160;ap_two.cpp']]]
+  ['instance_6',['instance',['../classPicoUART.html#ae8af48b431033b69c3f1606e025976c0',1,'PicoUART']]],
+  ['ip_7',['ip',['../struct__dhcp__server__t.html#a42b066beb483d092b81430bffdec0c23',1,'_dhcp_server_t']]],
+  ['ip_8',['IP',['../MeshNodeAP_8cpp.html#ab1e9ec157fb9c086690a2ad3f1a5b172',1,'MeshNodeAP.cpp']]],
+  ['ip_9',['ip',['../structdns__server__t__.html#a9bee05147434f171cab0631bec3b62e2',1,'dns_server_t_']]],
+  ['is_5fconnected_10',['is_connected',['../classSTANode.html#aede68dcdc66ff3fbb7323d73acd3eb94',1,'STANode']]],
+  ['is_5fmaster_11',['is_master',['../classSPI.html#ae775889618b83e2b9c08a1f48770e99b',1,'SPI']]],
+  ['is_5froot_12',['is_root',['../classMeshNode.html#ab11f5b1560868968febdfc7a6e321eeb',1,'MeshNode']]],
+  ['is_5fwifi_5fconnected_13',['is_wifi_connected',['../ap__one_8cpp.html#a37e5c9d2aeaeee2470e48d0722c24323',1,'is_wifi_connected():&#160;ap_one.cpp'],['../ap__root_8cpp.html#a37e5c9d2aeaeee2470e48d0722c24323',1,'is_wifi_connected():&#160;ap_root.cpp'],['../AP__Test_8cpp.html#a37e5c9d2aeaeee2470e48d0722c24323',1,'is_wifi_connected():&#160;AP_Test.cpp'],['../ap__two_8cpp.html#a37e5c9d2aeaeee2470e48d0722c24323',1,'is_wifi_connected():&#160;ap_two.cpp'],['../PicoUARTSerialBufferTest_2ap__root_8cpp.html#a37e5c9d2aeaeee2470e48d0722c24323',1,'is_wifi_connected():&#160;ap_root.cpp']]]
 ];

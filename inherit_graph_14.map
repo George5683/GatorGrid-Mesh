@@ -1,3 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structTCP__CONNECT__STATE__T__.html" title=" " alt="" coords="5,5,191,31"/>
+<area shape="rect" id="node1" href="$classSERIAL__MESSAGE.html" title=" " alt="" coords="5,92,144,117"/>
+<area shape="rect" id="node2" href="$classSERIAL__DATA__MESSAGE.html" title=" " alt="" coords="212,5,391,31"/>
+<area shape="rect" id="node3" href="$classSERIAL__FATAL__ERROR__MESSAGE.html" title=" " alt="" coords="220,55,383,95"/>
+<area shape="rect" id="node4" href="$classSERIAL__NODE__ADD__MESSAGE.html" title=" " alt="" coords="192,120,411,145"/>
+<area shape="rect" id="node5" href="$classSERIAL__NODE__REMOVE__MESSAGE.html" title=" " alt="" coords="214,170,389,210"/>
 </map>

@@ -72,6 +72,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classMeshNode-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">MeshNode Class Reference</div></div>
@@ -84,9 +85,9 @@ Inheritance diagram for MeshNode:</div>
 <div class="dyncontent">
 <div class="center"><img src="classMeshNode__inherit__graph.png" border="0" usemap="#aMeshNode_inherit__map" alt="Inheritance graph"/></div>
 <map name="aMeshNode_inherit__map" id="aMeshNode_inherit__map">
-<area shape="rect" title=" " alt="" coords="150,5,277,141"/>
-<area shape="rect" href="classAPNode.html" title=" " alt="" coords="5,189,200,692"/>
-<area shape="rect" href="classSTANode.html" title=" " alt="" coords="224,263,427,619"/>
+<area shape="rect" title=" " alt="" coords="154,5,281,185"/>
+<area shape="rect" href="classAPNode.html" title=" " alt="" coords="5,233,205,795"/>
+<area shape="rect" href="classSTANode.html" title=" " alt="" coords="229,292,432,736"/>
 </map>
 </div>
 <div class="dynheader">
@@ -94,7 +95,7 @@ Collaboration diagram for MeshNode:</div>
 <div class="dyncontent">
 <div class="center"><img src="classMeshNode__coll__graph.png" border="0" usemap="#aMeshNode_coll__map" alt="Collaboration graph"/></div>
 <map name="aMeshNode_coll__map" id="aMeshNode_coll__map">
-<area shape="rect" title=" " alt="" coords="5,5,132,141"/>
+<area shape="rect" title=" " alt="" coords="5,5,132,185"/>
 </map>
 </div>
 <table class="memberdecls">
@@ -110,6 +111,15 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:adc8f29a44d7baf4a56ca6f20cec861e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38f289f39af779b21b1918e1da6f352e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeshNode.html#a38f289f39af779b21b1918e1da6f352e">seed_rand</a> ()</td></tr>
 <tr class="separator:a38f289f39af779b21b1918e1da6f352e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3218456dbc78b99a8de5358389e4b125"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeshNode.html#a3218456dbc78b99a8de5358389e4b125">get_is_root</a> ()</td></tr>
+<tr class="separator:a3218456dbc78b99a8de5358389e4b125"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a4ed2c21c600c3a0c7513a9227f12c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeshNode.html#a5a4ed2c21c600c3a0c7513a9227f12c4">set_is_root</a> (bool status)</td></tr>
+<tr class="separator:a5a4ed2c21c600c3a0c7513a9227f12c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:ab11f5b1560868968febdfc7a6e321eeb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMeshNode.html#ab11f5b1560868968febdfc7a6e321eeb">is_root</a> = false</td></tr>
+<tr class="separator:ab11f5b1560868968febdfc7a6e321eeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -131,14 +141,14 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  568</span>                   {</div>
-<div class="line"><span class="lineno">  569</span>    <a class="code hl_function" href="classMeshNode.html#a38f289f39af779b21b1918e1da6f352e">seed_rand</a>();</div>
-<div class="line"><span class="lineno">  570</span>    </div>
-<div class="line"><span class="lineno">  571</span>    <span class="comment">// set the NodeID variable</span></div>
-<div class="line"><span class="lineno">  572</span>    <a class="code hl_function" href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">set_NodeID</a>(rand());</div>
-<div class="line"><span class="lineno">  573</span>}</div>
-<div class="ttc" id="aclassMeshNode_html_a38f289f39af779b21b1918e1da6f352e"><div class="ttname"><a href="classMeshNode.html#a38f289f39af779b21b1918e1da6f352e">MeshNode::seed_rand</a></div><div class="ttdeci">void seed_rand()</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:90</div></div>
-<div class="ttc" id="aclassMeshNode_html_af666a6d82e48cbff383d10e93dde8719"><div class="ttname"><a href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">MeshNode::set_NodeID</a></div><div class="ttdeci">void set_NodeID(uint32_t ID)</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:409</div></div>
+<div class="fragment"><div class="line"><span class="lineno">  550</span>                   {</div>
+<div class="line"><span class="lineno">  551</span>    <a class="code hl_function" href="classMeshNode.html#a38f289f39af779b21b1918e1da6f352e">seed_rand</a>();</div>
+<div class="line"><span class="lineno">  552</span>    </div>
+<div class="line"><span class="lineno">  553</span>    <span class="comment">// set the NodeID variable</span></div>
+<div class="line"><span class="lineno">  554</span>    <a class="code hl_function" href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">set_NodeID</a>(rand());</div>
+<div class="line"><span class="lineno">  555</span>}</div>
+<div class="ttc" id="aclassMeshNode_html_a38f289f39af779b21b1918e1da6f352e"><div class="ttname"><a href="classMeshNode.html#a38f289f39af779b21b1918e1da6f352e">MeshNode::seed_rand</a></div><div class="ttdeci">void seed_rand()</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:26</div></div>
+<div class="ttc" id="aclassMeshNode_html_af666a6d82e48cbff383d10e93dde8719"><div class="ttname"><a href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">MeshNode::set_NodeID</a></div><div class="ttdeci">void set_NodeID(uint32_t ID)</div><div class="ttdef"><b>Definition:</b> MeshNodeAP.cpp:360</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classMeshNode.html#a38f289f39af779b21b1918e1da6f352e">seed_rand()</a>, and <a class="el" href="classMeshNode.html#af666a6d82e48cbff383d10e93dde8719">set_NodeID()</a>.</p>
 
@@ -166,16 +176,39 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  576</span>                   {</div>
-<div class="line"><span class="lineno">  577</span>    <a class="code hl_variable" href="classMeshNode.html#afc76dc2a222169caffd458dfb748a986">NodeID</a> = 0;</div>
-<div class="line"><span class="lineno">  578</span>}</div>
-<div class="ttc" id="aclassMeshNode_html_afc76dc2a222169caffd458dfb748a986"><div class="ttname"><a href="classMeshNode.html#afc76dc2a222169caffd458dfb748a986">MeshNode::NodeID</a></div><div class="ttdeci">uint32_t NodeID</div><div class="ttdef"><b>Definition:</b> MeshNode.hpp:53</div></div>
+<div class="fragment"><div class="line"><span class="lineno">  558</span>                   {</div>
+<div class="line"><span class="lineno">  559</span>    <a class="code hl_variable" href="classMeshNode.html#afc76dc2a222169caffd458dfb748a986">NodeID</a> = 0;</div>
+<div class="line"><span class="lineno">  560</span>}</div>
+<div class="ttc" id="aclassMeshNode_html_afc76dc2a222169caffd458dfb748a986"><div class="ttname"><a href="classMeshNode.html#afc76dc2a222169caffd458dfb748a986">MeshNode::NodeID</a></div><div class="ttdeci">uint32_t NodeID</div><div class="ttdef"><b>Definition:</b> MeshNode.hpp:108</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classMeshNode.html#afc76dc2a222169caffd458dfb748a986">NodeID</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a3218456dbc78b99a8de5358389e4b125" name="a3218456dbc78b99a8de5358389e4b125"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3218456dbc78b99a8de5358389e4b125">&#9670;&#160;</a></span>get_is_root()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MeshNode::get_is_root </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  375</span>                           {</div>
+<div class="line"><span class="lineno">  376</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classMeshNode.html#ab11f5b1560868968febdfc7a6e321eeb">is_root</a>;</div>
+<div class="line"><span class="lineno">  377</span>}</div>
+<div class="ttc" id="aclassMeshNode_html_ab11f5b1560868968febdfc7a6e321eeb"><div class="ttname"><a href="classMeshNode.html#ab11f5b1560868968febdfc7a6e321eeb">MeshNode::is_root</a></div><div class="ttdeci">bool is_root</div><div class="ttdef"><b>Definition:</b> MeshNode.hpp:111</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classMeshNode.html#ab11f5b1560868968febdfc7a6e321eeb">is_root</a>.</p>
+
+</div>
+</div>
 <a id="adc8f29a44d7baf4a56ca6f20cec861e8" name="adc8f29a44d7baf4a56ca6f20cec861e8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adc8f29a44d7baf4a56ca6f20cec861e8">&#9670;&#160;</a></span>get_NodeID()</h2>
 
@@ -190,13 +223,13 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  420</span>                             {</div>
-<div class="line"><span class="lineno">  421</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classMeshNode.html#afc76dc2a222169caffd458dfb748a986">NodeID</a>;</div>
-<div class="line"><span class="lineno">  422</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  371</span>                             {</div>
+<div class="line"><span class="lineno">  372</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classMeshNode.html#afc76dc2a222169caffd458dfb748a986">NodeID</a>;</div>
+<div class="line"><span class="lineno">  373</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classMeshNode.html#afc76dc2a222169caffd458dfb748a986">NodeID</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="classAPNode.html#a7520e149cbd1fe92ec81254f60e77254">APNode::APNode()</a>, <a class="el" href="classAPNode.html#a901319e21366b2ce2bf8ac779a2bf71d">APNode::get_node_id()</a>, <a class="el" href="classSTANode.html#a07f1bd97bed2342b18886377eab36ace">STANode::handle_incoming_data()</a>, <a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">APNode::handle_incoming_data()</a>, <a class="el" href="classSTANode.html#afa7df9532e1f864c077148c3fc8295bc">STANode::init_sta_mode()</a>, <a class="el" href="ap__one_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>, <a class="el" href="classSTANode.html#a5c059872b86e2d75a7aa151cf797e39f">STANode::scan_result()</a>, <a class="el" href="classAPNode.html#a914fa6137cb8032892d0b2fc24010fb8">APNode::send_data()</a>, <a class="el" href="classSTANode.html#aa32061846b7b2191d000bec26b40ae32">STANode::send_data()</a>, and <a class="el" href="classSTANode.html#adbc289879317eba8fd0f3d0bab4008af">STANode::tcp_init()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classAPNode.html#a7520e149cbd1fe92ec81254f60e77254">APNode::APNode()</a>, <a class="el" href="classAPNode.html#a901319e21366b2ce2bf8ac779a2bf71d">APNode::get_node_id()</a>, <a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">APNode::handle_incoming_data()</a>, <a class="el" href="classSTANode.html#a6c275aa681ece0f194944ef6d54bf513">STANode::handle_incoming_data()</a>, <a class="el" href="classSTANode.html#afa7df9532e1f864c077148c3fc8295bc">STANode::init_sta_mode()</a>, <a class="el" href="ap__one_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>, <a class="el" href="classSTANode.html#a5c059872b86e2d75a7aa151cf797e39f">STANode::scan_result()</a>, <a class="el" href="classAPNode.html#a914fa6137cb8032892d0b2fc24010fb8">APNode::send_data()</a>, <a class="el" href="classSTANode.html#aa32061846b7b2191d000bec26b40ae32">STANode::send_data()</a>, <a class="el" href="classSTANode.html#a01684bc83d93ba41477be2cea83aa967">STANode::send_msg()</a>, <a class="el" href="classAPNode.html#a0baffab88dae0ef512726601ee2de82c">APNode::start_ap_mode()</a>, <a class="el" href="classSTANode.html#a2d1fcac90b0e29d97b11d0b918f061e7">STANode::start_sta_mode()</a>, <a class="el" href="classSTANode.html#adbc289879317eba8fd0f3d0bab4008af">STANode::tcp_init()</a>, and <a class="el" href="classSTANode.html#a8a86e07ad0b1f5a7fc2299ceec351bf1">STANode::update_network()</a>.</p>
 
 </div>
 </div>
@@ -214,25 +247,48 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">   90</span>                         {</div>
-<div class="line"><span class="lineno">   91</span> </div>
-<div class="line"><span class="lineno">   92</span>    uint32_t random = 0x811c9dc5;</div>
-<div class="line"><span class="lineno">   93</span>    uint8_t next_byte = 0;</div>
-<div class="line"><span class="lineno">   94</span>    <span class="keyword">volatile</span> uint32_t *rnd_reg = (uint32_t *)(ROSC_BASE + ROSC_RANDOMBIT_OFFSET);</div>
-<div class="line"><span class="lineno">   95</span>  </div>
-<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 16; i++) {</div>
-<div class="line"><span class="lineno">   97</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; 8; k++) {</div>
-<div class="line"><span class="lineno">   98</span>        next_byte = (next_byte &lt;&lt; 1) | (*rnd_reg &amp; 1);</div>
-<div class="line"><span class="lineno">   99</span>      }</div>
-<div class="line"><span class="lineno">  100</span>  </div>
-<div class="line"><span class="lineno">  101</span>      random ^= next_byte;</div>
-<div class="line"><span class="lineno">  102</span>      random *= 0x01000193;</div>
-<div class="line"><span class="lineno">  103</span>    }</div>
-<div class="line"><span class="lineno">  104</span>  </div>
-<div class="line"><span class="lineno">  105</span>    srand(random);</div>
-<div class="line"><span class="lineno">  106</span>  }</div>
+<div class="fragment"><div class="line"><span class="lineno">   26</span>                         {</div>
+<div class="line"><span class="lineno">   27</span> </div>
+<div class="line"><span class="lineno">   28</span>    uint32_t random = 0x811c9dc5;</div>
+<div class="line"><span class="lineno">   29</span>    uint8_t next_byte = 0;</div>
+<div class="line"><span class="lineno">   30</span>    <span class="keyword">volatile</span> uint32_t *rnd_reg = (uint32_t *)(ROSC_BASE + ROSC_RANDOMBIT_OFFSET);</div>
+<div class="line"><span class="lineno">   31</span>  </div>
+<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 16; i++) {</div>
+<div class="line"><span class="lineno">   33</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; 8; k++) {</div>
+<div class="line"><span class="lineno">   34</span>        next_byte = (next_byte &lt;&lt; 1) | (*rnd_reg &amp; 1);</div>
+<div class="line"><span class="lineno">   35</span>      }</div>
+<div class="line"><span class="lineno">   36</span>  </div>
+<div class="line"><span class="lineno">   37</span>      random ^= next_byte;</div>
+<div class="line"><span class="lineno">   38</span>      random *= 0x01000193;</div>
+<div class="line"><span class="lineno">   39</span>    }</div>
+<div class="line"><span class="lineno">   40</span>  </div>
+<div class="line"><span class="lineno">   41</span>    srand(random);</div>
+<div class="line"><span class="lineno">   42</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="classMeshNode.html#ab525cdafcb942a4c79eb517b7ef0f5c7">MeshNode()</a>.</p>
+
+</div>
+</div>
+<a id="a5a4ed2c21c600c3a0c7513a9227f12c4" name="a5a4ed2c21c600c3a0c7513a9227f12c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a4ed2c21c600c3a0c7513a9227f12c4">&#9670;&#160;</a></span>set_is_root()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MeshNode::set_is_root </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>status</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  378</span>                                      {</div>
+<div class="line"><span class="lineno">  379</span>    <a class="code hl_variable" href="classMeshNode.html#ab11f5b1560868968febdfc7a6e321eeb">is_root</a> = status;</div>
+<div class="line"><span class="lineno">  380</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classMeshNode.html#ab11f5b1560868968febdfc7a6e321eeb">is_root</a>.</p>
 
 </div>
 </div>
@@ -251,10 +307,10 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  409</span>                                    {</div>
-<div class="line"><span class="lineno">  410</span>    <span class="comment">// Assign ID to NodeID</span></div>
-<div class="line"><span class="lineno">  411</span>    <a class="code hl_variable" href="classMeshNode.html#afc76dc2a222169caffd458dfb748a986">NodeID</a> = ID; <span class="comment">// Random number between 1 and 10,000</span></div>
-<div class="line"><span class="lineno">  412</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  360</span>                                    {</div>
+<div class="line"><span class="lineno">  361</span>    <span class="comment">// Assign ID to NodeID</span></div>
+<div class="line"><span class="lineno">  362</span>    <a class="code hl_variable" href="classMeshNode.html#afc76dc2a222169caffd458dfb748a986">NodeID</a> = ID; <span class="comment">// Random number between 1 and 10,000</span></div>
+<div class="line"><span class="lineno">  363</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classMeshNode.html#afc76dc2a222169caffd458dfb748a986">NodeID</a>.</p>
 
@@ -263,6 +319,22 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="ab11f5b1560868968febdfc7a6e321eeb" name="ab11f5b1560868968febdfc7a6e321eeb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab11f5b1560868968febdfc7a6e321eeb">&#9670;&#160;</a></span>is_root</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MeshNode::is_root = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="classMeshNode.html#a3218456dbc78b99a8de5358389e4b125">get_is_root()</a>, <a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">APNode::handle_incoming_data()</a>, and <a class="el" href="classMeshNode.html#a5a4ed2c21c600c3a0c7513a9227f12c4">set_is_root()</a>.</p>
+
+</div>
+</div>
 <a id="afc76dc2a222169caffd458dfb748a986" name="afc76dc2a222169caffd458dfb748a986"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afc76dc2a222169caffd458dfb748a986">&#9670;&#160;</a></span>NodeID</h2>
 

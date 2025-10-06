@@ -84,7 +84,7 @@ Inheritance diagram for TCP_DATA_MSG:</div>
 <div class="dyncontent">
 <div class="center"><img src="classTCP__DATA__MSG__inherit__graph.png" border="0" usemap="#aTCP__DATA__MSG_inherit__map" alt="Inheritance graph"/></div>
 <map name="aTCP__DATA__MSG_inherit__map" id="aTCP__DATA__MSG_inherit__map">
-<area shape="rect" title=" " alt="" coords="23,395,173,531"/>
+<area shape="rect" title=" " alt="" coords="23,395,173,545"/>
 <area shape="rect" href="classTCP__MESSAGE.html" title=" " alt="" coords="5,5,191,347"/>
 </map>
 </div>
@@ -93,7 +93,7 @@ Collaboration diagram for TCP_DATA_MSG:</div>
 <div class="dyncontent">
 <div class="center"><img src="classTCP__DATA__MSG__coll__graph.png" border="0" usemap="#aTCP__DATA__MSG_coll__map" alt="Collaboration graph"/></div>
 <map name="aTCP__DATA__MSG_coll__map" id="aTCP__DATA__MSG_coll__map">
-<area shape="rect" title=" " alt="" coords="23,395,173,531"/>
+<area shape="rect" title=" " alt="" coords="23,395,173,545"/>
 <area shape="rect" href="classTCP__MESSAGE.html" title=" " alt="" coords="5,5,191,347"/>
 </map>
 </div>
@@ -102,6 +102,8 @@ Collaboration diagram for TCP_DATA_MSG:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3b31f448a979e71aea47ac8f50b5be8c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTCP__DATA__MSG.html#a3b31f448a979e71aea47ac8f50b5be8c">TCP_DATA_MSG</a> (uint32_t src_id, uint32_t dest_id)</td></tr>
 <tr class="separator:a3b31f448a979e71aea47ac8f50b5be8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af77401f29a31fe9963802da064d89207"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTCP__DATA__MSG.html#af77401f29a31fe9963802da064d89207">TCP_DATA_MSG</a> ()</td></tr>
+<tr class="separator:af77401f29a31fe9963802da064d89207"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a425e57a569337d010b4dd547d2e85c28"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTCP__DATA__MSG.html#a425e57a569337d010b4dd547d2e85c28">add_message</a> (uint8_t *msg_i, uint8_t msg_len)</td></tr>
 <tr class="separator:a425e57a569337d010b4dd547d2e85c28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fc5565136760b1840432d2e43e28d99"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTCP__DATA__MSG.html#a3fc5565136760b1840432d2e43e28d99">get_msg</a> () override</td></tr>
@@ -164,7 +166,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a3b31f448a979e71aea47ac8f50b5be8c" name="a3b31f448a979e71aea47ac8f50b5be8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b31f448a979e71aea47ac8f50b5be8c">&#9670;&#160;</a></span>TCP_DATA_MSG()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b31f448a979e71aea47ac8f50b5be8c">&#9670;&#160;</a></span>TCP_DATA_MSG() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -196,19 +198,45 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  111</span>                                                    : <a class="code hl_class" href="classTCP__MESSAGE.html">TCP_MESSAGE</a>(0x7F) {</div>
-<div class="line"><span class="lineno">  112</span>        <a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.priority = <a class="code hl_variable" href="classTCP__MESSAGE.html#a5909df8df2f339dfe61373cdf2644eec">priority</a>;</div>
-<div class="line"><span class="lineno">  113</span>        <a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.msg_id = 0x01;</div>
-<div class="line"><span class="lineno">  114</span>        <a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.len = 14;</div>
-<div class="line"><span class="lineno">  115</span>        <a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.source = src_id;</div>
-<div class="line"><span class="lineno">  116</span>        <a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.dest = dest_id;</div>
-<div class="line"><span class="lineno">  117</span>    }</div>
-<div class="ttc" id="aclassTCP__DATA__MSG_html_a0844f97925c3163715392351187152b4"><div class="ttname"><a href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">TCP_DATA_MSG::msg</a></div><div class="ttdeci">tcp_data_msg msg</div><div class="ttdef"><b>Definition:</b> Messages.hpp:109</div></div>
-<div class="ttc" id="aclassTCP__MESSAGE_html"><div class="ttname"><a href="classTCP__MESSAGE.html">TCP_MESSAGE</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:7</div></div>
-<div class="ttc" id="aclassTCP__MESSAGE_html_a5909df8df2f339dfe61373cdf2644eec"><div class="ttname"><a href="classTCP__MESSAGE.html#a5909df8df2f339dfe61373cdf2644eec">TCP_MESSAGE::priority</a></div><div class="ttdeci">uint8_t priority</div><div class="ttdef"><b>Definition:</b> Messages.hpp:9</div></div>
+<div class="fragment"><div class="line"><span class="lineno">  120</span>                                                    : <a class="code hl_class" href="classTCP__MESSAGE.html">TCP_MESSAGE</a>(0x7F) {</div>
+<div class="line"><span class="lineno">  121</span>        <a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.priority = <a class="code hl_variable" href="classTCP__MESSAGE.html#a5909df8df2f339dfe61373cdf2644eec">priority</a>;</div>
+<div class="line"><span class="lineno">  122</span>        <a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.msg_id = 0x01;</div>
+<div class="line"><span class="lineno">  123</span>        <a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.len = 14;</div>
+<div class="line"><span class="lineno">  124</span>        <a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.source = src_id;</div>
+<div class="line"><span class="lineno">  125</span>        <a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.dest = dest_id;</div>
+<div class="line"><span class="lineno">  126</span>    }</div>
+<div class="ttc" id="aclassTCP__DATA__MSG_html_a0844f97925c3163715392351187152b4"><div class="ttname"><a href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">TCP_DATA_MSG::msg</a></div><div class="ttdeci">tcp_data_msg msg</div><div class="ttdef"><b>Definition:</b> Messages.hpp:118</div></div>
+<div class="ttc" id="aclassTCP__MESSAGE_html"><div class="ttname"><a href="classTCP__MESSAGE.html">TCP_MESSAGE</a></div><div class="ttdef"><b>Definition:</b> Messages.hpp:9</div></div>
+<div class="ttc" id="aclassTCP__MESSAGE_html_a5909df8df2f339dfe61373cdf2644eec"><div class="ttname"><a href="classTCP__MESSAGE.html#a5909df8df2f339dfe61373cdf2644eec">TCP_MESSAGE::priority</a></div><div class="ttdeci">uint8_t priority</div><div class="ttdef"><b>Definition:</b> Messages.hpp:11</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>, and <a class="el" href="classTCP__MESSAGE.html#a5909df8df2f339dfe61373cdf2644eec">TCP_MESSAGE::priority</a>.</p>
 
+</div>
+</div>
+<a id="af77401f29a31fe9963802da064d89207" name="af77401f29a31fe9963802da064d89207"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af77401f29a31fe9963802da064d89207">&#9670;&#160;</a></span>TCP_DATA_MSG() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TCP_DATA_MSG::TCP_DATA_MSG </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  128</span>: <a class="code hl_class" href="classTCP__MESSAGE.html">TCP_MESSAGE</a>(0x7F) {}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -245,15 +273,16 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">  119</span>                                                      {</div>
-<div class="line"><span class="lineno">  120</span>        memcpy(<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.msg, msg_i, msg_len &gt; 2034 ? 2034 : msg_len);</div>
-<div class="line"><span class="lineno">  121</span>        <a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.msg_len = msg_len;</div>
-<div class="line"><span class="lineno">  122</span>        <a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.len += msg_len &gt; 2034 ? 2034 : msg_len;</div>
-<div class="line"><span class="lineno">  123</span>    }</div>
+<div class="fragment"><div class="line"><span class="lineno">  130</span>                                                      {</div>
+<div class="line"><span class="lineno">  131</span>        memcpy(<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.msg, msg_i, msg_len &gt; <a class="code hl_define" href="Messages_8hpp.html#ab234d1358562b66925fb7223c087556b">MAX_MESSAGE_LENGTH</a> ? <a class="code hl_define" href="Messages_8hpp.html#ab234d1358562b66925fb7223c087556b">MAX_MESSAGE_LENGTH</a> : msg_len);</div>
+<div class="line"><span class="lineno">  132</span>        <a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.msg_len = msg_len;</div>
+<div class="line"><span class="lineno">  133</span>        <a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.len += msg_len &gt; <a class="code hl_define" href="Messages_8hpp.html#ab234d1358562b66925fb7223c087556b">MAX_MESSAGE_LENGTH</a> ? <a class="code hl_define" href="Messages_8hpp.html#ab234d1358562b66925fb7223c087556b">MAX_MESSAGE_LENGTH</a> : msg_len;</div>
+<div class="line"><span class="lineno">  134</span>    }</div>
+<div class="ttc" id="aMessages_8hpp_html_ab234d1358562b66925fb7223c087556b"><div class="ttname"><a href="Messages_8hpp.html#ab234d1358562b66925fb7223c087556b">MAX_MESSAGE_LENGTH</a></div><div class="ttdeci">#define MAX_MESSAGE_LENGTH</div><div class="ttdef"><b>Definition:</b> Messages.hpp:7</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.</p>
+<p class="reference">References <a class="el" href="Messages_8hpp.html#ab234d1358562b66925fb7223c087556b">MAX_MESSAGE_LENGTH</a>, and <a class="el" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sta__test_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>, <a class="el" href="classAPNode.html#a914fa6137cb8032892d0b2fc24010fb8">APNode::send_data()</a>, and <a class="el" href="classSTANode.html#aa32061846b7b2191d000bec26b40ae32">STANode::send_data()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sta__root_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>, <a class="el" href="classAPNode.html#a914fa6137cb8032892d0b2fc24010fb8">APNode::send_data()</a>, and <a class="el" href="classSTANode.html#aa32061846b7b2191d000bec26b40ae32">STANode::send_data()</a>.</p>
 
 </div>
 </div>
@@ -281,13 +310,13 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="classTCP__MESSAGE.html#aa18b7e6503819d7db7617b66682882c9">TCP_MESSAGE</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  128</span>                                {</div>
-<div class="line"><span class="lineno">  129</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.len;</div>
-<div class="line"><span class="lineno">  130</span>    }</div>
+<div class="fragment"><div class="line"><span class="lineno">  139</span>                                {</div>
+<div class="line"><span class="lineno">  140</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.len;</div>
+<div class="line"><span class="lineno">  141</span>    }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">APNode::handle_incoming_data()</a>, <a class="el" href="sta__test_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>, <a class="el" href="classAPNode.html#a914fa6137cb8032892d0b2fc24010fb8">APNode::send_data()</a>, and <a class="el" href="classSTANode.html#aa32061846b7b2191d000bec26b40ae32">STANode::send_data()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sta__test_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>, <a class="el" href="classSTANode.html#aa32061846b7b2191d000bec26b40ae32">STANode::send_data()</a>, <a class="el" href="classAPNode.html#a8d3d647a3994e5de9d4695e94e83244c">APNode::send_msg()</a>, and <a class="el" href="classSTANode.html#a01684bc83d93ba41477be2cea83aa967">STANode::send_msg()</a>.</p>
 
 </div>
 </div>
@@ -315,13 +344,13 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="classTCP__MESSAGE.html#a6657649993aa36bd1ab5c7e85a5b4f16">TCP_MESSAGE</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  125</span>                                {</div>
-<div class="line"><span class="lineno">  126</span>        <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span>uint8_t*<span class="keyword">&gt;</span>(&amp;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>);</div>
-<div class="line"><span class="lineno">  127</span>    }</div>
+<div class="fragment"><div class="line"><span class="lineno">  136</span>                                {</div>
+<div class="line"><span class="lineno">  137</span>        <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span>uint8_t*<span class="keyword">&gt;</span>(&amp;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>);</div>
+<div class="line"><span class="lineno">  138</span>    }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">APNode::handle_incoming_data()</a>, <a class="el" href="sta__test_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>, <a class="el" href="classAPNode.html#a914fa6137cb8032892d0b2fc24010fb8">APNode::send_data()</a>, and <a class="el" href="classSTANode.html#aa32061846b7b2191d000bec26b40ae32">STANode::send_data()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classSTANode.html#a6c275aa681ece0f194944ef6d54bf513">STANode::handle_incoming_data()</a>, <a class="el" href="classAPNode.html#aeecf3ce9773fe84f1fbe6a1e1c8ba497">APNode::handle_transfering_data()</a>, <a class="el" href="sta__root_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>, <a class="el" href="classAPNode.html#a914fa6137cb8032892d0b2fc24010fb8">APNode::send_data()</a>, <a class="el" href="classSTANode.html#aa32061846b7b2191d000bec26b40ae32">STANode::send_data()</a>, <a class="el" href="classAPNode.html#a8d3d647a3994e5de9d4695e94e83244c">APNode::send_msg()</a>, and <a class="el" href="classSTANode.html#a01684bc83d93ba41477be2cea83aa967">STANode::send_msg()</a>.</p>
 
 </div>
 </div>
@@ -350,14 +379,14 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="classTCP__MESSAGE.html#aecb87ea9b0ba8c995ef4834bdfbbf353">TCP_MESSAGE</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  131</span>                                     {</div>
-<div class="line"><span class="lineno">  132</span>        this-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a> = *(<span class="keyword">reinterpret_cast&lt;</span><a class="code hl_variable" href="classTCP__MESSAGE.html#ac4e8b9818a893c7fa1d210901b8f5049">tcp_data_msg</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>));</div>
-<div class="line"><span class="lineno">  133</span>    }</div>
-<div class="ttc" id="aclassTCP__MESSAGE_html_ac4e8b9818a893c7fa1d210901b8f5049"><div class="ttname"><a href="classTCP__MESSAGE.html#ac4e8b9818a893c7fa1d210901b8f5049">TCP_MESSAGE::tcp_data_msg</a></div><div class="ttdeci">tcp_data_msg</div><div class="ttdef"><b>Definition:</b> Messages.hpp:41</div></div>
+<div class="fragment"><div class="line"><span class="lineno">  142</span>                                     {</div>
+<div class="line"><span class="lineno">  143</span>        this-&gt;<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a> = *(<span class="keyword">reinterpret_cast&lt;</span><a class="code hl_variable" href="classTCP__MESSAGE.html#ac4e8b9818a893c7fa1d210901b8f5049">tcp_data_msg</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>));</div>
+<div class="line"><span class="lineno">  144</span>    }</div>
+<div class="ttc" id="aclassTCP__MESSAGE_html_ac4e8b9818a893c7fa1d210901b8f5049"><div class="ttname"><a href="classTCP__MESSAGE.html#ac4e8b9818a893c7fa1d210901b8f5049">TCP_MESSAGE::tcp_data_msg</a></div><div class="ttdeci">tcp_data_msg</div><div class="ttdef"><b>Definition:</b> Messages.hpp:45</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classTCP__DATA__MSG.html#a0844f97925c3163715392351187152b4">msg</a>, and <a class="el" href="classTCP__MESSAGE.html#ac4e8b9818a893c7fa1d210901b8f5049">TCP_MESSAGE::tcp_data_msg</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Messages_8cpp.html#af38d02b60aa8d13a179c24ca5d9ad8d1">parseMessage()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">APNode::handle_incoming_data()</a>, <a class="el" href="classSTANode.html#a6c275aa681ece0f194944ef6d54bf513">STANode::handle_incoming_data()</a>, <a class="el" href="classAPNode.html#aeecf3ce9773fe84f1fbe6a1e1c8ba497">APNode::handle_transfering_data()</a>, <a class="el" href="classAPNode.html#a8d3d647a3994e5de9d4695e94e83244c">APNode::send_msg()</a>, and <a class="el" href="classSTANode.html#a01684bc83d93ba41477be2cea83aa967">STANode::send_msg()</a>.</p>
 
 </div>
 </div>
@@ -374,7 +403,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="classTCP__DATA__MSG.html#a425e57a569337d010b4dd547d2e85c28">add_message()</a>, <a class="el" href="classTCP__DATA__MSG.html#a8bff11a0a6e983808895f292f038eab0">get_len()</a>, <a class="el" href="classTCP__DATA__MSG.html#a3fc5565136760b1840432d2e43e28d99">get_msg()</a>, <a class="el" href="classSTANode.html#a07f1bd97bed2342b18886377eab36ace">STANode::handle_incoming_data()</a>, <a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">APNode::handle_incoming_data()</a>, <a class="el" href="classTCP__DATA__MSG.html#a8ea6eef2b8845e1b4b4b08f67fd6c279">set_msg()</a>, and <a class="el" href="classTCP__DATA__MSG.html#a3b31f448a979e71aea47ac8f50b5be8c">TCP_DATA_MSG()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classTCP__DATA__MSG.html#a425e57a569337d010b4dd547d2e85c28">add_message()</a>, <a class="el" href="classTCP__DATA__MSG.html#a8bff11a0a6e983808895f292f038eab0">get_len()</a>, <a class="el" href="classTCP__DATA__MSG.html#a3fc5565136760b1840432d2e43e28d99">get_msg()</a>, <a class="el" href="classAPNode.html#a83d69a5b41d1614d64735de23ac6d6b1">APNode::handle_incoming_data()</a>, <a class="el" href="classSTANode.html#a6c275aa681ece0f194944ef6d54bf513">STANode::handle_incoming_data()</a>, <a class="el" href="classAPNode.html#a8d3d647a3994e5de9d4695e94e83244c">APNode::send_msg()</a>, <a class="el" href="classSTANode.html#a01684bc83d93ba41477be2cea83aa967">STANode::send_msg()</a>, <a class="el" href="classTCP__DATA__MSG.html#a8ea6eef2b8845e1b4b4b08f67fd6c279">set_msg()</a>, and <a class="el" href="classTCP__DATA__MSG.html#a3b31f448a979e71aea47ac8f50b5be8c">TCP_DATA_MSG()</a>.</p>
 
 </div>
 </div>

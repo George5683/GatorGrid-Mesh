@@ -5,5 +5,5 @@ var searchData=
   ['nodeid_2',['nodeID',['../classpicoNodeVector.html#aa94ef162b47dae1e0f1251b79af144dc',1,'picoNodeVector']]],
   ['nodeidvector_3',['nodeIDVector',['../classpicoNodeVector.html#abbd08d50278772cfd32b228f45d76a58',1,'picoNodeVector']]],
   ['number_5fof_5fchildren_4',['number_of_children',['../structChildrenTree_1_1Node.html#abddeb659f81a6935189362b06edee56e',1,'ChildrenTree::Node']]],
-  ['number_5fof_5fmessages_5',['number_of_messages',['../classRingBuffer.html#a5615e24d141b5b58c335b31b355e2483',1,'RingBuffer']]]
+  ['number_5fof_5fmessages_5',['number_of_messages',['../classRingBuffer.html#a5615e24d141b5b58c335b31b355e2483',1,'RingBuffer::number_of_messages()'],['../classSerialRingBuffer.html#a8ccb79e223c33376bdd82808f6b2db5d',1,'SerialRingBuffer::number_of_messages()']]]
 ];
