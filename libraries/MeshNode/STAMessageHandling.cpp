@@ -1,5 +1,6 @@
 #include "MeshNode.hpp"
 #include <cstdint>
+#include <lwip/opt.h>
 #include <random>
 #include <ctime>
 #include <cstdio>
@@ -12,32 +13,7 @@
 #include "SerialMessages.hpp"
 #include "hardware/regs/rosc.h"
 #include "hardware/regs/addressmap.h"
-
-#if DEBUG 
-#define DEBUG_printf printf
-#else
-#define DEBUG_printf
-#endif
-
-#if DEBUG
- static void dump_bytes(const uint8_t *bptr, uint32_t len) {
-     unsigned int i = 0;
- 
-    DEBUG_printf("dump_bytes %d", len);
-     for (i = 0; i < len;) {
-         if ((i & 0x0f) == 0) {
-            DEBUG_printf("\n");
-         } else if ((i & 0x07) == 0) {
-            DEBUG_printf(" ");
-         }
-        DEBUG_printf("%02x ", bptr[i++]);
-     }
-    DEBUG_printf("\n");
- }
- #define DUMP_BYTES dump_bytes
- #else
- #define DUMP_BYTES(A,B)
- #endif
+#include "display.hpp"
 
 
 
@@ -142,7 +118,7 @@ bool STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward)
     while(state->waiting_for_ack)
     {
         sleep_ms(2);
-        DEBUG_printf(".");
+        printf(".");
         count++;
         if(count == 1000) {
             state->waiting_for_ack = false;
@@ -227,6 +203,13 @@ bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
 
             DEBUG_printf("Update packet recieved\n");
 
+            uint32_t id_buffer[4];
+            MEMCPY(id_buffer, updateMsg.msg.children_IDs, sizeof(id_buffer));
+
+            if(!tree.update_node(updateMsg.msg.source, id_buffer, updateMsg.msg.child_count)) {
+                ERROR_printf("Failed to update node");
+            }
+
             //does stuff
             break;
         }
@@ -236,12 +219,17 @@ bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
             ackMsg.set_msg(buffer);
 
             source_id = ackMsg.msg.source;
+            uint32_t path_parent = 0;
 
             DEBUG_printf("Ack is from %08x and for %08x\n", ackMsg.msg.source, ackMsg.msg.dest);
             if (ackMsg.msg.dest == get_NodeID()) {
                 self_reply = true;
                 DEBUG_printf("ACK is for me\n");
                 state->waiting_for_ack = false;
+            } else if (tree.find_path_parent(ackMsg.msg.dest, &path_parent)) {
+                send_to_ap = true;
+            } else {
+                send_msg(buffer);
             }
             //does stuff
             break;
@@ -251,7 +239,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
             nakMsg.set_msg(buffer);
 
             //does stuff
-            puts("Warning! Message was not received! (Got a NAK instead of ACK)");
+            DEBUG_printf("Warning! Message was not received! (Got a NAK instead of ACK)");
             DEBUG_printf("Got NAK\n");
             self_reply = true;
             state->waiting_for_ack = false;
@@ -264,24 +252,16 @@ bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
             // SEND NAK message
             //TCP_NAK_MESSAGE nakMsg(node->get_NodeID(), msg_id ? msg_id : 0, 0);
             break;
-    // }
     }
 
     if (send_to_ap) {
-
+        DEBUG_printf("Transferring message to AP node");
         uint8_t msg_id = buffer[1];
 
-        // Different message types warrent different construction
-        switch (msg_id) {
-            case 0x01:
-            {  
-                SERIAL_NODE_ADD_MESSAGE msg;
-                break;
-            }
-            default:
-                break;
+        SERIAL_DATA_MESSAGE msg;
+        msg.add_message(buffer, buffer[2]);
 
-        }
+        uart.sendMessage((char*) msg.get_msg());
         //TCP_NAK_MESSAGE* nakMsg = static_cast<TCP_NAK_MESSAGE*>(msg); 
 
 
@@ -322,6 +302,8 @@ err_t STANode::send_msg(uint8_t* msg) {
     uint32_t target_id = 0;
     tcp_pcb *target = nullptr;
 
+    bool forward = false;
+
     uint8_t id = msg[1];
     switch (id) {
         case 0x00:  // Init message from STA -> thus new parent has been added
@@ -341,6 +323,8 @@ err_t STANode::send_msg(uint8_t* msg) {
             len = dataMsg.get_len();
             target_id = dataMsg.msg.dest;
             DUMP_BYTES(dataMsg.get_msg(), len);
+
+            if (dataMsg.msg.source != get_NodeID()) forward = true;
             break;
         }
         case 0x02: /* TCP_DISCONNECT_MSG */
@@ -352,31 +336,46 @@ err_t STANode::send_msg(uint8_t* msg) {
             break;
         case 0x03: /* TCP_UPDATE_MESSAGE */
         {
+            DEBUG_printf("TCP_UPDATE_MESSAGE being sent");
             TCP_UPDATE_MESSAGE updateMsg;
             updateMsg.set_msg(msg);
             len = updateMsg.get_len();
             target_id = updateMsg.msg.dest;
+
+            if (updateMsg.msg.source != get_NodeID()) {
+                DEBUG_printf("Update message was passing through");
+                forward = true;
+            }
             break;
         }
         case 0x04: /* TCP_ACK_MESSAGE */
         {   
             TCP_ACK_MESSAGE ackMsg;
+            ackMsg.set_msg(msg);
             len = ackMsg.get_len();
             target_id = ackMsg.msg.dest;
+
+            if (ackMsg.msg.source != get_NodeID()) forward = true;
             break;
         }
         case 0x05: /* TCP_NAK_MESSAGE */
         {
             TCP_NAK_MESSAGE nakMsg;
+            nakMsg.set_msg(msg);
             len = nakMsg.get_len();
             target_id = nakMsg.msg.dest;
+
+            if (nakMsg.msg.source != get_NodeID()) forward = true;
             break;
         }
         case 0x06: /* TCP_FORCE_UPDATE_MESSAGE */
         {
             TCP_FORCE_UPDATE_MESSAGE fUpdateMsg;
+            fUpdateMsg.set_msg(msg);
             len = fUpdateMsg.get_len();
             target_id = fUpdateMsg.msg.dest;
+
+            if (fUpdateMsg.msg.source != get_NodeID()) forward = true;
             break;
         }
         default:
@@ -385,9 +384,20 @@ err_t STANode::send_msg(uint8_t* msg) {
         }
     }
 
-    if (!send_tcp_data_blocking(msg, len, false))
-        return -1;
-        
+    DUMP_BYTES(msg, len);
+    uint32_t path_parent = 0;
+    if (!tree.find_path_parent(target_id, &path_parent)) {
+        DEBUG_printf(forward ? "Forwarding message" : "Expecting ACK");
+        if (!send_tcp_data_blocking(msg, len, forward)) {
+            ERROR_printf("send_tcp_data_blocking failed");
+            return -1;
+        }
+    } else {
+        SERIAL_DATA_MESSAGE serialMsg;
+        serialMsg.add_message(msg, len);
+        uart.sendMessage((char*)serialMsg.get_msg());
+    }
+    DEBUG_printf("Message successfully sent");
     
     return 0;
 }
@@ -395,31 +405,31 @@ err_t STANode::send_msg(uint8_t* msg) {
 err_t STANode::handle_serial_message(uint8_t *msg) {
     uint8_t id = serialMessageType(msg);
     DEBUG_printf("Received serial message in handler\n");
-    DUMP_BYTES(msg, msg[2]);
+    DUMP_BYTES(msg, msg[1]);
 
     // TODO: Finish switch-case
     switch (id) {
         case 0x00: /* serial_node_add_msg */
         {
-            DEBUG_printf("Received serial node add message\n");
+            DEBUG_printf("Received serial node add message");
             // If STA receives node_add, a child has been added.
             SERIAL_NODE_ADD_MESSAGE initMsg;
             initMsg.set_msg(msg);
             
             tree.add_any_child(initMsg.msg.parent, initMsg.msg.child);
-            
+            DEBUG_printf("Child successfully added");
 
             uint32_t children[4];
             uint8_t children_count = 0;
             if (!tree.get_children(initMsg.msg.parent, children, children_count))
             {
-                DEBUG_printf("Get children failed :(\n");
+                DEBUG_printf("Get children failed :(");
                 return -1;
                 //idk die or something
                 // TODO: failure states
             }
 
-            
+            DEBUG_printf("Sending Update Msg");
             TCP_UPDATE_MESSAGE updateMsg(initMsg.msg.parent, parent);
             updateMsg.add_children(children_count, children);
 

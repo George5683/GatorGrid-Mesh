@@ -125,12 +125,12 @@ int main() {
     for (;;) {
         node.poll();
 
-        if (count == 500) {
-            TCP_DATA_MSG msg(node.get_NodeID(), 0);
-            msg.add_message(reinterpret_cast<uint8_t*>(&send_count), 4);
-            node.send_msg(msg.get_msg());
-            send_count++;
-        }
+        // if (count == 500) {
+        //     TCP_DATA_MSG msg(node.get_NodeID(), 0);
+        //     msg.add_message(reinterpret_cast<uint8_t*>(&send_count), 4);
+        //     node.send_msg(msg.get_msg());
+        //     send_count++;
+        // }
 
         if (count++ >= 1000) {
             cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);

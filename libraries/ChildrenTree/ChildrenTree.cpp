@@ -3,6 +3,8 @@
 #include <sstream>
 #include <string>
 #include <iostream>
+#include "display.hpp"
+
 
 // Node can't have more than 4 children, 3 at most so 4th can get 
 
@@ -159,13 +161,16 @@ bool ChildrenTree::node_exists(uint32_t id) {
  */
  // Not finished
  bool ChildrenTree::find_path_parent(uint32_t id, uint32_t *parent) {
-    printf("Checking tree for parent of the path to %u\n", id);
+    DEBUG_printf("Checking tree for parent of the path to %u\n", id);
     if (!head) {
         // either empty tree or id not in tree
+        ERROR_printf("head == nullptr");
         return false;
     }
 
+    DEBUG_printf("Children count of head %d", head->number_of_children);
     for (int i = 0; i < head->number_of_children; i++) {
+        
         Node* child = head->children[i];
         if (!child) continue;
 
@@ -179,6 +184,7 @@ bool ChildrenTree::node_exists(uint32_t id) {
         }
     }
 
+    ERROR_printf("Failed to find path_parent, parent set to -1");
     *parent = UINT32_MAX;
     return false;
 }
@@ -253,7 +259,10 @@ bool ChildrenTree::get_children(uint32_t parent_id, uint32_t children_id[4], uin
 
 bool ChildrenTree::update_node(uint32_t id, uint32_t children_id[4], uint8_t &number_of_children) {
     Node* node = find_node(id, head);
-    if (!node) { return false; }
+    if (!node) { 
+        ERROR_printf("Node with id: %u not found", id);
+        return false; 
+    }
 
     for (int i = 0; i < number_of_children; i++) {
         bool found = false;

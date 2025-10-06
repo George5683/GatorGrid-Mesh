@@ -22,6 +22,7 @@ extern "C" {
 
     #include "hardware/vreg.h"
     #include "hardware/clocks.h"
+    #include "display.hpp"
 }
 
 /*
@@ -29,35 +30,11 @@ extern "C" {
 */
 
 #define TCP_PORT 4242
-#if DEBUG 
-#define DEBUG_printf printf
-#else
-#define DEBUG_printf
-#endif
+
 #define BUF_SIZE 2048
 
 #define TEST_ITERATIONS 10
 #define POLL_TIME_S 5
-
-#if DEBUG
- static void dump_bytes(const uint8_t *bptr, uint32_t len) {
-     unsigned int i = 0;
- 
-    printf("dump_bytes %d", len);
-     for (i = 0; i < len;) {
-         if ((i & 0x0f) == 0) {
-            printf("\n");
-         } else if ((i & 0x07) == 0) {
-            printf(" ");
-         }
-        printf("%02x ", bptr[i++]);
-     }
-    printf("\n");
- }
- #define DUMP_BYTES dump_bytes
- #else
- #define DUMP_BYTES(A,B)
- #endif
  
 
 static err_t tcp_client_close(void *arg) {
@@ -138,6 +115,8 @@ static void tcp_client_err(void *arg, err_t err) {
 err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err) {
     STANode* node = (STANode*)arg;
     TCP_CLIENT_T *state = node->state;
+
+    DEBUG_printf("Recv'd data");
     
     // Check for connection closed or error
     if (!p) {
@@ -474,7 +453,7 @@ bool STANode::connect_to_node(uint32_t id) {
 bool STANode::is_connected() {
     int res = cyw43_wifi_link_status(&cyw43_state, CYW43_ITF_STA);
     if (res != CYW43_LINK_JOIN) {
-        DEBUG_printf("%d\n", res);
+        //DEBUG_printf("%d\n", res);
       return false;
     }
     return true;
@@ -498,7 +477,7 @@ bool STANode::tcp_init() {
     //uint8_t buffer[BUF_SIZE] = {};
     //create_join_message(BUF_SIZE, buffer, this);
     TCP_INIT_MESSAGE init_msg(get_NodeID(), parent);
-    return send_tcp_data(init_msg.get_msg(), init_msg.get_len(), false);
+    return send_tcp_data_blocking(init_msg.get_msg(), init_msg.get_len(), false);
 }
 
 // Check for serial messages and if you have any parse them
