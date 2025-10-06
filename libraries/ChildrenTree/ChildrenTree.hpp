@@ -49,6 +49,9 @@ public:
     bool find_parent_recursive(Node* node, uint32_t target);
     void traverse();
     void get_node_details(ChildrenTree *tree);
+    std::string serialize_node(Node* node);
+    std::string serialize_tree();
+    void send_tree_serial();
 };
 
 #endif

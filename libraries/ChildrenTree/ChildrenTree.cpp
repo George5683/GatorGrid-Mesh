@@ -1,6 +1,10 @@
 #include "ChildrenTree.hpp"
 #include "vector"
+#include <sstream>
+#include <string>
+#include <iostream>
 #include "display.hpp"
+
 
 // Node can't have more than 4 children, 3 at most so 4th can get 
 
@@ -273,4 +277,25 @@ bool ChildrenTree::update_node(uint32_t id, uint32_t children_id[4], uint8_t &nu
     }
 
     return true;
+}
+
+std::string ChildrenTree::serialize_node(Node* node) {
+    std::ostringstream ss;
+    ss << "{\"id\":" << node->id << ",\"children\":[";
+    for (int i = 0; i < node->number_of_children; i++) {
+        if (i > 0) ss << ",";
+        ss << serialize_node(node->children[i]);
+    }
+    ss << "]}";
+    return ss.str();
+}
+
+std::string ChildrenTree::serialize_tree() {
+    if (!head) return "{}";
+    return serialize_node(head);
+}
+
+void ChildrenTree::send_tree_serial() {
+    std::string json = serialize_tree();
+    printf("%s\n", json.c_str());   // prints JSON over USB serial (Pico default)
 }
