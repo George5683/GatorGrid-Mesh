@@ -140,34 +140,40 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                 uint32_t path_parent = 0;
                 DEBUG_printf("Message was not for me, was for dest:%08x\n", dataMsg.msg.dest);
 
-                if (client_tpcbs.find(dataMsg.msg.dest) != client_tpcbs.end()) {
-                    ACK_flag = false;
-                    DEBUG_printf("Forwarding message to directly connected node\n");
-                    send_tcp_data(dataMsg.msg.dest, client_tpcbs.at(dataMsg.msg.dest), dataMsg.get_msg(), dataMsg.get_len());
-                    break;
-
-                    // Check the node tree and see if it is a child
-                } else if (is_root == false) {
-
-                    DEBUG_printf("Node not found in our connection, forwarding to STA to forward up");
-                    
-                    // Construct serial message for STA
-                    ACK_flag = false;
-                    NAK_flag = false;
-
+                if(tree.find_path_parent(dataMsg.msg.dest, &path_parent)) {
+                    send_msg(buffer);
+                } else {
                     send_to_sta = true;
+                }
+                ACK_flag = false;
+                // if (client_tpcbs.find(dataMsg.msg.dest) != client_tpcbs.end()) {
+                //     ACK_flag = false;
+                //     DEBUG_printf("Forwarding message to directly connected node\n");
+                //     send_tcp_data(dataMsg.msg.dest, client_tpcbs.at(dataMsg.msg.dest), dataMsg.get_msg(), dataMsg.get_len());
+                //     break;
+
+                //     // Check the node tree and see if it is a child
+                // } else if (is_root == false) {
+
+                //     DEBUG_printf("Node not found in our connection, forwarding to STA to forward up");
+                    
+                //     // Construct serial message for STA
+                //     ACK_flag = false;
+                //     NAK_flag = false;
+
+                //     send_to_sta = true;
                         
 
-                    // If the node is not in our tree and we are not root kill the message
-                } else if (is_root == true) {
-                    ACK_flag = false;
-                    NAK_flag = true;
-                    // error = 0x02; // TODO make enum for errors (id not in connected clients)
-                    // TCP_NAK_MESSAGE nakMsg(get_NodeID(), msg_source, p->tot_len);
-                    // nakMsg.set_error(error);
-                    // send_tcp_data(dataMsg.msg.source, client_tpcbs.at(dataMsg.msg.source), nakMsg.get_msg(), nakMsg.get_len());
-                    break;
-                }
+                //     // If the node is not in our tree and we are not root kill the message
+                // } else if (is_root == true) {
+                //     ACK_flag = false;
+                //     NAK_flag = true;
+                //     // error = 0x02; // TODO make enum for errors (id not in connected clients)
+                //     // TCP_NAK_MESSAGE nakMsg(get_NodeID(), msg_source, p->tot_len);
+                //     // nakMsg.set_error(error);
+                //     // send_tcp_data(dataMsg.msg.source, client_tpcbs.at(dataMsg.msg.source), nakMsg.get_msg(), nakMsg.get_len());
+                //     break;
+                // }
             }
             
         }
@@ -195,36 +201,19 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
 
             // Check to see if the source is a child
             if(client_tpcbs.find(msg_source) != client_tpcbs.end()) {
-                // If it is then add the children to the parents tree for that child
-
-                // Check to see if child is already in tree
-                if(tree.node_exists(msg_source) == false) {
-                    DEBUG_printf("Node %d was not found in tree, however it should have been added when it joined\n", msg_source);
-                    while(true);
-                }
-
-                // Add nodes to child
-                for (int i = 0; i < count; i++) {
-                    // don't add the child if it's already in the tree
-                    if(!tree.node_exists(updMsg.get_child(i))) {
-                        tree.add_any_child(msg_source, updMsg.get_child(i));
-                    }
-                }
-                
-                // If the node isn't an already connected client then we can assume that it is someones child
-            } else {
-
-                // Check source to make sure that the parent is in our tree somewhere
+                                // Check source to make sure that the parent is in our tree somewhere
                 if(tree.node_exists(msg_source) == false) {
                     DEBUG_printf("Node %d was not found in tree when it was expected to already be a child\n", msg_source);
                     while(true);
                 }
-
+                DEBUG_printf("Node being updated exists in tree, updating that node");
                 // Add nodes to parent
                 for (int i = 0; i < count; i++) {
                     // don't add the child if it's already in the tree
                     if(!tree.node_exists(updMsg.get_child(i))) {
                         tree.add_any_child(msg_source, updMsg.get_child(i));
+                        SERIAL_NODE_ADD_MESSAGE serialMsg(msg_source, updMsg.get_child(i));
+                        uart.sendMessage((char*)serialMsg.get_msg());
                     }
                 }
             }
@@ -243,29 +232,21 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
             if (ackMsg.msg.dest == get_NodeID()) {
                 //rb.insert(dataMsg->msg.msg,dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
                 DEBUG_printf("ACK was for me.\n");
+                send_to_sta = true;;
                 ACK_flag = false;
             } else {
                 DEBUG_printf("ACK was for someone\n");
                 uint32_t dest;
                 DEBUG_printf("Message was not for me, was for dest:%08x\n", ackMsg.msg.dest);
-                if(!tree.find_path_parent(ackMsg.msg.dest, &dest)) {
-                    ERROR_printf("Path to dest could not be located\n");
-                    ACK_flag = false;
-                    NAK_flag = true;
-                    error = 0x01; // TODO make enum for errors (no node in tree)
-                    break;
+                if(tree.find_path_parent(ackMsg.msg.dest, &dest)) {
+                    DEBUG_printf("Sending down the tree");
+                    send_msg(buffer);
+                } else {
+                    DEBUG_printf("Sending to up the tree");
+                    send_to_sta = true;
                 }
-                // if (client_tpcbs.find(ackMsg.msg.dest) == client_tpcbs.end()) {
-                //     ACK_flag = false;
-                //     //NAK_flag = true;
-                //     error = 0x02; // TODO make enum for errors (id not in connected clients)
-                //     TCP_NAK_MESSAGE nakMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
-                //     nakMsg.set_error(error);
-                //     send_tcp_data(ackMsg.msg.source, client_tpcbs.at(ackMsg.msg.source), nakMsg.get_msg(), nakMsg.get_len());
-                //     break;
-                // }
                 ACK_flag = false;
-                send_tcp_data(ackMsg.msg.dest, client_tpcbs.at(ackMsg.msg.dest), ackMsg.get_msg(), ackMsg.get_len());
+                //send_tcp_data(ackMsg.msg.dest, client_tpcbs.at(ackMsg.msg.dest), ackMsg.get_msg(), ackMsg.get_len());
             }
             
 
@@ -306,6 +287,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
         send_msg(nakMsg.get_msg());
         return false;
     } else if (send_to_sta) {
+        DEBUG_printf("Sending to STA");
         // depending on the type of data forward only what is necessary
         SERIAL_DATA_MESSAGE msg;
         msg.add_message(buffer, p->tot_len);

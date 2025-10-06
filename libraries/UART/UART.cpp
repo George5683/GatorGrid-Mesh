@@ -39,6 +39,7 @@ bool PicoUART::picoUARTInterruptInit() {
 // While reads do go out of bounds that is not likely to cause a crash on this uP
 // Send message over UART
 int PicoUART::sendMessage(const char* message) {
+    DEBUG_printf("Sending message over serial");
 
     while (!uart_is_writable(UART_ID)) {
         tight_loop_contents();

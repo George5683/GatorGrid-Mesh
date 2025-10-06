@@ -219,14 +219,17 @@ bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
             ackMsg.set_msg(buffer);
 
             source_id = ackMsg.msg.source;
+            uint32_t path_parent = 0;
 
             DEBUG_printf("Ack is from %08x and for %08x\n", ackMsg.msg.source, ackMsg.msg.dest);
             if (ackMsg.msg.dest == get_NodeID()) {
                 self_reply = true;
                 DEBUG_printf("ACK is for me\n");
                 state->waiting_for_ack = false;
-            } else {
+            } else if (tree.find_path_parent(ackMsg.msg.dest, &path_parent)) {
                 send_to_ap = true;
+            } else {
+                send_msg(buffer);
             }
             //does stuff
             break;
@@ -348,6 +351,7 @@ err_t STANode::send_msg(uint8_t* msg) {
         case 0x04: /* TCP_ACK_MESSAGE */
         {   
             TCP_ACK_MESSAGE ackMsg;
+            ackMsg.set_msg(msg);
             len = ackMsg.get_len();
             target_id = ackMsg.msg.dest;
 
@@ -357,6 +361,7 @@ err_t STANode::send_msg(uint8_t* msg) {
         case 0x05: /* TCP_NAK_MESSAGE */
         {
             TCP_NAK_MESSAGE nakMsg;
+            nakMsg.set_msg(msg);
             len = nakMsg.get_len();
             target_id = nakMsg.msg.dest;
 
@@ -366,6 +371,7 @@ err_t STANode::send_msg(uint8_t* msg) {
         case 0x06: /* TCP_FORCE_UPDATE_MESSAGE */
         {
             TCP_FORCE_UPDATE_MESSAGE fUpdateMsg;
+            fUpdateMsg.set_msg(msg);
             len = fUpdateMsg.get_len();
             target_id = fUpdateMsg.msg.dest;
 
@@ -379,10 +385,17 @@ err_t STANode::send_msg(uint8_t* msg) {
     }
 
     DUMP_BYTES(msg, len);
-    DEBUG_printf(forward ? "Forwarding message" : "Expecting ACK");
-    if (!send_tcp_data_blocking(msg, len, forward)) {
-        ERROR_printf("send_tcp_data_blocking failed");
-        return -1;
+    uint32_t path_parent = 0;
+    if (!tree.find_path_parent(target_id, &path_parent)) {
+        DEBUG_printf(forward ? "Forwarding message" : "Expecting ACK");
+        if (!send_tcp_data_blocking(msg, len, forward)) {
+            ERROR_printf("send_tcp_data_blocking failed");
+            return -1;
+        }
+    } else {
+        SERIAL_DATA_MESSAGE serialMsg;
+        serialMsg.add_message(msg, len);
+        uart.sendMessage((char*)serialMsg.get_msg());
     }
     DEBUG_printf("Message successfully sent");
     
