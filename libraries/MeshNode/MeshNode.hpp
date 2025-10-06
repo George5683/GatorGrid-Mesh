@@ -2,14 +2,17 @@
 #define MESH_NODE_HPP
 
 #include <cstdint>
+#include <lwip/err.h>
 #include <set>
 #include <string>
 #include <map>
 #include <vector>
 #include "pico/cyw43_arch.h"
 
-#include "../SPI/SPI.hpp"
+#include "../UART/UART.hpp"
+//#include "../SPI/SPI.hpp"
 #include "../RingBuffer/RingBuffer.hpp"
+#include "../SPI/SerialMessages.hpp"
 #include "Messages.hpp"
 #include "../ChildrenTree/ChildrenTree.hpp"
 
@@ -41,6 +44,12 @@ extern "C" {
     #include "hardware/clocks.h"
 }
 
+#define TCP_PORT 4242
+
+#define BUF_SIZE 2048
+#define TEST_ITERATIONS 10
+#define POLL_TIME_S 5
+
 // Forward declarations
 struct TCP_SERVER_T_;
 typedef struct TCP_SERVER_T_ TCP_SERVER_T;
@@ -48,10 +57,58 @@ typedef struct TCP_SERVER_T_ TCP_SERVER_T;
 struct TCP_CLIENT_T_;
 typedef struct TCP_CLIENT_T_ TCP_CLIENT_T;
 
+// TCP Server state structures
+typedef struct TCP_CONNECT_STATE_T_ {
+    struct tcp_pcb *pcb;
+    int sent_len;
+    char headers[128];
+    char result[256];
+    int header_len;
+    int result_len;
+    ip_addr_t *gw;
+    void* ap_node;
+} TCP_CONNECT_STATE_T;
+
+typedef struct TCP_SERVER_T_ {
+    struct tcp_pcb *server_pcb;
+    struct tcp_pcb *client_pcb;
+    bool complete;
+    int sent_len;
+    int recv_len;
+    int run_count;
+    ip_addr_t gw;
+    void* ap_node;
+    dhcp_server_t dhcp_server;
+    dns_server_t dns_server;
+    uint8_t buffer_sent[BUF_SIZE];
+    uint8_t buffer_recv[BUF_SIZE];
+} TCP_SERVER_T;
+
+typedef struct TCP_CLIENT_T_ {
+    struct tcp_pcb *tcp_pcb;
+    ip_addr_t remote_addr;
+    uint8_t buffer[BUF_SIZE];
+    int buffer_len;
+    int sent_len;
+    bool complete;
+    int run_count;
+    bool connected;
+    volatile bool waiting_for_ack;
+    volatile bool got_nak;
+} TCP_CLIENT_T;
+
+struct ClientConnection {
+    struct tcp_pcb *pcb;
+    bool id_recved = false;
+    uint32_t id = 0;
+};
+
 class MeshNode {
 private:
     uint32_t NodeID;
+    
 public:
+    bool is_root = false;
     MeshNode();
     virtual ~MeshNode();
 
@@ -59,11 +116,14 @@ public:
     void set_NodeID(uint32_t ID);
     uint32_t get_NodeID();
     void seed_rand();
+    bool get_is_root();
+    void set_is_root(bool status);
 };
 
 class APNode : public MeshNode{   
 public:
     TCP_SERVER_T* state;
+    uint32_t parent;
     bool running;
     char ap_name[32];
     const char* password = "password";
@@ -71,36 +131,67 @@ public:
     RingBuffer rb;
     ChildrenTree tree;
 
-    SPI Master_Pico;
+    PicoUART uart;
 
-    std::vector<void*> connections;
+    // std::vector<void*> connections;
 
     // map for results/results_flag from clients
-    std::map<int, std::string> client_results;
-    std::map<int, bool> client_results_flag;
+    // std::map<int, std::string> client_results;
+    // std::map<int, bool> client_results_flag;
 
     std::map<uint32_t, tcp_pcb*> client_tpcbs;
+    std::vector<ClientConnection> clients;
+    std::map<tcp_pcb *, ClientConnection> clients_map;
 
     //lp9 CONSTRUCTOR/DECONSTRUCTOR
     APNode();
     APNode(uint32_t id);
     ~APNode();
 
-    // Initialize hardware and allocate resources
+    /**
+     * @brief Initialize hardware and allocate resources
+     * 
+     * @return true     - successful
+     * @return false    - failure
+     */
     bool init_ap_mode();
     
-    // Start the AP mode and servers
+    /**
+     * @brief Start the AP mode and servers
+     * 
+     * @return true     - successful
+     * @return false    - failure
+     */
     bool start_ap_mode();
 
-    // Stop the AP mode
+    /**
+     * @brief Stop the AP mode
+     * 
+     */
     void stop_ap_mode();
     
-    // Poll function to handle network events
+    /**
+     * @brief Poll function to handle network events
+     * 
+     * @param timeout_ms 
+     */
     void poll(unsigned int timeout_ms = 1000);
 
-    // Get the data from the incoming client
+    /**
+     * @brief Get the data from the incoming client
+     * 
+     * @param ID 
+     * @return char* (no implementation??)
+     */
     char* get_client_data(int ID);
-    // Check for incoming data from a client
+
+    /**
+     * @brief Check for incoming data from a client
+     * 
+     * @param ID 
+     * @return true 
+     * @return false 
+     */
     bool has_client_data(int ID);
     // Check data incoming from all connected clients
     bool check_all_client_data();
@@ -108,22 +199,106 @@ public:
     // Getters/setters for AP configuration
     void set_ap_credentials(char name[32], const char* pwd);
     
+    /**
+     * @brief Get the node id object of APNode
+     * 
+     * @return int 
+     */
     int get_node_id();
+
+    /**
+     * @brief Set the node id object
+     * 
+     * @param ID 
+     */
     void set_node_id(int ID);
 
+    /**
+     * @brief Start server
+     * 
+     */
     void server_start();
+
+    /**
+     * @brief Returns if server is currently running
+     * 
+     * @return true 
+     * @return false 
+     */
     bool server_running();
 
+    /**
+     * @brief Number of messages in ring buffer
+     * 
+     * @return int 
+     */
     int number_of_messages();
 
+    /**
+     * @brief Sends Data packet to a given node
+     * 
+     * @param send_id   - Node receiving the data packet
+     * @param len       - length of buffer
+     * @param buf       - formatted data packet buffer
+     * @return err_t 
+     */
     err_t send_data(uint32_t send_id, ssize_t len, uint8_t *buf);
 
+    /**
+     * @brief Writes data to correct tcp buffer
+     * 
+     * @param id            - Id of reciever (not used lol)
+     * @param client_pcb    - tcp_pcb* of target
+     * @param data          - message buffer
+     * @param size          - length of message buffer
+     * @return true 
+     * @return false 
+     */
     bool send_tcp_data(uint32_t id, tcp_pcb *client_pcb, uint8_t* data, uint32_t size);
 
     struct data digest_data();
 
+    /**
+     * @brief Handles incoming data
+     *
+     * @details Manages operations for dealing with different types of messages
+     *          being received. 
+     * 
+     * @param buffer    - data buffer
+     * @param tpcb      - tcp_pcb* of source
+     * @param p         - description of buffer
+     * @return true 
+     * @return false 
+     */
     bool handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct pbuf *p);
 
+    /**
+     * @brief Handles data being transferred over serial
+     *
+     * @details Made to work with data lacking the tpcb point to the client
+     * 
+     * @param buffer     - data buffer
+     * @return err_t 
+     */
+    err_t handle_transfering_data(uint8_t *buffer);
+
+    /**
+     * @brief Sends formatted Messages(Under construction)
+     * 
+     * @param msg   - formatted message buffer
+     * @return err_t 
+     */
+    err_t send_msg(uint8_t* msg);
+
+    /**
+     * @brief Handles incoming serial data
+     * 
+     * @param msg   - formatted message buffer 
+     * @return err_t 
+     */
+    err_t handle_serial_message(uint8_t* msg);
+
+    
 };
 
 class STANode : public MeshNode{
@@ -136,9 +311,7 @@ public:
     std::string AP_CONNECTED_IP;
 
     RingBuffer rb;
-
-    SPI Slave_Pico;
-
+    ChildrenTree tree;
 
     STANode();
     ~STANode();
@@ -147,8 +320,11 @@ public:
     bool start_sta_mode();
     bool scan_for_nodes();
     bool connect_to_node(uint32_t id);
+    bool connect_to_network();
     bool is_connected();
     bool tcp_init();
+
+    PicoUART uart;
 
     err_t send_data(uint32_t send_id, ssize_t len, uint8_t *buf);
 
@@ -159,7 +335,14 @@ public:
     int number_of_messages();
 
     static int scan_result(void* env, const cyw43_ev_scan_result_t* result);
-    bool handle_incoming_data(unsigned char* buffer, struct pbuf *p);
+    bool handle_incoming_data(unsigned char* buffer, uint16_t tot_len);
+
+    err_t send_msg(uint8_t *msg);
+    err_t handle_serial_message(uint8_t* msg);
+
+    err_t update_network();
+
+    void poll();
 };
 
 #endif // MESH_NODE_HPP

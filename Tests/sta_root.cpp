@@ -1,6 +1,7 @@
 #include "pico/stdlib.h"
 #include "libraries/MeshNode/MeshNode.hpp"
 #include "libraries/MeshNode/Messages.hpp"
+#include <cstdint>
 #include <cstdio>
 #include "pico/cyw43_arch.h"
 #include "pico/multicore.h"
@@ -43,14 +44,52 @@ int main() {
     // sleep_ms(1000);
 
 
+    bool got_an_ack = false;
+    int count = 0;
+    int final_size = 0;
+
+    char send_buf[50] = {0};
+
     bool toggle = true;
+
+
+    uint32_t children_ids[4] = {};
+    uint8_t number_of_children = 0;
+
+    char hullo[] = {"Hello from the root!"};
+    
     for (;;) {
-        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
-        toggle = !toggle;
-        if(!node.is_connected()) {
-            printf("Not connected!\n");
+
+        node.poll();
+
+        if (count == 500) {
+            if (node.tree.node_exists(2)) {
+                TCP_DATA_MSG msg(node.get_NodeID(), 2);
+                msg.add_message((uint8_t*)hullo, sizeof(hullo));
+                node.send_msg(msg.get_msg());
+            }
         }
-        sleep_ms(5000);
+
+        if (count++ >= 1000) {
+            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
+            toggle = !toggle;
+            if(!node.is_connected()) {
+                printf("Not connected!\n");
+            }
+            node.tree.get_children(node.get_NodeID(), children_ids, number_of_children);
+            printf("\n\nChildren:\n");
+            for (int i = 0; i < number_of_children; i++) {
+                printf("%u\t", children_ids[i]);
+            }
+            printf("\n");
+
+            node.tree.send_tree_serial();
+
+            count = 0;
+        }
+       
+
+        sleep_ms(1);
     }
 
     return 0;

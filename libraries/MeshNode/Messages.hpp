@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <cstring>
 
+#define MAX_MESSAGE_LENGTH 128
+
 class TCP_MESSAGE {
 protected:
     uint8_t priority;
@@ -19,6 +21,7 @@ public:
         uint8_t msg_id;
         uint16_t len;
         uint32_t source;
+        uint32_t parent;
     }tcp_init_msg;
 
     typedef struct __attribute__((__packed__)) tcp_update_msg_t{
@@ -26,6 +29,7 @@ public:
         uint8_t msg_id;
         uint16_t len;
         uint32_t source;
+        uint32_t dest;
         uint8_t child_count;
         uint32_t children_IDs[4]; //max 4
     }tcp_update_msg;
@@ -37,7 +41,7 @@ public:
         uint32_t source;
         uint32_t dest;
         uint16_t msg_len;
-        uint8_t msg[2034]; //max message len left for 2048 bytes
+        uint8_t msg[MAX_MESSAGE_LENGTH]; //max message len left for 2048 bytes
     }tcp_data_msg;
 
     typedef struct __attribute__((__packed__)) tcp_disconnect_msg_t{
@@ -75,6 +79,8 @@ public:
         uint8_t priority;
         uint8_t msg_id;
         uint16_t len;
+        uint32_t dest;
+        uint32_t source;
     }tcp_force_update_msg; // its 10pm do you know where your children are??
 };
 
@@ -84,12 +90,15 @@ class TCP_INIT_MESSAGE : public TCP_MESSAGE {
 public:
     tcp_init_msg msg = {0};
 public:
-    TCP_INIT_MESSAGE(uint32_t id) : TCP_MESSAGE(0xFF) { 
+    TCP_INIT_MESSAGE(uint32_t id, uint32_t parent) : TCP_MESSAGE(0xFF) { 
         msg.priority = priority;
         msg.msg_id = 0x00;
-        msg.len = 8;
+        msg.len = 12;
         msg.source = id;
+        msg.parent = parent;
     }
+
+    TCP_INIT_MESSAGE() : TCP_MESSAGE(0xFF) {}
     
 
     uint8_t* get_msg() override {
@@ -116,10 +125,12 @@ public:
         msg.dest = dest_id;
     }
 
+    TCP_DATA_MSG() : TCP_MESSAGE(0x7F) {}
+
     void add_message(uint8_t* msg_i, uint8_t msg_len) {
-        memcpy(msg.msg, msg_i, msg_len > 2034 ? 2034 : msg_len);
+        memcpy(msg.msg, msg_i, msg_len > MAX_MESSAGE_LENGTH ? MAX_MESSAGE_LENGTH : msg_len);
         msg.msg_len = msg_len;
-        msg.len += msg_len > 2034 ? 2034 : msg_len;
+        msg.len += msg_len > MAX_MESSAGE_LENGTH ? MAX_MESSAGE_LENGTH : msg_len;
     }
 
     uint8_t* get_msg() override {
@@ -144,6 +155,8 @@ public:
         msg.source = src_id;
         msg.len = 30;
     }
+
+    TCP_DISCONNECT_MSG() : TCP_MESSAGE(0xFF) {}
 
     void lost_node(uint32_t lost_node, uint8_t cause) {
         msg.lost_node = lost_node;
@@ -172,19 +185,26 @@ class TCP_UPDATE_MESSAGE : public TCP_MESSAGE {
 public:
     tcp_update_msg msg = {0};
 public:
-    TCP_UPDATE_MESSAGE(uint32_t id) : TCP_MESSAGE(0xFF) { 
+    TCP_UPDATE_MESSAGE(uint32_t id, uint32_t dest) : TCP_MESSAGE(0xFF) { 
         msg.priority = priority;
         msg.msg_id = 0x03;
-        msg.len = 25;
+        msg.len = 29;
         msg.source = id;
+        msg.dest = dest;
         msg.child_count = 0;
     }
+    
+    TCP_UPDATE_MESSAGE() : TCP_MESSAGE(0xFF) {}
 
     void add_children(uint8_t children_count, uint32_t* children) {
         msg.child_count = children_count;
         for (int i = 0; i < children_count; i++) {
             msg.children_IDs[i] = children[i];
         }
+    }
+    
+    uint32_t get_child(int index) {
+        return msg.children_IDs[index];
     }
 
     uint8_t* get_msg() override {
@@ -214,6 +234,7 @@ public:
         msg.bytes_received = bytes_received;
     }
 
+    TCP_ACK_MESSAGE() : TCP_MESSAGE(0xFF) {}
     
 
     uint8_t* get_msg() override {
@@ -240,7 +261,7 @@ public:
         msg.bytes_received = bytes_received;
     }
 
-    
+    TCP_NAK_MESSAGE() : TCP_MESSAGE(0xFF) {}
 
     uint8_t* get_msg() override {
         return reinterpret_cast<uint8_t*>(&msg);
@@ -256,7 +277,32 @@ public:
     }
 };
 
+class TCP_FORCE_UPDATE_MESSAGE : public TCP_MESSAGE {
+public:
+    tcp_force_update_msg msg = {0};
+public:
+    TCP_FORCE_UPDATE_MESSAGE(uint32_t dest, uint32_t source) : TCP_MESSAGE(0xFF) { 
+        msg.dest = dest;
+        msg.source = source;
+        msg.priority = priority;
+        msg.msg_id = 0xFF;
+        msg.len = sizeof(tcp_force_update_msg);
+    }
 
+    TCP_FORCE_UPDATE_MESSAGE() : TCP_MESSAGE(0xFF) {}
+
+    uint8_t* get_msg() override {
+        return reinterpret_cast<uint8_t*>(&msg);
+    }
+
+    uint16_t get_len() override {
+        return msg.len;
+    }
+
+    void set_msg(void* msg) override {
+        this->msg = *(reinterpret_cast<tcp_force_update_msg*>(msg));
+    }
+};
 
 /**
  * @brief Takes in some tcp message buffer and returns a pointer to a new TCP_MESSAGE
@@ -264,6 +310,6 @@ public:
  * @param data buffer recieved over tcp
  * @return TCP_MESSAGE*  !!USER MUST DELETE!!
  */
-TCP_MESSAGE* parseMessage(uint8_t* data);
+// TCP_MESSAGE* parseMessage(uint8_t* data);
 
 #endif // MESSAGES_HPP

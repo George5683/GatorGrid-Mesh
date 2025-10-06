@@ -13,13 +13,17 @@
 int main() {
     stdio_init_all();
     // initial delay to allow user to look at the serial monitor
-    sleep_ms(10000);
+
+    STANode node;
+
+    
+    sleep_ms(1000);
 
     // initiate everything
 
 
     //SPI spi;
-    STANode node;
+    
     node.init_sta_mode();
     node.start_sta_mode();
 
@@ -38,21 +42,13 @@ int main() {
         }
     }
     printf("Left searching for nodes\n");
-    if (node.connect_to_node(0)) {
-        node.tcp_init();
+
+    while(!node.connect_to_network());
+    if (!node.tcp_init()) {
+        // Failed to init TCP connection
+        while(true);
     }
 
-    //sleep_ms(1000);
-
-    /*for (int i = 0; i < 10; i++)
-    {
-        TCP_DATA_MSG msg(node.get_NodeID(), 2);
-        uint8_t arr[] = "hello, this is message:  ";
-        arr[24] = 48 + i;
-        msg.add_message(25, arr);
-        printf("Sending message: %d/10\n", i+1);
-        while (!node.send_tcp_data_blocking(msg.get_msg(), msg.get_len(), false));
-    }*/
 
     bool got_an_ack = false;
     int count = 0;
@@ -61,38 +57,34 @@ int main() {
     char send_buf[50] = {0};
 
     bool toggle = true;
+
+
+    uint32_t children_ids[4] = {};
+    uint8_t number_of_children = 0;
+
     for (;;) {
-        sleep_ms(250);
+        node.poll();
 
-        //while(got_an_ack) {
-            
-        //}
+        if (count++ >= 500) {
+            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
+            toggle = !toggle;
+            if(!node.is_connected()) {
+                printf("Not connected!\n");
+            }
 
-        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
-        toggle = !toggle;
-        if(!node.is_connected()) {
-            printf("Not connected!\n");
+            node.tree.get_children(node.get_NodeID(), children_ids, number_of_children);
+            printf("\n\nChildren:\n");
+            for (int i = 0; i < number_of_children; i++) {
+                printf("%u\t", children_ids[i]);
+            }
+            printf("\n");
+
+            count = 0;
         }
 
-        final_size = snprintf(send_buf, 50, "FORTNITE %d\n", count);
+        
 
-        while(node.send_data(2, final_size, (uint8_t*)send_buf) != 0) {
-            printf(ANSI_RED_TEXT "Attempting send\n");
-            sleep_ms(1000);
-        }
-
-        printf("Sent data \"FORTNITE %i\"\n", count);
-        count++;
-
-        while (node.number_of_messages() == 0) {
-            sleep_ms(2);
-        }
-
-        struct data tmp = node.digest_data();
-        tmp.data[tmp.size] = 0;
-        printf(ANSI_GREEN_TEXT "Received message from node %08x: %s\n", tmp.source, (char*)tmp.data);
-        printf( ANSI_CLEAR_SCROLLBACK ANSI_CLEAR_SCREEN ANSI_CURSOR_HOME );
-        sleep_ms(250);
+        sleep_ms(1);
     }
     
 

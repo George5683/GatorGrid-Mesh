@@ -4,6 +4,7 @@
 #include "pico/cyw43_arch.h"
 #include "pico/multicore.h"
 
+
 bool is_wifi_connected = false;
 #define DEBUG 1
 
@@ -12,11 +13,35 @@ int main() {
     // initiate everything
     stdio_init_all();
 
+    APNode node(1);
+
+    sleep_ms(5000);
+
+    //PicoUART uart;
+
+    /*cyw43_arch_init();
+
+    printf("starting uart\n");
+    uart.picoUARTInit();
+    printf("uart  nitalized\n");
+    uart.picoUARTInterruptInit();
+    printf("uart intterupts initalized\n");
+
+    printf("Init totally finished\n");*/
+
+    /*while(true) {
+        printf("ping\n");
+        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
+        sleep_ms(1000);
+        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, false);
+        sleep_ms(1000);
+    }*/
+
     // initial delay to allow user to look at the serial monitor
-    sleep_ms(10000);
+    //sleep_ms(5000);
 
     //multicore_launch_core1(core1_entry);
-    APNode node(1);
+    
 
     printf("Init AP Mode\n");
     if (!node.init_ap_mode())
@@ -36,24 +61,30 @@ int main() {
     //     for (;;) { sleep_ms(1000); }
     // }
     bool toggle = true;
-    while (node.server_running()) {
-        //cyw43_arch_poll();
-        // you can poll as often as you like, however if you have nothing else to do you can
-        // choose to sleep until either a specified time, or cyw43_arch_poll() has work to do:
-        //cyw43_arch_wait_for_work_until(make_timeout_time_ms(1000));
+    int count = 0;
 
-        if(node.number_of_messages() > 0) {
-            puts("You got mail!");
-            while(node.number_of_messages() != 0) {
-                struct data tmp = node.digest_data();
-                printf("Source: %08x\nData: \"%s\"\n", tmp.source, tmp.data);
+    uint32_t children_ids[4] = {};
+    uint8_t number_of_children = 0;
+    
+    while (node.server_running()) {
+
+        node.poll();
+
+        if (count++ >= 500) {
+            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
+            toggle = !toggle;
+
+            node.tree.get_children(node.get_NodeID(), children_ids, number_of_children);
+            printf("\n\nChildren:\n");
+            for (int i = 0; i < number_of_children; i++) {
+                printf("%u\t", children_ids[i]);
             }
+            printf("\n");
+
+            count = 0;
         }
 
-        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
-        toggle = !toggle;
-        //printf("core print...");
-        sleep_ms(1000);
+        sleep_ms(1);
     }
 
 
@@ -61,6 +92,8 @@ int main() {
         puts("Exited");
         sleep_ms(1000);
     }
+        
+    
 
     return 0;
 }
