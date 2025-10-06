@@ -1,16 +1,15 @@
-Explanation for the Pinouts on the Pico W:
+# Kicad Design V2.0
+
+## Explanation for the Pinouts on the Pico W:
 
 - GPIO 1-22 and 26-28 are as the schematic states
 - VBUS is 5V when connected to micro usb to power the Pico
 - VSYS can power the Pico with ~1.8-5.5V input
 
-Schematics Update:
-- Added a JST connector for an extenal battery to be connected
-- Added a switch after the JSt conncector for powering the Picos
-- Added a polyfuse (polyfuse's reset instead of replacing the fuse if its broken)
-- Added a Schottky diode (to prevent current backflow and if user connects the battery backwards)
-- Added a charging/safety cicuit [TP4056] (for charging the battery and battery management)
-- Added an AND gate circuitry to indicate both Picos are turned on. 
-- Added an LED to indicate charging of external battery. 
+## Schematic Update:
+- Fixed wiring of temp on the TP4056 as it was disconnected which casued the battery to not charge. 
+- Changed POWER LED to be driven by two transistors which allows it to turn on when both picos are on. 
+- Removed the schottky diode connected to the battery and instead put a diode on each VSYS out from each pico in order to prevent backflow when eitehr are plugged in as VSYS can be input and output. 
+- Reworked Wiring on PCB
 
 

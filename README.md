@@ -6,6 +6,7 @@ GatorGrid is a multifunctional software solution designed for the Raspberry Pi P
 - MeshNode library for STA and AP mode
 - Doxygen for documentation
 - SPI interaction for internode communication
+- Kicad Custom PCB deisgn with external battery charging capabilities
 
 ## Requirements to run
 - Install doxygen
