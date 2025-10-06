@@ -375,7 +375,7 @@ err_t STANode::send_msg(uint8_t* msg) {
             len = fUpdateMsg.get_len();
             target_id = fUpdateMsg.msg.dest;
 
-            if (fUpdateMsg.msg.source != get_NodeID()) forward = true;
+            forward = true;
             break;
         }
         default:

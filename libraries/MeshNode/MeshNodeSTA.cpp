@@ -490,3 +490,16 @@ void STANode::poll() {
 int STANode::number_of_messages() {
     return this->rb.get_size();
 }
+
+err_t STANode::update_network() {
+    uint32_t children_ids[4] = {0};
+    uint8_t children_count = 0;
+
+    tree.get_children(get_NodeID(), children_ids, children_count);
+    for (int i = 0; i < children_count; i++) {
+        TCP_FORCE_UPDATE_MESSAGE forceUpdateMsg(children_ids[i], get_NodeID());
+        send_msg(forceUpdateMsg.get_msg());
+    }
+
+    return 0;
+}
