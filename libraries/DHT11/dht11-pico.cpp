@@ -1,154 +1,94 @@
-/**
- * @file dht11-pico.cpp
- *
- * @brief DHT11 Sensor Library Implementation for Raspberry Pi Pico
- *
- * This file contains the implementation of the DHT11 sensor library for Raspberry Pi Pico,
- * which includes the initialization, reading, and retrieval of temperature and humidity values
- * from the DHT11 sensor.
- */
+#include "pico/stdlib.h"
+#include <limits>
+#include <cmath> 
 
+// dht11-pico.cpp
 #include "dht11-pico.h"
+#include "hardware/sync.h"
 
-Dht11::Dht11(uint pin){
-    gpioPin=pin;
+#ifndef NAN
+#  define NAN (std::numeric_limits<double>::quiet_NaN())
+#endif
+
+
+
+
+static inline bool wait_level(uint pin, bool level, uint32_t timeout_us) {
+    absolute_time_t deadline = make_timeout_time_us(timeout_us);
+    while (gpio_get(pin) != level) {
+        if (absolute_time_diff_us(get_absolute_time(), deadline) <= 0) return false;
+    }
+    return true;
+}
+
+Dht11::Dht11(uint pin) : gpioPin(pin) {
     gpio_init(pin);
+    gpio_pull_up(pin);               // DHT11 requires pull-up
+    gpio_set_dir(pin, GPIO_IN);
     sleep_ms(1000);
 }
+Dht11::~Dht11(){ gpio_deinit(gpioPin); }
 
-Dht11::~Dht11(){
-    gpio_deinit(gpioPin);
-}
-
-long long Dht11::read(){
-    int count=0;
-    long long raw=0;
+bool Dht11::read_bytes(uint8_t out[5]) {
+    // 1) Start signal
     gpio_set_dir(gpioPin, GPIO_OUT);
-    gpio_put(gpioPin,0);
-    sleep_ms(20);
-    gpio_set_dir(gpioPin, GPIO_IN);
+    gpio_put(gpioPin, 0);
+    sleep_ms(20);                    // ≥18 ms
+    gpio_put(gpioPin, 1);
+    sleep_us(30);
+    gpio_set_dir(gpioPin, GPIO_IN);  // release
+    gpio_pull_up(gpioPin);
 
-    while(gpio_get(gpioPin)==1){
-        count++;
-        sleep_us(5);
-        if(count==POLLING_LIMIT){
-            return TRANSMISSION_ERROR;
-        }
-    }
+    // 2) DHT response: ~80us low then ~80us high
+    if (!wait_level(gpioPin, 0, 200)) return false;
+    if (!wait_level(gpioPin, 1, 200)) return false;
+    if (!wait_level(gpioPin, 0, 200)) return false; // start of first bit window
 
-    count=0;
-    while(gpio_get(gpioPin)==0){
-        count++;
-        sleep_us(5);
-        if(count==POLLING_LIMIT){
-            return TRANSMISSION_ERROR;
-        }
-    }
+    // 3) Read 40 bits by timing the high pulse
+    uint32_t irq_save = save_and_disable_interrupts(); // avoid preemption noise
+    uint8_t bytes[5] = {0,0,0,0,0};
+    for (int bit = 0; bit < 40; ++bit) {
+        // Each bit starts with ~50us low
+        if (!wait_level(gpioPin, 1, 100)) { restore_interrupts(irq_save); return false; }
 
-    count=0;
-    while(gpio_get(gpioPin)==1){
-        count++;
-        sleep_us(5);
-        if(count==POLLING_LIMIT){
-            return TRANSMISSION_ERROR;
-        }
-    }
+        // Measure length of the subsequent high pulse
+        absolute_time_t t0 = get_absolute_time();
+        if (!wait_level(gpioPin, 0, 200)) { restore_interrupts(irq_save); return false; }
+        int high_us = (int)absolute_time_diff_us(t0, get_absolute_time()); // positive
 
-    //transmission start
-    for(int i=0;i<40;i++){
-        count=0;
-        //~50us
-        while(gpio_get(gpioPin)==0){
-            sleep_us(5);
-        }
-        //bit 0 or 1
-        while(gpio_get(gpioPin)==1){
-            sleep_us(5);
-            count++;
-        }
-        if(count>=THRESHOLD){
-            raw|=1;
-        }
-        raw=raw<<1;
+        // DHT11: ~26–28us = 0, ~70us = 1. Use mid-threshold ~50us.
+        int byte_index = bit / 8;
+        bytes[byte_index] <<= 1;
+        if (high_us > 50) bytes[byte_index] |= 1;
     }
-    //check if raw data is valid
-    if(
-        ((raw & RH_INT_MASK)>>32)   + 
-        ((raw & RH_DEC_MASK)>>24)   +
-        ((raw & TEMP_INT_MASK)>>16) +
-        ((raw & TEMP_DEC_MASK)>>8)  -
-        ((raw & CHECKSUM_MASK))     > 1
-        ){
-        return TRANSMISSION_ERROR;
-    }    
-    return raw;
+    restore_interrupts(irq_save);
+
+    // 4) Checksum: (b0 + b1 + b2 + b3) & 0xFF == b4
+    uint8_t sum = (uint8_t)(bytes[0] + bytes[1] + bytes[2] + bytes[3]);
+    if ((sum & 0xFF) != bytes[4]) return false;
+
+    // DHT11 spec: bytes[1] and bytes[3] (decimals) are 0
+    for (int i = 0; i < 5; ++i) out[i] = bytes[i];
+    return true;
 }
 
-double Dht11::readT(){
-    long long raw=read();
-    if(raw==TRANSMISSION_ERROR){
-        return TRANSMISSION_ERROR;
-    }
-    int temp_int    =    (raw & TEMP_INT_MASK)>>16;
-    uint temp_dec   =    (raw & TEMP_DEC_MASK)>>8;
-    if(temp_int<0)
-        temp_dec=-temp_dec;
-    double temp     =    temp_int + 0.1*temp_dec; 
-    return temp;
+double Dht11::readT() {
+    uint8_t d[5];
+    if (!read_bytes(d)) return NAN;
+    // DHT11 temperature is integer °C in d[2]
+    return (double)((int8_t)d[2]); // handles 0–50°C (signed cast safe)
 }
 
-double Dht11::readRH(){
-    long long raw=read();
-    if(raw==TRANSMISSION_ERROR){
-        return TRANSMISSION_ERROR;
-    }
-    int rh_int    =    (raw & RH_INT_MASK)>>32;
-    uint rh_dec   =    (raw & RH_DEC_MASK)>>24;
-    double rh     =    rh_int + 0.1*rh_dec; 
-    return rh;
+double Dht11::readRH() {
+    uint8_t d[5];
+    if (!read_bytes(d)) return NAN;
+    // DHT11 humidity is integer % in d[0]
+    return (double)d[0];
 }
 
-void Dht11::readRHT(double *temp, double *rh){
-    long long raw=read();
-    if(raw==TRANSMISSION_ERROR){
-        *temp= *rh = TRANSMISSION_ERROR;
-        return;
-    }
-    int temp_int    =    (raw & TEMP_INT_MASK)>>16;
-    uint temp_dec   =    (raw & TEMP_DEC_MASK)>>8;
-    int rh_int      =    (raw & RH_INT_MASK)>>32;
-    uint rh_dec     =    (raw & RH_DEC_MASK)>>24;
-    
-    *temp           =    temp_int + 0.1*temp_dec;
-    *rh             =    rh_int + 0.1*rh_dec; 
+void Dht11::readRHT(double *temp, double *rh) {
+    uint8_t d[5];
+    if (!read_bytes(d)) { *temp = *rh = NAN; return; }
+    *temp = (double)((int8_t)d[2]);
+    *rh   = (double)d[0];
 }
-
-/*
- * An example program that demonstrates the usage of the DHT11 sensor library
- * for Raspberry Pi Pico. It initializes the DHT11 sensor, reads temperature 
- * and humidity values and prints them to the console.
- */
-// #include "pico/stdlib.h"
-// #include <iostream>
-
-// #include "libraries/DHT11/dht11-pico.h"
-
-// const uint DHT_PIN = 22;
-
-// int main() {
-//     stdio_init_all();
-//     sleep_ms(2000);
-//     Dht11 dht11_sensor(DHT_PIN);
-//     double temperature;
-//     double rel_humidity;
-//     while(1){
-//     std::cout<<"Temp:"<<dht11_sensor.readT()<<" °C"<<std::endl;
-//     sleep_ms(1000);
-//     std::cout<<"RH:"<<dht11_sensor.readRH()<<" %"<<std::endl;
-//     sleep_ms(1000);
-//     dht11_sensor.readRHT(&temperature, &rel_humidity);
-//     std::cout<<"Temp:"<<temperature<<"°C"<<"   RH:"<<rel_humidity<<" %"<<std::endl;
-//     sleep_ms(1000);
-//     }
-//     return 0;
-// }

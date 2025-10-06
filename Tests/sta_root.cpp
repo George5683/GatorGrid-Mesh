@@ -63,11 +63,11 @@ int main() {
         node.poll();
 
         if (count == 500) {
-            if (node.tree.node_exists(2)) {
-                TCP_DATA_MSG msg(node.get_NodeID(), 2);
-                msg.add_message((uint8_t*)hullo, sizeof(hullo));
-                node.send_msg(msg.get_msg());
-            }
+            // if (node.tree.node_exists(2)) {
+            //     TCP_DATA_MSG msg(node.get_NodeID(), 2);
+            //     msg.add_message((uint8_t*)hullo, sizeof(hullo));
+            //     node.send_msg(msg.get_msg());
+            // }
         }
 
         if (count++ >= 1000) {
@@ -84,6 +84,9 @@ int main() {
             printf("\n");
 
             node.tree.send_tree_serial();
+            if (node.rb.get_size() > 0) {
+                printf("RINGBUFFER:%s\n", (char*)node.rb.digest().data);
+            }
 
             count = 0;
         }

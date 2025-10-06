@@ -424,9 +424,14 @@ bool STANode::connect_to_network() {
 bool STANode::connect_to_node(uint32_t id) {
    DEBUG_printf("Connecting to node: %u\n", id);
 
+    if(!scan_for_nodes()) {
+        ERROR_printf("Scan for nodes failed");
+        return false;
+    }
+
     // Check if node is known
     if (known_nodes.count(id) == 0) {
-       DEBUG_printf("Unknown node. Ending connection attempt.\n");
+        DEBUG_printf("Unknown node. Ending connection attempt.\n");
         return false;
     }
 

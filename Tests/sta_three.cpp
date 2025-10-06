@@ -1,7 +1,6 @@
 #include "pico/stdlib.h"
 #include "libraries/MeshNode/MeshNode.hpp"
 #include "libraries/MeshNode/Messages.hpp"
-#include <cstdint>
 #include <cstdio>
 #include "pico/cyw43_arch.h"
 
@@ -68,19 +67,19 @@ static void mpu6050_read_raw(int16_t accel[3], int16_t gyro[3], int16_t *temp) {
 int main() {
     stdio_init_all();
     // initial delay to allow user to look at the serial monitor
-    sleep_ms(10000);
+    sleep_ms(5000);
 
-    // i2c_init(i2c_default, 400 * 1000);
-    // gpio_set_function(PICO_DEFAULT_I2C_SDA_PIN, GPIO_FUNC_I2C);
-    // gpio_set_function(PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C);
-    // gpio_pull_up(PICO_DEFAULT_I2C_SDA_PIN);
-    // gpio_pull_up(PICO_DEFAULT_I2C_SCL_PIN);
+    i2c_init(i2c_default, 400 * 1000);
+    gpio_set_function(PICO_DEFAULT_I2C_SDA_PIN, GPIO_FUNC_I2C);
+    gpio_set_function(PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C);
+    gpio_pull_up(PICO_DEFAULT_I2C_SDA_PIN);
+    gpio_pull_up(PICO_DEFAULT_I2C_SCL_PIN);
 
-    // bi_decl(bi_2pins_with_func(PICO_DEFAULT_I2C_SDA_PIN, PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C));
+    bi_decl(bi_2pins_with_func(PICO_DEFAULT_I2C_SDA_PIN, PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C));
 
-    // mpu6050_reset();
+    mpu6050_reset();
 
-    // int16_t acceleration[3], gyro[3], temp;
+    int16_t acceleration[3], gyro[3], temp;
 
     //SPI spi;
     STANode node;
@@ -89,43 +88,71 @@ int main() {
 
     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
 
+    /*while(true) {
+        mpu6050_read_raw(acceleration, gyro, &temp);
+        printf("Current Temp (C) = %f\n", ((temp / 340.0) + 36.53));
+        sleep_ms(1000);
+    }*/
+
+    printf("Starting scan...\n");
     if (!node.scan_for_nodes()) {
         return 0;
     }
-    printf("known nodes map size: %d\n", node.known_nodes.size());
-    while (node.known_nodes.empty()) {
+    //printf("known nodes map size: %d\n", node.known_nodes.size());
+    while (!node.connect_to_node(2)) {
         //printf("known nodes map size: %d", node.known_nodes.size());
+        printf("Looking for node 2\n");
         if (!node.scan_for_nodes()) {
-
             return 0;
         }
     }
-    sleep_ms(5000);
-    printf("Left searching for nodes\n");
 
-    while(!node.connect_to_node(0));
-    if (!node.tcp_init()) {
-        // Failed to init TCP connection
-        while(true);
-    }
+    node.tcp_init();
 
-    int count = 0;
-    
+   char format_string[50] = {0};
+   int final_size;
+   bool got_an_ack = false;
 
     bool toggle = true;
-    uint32_t send_count = 0;
+    
     for (;;) {
-        node.poll();
+        // Toggle LEDS
+        //sleep_ms(1000);
+        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
+        toggle = !toggle;
+        if(!node.is_connected()) {
+            printf("Not connected!\n");
+        } else {
 
-        if (count++ >= 1000) {
-            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
-            toggle = !toggle;
-            if(!node.is_connected()) {
-                printf("Not connected!\n");
+            while (node.number_of_messages() == 0) {
+                sleep_ms(2);
             }
-        }
 
-        sleep_ms(1);
+            struct data tmp = node.digest_data();
+            //printf("Received message from node %08x: %s", tmp.source, (char*)tmp.data);
+            if(tmp.data[0] == 1) {
+                // set LED on
+                gpio_put(1, 1);
+
+            } else if(tmp.data[0] == 0) {
+                // set LED OFF
+                gpio_put(1, 0);
+            }
+
+            sleep_ms(500);
+
+            mpu6050_read_raw(acceleration, gyro, &temp);
+
+            final_size = snprintf(format_string, 50, "Current Temp (C) = %f", ((temp / 340.0) + 36.53));
+
+            if(final_size < 0)
+                puts("Size is neg error snprintf");
+
+            printf("Sending \"Current Temp (C) = %f\" to node %08x\n", ((temp / 340.0) + 36.53), 1);
+
+            got_an_ack = (node.send_data(0, final_size, (uint8_t*)format_string) == 0);
+        }
+        sleep_ms(500);
     }
 
     return 0;

@@ -279,3 +279,63 @@ pico_enable_stdio_usb(ap_two 1)
         
 
 pico_add_extra_outputs(ap_two)
+
+# node 3
+# ________________________________________ Cmake for sta_three ________________________________________
+add_executable(sta_three
+        Tests/sta_three.cpp
+        ${SRC_FILES}
+        )
+
+target_include_directories(sta_three PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
+        ${LIBRARY_DIRS}
+        )
+
+target_link_libraries(sta_three
+        pico_cyw43_arch_lwip_threadsafe_background
+        pico_stdlib
+        hardware_spi
+        hardware_i2c
+        )
+
+if (APP_DEBUG)
+  target_compile_definitions(sta_three PRIVATE DEBUG=1)
+endif()
+
+pico_enable_stdio_uart(sta_three 0)
+pico_enable_stdio_usb(sta_three 1)
+        
+
+pico_add_extra_outputs(sta_three)
+
+# ________________________________________ Cmake for ap_two ________________________________________
+
+add_executable(ap_three
+        Tests/ap_three.cpp
+        ${SRC_FILES}
+        )
+
+target_include_directories(ap_three PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
+        ${LIBRARY_DIRS}
+        )
+
+target_link_libraries(ap_three
+        pico_cyw43_arch_lwip_threadsafe_background
+        pico_stdlib
+        pico_multicore
+        hardware_spi
+        )
+
+if (APP_DEBUG)
+  target_compile_definitions(ap_three PRIVATE DEBUG=1)
+endif()
+
+pico_enable_stdio_uart(ap_three 0)
+pico_enable_stdio_usb(ap_three 1)
+        
+
+pico_add_extra_outputs(ap_three)

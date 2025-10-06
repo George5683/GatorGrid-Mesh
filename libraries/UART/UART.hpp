@@ -13,6 +13,8 @@
 #define STOP_BITS  1
 #define PARITY     UART_PARITY_NONE
 
+
+// TODO: IFDEF based off of pico2_w or pico_2
 #define UART_TX_PIN 16
 #define UART_RX_PIN 17
 
