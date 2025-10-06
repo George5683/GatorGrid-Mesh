@@ -340,6 +340,8 @@ public:
     err_t send_msg(uint8_t *msg);
     err_t handle_serial_message(uint8_t* msg);
 
+    err_t update_network();
+
     void poll();
 };
 

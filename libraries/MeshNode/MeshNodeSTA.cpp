@@ -22,6 +22,7 @@ extern "C" {
 
     #include "hardware/vreg.h"
     #include "hardware/clocks.h"
+    #include "display.hpp"
 }
 
 /*
@@ -29,35 +30,11 @@ extern "C" {
 */
 
 #define TCP_PORT 4242
-#if DEBUG 
-#define DEBUG_printf printf
-#else
-#define DEBUG_printf
-#endif
+
 #define BUF_SIZE 2048
 
 #define TEST_ITERATIONS 10
 #define POLL_TIME_S 5
-
-#if DEBUG
- static void dump_bytes(const uint8_t *bptr, uint32_t len) {
-     unsigned int i = 0;
- 
-    printf("dump_bytes %d", len);
-     for (i = 0; i < len;) {
-         if ((i & 0x0f) == 0) {
-            printf("\n");
-         } else if ((i & 0x07) == 0) {
-            printf(" ");
-         }
-        printf("%02x ", bptr[i++]);
-     }
-    printf("\n");
- }
- #define DUMP_BYTES dump_bytes
- #else
- #define DUMP_BYTES(A,B)
- #endif
  
 
 static err_t tcp_client_close(void *arg) {
@@ -100,7 +77,7 @@ static err_t tcp_client_sent(void *arg, struct tcp_pcb *tpcb, u16_t len) {
     DEBUG_printf("tcp_client_sent %u\n", len);
 
     DEBUG_printf("TCP_CLIENT_SENT DUMP BYTES\n");
-    DUMP_BYTES(state->buffer, 100);
+    DUMP_BYTES(state->buffer, len);
 
     //state->sent_len += len;
 
@@ -138,6 +115,8 @@ static void tcp_client_err(void *arg, err_t err) {
 err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err) {
     STANode* node = (STANode*)arg;
     TCP_CLIENT_T *state = node->state;
+
+    DEBUG_printf("Recv'd data");
     
     // Check for connection closed or error
     if (!p) {
@@ -225,7 +204,7 @@ STANode::STANode() : rb(10), tree(0) {
     // Set SPI to be a slave 
     DEBUG_printf("starting uart\n");
     uart.picoUARTInit();
-    DEBUG_printf("uart  nitalized\n");
+    DEBUG_printf("uart initalized\n");
     uart.picoUARTInterruptInit();
     DEBUG_printf("uart intterupts initalized\n");
     
@@ -251,9 +230,11 @@ bool STANode::init_sta_mode() {
 
     // Wait for the AP pico to send the first message
     
-    DEBUG_printf("Waiting for ID from AP over UART");
+    DEBUG_printf("Waiting for ID from AP over UART\n");
 
-    while(!uart.BufferReady());
+    while(!uart.BufferReady()) {
+        sleep_ms(10);
+    }
 
     uint8_t *buffer = uart.getReadBuffer();
 
@@ -286,7 +267,14 @@ bool STANode::init_sta_mode() {
 
 bool STANode::start_sta_mode() {
     cyw43_arch_enable_sta_mode();
-   DEBUG_printf("Starting STA mode\n");
+    DEBUG_printf("Starting STA mode\n");
+
+    // tell AP that it has fully started
+    uint8_t buf[300];
+    *(uint32_t*)buf = this->get_NodeID();
+
+    uart.sendMessage((char*)buf);
+    
     return true; // ggwp
 }
 
@@ -378,7 +366,7 @@ bool STANode::scan_for_nodes() {
         return false;
     }
     
-    DEBUG_printf("Scan started\n");
+    DEBUG_printf("...");
     
     // Wait for scan to complete with timeout
     while (cyw43_wifi_scan_active(&cyw43_state)) {
@@ -395,19 +383,20 @@ bool STANode::scan_for_nodes() {
         #endif
     }
     
-    DEBUG_printf("Scan completed successfully\n");
+    DEBUG_printf("---");
     return true;
 }
 
 bool STANode::connect_to_network() {
     if (known_nodes.size() == 0) return false;
+    scan_for_nodes(); 
     DEBUG_printf("Knows some nodes\n");
 
     int16_t min_rssi = known_nodes.begin()->second->rssi;
     uint32_t min_node_id = known_nodes.begin()->first;
 
     for (const auto& node : known_nodes) {
-        if (node.second->rssi < min_rssi) {
+        if (node.second->rssi > min_rssi) {
             min_rssi = node.second->rssi;
             min_node_id = node.first;
         }
@@ -464,7 +453,7 @@ bool STANode::connect_to_node(uint32_t id) {
 bool STANode::is_connected() {
     int res = cyw43_wifi_link_status(&cyw43_state, CYW43_ITF_STA);
     if (res != CYW43_LINK_JOIN) {
-        DEBUG_printf("%d\n", res);
+        //DEBUG_printf("%d\n", res);
       return false;
     }
     return true;
@@ -488,7 +477,7 @@ bool STANode::tcp_init() {
     //uint8_t buffer[BUF_SIZE] = {};
     //create_join_message(BUF_SIZE, buffer, this);
     TCP_INIT_MESSAGE init_msg(get_NodeID(), parent);
-    return send_tcp_data(init_msg.get_msg(), init_msg.get_len(), false);
+    return send_tcp_data_blocking(init_msg.get_msg(), init_msg.get_len(), false);
 }
 
 // Check for serial messages and if you have any parse them
@@ -500,4 +489,17 @@ void STANode::poll() {
 
 int STANode::number_of_messages() {
     return this->rb.get_size();
+}
+
+err_t STANode::update_network() {
+    uint32_t children_ids[4] = {0};
+    uint8_t children_count = 0;
+
+    tree.get_children(get_NodeID(), children_ids, children_count);
+    for (int i = 0; i < children_count; i++) {
+        TCP_FORCE_UPDATE_MESSAGE forceUpdateMsg(children_ids[i], get_NodeID());
+        send_msg(forceUpdateMsg.get_msg());
+    }
+
+    return 0;
 }

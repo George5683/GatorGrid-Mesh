@@ -1,10 +1,5 @@
 #include "UART.hpp"
-
-#if DEBUG 
-#define DEBUG_printf printf
-#else
-#define DEBUG_printf
-#endif
+#include "display.hpp"
 
 PicoUART* PicoUART::instance = nullptr;
 
@@ -15,6 +10,7 @@ PicoUART::PicoUART() {
 
 // Initialize UART hardware
 bool PicoUART::picoUARTInit() {
+    instance = this;
     
     uart_init(UART_ID, BAUD_RATE);
     gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
@@ -22,7 +18,7 @@ bool PicoUART::picoUARTInit() {
 
     uart_set_format(UART_ID, DATA_BITS, STOP_BITS, PARITY);
     uart_set_hw_flow(UART_ID, false, false);
-    //uart_set_fifo_enabled(UART_ID, false);
+    uart_set_fifo_enabled(UART_ID, false);
 
     return true;
 }
@@ -43,6 +39,7 @@ bool PicoUART::picoUARTInterruptInit() {
 // While reads do go out of bounds that is not likely to cause a crash on this uP
 // Send message over UART
 int PicoUART::sendMessage(const char* message) {
+    DEBUG_printf("Sending message over serial");
 
     while (!uart_is_writable(UART_ID)) {
         tight_loop_contents();
@@ -67,7 +64,7 @@ uint8_t* PicoUART::getReadBuffer() {
     // if the ring buffer is empty and they call getReadBuffer stall because something has gone wrong
     if(buffer == nullptr) {
         while(1) {
-            puts("Fatal Error: read buffer empty\n");
+            ERROR_printf("Fatal Error: read buffer empty\n");
         }
     }
 
@@ -88,30 +85,46 @@ static bool toggle;
 // Static ISR
 void PicoUART::on_uart_rx() {
 
-    if (!instance) return;
+    // DEBUG_printf("ISR Triggered\n");
+
+    if (!instance) {
+        DEBUG_printf("instance is nullptr\n");
+        return;
+    }
 
     // ISR thrown twice, so just have a toggle gate guard it
     if (instance->toggle == false) {
         instance->toggle = true;
+        // DEBUG_printf("Toggle protection thrown\n");
         return;
     }
 
     instance->toggle = false;
 
-    uart_get_hw(UART_ID)->icr = UART_UARTICR_TXIC_BITS;
+    
+    // DEBUG_printf("get hw successful\n");
+
+    
 
     uint8_t *buffer = instance->srb.buffer_put();
+
+    // DEBUG_printf("got ISR buffer\n");
 
     // Should the ring buffer ever be full stall the pico
     if(buffer == nullptr) {
         while(1) {
-            printf("Fatal Error: Serial recieved messages faster then poll could digest them\n");
+            ERROR_printf("Serial recieved messages faster then poll could digest them\n");
         }
     }
 
     while (uart_is_readable(UART_ID)) {
         uart_read_blocking(UART_ID, buffer, MAX_LEN);
     }
+
+    // DEBUG_printf("%02X %02X %02X %02X %02X\n", buffer[0],buffer[1],buffer[2],buffer[3],buffer[4]);
+
+    // only clear flag after ISR has ran
+    uart_get_hw(UART_ID)->icr = UART_UARTICR_RXIC_BITS;
 
     return;
 }

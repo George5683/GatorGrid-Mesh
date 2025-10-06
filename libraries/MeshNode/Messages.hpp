@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <cstring>
 
+#define MAX_MESSAGE_LENGTH 128
+
 class TCP_MESSAGE {
 protected:
     uint8_t priority;
@@ -39,7 +41,7 @@ public:
         uint32_t source;
         uint32_t dest;
         uint16_t msg_len;
-        uint8_t msg[2034]; //max message len left for 2048 bytes
+        uint8_t msg[MAX_MESSAGE_LENGTH]; //max message len left for 2048 bytes
     }tcp_data_msg;
 
     typedef struct __attribute__((__packed__)) tcp_disconnect_msg_t{
@@ -78,6 +80,7 @@ public:
         uint8_t msg_id;
         uint16_t len;
         uint32_t dest;
+        uint32_t source;
     }tcp_force_update_msg; // its 10pm do you know where your children are??
 };
 
@@ -125,9 +128,9 @@ public:
     TCP_DATA_MSG() : TCP_MESSAGE(0x7F) {}
 
     void add_message(uint8_t* msg_i, uint8_t msg_len) {
-        memcpy(msg.msg, msg_i, msg_len > 2034 ? 2034 : msg_len);
+        memcpy(msg.msg, msg_i, msg_len > MAX_MESSAGE_LENGTH ? MAX_MESSAGE_LENGTH : msg_len);
         msg.msg_len = msg_len;
-        msg.len += msg_len > 2034 ? 2034 : msg_len;
+        msg.len += msg_len > MAX_MESSAGE_LENGTH ? MAX_MESSAGE_LENGTH : msg_len;
     }
 
     uint8_t* get_msg() override {
@@ -278,8 +281,9 @@ class TCP_FORCE_UPDATE_MESSAGE : public TCP_MESSAGE {
 public:
     tcp_force_update_msg msg = {0};
 public:
-    TCP_FORCE_UPDATE_MESSAGE(uint32_t id) : TCP_MESSAGE(0xFF) { 
-        msg.dest = id;
+    TCP_FORCE_UPDATE_MESSAGE(uint32_t dest, uint32_t source) : TCP_MESSAGE(0xFF) { 
+        msg.dest = dest;
+        msg.source = source;
         msg.priority = priority;
         msg.msg_id = 0xFF;
         msg.len = sizeof(tcp_force_update_msg);

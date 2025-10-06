@@ -10,32 +10,7 @@
 #include "SerialMessages.hpp"
 #include "hardware/regs/rosc.h"
 #include "hardware/regs/addressmap.h"
-
-#if DEBUG 
-#define DEBUG_printf printf
-#else
-#define DEBUG_printf
-#endif
-
-#if DEBUG
- static void dump_bytes(const uint8_t *bptr, uint32_t len) {
-     unsigned int i = 0;
- 
-    DEBUG_printf("dump_bytes %d", len);
-     for (i = 0; i < len;) {
-         if ((i & 0x0f) == 0) {
-            DEBUG_printf("\n");
-         } else if ((i & 0x07) == 0) {
-            DEBUG_printf(" ");
-         }
-        DEBUG_printf("%02x ", bptr[i++]);
-     }
-    DEBUG_printf("\n");
- }
- #define DUMP_BYTES dump_bytes
- #else
- #define DUMP_BYTES(A,B)
- #endif
+#include "display.hpp"
 
  #define TRY(x)            \
  do                        \
@@ -270,7 +245,7 @@ err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
     tcp_arg(client_pcb, state);
     tcp_sent(client_pcb, tcp_server_sent);
     tcp_recv(client_pcb, tcp_server_recv);
-    tcp_poll(client_pcb, tcp_server_poll, POLL_TIME_S * 2);
+    // tcp_poll(client_pcb, tcp_server_poll, POLL_TIME_S * 2);
     tcp_err(client_pcb, tcp_server_err);
 
     //return tcp_server_send_data(arg, state->client_pcb);
@@ -359,7 +334,7 @@ APNode::APNode(uint32_t id) : state(nullptr), running(false), password("password
 
     DEBUG_printf("starting uart\n");
     uart.picoUARTInit();
-    DEBUG_printf("uart  nitalized\n");
+    DEBUG_printf("uart initalized\n");
     uart.picoUARTInterruptInit();
     DEBUG_printf("uart intterupts initalized\n");
     set_NodeID(id);
@@ -543,11 +518,25 @@ bool APNode::start_ap_mode() {
     DEBUG_printf("Sending ID %d\n", ID);
 
     uart.sendMessage((char*)&ID);
+    
 
-    DEBUG_printf("Message sent");
+    //DEBUG_printf("Message sent");
     //puts("entering poll test");
 
     //while(!Master_Pico.SPI_POLL_MESSAGE());
+
+    // wait for sta to fully start
+    while(!uart.BufferReady()) {
+        sleep_ms(10);
+    }
+
+    uint8_t *tmp = uart.getReadBuffer();
+
+    if(*(uint32_t *)tmp != this->get_NodeID()) {
+        while(1) {
+            printf("ERROR: Node ID DIFFERENT, This should not ever be hit");
+        }
+    }
 
     running = true;
     return true;

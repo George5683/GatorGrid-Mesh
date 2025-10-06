@@ -40,6 +40,9 @@ file(GLOB_RECURSE SRC_FILES
      "${CMAKE_CURRENT_SOURCE_DIR}/libraries/*/*.c" 
      "${CMAKE_CURRENT_SOURCE_DIR}/libraries/*/*.cpp")
 
+file(GLOB LIBRARY_DIRS
+    "${CMAKE_CURRENT_SOURCE_DIR}/libraries/*")
+
 # ________________________________________ Cmake for sta_background ________________________________________
 add_executable(sta_background
         Tests/sta_test.cpp
@@ -49,12 +52,7 @@ add_executable(sta_background
 target_include_directories(sta_background PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/dhcpserver
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/dnsserver
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/RingBuffer
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
+        ${LIBRARY_DIRS}
         )
 
 target_link_libraries(sta_background
@@ -84,12 +82,7 @@ add_executable(ap_background
 target_include_directories(ap_background PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/dhcpserver
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/dnsserver
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/RingBuffer
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
+        ${LIBRARY_DIRS}
         )
 
 target_link_libraries(ap_background
@@ -118,12 +111,7 @@ add_executable(sta_root
 target_include_directories(sta_root PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/dhcpserver
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/dnsserver
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/RingBuffer
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
+        ${LIBRARY_DIRS}
         )
 
 target_link_libraries(sta_root
@@ -152,13 +140,7 @@ add_executable(ap_root
 target_include_directories(ap_root PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/dhcpserver
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/dnsserver
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/RingBuffer
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/display
+        ${LIBRARY_DIRS}
         )
 
 target_link_libraries(ap_root
@@ -188,12 +170,7 @@ add_executable(sta_one
 target_include_directories(sta_one PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/dhcpserver
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/dnsserver
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/RingBuffer
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
+        ${LIBRARY_DIRS}
         )
 
 target_link_libraries(sta_one
@@ -223,12 +200,7 @@ add_executable(ap_one
 target_include_directories(ap_one PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/dhcpserver
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/dnsserver
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/RingBuffer
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
+        ${LIBRARY_DIRS}
         )
 
 target_link_libraries(ap_one
@@ -258,12 +230,7 @@ add_executable(sta_two
 target_include_directories(sta_two PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/dhcpserver
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/dnsserver
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/RingBuffer
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
+        ${LIBRARY_DIRS}
         )
 
 target_link_libraries(sta_two
@@ -293,12 +260,7 @@ add_executable(ap_two
 target_include_directories(ap_two PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/dhcpserver
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/dnsserver
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/SPI
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/MeshNode
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/RingBuffer
-        ${CMAKE_CURRENT_LIST_DIR}/libraries/ChildrenTree
+        ${LIBRARY_DIRS}
         )
 
 target_link_libraries(ap_two
