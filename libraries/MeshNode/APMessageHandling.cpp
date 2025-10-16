@@ -131,9 +131,9 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
             if (dataMsg.msg.dest == get_NodeID()) {
                 //rb.insert(dataMsg.msg.msg, dataMsg.msg.msg_len, dataMsg.msg.source, dataMsg.msg.dest);
                 // uart.sendMessage((char*) buffer);
-                // DEBUG_printf("Successfully inserted into ring buffer\n");
+                DEBUG_printf("Sending to STA after reception");
                 send_to_sta = true;
-                ACK_flag = true;
+                ACK_flag = false;
                 break;
             } else {
                 uint32_t dest = dataMsg.msg.dest;
@@ -175,6 +175,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
                 //     break;
                 // }
             }
+            break;
             
         }
         case 0x02: {

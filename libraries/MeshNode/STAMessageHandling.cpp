@@ -127,6 +127,9 @@ bool STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward)
         }
             
     }
+
+    DEBUG_printf("Got some ACK after send");
+
     if (state->got_nak) {
         DEBUG_printf("Got NAK, returning false\n");
         return false;
@@ -174,7 +177,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
             DEBUG_printf("Got data message\n");
             if (dataMsg.msg.dest == get_NodeID()) {
                 source_id =  dataMsg.msg.source;
-                rb.insert(dataMsg.msg.msg,dataMsg.msg.msg_len, dataMsg.msg.source, dataMsg.msg.dest);
+                rb.insert(dataMsg.msg.msg, dataMsg.msg.msg_len, dataMsg.msg.source, dataMsg.msg.dest);
                 DEBUG_printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg.msg.msg_len, dataMsg.msg.source, dataMsg.msg.dest);
                 DEBUG_printf("DBG: Received message from node %08x: %s", dataMsg.msg.source, (char*)dataMsg.msg.msg);
                 ACK_flag = true;
@@ -270,9 +273,18 @@ bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
     }
 
     if (ACK_flag && !self_reply){
+        uint32_t path_parent = 0;
         DEBUG_printf("Sending ack to %08x\n", source_id);
         TCP_ACK_MESSAGE ackMsg(get_NodeID(), source_id, tot_len);
-        send_tcp_data(ackMsg.get_msg(), ackMsg.get_len(), true);
+        if (tree.find_path_parent(source_id, &path_parent)) {
+            SERIAL_DATA_MESSAGE msg;
+            msg.add_message(ackMsg.get_msg(), ackMsg.get_len());
+
+            uart.sendMessage((char*) msg.get_msg());
+
+        } else {
+            send_tcp_data(ackMsg.get_msg(), ackMsg.get_len(), true);
+        }
         //state->waiting_for_ack = true;
     } else if (NAK_flag) {
         // TODO: Update for error handling
@@ -432,7 +444,9 @@ err_t STANode::handle_serial_message(uint8_t *msg) {
             DEBUG_printf("Sending Update Msg");
             TCP_UPDATE_MESSAGE updateMsg(initMsg.msg.parent, parent);
             updateMsg.add_children(children_count, children);
-
+            if (get_NodeID() == 0) {
+                return 0;
+            }
             return(send_msg(updateMsg.get_msg()));
         }
         case 0x01: /* serial_node_remove_msg */

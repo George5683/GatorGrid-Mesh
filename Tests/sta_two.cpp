@@ -10,6 +10,7 @@
 #include "pico/stdlib.h"
 #include "pico/binary_info.h"
 #include "hardware/i2c.h"
+#include "display.hpp"
 
 
 // By default these devices  are on bus address 0x68
@@ -103,47 +104,30 @@ int main() {
     sleep_ms(5000);
     printf("Left searching for nodes\n");
 
-    while(!node.connect_to_network());
+    while(!node.connect_to_node(0));
     if (!node.tcp_init()) {
         // Failed to init TCP connection
         while(true);
     }
 
-
-   
-
-   char format_string[50] = {0};
-   int final_size;
-   bool got_an_ack = false;
-   int count = 0;
-   uint32_t children_ids[4] = {};
-    uint8_t number_of_children = 0;
+    int count = 0;
     
 
     bool toggle = true;
     uint32_t send_count = 0;
+
+    DEBUG_printf("Entering loop");
     for (;;) {
+        // DEBUG_printf("Before poll");
         node.poll();
 
-        // if (count == 500) {
-        //     TCP_DATA_MSG msg(node.get_NodeID(), 0);
-        //     msg.add_message(reinterpret_cast<uint8_t*>(&send_count), 4);
-        //     node.send_msg(msg.get_msg());
-        //     send_count++;
-        // }
-
         if (count++ >= 1000) {
+            // DEBUG_printf("Before LED toggle");
             cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
             toggle = !toggle;
             if(!node.is_connected()) {
                 printf("Not connected!\n");
             }
-            node.tree.get_children(node.get_NodeID(), children_ids, number_of_children);
-            printf("\n\nChildren:\n");
-            for (int i = 0; i < number_of_children; i++) {
-                printf("%u\t", children_ids[i]);
-            }
-            printf("\n");
 
             count = 0;
         }

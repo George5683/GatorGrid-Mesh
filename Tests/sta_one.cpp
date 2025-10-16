@@ -7,6 +7,9 @@
 #include "libraries/RingBuffer/RingBuffer.hpp"
 
 #include "libraries/display/display.hpp"
+#include "libraries/DHT11/dht11-pico.h"
+
+const uint DHT_PIN = 22;
 
 #define DEBUG 1
 
@@ -17,7 +20,7 @@ int main() {
     STANode node;
 
     
-    sleep_ms(1000);
+    sleep_ms(5000);
 
     // initiate everything
 
@@ -43,7 +46,7 @@ int main() {
     }
     printf("Left searching for nodes\n");
 
-    while(!node.connect_to_network());
+    while(!node.connect_to_node(0));
     if (!node.tcp_init()) {
         // Failed to init TCP connection
         while(true);
@@ -62,22 +65,38 @@ int main() {
     uint32_t children_ids[4] = {};
     uint8_t number_of_children = 0;
 
+    Dht11 dht11_sensor(DHT_PIN);
+    double temperature;
+    double rel_humidity;
+    
+    char buf[50] = {};
+
     for (;;) {
         node.poll();
 
-        if (count++ >= 500) {
+        if (count++ % 500 == 0) {
             cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
             toggle = !toggle;
             if(!node.is_connected()) {
                 printf("Not connected!\n");
             }
+        }
 
-            node.tree.get_children(node.get_NodeID(), children_ids, number_of_children);
-            printf("\n\nChildren:\n");
-            for (int i = 0; i < number_of_children; i++) {
-                printf("%u\t", children_ids[i]);
-            }
-            printf("\n");
+        if (count == 2000) {
+            std::cout<<"Temp:"<<dht11_sensor.readT()<<" °C"<<std::endl;
+        }
+
+        if (count == 4000) {
+            std::cout<<"RH:"<<dht11_sensor.readRH()<<" %"<<std::endl;
+        }
+
+        if (count == 6000) {
+            dht11_sensor.readRHT(&temperature, &rel_humidity);
+            snprintf(buf, sizeof buf, "Temp: %lf °C\tRH: %lf %", temperature, rel_humidity); 
+            DEBUG_printf("%s", buf);
+
+            
+            node.send_data(0, sizeof buf, (uint8_t*)buf);
 
             count = 0;
         }

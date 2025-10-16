@@ -147,7 +147,7 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
         node->handle_incoming_data(state->buffer, p->tot_len);
     
     }
-    
+    DEBUG_printf("Freeing buffer and returning");
     pbuf_free(p);
     return ERR_OK;
 }
@@ -424,9 +424,14 @@ bool STANode::connect_to_network() {
 bool STANode::connect_to_node(uint32_t id) {
    DEBUG_printf("Connecting to node: %u\n", id);
 
+    if(!scan_for_nodes()) {
+        ERROR_printf("Scan for nodes failed");
+        return false;
+    }
+
     // Check if node is known
     if (known_nodes.count(id) == 0) {
-       DEBUG_printf("Unknown node. Ending connection attempt.\n");
+        DEBUG_printf("Unknown node. Ending connection attempt.\n");
         return false;
     }
 
@@ -434,7 +439,7 @@ bool STANode::connect_to_node(uint32_t id) {
     char ssid[32];  // Allocate on stack instead of heap
     snprintf(ssid, sizeof(ssid), "GatorGrid_Node:%08X", id);  // Convert ID to uppercase hex
 
-   DEBUG_printf("Generated SSID: %s\n", ssid);
+    DEBUG_printf("Generated SSID: %s\n", ssid);
 
     // Attempt to connect
     if (cyw43_arch_wifi_connect_timeout_ms(ssid, "password", CYW43_AUTH_WPA2_AES_PSK, 7500)) {
@@ -445,7 +450,7 @@ bool STANode::connect_to_node(uint32_t id) {
         return false;
     }
 
-   DEBUG_printf("Connected successfully.\n");
+    DEBUG_printf("Connected successfully.\n");
     parent = id;
     return true;
 }
@@ -465,14 +470,14 @@ bool STANode::tcp_init() {
        DEBUG_printf("Unable to initialize tcp client state\n");
         return false;
     }
-   DEBUG_printf("Initialized tcp client\n");
+    DEBUG_printf("Initialized tcp client\n");
     state->got_nak = false;
     if (!tcp_client_open(this)) {
        DEBUG_printf("Failed to open client\n");
         tcp_result(state, -1);
         return false; 
     }
-   DEBUG_printf("Opened tcp client connection\n");
+    DEBUG_printf("Opened tcp client connection\n");
 
     //uint8_t buffer[BUF_SIZE] = {};
     //create_join_message(BUF_SIZE, buffer, this);
