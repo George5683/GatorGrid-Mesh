@@ -8,7 +8,7 @@ using namespace std;
 #include <cstdio>
 
 struct data {
-    uint8_t *data;
+    uint8_t data[128];
     ssize_t size;
     uint32_t source;
     uint32_t dest;
