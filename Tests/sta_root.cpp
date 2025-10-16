@@ -5,6 +5,7 @@
 #include <cstdio>
 #include "pico/cyw43_arch.h"
 #include "pico/multicore.h"
+#include "display.hpp"
 
 #define DEBUG 1
 
@@ -85,7 +86,9 @@ int main() {
 
             node.tree.send_tree_serial();
             if (node.rb.get_size() > 0) {
-                printf("RINGBUFFER:%s\n", (char*)node.rb.digest().data);
+                struct data received = node.rb.digest();
+                //DUMP_BYTES(received.data, received.size);
+                printf("RINGBUFFER:%s\n", (char*)received.data);
             }
 
             count = 0;

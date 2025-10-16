@@ -1,6 +1,7 @@
 #include "pico/stdlib.h"
 #include "libraries/MeshNode/MeshNode.hpp"
 #include "libraries/MeshNode/Messages.hpp"
+#include <cstdint>
 #include <cstdio>
 #include "pico/cyw43_arch.h"
 
@@ -9,6 +10,7 @@
 #include "pico/stdlib.h"
 #include "pico/binary_info.h"
 #include "hardware/i2c.h"
+#include "display.hpp"
 
 
 // By default these devices  are on bus address 0x68
@@ -114,45 +116,82 @@ int main() {
    bool got_an_ack = false;
 
     bool toggle = true;
+    uint32_t count = 0;
     
     for (;;) {
-        // Toggle LEDS
-        //sleep_ms(1000);
-        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
-        toggle = !toggle;
-        if(!node.is_connected()) {
-            printf("Not connected!\n");
-        } else {
+        node.poll();
 
-            while (node.number_of_messages() == 0) {
-                sleep_ms(2);
+        if (count++ %  500 == 0) {
+            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
+            toggle = !toggle;
+
+            if (node.number_of_messages() > 0) {
+                struct data tmp = node.digest_data();
+                DEBUG_printf("Received message from node %08x: %s", tmp.source, (char*)tmp.data);
+                if(tmp.data[0] == 1) {
+                    // set LED on
+                    gpio_put(1, 1);
+
+                } else if(tmp.data[0] == 0) {
+                    // set LED OFF
+                    gpio_put(1, 0);
+                }
             }
+        }
 
-            struct data tmp = node.digest_data();
-            //printf("Received message from node %08x: %s", tmp.source, (char*)tmp.data);
-            if(tmp.data[0] == 1) {
-                // set LED on
-                gpio_put(1, 1);
-
-            } else if(tmp.data[0] == 0) {
-                // set LED OFF
-                gpio_put(1, 0);
-            }
-
-            sleep_ms(500);
-
+        if (count == 5000) {
             mpu6050_read_raw(acceleration, gyro, &temp);
 
-            final_size = snprintf(format_string, 50, "Current Temp (C) = %f", ((temp / 340.0) + 36.53));
+            final_size = snprintf(format_string, 50, "X Accel = %d, Y Accel = %d, Z Accel = %d", gyro[0], gyro[1], gyro[2]);
 
             if(final_size < 0)
                 puts("Size is neg error snprintf");
 
-            printf("Sending \"Current Temp (C) = %f\" to node %08x\n", ((temp / 340.0) + 36.53), 1);
+            // DEBUG_printf("Sending \"Current Temp (C) = %f\" to node %08x\n", ((temp / 340.0) + 36.53), 1);
 
             got_an_ack = (node.send_data(0, final_size, (uint8_t*)format_string) == 0);
+            count = 0;
         }
-        sleep_ms(500);
+
+        // else
+        // // Toggle LEDS
+        // //sleep_ms(1000);
+        // cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
+        // toggle = !toggle;
+        // if(!node.is_connected()) {
+        //     printf("Not connected!\n");
+        // } else {
+
+        //     while (node.number_of_messages() == 0) {
+        //         sleep_ms(2);
+        //     }
+
+        //     struct data tmp = node.digest_data();
+        //     DEBUG_printf("Received message from node %08x: %s", tmp.source, (char*)tmp.data);
+        //     if(tmp.data[0] == 1) {
+        //         // set LED on
+        //         gpio_put(1, 1);
+
+        //     } else if(tmp.data[0] == 0) {
+        //         // set LED OFF
+        //         gpio_put(1, 0);
+        //     }
+
+        //     sleep_ms(500);
+
+        //     mpu6050_read_raw(acceleration, gyro, &temp);
+
+        //     final_size = snprintf(format_string, 50, "Current Temp (C) = %f", ((temp / 340.0) + 36.53));
+
+        //     if(final_size < 0)
+        //         puts("Size is neg error snprintf");
+
+        //     DEBUG_printf("Sending \"Current Temp (C) = %f\" to node %08x\n", ((temp / 340.0) + 36.53), 1);
+
+        //     got_an_ack = (node.send_data(0, final_size, (uint8_t*)format_string) == 0);
+        // }
+
+        sleep_ms(1);
     }
 
     return 0;

@@ -10,6 +10,7 @@
 #include "pico/stdlib.h"
 #include "pico/binary_info.h"
 #include "hardware/i2c.h"
+#include "display.hpp"
 
 
 // By default these devices  are on bus address 0x68
@@ -114,15 +115,21 @@ int main() {
 
     bool toggle = true;
     uint32_t send_count = 0;
+
+    DEBUG_printf("Entering loop");
     for (;;) {
+        // DEBUG_printf("Before poll");
         node.poll();
 
         if (count++ >= 1000) {
+            // DEBUG_printf("Before LED toggle");
             cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
             toggle = !toggle;
             if(!node.is_connected()) {
                 printf("Not connected!\n");
             }
+
+            count = 0;
         }
 
         sleep_ms(1);
