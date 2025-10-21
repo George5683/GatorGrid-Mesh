@@ -8,6 +8,7 @@
 #include <map>
 #include <vector>
 #include "pico/cyw43_arch.h"
+#include <bits/stdc++.h>
 
 #include "../UART/UART.hpp"
 //#include "../SPI/SPI.hpp"
@@ -323,6 +324,8 @@ public:
     bool connect_to_network();
     bool is_connected();
     bool tcp_init();
+    bool selfHealingCheck();
+    bool runSelfHealing();
 
     PicoUART uart;
 
