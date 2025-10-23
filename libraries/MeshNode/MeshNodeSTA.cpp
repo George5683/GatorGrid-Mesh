@@ -584,4 +584,6 @@ bool STANode::runSelfHealing(){
     else{
         return false;
     }
+
+    return false;
 }
