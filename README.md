@@ -5,8 +5,9 @@ GatorGrid is a multifunctional software solution designed for the Raspberry Pi P
 ## Features
 - MeshNode library for STA and AP mode
 - Doxygen for documentation
-- SPI interaction for internode communication
+- UART interaction for internode communication
 - Kicad Custom PCB deisgn with external battery charging capabilities
+- Network tree based creation from designated root node
 
 ## Requirements to run
 - Install doxygen
@@ -20,6 +21,11 @@ GatorGrid is a multifunctional software solution designed for the Raspberry Pi P
 ## How to upload code to PICO W's
 1. Push the bootsel and plug the microcontroller into the computer
 2. Create the .uf2 file and upload it to PICO W by dragging it into the directory
+
+# PCB
+The PCB is deisgned to have two Pico W's connected to each of the two vertical slots.
+
+![PCB Image](/img/pcb.jpeg)
 
 ## Bugs:
 - At the moment if in an environment with high congestion, packets may not arrive. Moving locations is required.
