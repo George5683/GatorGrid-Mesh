@@ -52,6 +52,7 @@ public:
     std::string serialize_node(Node* node);
     std::string serialize_tree();
     void send_tree_serial();
+    void move_node(uint32_t id, uint32_t newParentID);
 };
 
 #endif
