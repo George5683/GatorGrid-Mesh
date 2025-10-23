@@ -582,7 +582,8 @@ bool STANode::runSelfHealing(){
                     connect_to_node(parent);
                     foundParent = true;
                     DEBUG_printf("Connected to new parent node: %u\n", parent);
-
+                    uint32_t node_id = get_NodeID();
+                    tree.move_node(node_id, parent);
                     return true;
                 }
 
