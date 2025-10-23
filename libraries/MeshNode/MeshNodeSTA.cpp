@@ -514,6 +514,10 @@ bool STANode::selfHealingCheck(){
 
     scan_for_nodes();
 
+    if(is_root){
+        return false;
+    }
+
     if(known_nodes.find(parent) == known_nodes.end()){
         DEBUG_printf("Parent node not found during self-healing scan.\n");
         return true;
@@ -557,6 +561,7 @@ bool STANode::runSelfHealing(){
             if(tree.get_children(potentialNewParent, childrenArray, childrenCount)){
                 if(childrenCount < 3){
                     parent = potentialNewParent;
+                    connect_to_node(parent);
                     foundParent = true;
                     DEBUG_printf("Connected to new parent node: %u\n", parent);
 
