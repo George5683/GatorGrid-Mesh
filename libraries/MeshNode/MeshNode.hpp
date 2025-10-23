@@ -110,6 +110,7 @@ private:
     
 public:
     bool is_root = false;
+    bool is_child_of_root = false;
     MeshNode();
     virtual ~MeshNode();
 

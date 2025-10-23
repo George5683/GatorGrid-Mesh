@@ -558,6 +558,14 @@ bool STANode::runSelfHealing(){
 
         while(foundParent == false){
 
+            //Need to further implement. is_root must be made to always be correct in other functions. is_child_of_root must also be implemented
+            //to ensure that this logic works.
+            if(is_child_of_root == true){
+                DEBUG_printf("Node directly connected to root has lost connection to root. Transplanting new root node.\n");
+                is_child_of_root = false;
+                is_root = true;
+            }
+
             for (const auto& node : known_nodes) {
                 if ((node.second->rssi > min_rssi) & std::count(triedNodes.begin(), triedNodes.end(), node.first) == 0) {
                     min_rssi = node.second->rssi;
