@@ -23,7 +23,7 @@ GatorGrid is a multifunctional software solution designed for the Raspberry Pi P
 
 # PCB
 The PCB is deisgned to have two Pico W's connected to each of the two vertical slots.
-
+![PCB Image](/images/pcb.jpeg)
 
 ## Bugs:
 - At the moment if in an environment with high congestion, packets may not arrive. Moving locations is required.
