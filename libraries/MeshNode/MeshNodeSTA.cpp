@@ -508,3 +508,76 @@ err_t STANode::update_network() {
 
     return 0;
 }
+
+/*
+//Returns true if parent not found
+bool STANode::selfHealingCheck(){
+
+    scan_for_nodes();
+
+    if(known_nodes.find(parent) == known_nodes.end()){
+        DEBUG_printf("Parent node not found during self-healing scan.\n");
+        return true;
+    } 
+
+    else {
+        DEBUG_printf("Parent node found during self-healing scan.\n");
+        return false;
+    }
+
+}
+
+bool STANode::runSelfHealing(){
+
+    //Check if parent is still connected. If not, enter if statement
+    if(selfHealingCheck() == true){
+
+        bool foundParent = false;
+
+        int16_t min_rssi = known_nodes.begin()->second->rssi;
+        uint32_t min_node_id = known_nodes.begin()->first;
+
+        uint8_t potentialNewParent;
+        uint8_t childrenCount;
+        uint32_t childrenArray[4];
+
+        vector<uint32_t> triedNodes;
+
+        while(foundParent == false){
+
+            for (const auto& node : known_nodes) {
+                if ((node.second->rssi > min_rssi) & std::count(triedNodes.begin(), triedNodes.end(), node.first) == 0) {
+                    min_rssi = node.second->rssi;
+                    min_node_id = node.first;
+                    triedNodes.push_back(min_node_id);
+                }
+            }
+
+            potentialNewParent = min_node_id;
+
+            if(tree.get_children(potentialNewParent, childrenArray, childrenCount)){
+                if(childrenCount < 3){
+                    parent = potentialNewParent;
+                    foundParent = true;
+                    DEBUG_printf("Connected to new parent node: %u\n", parent);
+
+                    return true;
+                }
+
+                else{
+                    DEBUG_printf("Potential parent node: %u has too many children. Trying next best node.\n", potentialNewParent);
+                }
+            }
+
+            else{
+                DEBUG_printf("Something went wrong during a self-heal.\n");
+            }
+
+        }
+    }
+
+    else{
+        return false;
+    }
+}
+    */
