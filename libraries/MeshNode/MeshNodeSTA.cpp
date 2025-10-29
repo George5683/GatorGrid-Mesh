@@ -509,6 +509,7 @@ err_t STANode::update_network() {
     return 0;
 }
 
+/*
 //Returns true if parent not found
 bool STANode::selfHealingCheck(){
 
@@ -573,10 +574,10 @@ bool STANode::runSelfHealing(){
             }
 
         }
-        
     }
 
     else{
         return false;
     }
 }
+    */

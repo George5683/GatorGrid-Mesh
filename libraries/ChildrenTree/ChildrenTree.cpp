@@ -88,6 +88,8 @@ bool ChildrenTree::remove_node(int id) {
     }
     parent->children[parent->number_of_children-1] = nullptr;
     parent->number_of_children--;
+
+    return true;
 }
 
 void ChildrenTree::remove_children(int id) {
