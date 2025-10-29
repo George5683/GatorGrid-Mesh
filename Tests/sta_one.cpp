@@ -47,9 +47,8 @@ int main() {
     printf("Left searching for nodes\n");
 
     while(!node.connect_to_node(0));
-    if (!node.tcp_init()) {
-        // Failed to init TCP connection
-        while(true);
+    while (!node.tcp_init()) {
+        ERROR_printf("Failed to init connection... Retrying");
     }
 
 

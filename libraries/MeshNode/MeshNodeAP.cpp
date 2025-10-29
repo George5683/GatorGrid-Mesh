@@ -134,8 +134,9 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 
     bool got_full_message = false;
 
-   DEBUG_printf("Recv called\n");
+    DEBUG_printf("Recv called\n");
     if (!p) {
+        ERROR_printf("pbuf returned null");
         return tcp_server_result(arg, -1);
     }
     // this method is callback from lwIP, so cyw43_arch_lwip_begin is not required, however you
@@ -217,6 +218,7 @@ err_t tcp_server_poll(void *arg, struct tcp_pcb *tpcb) {
 }
 
 void tcp_server_err(void *arg, err_t err) {
+    ERROR_printf("Called with error %d", err);
     if (err != ERR_ABRT) {
         DEBUG_printf("tcp_client_err_fn %d\n", err);
         tcp_server_result(arg, err);
@@ -441,6 +443,15 @@ void APNode::set_ap_credentials(char name[32], const char* pwd) {
 void APNode::poll(unsigned int timeout_ms) {
     if(uart.BufferReady()) {
         handle_serial_message(uart.getReadBuffer());
+    }
+    int st = cyw43_wifi_link_status(&cyw43_state, CYW43_ITF_AP);
+    if (st == CYW43_LINK_NONET || st == CYW43_LINK_DOWN || st == CYW43_LINK_FAIL) {
+        ERROR_printf("[WIFI] AP lost, status=%d\n", st);
+        cyw43_wifi_leave(&cyw43_state, CYW43_ITF_AP);
+        // Clean up sockets, stop services, and start reconnect logic…
+        // e.g., cyw43_wifi_leave(&cyw43_state, CYW43_ITF_STA);
+        // then try cyw43_arch_wifi_connect_timeout_ms(...) with backoff
+        // runSelfHealing();
     }
 }
 

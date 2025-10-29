@@ -41,6 +41,7 @@ static err_t tcp_client_close(void *arg) {
     STANode* node = (STANode*)arg;
     TCP_CLIENT_T *state = node->state;
     err_t err = ERR_OK;
+    DEBUG_printf("Called");
     if (state->tcp_pcb != NULL) {
         tcp_arg(state->tcp_pcb, NULL);
         tcp_poll(state->tcp_pcb, NULL, 0);
@@ -55,6 +56,7 @@ static err_t tcp_client_close(void *arg) {
         }
         state->tcp_pcb = NULL;
     }
+    free(state);
     return err;
 }
 
@@ -107,7 +109,7 @@ static err_t tcp_client_poll(void *arg, struct tcp_pcb *tpcb) {
 
 static void tcp_client_err(void *arg, err_t err) {
     if (err != ERR_ABRT) {
-        DEBUG_printf("tcp_client_err %d\n", err);
+        ERROR_printf("tcp_client_err %d\n", err);
         tcp_result(arg, err);
     }
 }
@@ -120,7 +122,7 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
     
     // Check for connection closed or error
     if (!p) {
-        DEBUG_printf("Connection closed or error\n");
+        ERROR_printf("Connection closed or error\n");
         return tcp_result(arg, 0); // Consider this a success as we've got a response
     }
     
@@ -292,7 +294,7 @@ int extract_id(const char *ssid) {
         //printf("Converted ID: %d (Hex to Decimal)\n", id);
         return id;
     } else {
-       DEBUG_printf("Invalid SSID format: %s\n", ssid);
+        ERROR_printf("Invalid SSID format: %s\n", ssid);
         return -1;
     }
 }
@@ -482,7 +484,12 @@ bool STANode::tcp_init() {
     //uint8_t buffer[BUF_SIZE] = {};
     //create_join_message(BUF_SIZE, buffer, this);
     TCP_INIT_MESSAGE init_msg(get_NodeID(), parent);
-    return send_tcp_data_blocking(init_msg.get_msg(), init_msg.get_len(), false);
+    if (!send_tcp_data_blocking(init_msg.get_msg(), init_msg.get_len(), false)) {
+        tcp_client_close(this);
+        return false;
+    }
+    return true;
+    
 }
 
 // Check for serial messages and if you have any parse them

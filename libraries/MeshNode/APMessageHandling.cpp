@@ -48,7 +48,7 @@
     cyw43_arch_lwip_end();
     if (flag)
       return false;
-   DEBUG_printf("Successfully queued message\n");
+    DEBUG_printf("Successfully queued message\n");
     return true;
 }
 
