@@ -1,5 +1,5 @@
 #include "MeshNode.hpp"
-#include <cstdint>
+#include "Messages.hpp"
 #include <random>
 #include <ctime>
 #include <cstdio>
@@ -7,19 +7,83 @@
 #include <cstring>
 #include <sstream>
 
-#include "SerialMessages.hpp"
+#include "../SPI/SPI.hpp"
+#include "../ChildrenTree/ChildrenTree.hpp"
+
 #include "hardware/regs/rosc.h"
 #include "hardware/regs/addressmap.h"
-#include "display.hpp"
 
- #define TRY(x)            \
- do                        \
- {                         \
-     err_t st;             \
-     st = (x);             \
-     if (st != 0)          \
-         return st;        \
- } while (0)
+#define TCP_PORT 4242
+
+#define BUF_SIZE 2048
+#define TEST_ITERATIONS 10
+#define POLL_TIME_S 5
+
+#define DEBUG 0
+
+#if DEBUG 
+#define DEBUG_printf printf
+#else
+#define DEBUG_printf
+#endif
+
+#if 1
+ static void dump_bytes(const uint8_t *bptr, uint32_t len) {
+     unsigned int i = 0;
+ 
+    DEBUG_printf("dump_bytes %d", len);
+     for (i = 0; i < len;) {
+         if ((i & 0x0f) == 0) {
+            DEBUG_printf("\n");
+         } else if ((i & 0x07) == 0) {
+            DEBUG_printf(" ");
+         }
+        DEBUG_printf("%02x ", bptr[i++]);
+     }
+    DEBUG_printf("\n");
+ }
+ #define DUMP_BYTES dump_bytes
+ #else
+ #define DUMP_BYTES(A,B)
+ #endif
+
+
+
+// TCP Server state structures
+typedef struct TCP_CONNECT_STATE_T_ {
+    struct tcp_pcb *pcb;
+    int sent_len;
+    char headers[128];
+    char result[256];
+    int header_len;
+    int result_len;
+    ip_addr_t *gw;
+    void* ap_node;
+} TCP_CONNECT_STATE_T;
+
+typedef struct TCP_SERVER_T_ {
+    struct tcp_pcb *server_pcb;
+    struct tcp_pcb *client_pcb;
+    bool complete;
+    int sent_len;
+    int recv_len;
+    int run_count;
+    ip_addr_t gw;
+    void* ap_node;
+    dhcp_server_t dhcp_server;
+    dns_server_t dns_server;
+    uint8_t buffer_sent[BUF_SIZE];
+    uint8_t buffer_recv[BUF_SIZE];
+} TCP_SERVER_T;
+
+struct ClientConnection {
+    struct tcp_pcb *pcb;
+    bool id_recved = false;
+    uint32_t id = 0;
+};
+ 
+std::vector<ClientConnection> clients;
+std::map<tcp_pcb *, ClientConnection> clients_map;
 
 
 // https://forums.raspberrypi.com/viewtopic.php?t=302960
@@ -55,6 +119,13 @@ err_t tcp_server_close(void *arg) {
     TCP_SERVER_T *state = node->state;
     err_t err = ERR_OK;
     if (state->client_pcb != NULL) {
+
+        // Remove the node from the tree should it exist
+        
+
+        // Remove the node from 
+
+        DEBUG_printf("tcp_server_close is closing down a client, this is expected\n");
         tcp_arg(state->client_pcb, NULL);
         tcp_poll(state->client_pcb, NULL, 0);
         tcp_sent(state->client_pcb, NULL);
@@ -67,8 +138,11 @@ err_t tcp_server_close(void *arg) {
             err = ERR_ABRT;
         }
         state->client_pcb = NULL;
+
+        
     }
     if (state->server_pcb) {
+        DEBUG_printf("tcp_server_close is closing down a server!!! Investigate this!!!\n");
         tcp_arg(state->server_pcb, NULL);
         tcp_close(state->server_pcb);
         state->server_pcb = NULL;
@@ -136,13 +210,24 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 
    DEBUG_printf("Recv called\n");
     if (!p) {
+        // At this point we know that if we hit this then p is null and the TCP connection is dead
+        // The call at the end will clean up and close the TCP connection
+
+        // We need to handle deleting all of the data associated with the node now
+
+        // TODO - Remove node from tree
+        // Remove node from TCP map
+
+        // children handle reconnecting
+
+        
+
+        
         return tcp_server_result(arg, -1);
     }
     // this method is callback from lwIP, so cyw43_arch_lwip_begin is not required, however you
     // can use this method to cause an assertion in debug mode, if this method is called when
     // cyw43_arch_lwip_begin IS needed
-
-    
     
     cyw43_arch_lwip_check();
     if (p->tot_len > 0) {
@@ -165,7 +250,7 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
            DEBUG_printf("SERVER DEBUG: Currently recv %d\n", state->recv_len);
         }
 
-        if(node->clients_map.find(tpcb) != node->clients_map.end()) {
+        if(clients_map.find(tpcb) != clients_map.end()) {
            DEBUG_printf("PCB FOUND\n");
         } else {
            DEBUG_printf("MAJOR ERROR CLIENT PCB NOT FOUND\n");
@@ -218,6 +303,7 @@ err_t tcp_server_poll(void *arg, struct tcp_pcb *tpcb) {
 
 void tcp_server_err(void *arg, err_t err) {
     if (err != ERR_ABRT) {
+        DEBUG_printf("A fatal error has occured on this tcp connection and the error function has been called\n");
         DEBUG_printf("tcp_client_err_fn %d\n", err);
         tcp_server_result(arg, err);
     }
@@ -225,7 +311,6 @@ void tcp_server_err(void *arg, err_t err) {
 
 err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
     TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
-    APNode* node = (APNode*)state->ap_node;
     if (err != ERR_OK || client_pcb == NULL) {
         DEBUG_printf("Failure in accept\n");
         tcp_server_result(arg, err);
@@ -237,15 +322,15 @@ err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
 
     client.pcb = client_pcb;
 
-    node->clients.push_back({client});
+    clients.push_back({client});
 
-    node->clients_map.insert({client_pcb, client});
+    clients_map.insert({client_pcb, client});
 
     state->client_pcb = client_pcb;
     tcp_arg(client_pcb, state);
     tcp_sent(client_pcb, tcp_server_sent);
     tcp_recv(client_pcb, tcp_server_recv);
-    // tcp_poll(client_pcb, tcp_server_poll, POLL_TIME_S * 2);
+    tcp_poll(client_pcb, tcp_server_poll, POLL_TIME_S * 2);
     tcp_err(client_pcb, tcp_server_err);
 
     //return tcp_server_send_data(arg, state->client_pcb);
@@ -316,29 +401,15 @@ void run_tcp_server(void * arg) {
 }
 
 // APNode class constructor
-APNode::APNode() : state(nullptr), running(false), password("password"), rb(10), tree(get_NodeID())  {
-        // initalize uart
-
-    DEBUG_printf("starting uart\n");
-    uart.picoUARTInit();
-    DEBUG_printf("uart  nitalized\n");
-    uart.picoUARTInterruptInit();
-    DEBUG_printf("uart intterupts initalized\n");
+APNode::APNode() : state(nullptr), running(false), password("password"), rb(10), tree(get_NodeID()), Master_Pico()  {
     snprintf(ap_name, sizeof(ap_name), "GatorGrid_Node:%08X", get_NodeID());
+    Master_Pico.SPI_init(true);
 }
 
-APNode::APNode(uint32_t id) : state(nullptr), running(false), password("password"), rb(10), tree(id) {
-        // initalize uart
-
-    
-
-    DEBUG_printf("starting uart\n");
-    uart.picoUARTInit();
-    DEBUG_printf("uart initalized\n");
-    uart.picoUARTInterruptInit();
-    DEBUG_printf("uart intterupts initalized\n");
+APNode::APNode(uint32_t id) : state(nullptr), running(false), password("password"), rb(10), tree(id), Master_Pico()  {
     set_NodeID(id);
     snprintf(ap_name, sizeof(ap_name), "GatorGrid_Node:%08X", get_NodeID());
+    Master_Pico.SPI_init(true);
 }
 
 struct data APNode::digest_data() {
@@ -372,13 +443,6 @@ uint32_t MeshNode::get_NodeID(){
     return NodeID;
 }
 
-bool MeshNode::get_is_root() {
-    return is_root;
-}
-void MeshNode::set_is_root(bool status) {
-    is_root = status;
-}
-
 // APNode deconstructor
 APNode::~APNode(){
     // Make sure AP mode is stopped
@@ -395,8 +459,6 @@ APNode::~APNode(){
 }
 
 bool APNode::init_ap_mode() {
-
-
 
     // Allocate the state of the TCP server if not already allocated
     if (!state) {
@@ -419,16 +481,6 @@ bool APNode::init_ap_mode() {
         DEBUG_printf("failed to initialize cyw43 driver\n");
         return false;
     }
-
-     // Set power mode to high power
-
-
-    if(cyw43_wifi_pm(&cyw43_state, CYW43_PERFORMANCE_PM) != 0) {
-        while(true) {
-            DEBUG_printf("Failed to set power state\n");
-            sleep_ms(1000);
-        }
-    }
     
     return true;
 }
@@ -439,9 +491,26 @@ void APNode::set_ap_credentials(char name[32], const char* pwd) {
 }
 
 void APNode::poll(unsigned int timeout_ms) {
-    if(uart.BufferReady()) {
-        handle_serial_message(uart.getReadBuffer());
+    if (!running || !state) {
+        return;
     }
+    
+    // Check if we should stop
+    if (state->complete) {
+        running = false;
+        return;
+    }
+    
+    // Handle polling operations based on the architecture
+    #if PICO_CYW43_ARCH_POLL
+    // If using poll architecture, check for work
+    cyw43_arch_poll();
+    // Wait for work or timeout
+    cyw43_arch_wait_for_work_until(make_timeout_time_ms(timeout_ms));
+    #else
+    // If using interrupt architecture, just sleep
+    sleep_ms(timeout_ms);
+    #endif
 }
 
 void APNode::stop_ap_mode() {
@@ -466,6 +535,7 @@ bool APNode::start_ap_mode() {
 
     // Delay to ensure the masters starts after the slave
     sleep_ms(2000);
+    Master_Pico.SPI_init(true);
 
     // Enable the AP mode on the driver
     cyw43_arch_enable_ap_mode(ap_name, password, CYW43_AUTH_WPA2_AES_PSK);
@@ -480,7 +550,7 @@ bool APNode::start_ap_mode() {
      #else
      #define IP(x) (x)
      #endif
-     
+ \
      ip4_addr_t mask;
      IP(state->gw).addr = PP_HTONL(CYW43_DEFAULT_IP_AP_ADDRESS);
      IP(mask).addr = PP_HTONL(CYW43_DEFAULT_IP_MASK);
@@ -501,43 +571,13 @@ bool APNode::start_ap_mode() {
         return false;
     }
 
-    // Start SPI
-    // Master_Pico.SPI_init();
-
-    // uint32_t ID = this->get_node_id();
-    // vector<uint8_t> temp =  { 'A', 'f', 'f', 'f', 'f', 'f', 'f', 'f',
-    //                                           'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f',
-    //                                           'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f',
-    //                                           'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f' };
-    // *(uint32_t*)temp.data() = ID;
-
-    // Master_Pico.SPI_send_message(temp);
+    // Send over node ID to STA
+    while(!Master_Pico.SPI_is_write_available());
 
     uint32_t ID = this->get_node_id();
 
-    DEBUG_printf("Sending ID %d\n", ID);
-
-    uart.sendMessage((char*)&ID);
+    Master_Pico.SPI_send_message((uint8_t*) &ID, sizeof(ID));
     
-
-    //DEBUG_printf("Message sent");
-    //puts("entering poll test");
-
-    //while(!Master_Pico.SPI_POLL_MESSAGE());
-
-    // wait for sta to fully start
-    while(!uart.BufferReady()) {
-        sleep_ms(10);
-    }
-
-    uint8_t *tmp = uart.getReadBuffer();
-
-    if(*(uint32_t *)tmp != this->get_NodeID()) {
-        while(1) {
-            printf("ERROR: Node ID DIFFERENT, This should not ever be hit");
-        }
-    }
-
     running = true;
     return true;
 }
@@ -557,4 +597,248 @@ MeshNode::MeshNode() {
 // MeshNode deconstructor
 MeshNode::~MeshNode(){
     NodeID = 0;
+}
+
+bool APNode::send_tcp_data(uint32_t id, tcp_pcb *client_pcb, uint8_t* data, uint32_t size) {
+
+    //uint8_t buffer[size] = {};
+    // if (size > BUF_SIZE) { size = BUF_SIZE; }
+    //memcpy(buffer, data, size);
+
+    bool flag = false;
+    dump_bytes(data, size);
+
+    cyw43_arch_lwip_begin();
+
+    // not entirely sure its supposed to be client_pcb
+    
+    //err_t err = tcp_write(state->client_pcb, (void*)buffer, size, TCP_WRITE_FLAG_COPY);
+    //err_t err2 = tcp_output(state->client_pcb);
+
+   DEBUG_printf("send_tcp_data: Destination ID %08x\n", id);
+
+    err_t err = tcp_write(client_pcb, (void*)data, size, TCP_WRITE_FLAG_COPY);
+    err_t err2 = tcp_output(client_pcb);
+
+    if (err != ERR_OK) {
+       DEBUG_printf("Message failed to write\n");
+       DEBUG_printf("ERR: %d\n", err);
+        flag = true;
+    }
+    if (err2 != ERR_OK) {
+       DEBUG_printf("Message failed to be sent\n");
+        flag = true;
+    }
+    cyw43_arch_lwip_end();
+    if (flag)
+      return false;
+   DEBUG_printf("Successfully queued message\n");
+    return true;
+}
+
+
+bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct pbuf *p) {
+    bool ACK_flag = true;
+    bool NAK_flag = false;
+    bool update_flag = false;
+    uint8_t error = 0;
+    // tcp_init_msg_t *init_msg_str = reinterpret_cast <tcp_init_msg_t *>(state->buffer_recv);
+    // clients_map[tpcb].id = init_msg_str->source;
+    //DEBUG_printf("ID RECV FROM INIT MESSAGE: %08X\n", clients_map[tpcb].id);
+    // uint32_t test = ((APNode*)(state->ap_node))->get_NodeID();
+    //DEBUG_printf("CURRENT NODE ID: %08X\n", test);
+
+    puts("HANDLE DUMP");\
+    dump_bytes(buffer, 100); 
+
+    // TCP_INIT_MESSAGE init_msg(((APNode*)(state->ap_node))->get_NodeID());  
+    TCP_MESSAGE* msg = parseMessage(reinterpret_cast <uint8_t *>(state->buffer_recv));
+    uint8_t msg_id = 0xFF;
+
+    if (!msg) {
+       DEBUG_printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
+        ACK_flag = false;
+    } else {
+
+        // TODO: Handle error checks for messages
+        msg_id = buffer[1];
+
+        //DUMP_BYTES(state->buffer_recv, 2048);
+
+        switch (msg_id) {
+            case 0x00: {
+                TCP_INIT_MESSAGE* initMsg = static_cast<TCP_INIT_MESSAGE*>(msg);
+               DEBUG_printf("Received initialization message from node %u", initMsg->msg.source);
+                //does stuff
+
+                // Set init node ID
+                if(clients_map[tpcb].id_recved == false) {
+                    ACK_flag = true;
+                    clients_map[tpcb].id_recved = true;
+                    clients_map[tpcb].id = initMsg->msg.source;
+                }
+
+                tree.add_child(initMsg->msg.source);
+
+                // Insert into map of IDs to TPCB
+                client_tpcbs.insert({clients_map[tpcb].id, tpcb});
+
+                update_flag = true;
+                
+                break;
+            }
+            case 0x01: {
+                TCP_DATA_MSG* dataMsg = static_cast<TCP_DATA_MSG*>(msg);
+                // Store messages in a ring buffer
+                puts("Got data message");
+               DEBUG_printf("Testing dataMsg, len:%u, source:%08x, dest:%08x\n",dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
+                if (dataMsg->msg.dest == get_NodeID()) {
+                    rb.insert(dataMsg->msg.msg,dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
+                    DEBUG_printf("Successfully inserted into ring buffer\n");
+                    ACK_flag = true;
+                    break;
+                } else {
+                    uint32_t dest;
+                   DEBUG_printf("Message was not for me, was for dest:%08x\n", dataMsg->msg.dest);
+                    // if(!tree.find_path_parent(dataMsg->msg.dest, &dest)) {
+                    //     DEBUG_printf("Count not find path to parent\n");
+                    //     ACK_flag = false;
+                    //     //NAK_flag = true;
+                    //     error = 0x01; // TODO make enum for errors (no node in tree)
+                    //     TCP_NAK_MESSAGE nakMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
+                    //     nakMsg.set_error(error);
+                    //     send_tcp_data(dataMsg->msg.source, client_tpcbs.at(dataMsg->msg.source), nakMsg.get_msg(), nakMsg.get_len());
+                    //     break;
+                    // }
+                    // DEBUG_printf("Found path to parent, starts with %u\n", dest);
+                    if (client_tpcbs.find(dataMsg->msg.dest) == client_tpcbs.end()) {
+                        ACK_flag = false;
+                        //NAK_flag = true;
+                        error = 0x02; // TODO make enum for errors (id not in connected clients)
+                        TCP_NAK_MESSAGE nakMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
+                        nakMsg.set_error(error);
+                        send_tcp_data(dataMsg->msg.source, client_tpcbs.at(dataMsg->msg.source), nakMsg.get_msg(), nakMsg.get_len());
+                        break;
+                    }
+                    ACK_flag = false;
+                    DEBUG_printf("Forwarding message to node\n");
+                    send_tcp_data(dataMsg->msg.dest, client_tpcbs.at(dataMsg->msg.dest), dataMsg->get_msg(), dataMsg->get_len());
+                    break;
+                }
+                
+            }
+            case 0x02: {
+                TCP_DISCONNECT_MSG* discMsg = static_cast<TCP_DISCONNECT_MSG*>(msg);
+
+                
+                //does stuff
+                break;
+            }
+            case 0x03: {
+                TCP_UPDATE_MESSAGE* updMsg = static_cast<TCP_UPDATE_MESSAGE*>(msg);
+                //does stuff
+                break;
+            }
+            case 0x04: {
+                TCP_ACK_MESSAGE* ackMsg = static_cast<TCP_ACK_MESSAGE*>(msg);
+                //does stuff
+                // Do not need to respond to acks
+                if (ackMsg->msg.dest == get_NodeID()) {
+                    //rb.insert(dataMsg->msg.msg,dataMsg->msg.msg_len, dataMsg->msg.source, dataMsg->msg.dest);
+                    ACK_flag = false;
+                } else {
+                    uint32_t dest;
+                   DEBUG_printf("Message was not for me, was for dest:%08x\n", ackMsg->msg.dest);
+                    // if(!tree.find_path_parent(ackMsg->msg.dest, &dest)) {
+                    //     ACK_flag = false;
+                    //     NAK_flag = true;
+                    //     error = 0x01; // TODO make enum for errors (no node in tree)
+                    //     break;
+                    // }
+                    if (client_tpcbs.find(ackMsg->msg.dest) == client_tpcbs.end()) {
+                        ACK_flag = false;
+                        //NAK_flag = true;
+                        error = 0x02; // TODO make enum for errors (id not in connected clients)
+                        TCP_NAK_MESSAGE nakMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
+                        nakMsg.set_error(error);
+                        send_tcp_data(ackMsg->msg.source, client_tpcbs.at(ackMsg->msg.source), nakMsg.get_msg(), nakMsg.get_len());
+                        break;
+                    }
+                    ACK_flag = false;
+                    send_tcp_data(ackMsg->msg.dest, client_tpcbs.at(ackMsg->msg.dest), ackMsg->get_msg(), ackMsg->get_len());
+                }
+                
+
+
+                break;
+            }
+            case 0x05: {
+                TCP_NAK_MESSAGE* nakMsg = static_cast<TCP_NAK_MESSAGE*>(msg);
+                ACK_flag = false;
+                //does stuff
+                break;
+            }
+            default:
+               DEBUG_printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
+                ACK_flag = false;
+                break;
+        }
+    }
+
+    if (update_flag) {
+        puts("Update nodes called");
+        /*puts("Broadcasting all connected nodes to each other");
+        uint32_t ids[4] = {0};
+        int j = 0;
+
+        // Because this is a new node, resend the list of connected nodes to everyone
+        for(auto i : client_tpcbs) {
+            ids[j] = i.first;
+            j++;
+        }
+
+        TCP_UPDATE_MESSAGE updateMsg(get_NodeID());
+        updateMsg.add_children(j, ids);
+
+        for(auto i : client_tpcbs) {
+            sleep_ms(20);
+            send_tcp_data(i.first, i.second, updateMsg.get_msg(), updateMsg.get_len());
+           DEBUG_printf("Sent update message to %08x\n", i.first);
+        }*/
+    }
+
+    if (ACK_flag){
+       DEBUG_printf("Sending ACK message to client %08x\n", clients_map[tpcb].id);
+        // Assumption: clients_map[tpcb].id implies that any message worth acking isn't being forwarded and is originating from the intended node
+        TCP_ACK_MESSAGE ackMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
+        send_tcp_data(clients_map[tpcb].id, tpcb, ackMsg.get_msg(), ackMsg.get_len());
+        //send_tcp_data(ackMsg.get_msg(), ackMsg.get_len());
+       DEBUG_printf("Sent ACK message to client %08x\n", clients_map[tpcb].id);
+        
+    } else if (NAK_flag) {
+        // TODO: Update for error handling
+        // identify the source from clients_map and send back?
+        TCP_NAK_MESSAGE nakMsg(get_NodeID(), clients_map[tpcb].id, p->tot_len);
+        nakMsg.set_error(error);
+        send_tcp_data(clients_map[tpcb].id, tpcb, nakMsg.get_msg(), nakMsg.get_len());
+        //send_tcp_data(nakMsg.get_msg(), nakMsg.get_len());
+        delete msg;
+        return false;
+    } 
+
+    delete msg;
+    return true;
+}
+
+
+err_t APNode::send_data(uint32_t send_id, ssize_t len, uint8_t *buf) {
+    TCP_DATA_MSG msg(get_NodeID(), send_id);
+    msg.add_message(buf, len);
+    if (client_tpcbs.find(send_id) == client_tpcbs.end()){
+        return -2;
+    } 
+    tcp_pcb *client_pcb = client_tpcbs.at(send_id);
+    if (!send_tcp_data(send_id, client_pcb, msg.get_msg(), msg.get_len()))
+        return -1;
+    return 0;
 }
