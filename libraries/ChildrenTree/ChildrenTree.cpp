@@ -65,6 +65,31 @@ void ChildrenTree::remove_children(Node* node) {
 //     return true;
 // }
 
+bool ChildrenTree::remove_node(int id) {
+    Node* node = find_node(id, head);
+
+    if (node == nullptr) {
+        return false;
+    }
+
+    remove_children(id);
+
+    int index = 0;
+    Node* parent = node->parent;
+    for (int i = 0; i < parent->number_of_children; i++) {
+        index++;
+        if(parent->children[i] == node) {
+            delete parent->children[i]; // delete node
+        }
+    }   
+        //need to shift rest of parent child nodes back if needed
+    for (int i = index; i < parent->number_of_children-1; i++) {
+        parent->children[i] = parent->children[i+1];
+    }
+    parent->children[parent->number_of_children-1] = nullptr;
+    parent->number_of_children--;
+}
+
 void ChildrenTree::remove_children(int id) {
     Node* node = this->find_node(id, this->head);
     for (int i = 0; i < node->number_of_children; i++) {

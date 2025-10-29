@@ -25,6 +25,7 @@ public:
     ~ChildrenTree();
     bool add_child(uint32_t child_id);
     bool add_any_child(uint32_t parent_id, uint32_t child_id);
+    bool remove_node(int id);
     void remove_children(int id);
     bool remove_child(uint32_t id);
 
