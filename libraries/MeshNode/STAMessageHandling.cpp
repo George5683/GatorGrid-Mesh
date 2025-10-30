@@ -270,6 +270,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
                     //Clear blacklist
                     self_healing_blacklist.clear();
                     //Formally add child to the parent
+                    tree.move_node(get_NodeID(), parent);
                 } 
 
                 else {
