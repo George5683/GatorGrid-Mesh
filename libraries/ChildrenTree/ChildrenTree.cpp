@@ -299,6 +299,7 @@ void ChildrenTree::send_tree_serial() {
 }
 
 void ChildrenTree::move_node(uint32_t id, uint32_t newParentID) {
+    // ONLY USE IF YOU WANT ORIGINAL PARENT NODE DELETED
     //Find node that moving
     //Find parent of node moving, remove the parent from the tree is it exisis
     // Find grandparent node and remove parent from its children, update its num of children
