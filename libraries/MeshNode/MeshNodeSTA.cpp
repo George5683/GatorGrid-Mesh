@@ -495,12 +495,26 @@ bool STANode::tcp_init() {
 
 // Check for serial messages and if you have any parse them
 void STANode::poll() {
+    static int count = 0;
     if(uart.BufferReady()) {
         handle_serial_message(uart.getReadBuffer());
     }
 
+    if (status != ERR_OK) { // NOT WORKING
+        tcp_client_close(this);
+        // runSelfHealing();
+        while(!connect_to_network());
+        while (!tcp_init()) {
+            ERROR_printf("Failed to init connection... Retrying");
+        }
+        status = ERR_OK;
+    }
+
+    if (++count == 5000) {
+        // runSelfHealing();
+    }
     int st = cyw43_wifi_link_status(&cyw43_state, CYW43_ITF_STA);
-    DEBUG_printf("wifi link status %d", st);
+    // DEBUG_printf("wifi link status %d", st);
     if (st == CYW43_LINK_NONET || st == CYW43_LINK_DOWN || st == CYW43_LINK_FAIL) {
         ERROR_printf("[WIFI] AP lost, status=%d\n", st);
         cyw43_wifi_leave(&cyw43_state, CYW43_ITF_STA);

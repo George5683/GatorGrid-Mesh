@@ -309,6 +309,7 @@ public:
     std::map<int, cyw43_ev_scan_result_t*> known_nodes;
     uint32_t parent;
     TCP_CLIENT_T* state;
+    err_t status = ERR_OK;
 
     std::string AP_CONNECTED_IP;
 

@@ -183,7 +183,7 @@ bool ChildrenTree::node_exists(uint32_t id) {
         }
     }
 
-    ERROR_printf("Failed to find path_parent, parent set to -1");
+    DEBUG_printf("Failed to find path_parent, parent set to -1");
     *parent = UINT32_MAX;
     return false;
 }

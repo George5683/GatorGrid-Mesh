@@ -59,7 +59,7 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size, bool forward) {
         flag = true;
     }
     if (err2 != ERR_OK) {
-       DEBUG_printf("Message failed to be sent\n");
+        DEBUG_printf("Message failed to be sent\n");
         flag = true;
     }
     cyw43_arch_lwip_end();
@@ -107,7 +107,7 @@ err_t STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward
     }
     cyw43_arch_lwip_end();
     if (flag) {
-        DEBUG_printf("Some error in write/output\n");
+        ERROR_printf("Some error in write/output\n");
         return err | err2;
     }
     
@@ -132,7 +132,7 @@ err_t STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward
     DEBUG_printf("Got some ACK after send");
 
     if (state->got_nak) {
-        DEBUG_printf("Got NAK, returning false\n");
+        ERROR_printf("Got NAK, returning false\n");
         return ERR_TIMEOUT;
     }
     return ERR_OK;
@@ -400,9 +400,11 @@ err_t STANode::send_msg(uint8_t* msg) {
     uint32_t path_parent = 0;
     if (!tree.find_path_parent(target_id, &path_parent)) {
         DEBUG_printf(forward ? "Forwarding message" : "Expecting ACK");
-        if (ERR_OK != send_tcp_data_blocking(msg, len, forward)) {
+        err_t st = send_tcp_data_blocking(msg, len, forward);
+        if (ERR_OK != st) {
             ERROR_printf("send_tcp_data_blocking failed");
-            return -1;
+            status = st;
+            return st;
         }
     } else {
         SERIAL_DATA_MESSAGE serialMsg;
