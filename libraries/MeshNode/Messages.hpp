@@ -82,9 +82,19 @@ public:
         uint32_t dest;
         uint32_t source;
     }tcp_force_update_msg; // its 10pm do you know where your children are??
+
+    typedef struct __attribute__((__packed__)) tcp_child_ping_msg_t{
+        uint8_t priority;
+        uint8_t msg_id;
+        uint16_t len;
+        uint32_t source;
+        uint32_t dest;
+        //initialPing is true when the child is pinging the parent to see if it can connect
+        uint8_t initialPing;
+        //canConnect is true if the parent is able to accept the child as a new child node (has less than max children)
+        uint8_t canConnect;
+    }tcp_child_ping_msg;
 };
-
-
 
 class TCP_INIT_MESSAGE : public TCP_MESSAGE {
 public:
@@ -143,7 +153,6 @@ public:
         this->msg = *(reinterpret_cast<tcp_data_msg*>(msg));
     }
 };
-
 
 class TCP_DISCONNECT_MSG : public TCP_MESSAGE {
 public:
@@ -301,6 +310,34 @@ public:
 
     void set_msg(void* msg) override {
         this->msg = *(reinterpret_cast<tcp_force_update_msg*>(msg));
+    }
+};
+
+class TCP_CHILD_PING_MESSAGE : public TCP_MESSAGE {
+public:
+    tcp_child_ping_msg msg = {0};
+public:
+    TCP_CHILD_PING_MESSAGE(uint32_t id, uint32_t dest, uint32_t source, bool initialPing, bool canConnect) : TCP_MESSAGE(0xFF) { 
+        msg.dest = dest;
+        msg.source = source;
+        msg.priority = priority;
+        msg.msg_id = 0x37;
+        msg.len = sizeof(tcp_child_ping_msg);
+        msg.initialPing = initialPing;
+        msg.canConnect = canConnect;
+    }
+    
+    TCP_CHILD_PING_MESSAGE() : TCP_MESSAGE(0xFF) {}
+
+    uint8_t* get_msg() override {
+        return reinterpret_cast<uint8_t*>(&msg);
+    }
+    uint16_t get_len() override {
+        return msg.len;
+    }
+
+    void set_msg(void* msg) override {
+        this->msg = *(reinterpret_cast<tcp_child_ping_msg*>(msg));
     }
 };
 

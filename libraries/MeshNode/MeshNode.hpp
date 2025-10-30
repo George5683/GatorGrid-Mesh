@@ -312,6 +312,8 @@ public:
 
     std::string AP_CONNECTED_IP;
 
+    std::vector<uint32_t> self_healing_blacklist;
+
     RingBuffer rb;
     ChildrenTree tree;
 
