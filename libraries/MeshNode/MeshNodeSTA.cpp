@@ -580,6 +580,7 @@ void STANode::addChildrenToBlacklist(){
         }
     }
 
+    return;
 }
 
 bool STANode::runSelfHealing(){
@@ -607,9 +608,10 @@ bool STANode::runSelfHealing(){
             }
 
             //MUST MAKE SURE THE NODE DOES NOT CONNECT TO ITS OWN CHILDREN/GRANDCHILDREN/FURTHER DESCENDANTS
+            addChildrenToBlacklist();
 
             for (const auto& node : known_nodes) {
-                if ((node.second->rssi > min_rssi) & std::count(self_healing_blacklist.begin(), self_healing_blacklist.end(), node.first) == 0) {
+                if ((node.second->rssi > min_rssi) && std::count(self_healing_blacklist.begin(), self_healing_blacklist.end(), node.first) == 0) {
                     min_rssi = node.second->rssi;
                     min_node_id = node.first;
                 }

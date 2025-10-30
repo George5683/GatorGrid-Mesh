@@ -251,7 +251,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
             break;
         }
 
-                case 0x37: {
+        case 0x37: {
             DEBUG_printf("Child Ping Message Received\n");
             TCP_CHILD_PING_MESSAGE pingMsg;
             pingMsg.set_msg(buffer);
@@ -259,7 +259,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
             bool initialPing = pingMsg.msg.initialPing;
 
             if(initialPing == true){
-                DEBUG_printf("STA Recieved non-initial ping from child %08x which it should not have.\n", msg_source);
+                DEBUG_printf("STA Recieved initial ping from child %08x which it should not have.\n", msg_source);
             }
 
             else{
