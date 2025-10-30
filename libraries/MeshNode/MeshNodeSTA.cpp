@@ -3,6 +3,7 @@
 #include "MeshNode.hpp"
 #include "Messages.hpp"
 #include <cstdint>
+#include <cyw43.h>
 #include <random>
 #include <ctime>
 #include <cstdio>
@@ -484,7 +485,7 @@ bool STANode::tcp_init() {
     //uint8_t buffer[BUF_SIZE] = {};
     //create_join_message(BUF_SIZE, buffer, this);
     TCP_INIT_MESSAGE init_msg(get_NodeID(), parent);
-    if (!send_tcp_data_blocking(init_msg.get_msg(), init_msg.get_len(), false)) {
+    if (ERR_OK != send_tcp_data_blocking(init_msg.get_msg(), init_msg.get_len(), false)) {
         tcp_client_close(this);
         return false;
     }
@@ -499,6 +500,7 @@ void STANode::poll() {
     }
 
     int st = cyw43_wifi_link_status(&cyw43_state, CYW43_ITF_STA);
+    DEBUG_printf("wifi link status %d", st);
     if (st == CYW43_LINK_NONET || st == CYW43_LINK_DOWN || st == CYW43_LINK_FAIL) {
         ERROR_printf("[WIFI] AP lost, status=%d\n", st);
         cyw43_wifi_leave(&cyw43_state, CYW43_ITF_STA);

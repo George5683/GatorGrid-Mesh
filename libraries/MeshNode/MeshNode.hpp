@@ -333,7 +333,7 @@ public:
     err_t send_data(uint32_t send_id, ssize_t len, uint8_t *buf);
 
     bool send_tcp_data(uint8_t* data, uint32_t size, bool forward);
-    bool send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward);
+    err_t send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward);
 
     struct data digest_data();
     int number_of_messages();

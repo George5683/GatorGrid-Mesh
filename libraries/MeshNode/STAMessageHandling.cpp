@@ -84,7 +84,7 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size, bool forward) {
  * @return false - message failed to send
  */
 
-bool STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward) {
+err_t STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward) {
 
     bool flag = false;
 
@@ -96,18 +96,19 @@ bool STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward)
     err_t err2 = tcp_output(state->tcp_pcb);
     DEBUG_printf("blocking after write/output\n");
     if (err != ERR_OK) {
-       DEBUG_printf("Message failed to write\n");
-       DEBUG_printf("ERR: %d\n", err);
+        ERROR_printf("Message failed to write\n");
+        ERROR_printf("ERR: %d\n", err);
         flag = true;
     }
     if (err2 != ERR_OK) {
-       DEBUG_printf("Message failed to be sent\n");
+        ERROR_printf("Message failed to be sent\n");
+        ERROR_printf("ERR: %d\n", err2);
         flag = true;
     }
     cyw43_arch_lwip_end();
     if (flag) {
         DEBUG_printf("Some error in write/output\n");
-      return false;
+        return err | err2;
     }
     
     DEBUG_printf("SENDING BYTES BELOW: \n");
@@ -123,7 +124,7 @@ bool STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward)
         if(count == 1000) {
             state->waiting_for_ack = false;
             DEBUG_printf("\nTimeout\n");
-            return false;
+            return ERR_TIMEOUT;
         }
             
     }
@@ -132,9 +133,9 @@ bool STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward)
 
     if (state->got_nak) {
         DEBUG_printf("Got NAK, returning false\n");
-        return false;
+        return ERR_TIMEOUT;
     }
-    return true;
+    return ERR_OK;
 }
 
 bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
@@ -302,9 +303,8 @@ bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
 err_t STANode::send_data(uint32_t send_id, ssize_t len, uint8_t *buf) {
     TCP_DATA_MSG msg(get_NodeID(), send_id);
     msg.add_message(buf, len);
-    if (!send_tcp_data_blocking(msg.get_msg(), msg.get_len(), false))
-        return -1;
-    return 0;
+    // return send_tcp_data_blocking(msg.get_msg(), msg.get_len(), false);
+    return send_msg(msg.get_msg());
 }
 
 err_t STANode::send_msg(uint8_t* msg) {
@@ -400,7 +400,7 @@ err_t STANode::send_msg(uint8_t* msg) {
     uint32_t path_parent = 0;
     if (!tree.find_path_parent(target_id, &path_parent)) {
         DEBUG_printf(forward ? "Forwarding message" : "Expecting ACK");
-        if (!send_tcp_data_blocking(msg, len, forward)) {
+        if (ERR_OK != send_tcp_data_blocking(msg, len, forward)) {
             ERROR_printf("send_tcp_data_blocking failed");
             return -1;
         }
