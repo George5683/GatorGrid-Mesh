@@ -564,6 +564,21 @@ bool STANode::selfHealingCheck(){
 }
 
 void STANode::addChildrenToBlacklist(){
+    vector<uint32_t> q;
+    uint32_t children_id[4]; 
+    uint8_t number_of_children;
+    q.push_back(get_NodeID());
+    while (q.size() > 0) {
+        uint32_t curr_id = q[0];
+        self_healing_blacklist.push_back(curr_id);
+        q.erase(q.begin());
+        bool f = tree.get_children(curr_id, children_id, number_of_children);
+        if (f) {
+            for (int i = 0; i < number_of_children; i++) {
+                q.push_back(children_id[i]);
+            }
+        }
+    }
 
 }
 
