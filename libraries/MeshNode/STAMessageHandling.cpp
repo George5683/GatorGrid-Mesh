@@ -250,6 +250,39 @@ bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
             state->got_nak = true;
             break;
         }
+
+                case 0x37: {
+            DEBUG_printf("Child Ping Message Received\n");
+            TCP_CHILD_PING_MESSAGE pingMsg;
+            pingMsg.set_msg(buffer);
+            uint32_t msg_source = pingMsg.msg.source;
+            bool initialPing = pingMsg.msg.initialPing;
+
+            if(initialPing == true){
+                DEBUG_printf("STA Recieved non-initial ping from child %08x which it should not have.\n", msg_source);
+            }
+
+            else{
+                // Response to initial ping
+                bool canConnect = pingMsg.msg.canConnect;
+                if(canConnect == true){
+                    DEBUG_printf("Child %08x was accepted to %08x\n", get_NodeID(), msg_source);
+                    //Clear blacklist
+                    self_healing_blacklist.clear();
+                    //Formally add child to the parent
+                } 
+
+                else {
+                    DEBUG_printf("Child %08x was not accepted to %08x\n", get_NodeID(), msg_source);
+                    //Add attempted connection to blacklist
+                    self_healing_blacklist.push_back(msg_source);
+                    //Run self healing again
+                    runSelfHealing();
+                }
+            }
+
+        }
+        
         default:
             DEBUG_printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
             ACK_flag = false;

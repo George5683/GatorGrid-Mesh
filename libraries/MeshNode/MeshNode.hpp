@@ -114,6 +114,8 @@ public:
     MeshNode();
     virtual ~MeshNode();
 
+    std::vector<uint32_t> self_healing_blacklist;
+
     // Base class functions for get/set NodeID
     void set_NodeID(uint32_t ID);
     uint32_t get_NodeID();
@@ -313,8 +315,6 @@ public:
 
     std::string AP_CONNECTED_IP;
 
-    std::vector<uint32_t> self_healing_blacklist;
-
     RingBuffer rb;
     ChildrenTree tree;
 
@@ -328,6 +328,7 @@ public:
     bool connect_to_network();
     bool is_connected();
     bool tcp_init();
+    void addChildrenToBlacklist();
     bool selfHealingCheck();
     bool runSelfHealing();
 

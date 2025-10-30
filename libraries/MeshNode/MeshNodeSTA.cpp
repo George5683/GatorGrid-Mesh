@@ -563,6 +563,10 @@ bool STANode::selfHealingCheck(){
 
 }
 
+void STANode::addChildrenToBlacklist(){
+
+}
+
 bool STANode::runSelfHealing(){
 
     //Check if parent is still connected. If not, enter if statement
@@ -587,6 +591,8 @@ bool STANode::runSelfHealing(){
                 is_root = true;
             }
 
+            //MUST MAKE SURE THE NODE DOES NOT CONNECT TO ITS OWN CHILDREN/GRANDCHILDREN/FURTHER DESCENDANTS
+
             for (const auto& node : known_nodes) {
                 if ((node.second->rssi > min_rssi) & std::count(self_healing_blacklist.begin(), self_healing_blacklist.end(), node.first) == 0) {
                     min_rssi = node.second->rssi;
@@ -596,26 +602,13 @@ bool STANode::runSelfHealing(){
 
             potentialNewParent = min_node_id;
 
-            if(tree.get_children(potentialNewParent, childrenArray, childrenCount)){
-                if(childrenCount < 3){
-                    parent = potentialNewParent;
-                    connect_to_node(parent);
-                    foundParent = true;
-                    DEBUG_printf("Connected to new parent node: %u\n", parent);
-                    uint32_t node_id = get_NodeID();
-                    tree.move_node(node_id, parent);
-                    return true;
-                }
-
-                else{
-                    DEBUG_printf("Potential parent node: %u has too many children. Trying next best node.\n", potentialNewParent);
-                }
-            }
-
-            else{
-                DEBUG_printf("Something went wrong during a self-heal.\n");
-            }
-
+            parent = potentialNewParent;
+            connect_to_node(parent);
+            foundParent = true;
+            DEBUG_printf("Connected to new parent node: %u\n", parent);
+            uint32_t node_id = get_NodeID();
+            tree.move_node(node_id, parent);
+            return true;
         }
         
     }

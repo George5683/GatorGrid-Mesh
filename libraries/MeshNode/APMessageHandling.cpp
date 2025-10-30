@@ -254,6 +254,7 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
 
             break;
         }
+
         case 0x05: {
             TCP_NAK_MESSAGE nakMsg; // = reinterpret_cast<TCP_NAK_MESSAGE*>(state->buffer_recv);
             nakMsg.set_msg(buffer);
@@ -293,28 +294,17 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
             }
 
             else{
-                // Response to initial ping
-                bool canConnect = pingMsg.msg.canConnect;
-                if(canConnect == true){
-                    DEBUG_printf("Child %08x was accepted\n", msg_source);
-                    //Clear blacklist
-                    //Formally add child to the parent
-                } 
-
-                else {
-                    DEBUG_printf("Child %08x was not accepted\n", msg_source);
-                    //Add attempted connection to blacklist
-                    //Run self healing again
+                    DEBUG_printf("AP Recieved non-initial ping from child %08x which it should not have.\n", msg_source);
                 }
-            }
 
+            break;
         }
 
         default:
             DEBUG_printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
             ACK_flag = false;
             break;
-    }
+        }
 
     if (ACK_flag){
        DEBUG_printf("Sending ACK message to client %08x\n", msg_source);
