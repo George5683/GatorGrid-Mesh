@@ -561,8 +561,6 @@ bool STANode::runSelfHealing(){
         uint8_t childrenCount;
         uint32_t childrenArray[4];
 
-        vector<uint32_t> triedNodes;
-
         while(foundParent == false){
 
             //Need to further implement. is_root must be made to always be correct in other functions. is_child_of_root must also be implemented
@@ -574,10 +572,9 @@ bool STANode::runSelfHealing(){
             }
 
             for (const auto& node : known_nodes) {
-                if ((node.second->rssi > min_rssi) & std::count(triedNodes.begin(), triedNodes.end(), node.first) == 0) {
+                if ((node.second->rssi > min_rssi) & std::count(self_healing_blacklist.begin(), self_healing_blacklist.end(), node.first) == 0) {
                     min_rssi = node.second->rssi;
                     min_node_id = node.first;
-                    triedNodes.push_back(min_node_id);
                 }
             }
 

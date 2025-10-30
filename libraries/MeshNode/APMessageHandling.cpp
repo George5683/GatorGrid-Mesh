@@ -264,6 +264,52 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
             //does stuff
             break;
         }
+
+        case 0x37: {
+            DEBUG_printf("Child Ping Message Received\n");
+            TCP_CHILD_PING_MESSAGE pingMsg;
+            pingMsg.set_msg(buffer);
+            msg_source = pingMsg.msg.source;
+            bool initialPing = pingMsg.msg.initialPing;
+
+            if(initialPing == true){
+                // Child is pinging to see if it can connect
+                DEBUG_printf("Initial Ping from child %08x\n", msg_source);
+
+                // Check if we can accept the child
+                if(clients.size() < 3){
+                    // Can accept child
+                    DEBUG_printf("Can accept child %08x\n", msg_source);
+                    TCP_CHILD_PING_MESSAGE responseMsg(get_NodeID(), msg_source, get_NodeID(), false, true);
+                    send_msg(responseMsg.get_msg());
+                } 
+
+                else {
+                    // Cannot accept child
+                    DEBUG_printf("Cannot accept child %08x\n", msg_source);
+                    TCP_CHILD_PING_MESSAGE responseMsg(get_NodeID(), msg_source, get_NodeID(), false, false);
+                    send_msg(responseMsg.get_msg());
+                }
+            }
+
+            else{
+                // Response to initial ping
+                bool canConnect = pingMsg.msg.canConnect;
+                if(canConnect == true){
+                    DEBUG_printf("Child %08x was accepted\n", msg_source);
+                    //Clear blacklist
+                    //Formally add child to the parent
+                } 
+
+                else {
+                    DEBUG_printf("Child %08x was not accepted\n", msg_source);
+                    //Add attempted connection to blacklist
+                    //Run self healing again
+                }
+            }
+
+        }
+
         default:
             DEBUG_printf("Error: Unable to parse message (invalid buffer or unknown msg_id).\n");
             ACK_flag = false;
