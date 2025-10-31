@@ -4,6 +4,8 @@
 #include "Messages.hpp"
 #include <cstdint>
 #include <cyw43.h>
+#include <cyw43_country.h>
+#include <lwip/ip_addr.h>
 #include <random>
 #include <ctime>
 #include <cstdio>
@@ -24,6 +26,10 @@ extern "C" {
     #include "hardware/vreg.h"
     #include "hardware/clocks.h"
     #include "display.hpp"
+
+    #include "lwip/dhcp.h"
+    #include "lwip/tcp.h"
+    #include "pico/time.h"
 }
 
 /*
@@ -37,6 +43,172 @@ extern "C" {
 #define TEST_ITERATIONS 10
 #define POLL_TIME_S 5
  
+
+// ---------- Arch-safe wrappers ----------
+#if PICO_CYW43_ARCH_THREADSAFE_BACKGROUND
+  #define CYW_BEGIN()  cyw43_arch_lwip_begin()
+  #define CYW_END()    cyw43_arch_lwip_end()
+#else
+  #define CYW_BEGIN()  ((void)0)
+  #define CYW_END()    ((void)0)
+#endif
+
+// ---------- TCP close helper ----------
+static void tcp_close_safely(struct tcp_pcb **ppcb, void **papp_state) {
+    if (!ppcb || !*ppcb) return;
+    CYW_BEGIN();
+    struct tcp_pcb *pcb = *ppcb;
+
+    // Unhook callbacks
+    tcp_arg(pcb, NULL);
+    tcp_poll(pcb, NULL, 0);
+    tcp_sent(pcb, NULL);
+    tcp_recv(pcb, NULL);
+    tcp_err(pcb, NULL);
+
+    err_t e = tcp_close(pcb);
+    if (e != ERR_OK) {
+        // If close cannot allocate, abort to free resources immediately
+        tcp_abort(pcb);
+    }
+    *ppcb = NULL;
+    CYW_END();
+
+}
+
+static bool wait_for_link_status(int target_status, uint32_t timeout_ms) {
+    absolute_time_t until = make_timeout_time_ms(timeout_ms);
+    while (!time_reached(until)) {
+        CYW_BEGIN();
+        int ls = cyw43_tcpip_link_status(&cyw43_state, CYW43_ITF_STA);
+        CYW_END();
+        if (ls == target_status) return true;
+        sleep_ms(100);
+    }
+    return false;
+}
+
+static bool wait_for_ip(uint32_t timeout_ms) {
+    struct netif *netif = &cyw43_state.netif[CYW43_ITF_STA];
+    absolute_time_t until = make_timeout_time_ms(timeout_ms);
+    while (!time_reached(until)) {
+        CYW_BEGIN();
+        bool ok = netif_is_up(netif) && dhcp_supplied_address(netif);
+        CYW_END();
+        if (ok) return true;
+        sleep_ms(100);
+    }
+    return false;
+}
+
+static const char* ls_str(int ls) {
+    switch (ls) {
+        case CYW43_LINK_UP:   return "UP";
+        case CYW43_LINK_NOIP: return "NOIP";
+        case CYW43_LINK_DOWN: return "DOWN";
+        case CYW43_LINK_JOIN: return "JOIN";
+        case CYW43_LINK_FAIL: return "FAIL";
+        case CYW43_LINK_BADAUTH: return "BADAUTH";
+        default: return "?";
+    }
+}
+
+static void log_netif_state(const char* tag) {
+    struct netif* n = &cyw43_state.netif[CYW43_ITF_STA];
+    CYW_BEGIN();
+    int  ls  = cyw43_tcpip_link_status(&cyw43_state, CYW43_ITF_STA);
+    bool up  = netif_is_up(n);
+    bool ip  = dhcp_supplied_address(n);
+    bool scn = cyw43_wifi_scan_active(&cyw43_state);
+    CYW_END();
+    DEBUG_printf("[%s] link=%d(%s) up=%d ip=%d scan=%d\n", tag, ls, ls_str(ls), up, ip, scn);
+}
+
+int wifi_tcp_reconnect(struct tcp_pcb **ppcb,
+                       void **papp_state /*ignored: pass NULL*/,
+                       uint32_t node_id,
+                       const char *pass,
+                       uint32_t auth,
+                       uint32_t connect_ms)
+{
+    absolute_time_t t0 = get_absolute_time();
+    struct netif *netif = &cyw43_state.netif[CYW43_ITF_STA];
+
+    char ssid[32];
+    snprintf(ssid, sizeof(ssid), "GatorGrid_Node:%08X", node_id);
+
+    DEBUG_printf("[reconnect] enter: ssid=\"%s\" auth=%lu to=%lu ms ppcb=%p *ppcb=%p state=%p\n",
+                 ssid ? ssid : "(null)", (unsigned long)auth, (unsigned long)connect_ms,
+                 (void*)ppcb, ppcb ? (void*)*ppcb : NULL, papp_state ? *papp_state : NULL);
+    log_netif_state("pre");
+
+    if (ppcb && *ppcb) {
+        DEBUG_printf("[reconnect] closing tcp pcb=%p\n", (void*)*ppcb);
+        tcp_close_safely(ppcb, NULL);
+        DEBUG_printf("[reconnect] tcp pcb closed; *ppcb=%p\n", ppcb ? (void*)*ppcb : NULL);
+    } else {
+        DEBUG_printf("[reconnect] no pcb to close\n");
+    }
+
+    log_netif_state("before-hard-reset");
+
+    // Disable STA mode
+    DEBUG_printf("[reconnect] disable STA mode\n");
+    cyw43_arch_disable_sta_mode();
+    sleep_ms(100); // allow internal state machines to settle
+
+    // clear DHCP/IP
+    CYW_BEGIN();
+    dhcp_release(netif);
+    dhcp_stop(netif);
+    netif_set_link_down(netif);
+    netif_set_down(netif);
+    netif_set_addr(netif, IP4_ADDR_ANY4, IP4_ADDR_ANY4, IP4_ADDR_ANY4);
+    CYW_END();
+    log_netif_state("after-force-down");
+
+    CYW_BEGIN();
+    cyw43_wifi_leave(&cyw43_state, CYW43_ITF_STA);
+    CYW_END();
+    sleep_ms(50);
+    log_netif_state("after-leave");
+
+    DEBUG_printf("[reconnect] re-enable STA mode\n");
+    cyw43_arch_enable_sta_mode();
+    CYW_BEGIN();
+    cyw43_wifi_pm(&cyw43_state, CYW43_PERFORMANCE_PM);
+    cyw43_wifi_set_up(&cyw43_state, CYW43_ITF_STA, true, CYW43_COUNTRY_USA);
+    CYW_END();
+    sleep_ms(100);
+    log_netif_state("after-bringup");
+
+    int st = cyw43_arch_wifi_connect_timeout_ms(ssid, pass, auth, connect_ms);
+
+    uint32_t connect_elapsed_ms = (uint32_t) to_ms_since_boot(get_absolute_time()) -
+                                  (uint32_t) to_ms_since_boot(t0);
+    DEBUG_printf("[reconnect] connect rc=%d after %lu ms\n",
+                 st, (unsigned long)connect_elapsed_ms);
+
+    if (st) {
+        ERROR_printf("[reconnect] FAILED: rc=%d (UP=0, NOIP=1, DOWN=2, JOIN=3, FAIL=4, BADAUTH=5, ...)\n", st);
+        log_netif_state("connect-failed");
+        return st; // typically -2 or -1
+    }
+
+    bool ip_ok = wait_for_ip(5000);
+    DEBUG_printf("[reconnect] wait_for_ip -> %d\n", ip_ok);
+    log_netif_state("post-connect");
+    if (!ip_ok) {
+        ERROR_printf("[reconnect] DHCP did not supply address after connect\n");
+        return -2;
+    }
+
+    uint32_t total_ms = (uint32_t) to_ms_since_boot(get_absolute_time()) -
+                        (uint32_t) to_ms_since_boot(t0);
+    DEBUG_printf("[reconnect] SUCCESS in %lu ms\n", (unsigned long)total_ms);
+    return 0;
+}
+
 
 static err_t tcp_client_close(void *arg) {
     STANode* node = (STANode*)arg;
@@ -412,10 +584,6 @@ bool STANode::connect_to_network() {
 
     // Attempt to connect
     if (cyw43_arch_wifi_connect_timeout_ms(ssid, "password", CYW43_AUTH_WPA2_AES_PSK, 20000)) {
-        for (int i = 0; i < 20; i++) {
-           DEBUG_printf("Failed to connect. Retrying...\n");
-            sleep_ms(1000);  
-        }
         return false;
     }
 
@@ -445,11 +613,9 @@ bool STANode::connect_to_node(uint32_t id) {
     DEBUG_printf("Generated SSID: %s\n", ssid);
 
     // Attempt to connect
-    if (cyw43_arch_wifi_connect_timeout_ms(ssid, "password", CYW43_AUTH_WPA2_AES_PSK, 7500)) {
-        for (int i = 0; i < 8; i++) {
-           DEBUG_printf("Failed to connect. Retrying...\n");
-            sleep_ms(1000);  
-        }
+    auto st = cyw43_arch_wifi_connect_timeout_ms(ssid, "password", CYW43_AUTH_WPA2_AES_PSK, 7500);
+    if (st) {
+        ERROR_printf("Response from wifi connect: %d", st);
         return false;
     }
 
@@ -459,12 +625,14 @@ bool STANode::connect_to_node(uint32_t id) {
 }
 
 bool STANode::is_connected() {
-    int res = cyw43_wifi_link_status(&cyw43_state, CYW43_ITF_STA);
-    if (res != CYW43_LINK_JOIN) {
-        //DEBUG_printf("%d\n", res);
-      return false;
-    }
-    return true;
+    struct netif* n = &cyw43_state.netif[CYW43_ITF_STA];
+    CYW_BEGIN();
+    int  ls = cyw43_tcpip_link_status(&cyw43_state, CYW43_ITF_STA);
+    bool up = netif_is_up(n);
+    bool ip = dhcp_supplied_address(n);
+    CYW_END();
+    // "Fully online": associated AND interface up AND we have an IP
+    return (ls == CYW43_LINK_UP) && up && ip;
 }
 
 bool STANode::tcp_init() {
@@ -476,7 +644,7 @@ bool STANode::tcp_init() {
     DEBUG_printf("Initialized tcp client\n");
     state->got_nak = false;
     if (!tcp_client_open(this)) {
-       DEBUG_printf("Failed to open client\n");
+        DEBUG_printf("Failed to open client\n");
         tcp_result(state, -1);
         return false; 
     }
@@ -500,28 +668,13 @@ void STANode::poll() {
         handle_serial_message(uart.getReadBuffer());
     }
 
-    if (status != ERR_OK) { // NOT WORKING
-        tcp_client_close(this);
-        // runSelfHealing();
-        while(!connect_to_network());
-        while (!tcp_init()) {
-            ERROR_printf("Failed to init connection... Retrying");
-        }
-        status = ERR_OK;
-    }
+    if (!is_connected()) {
+        ERROR_printf("Detected that we are no longer connected");
 
-    if (++count == 5000) {
-        // runSelfHealing();
-    }
-    int st = cyw43_wifi_link_status(&cyw43_state, CYW43_ITF_STA);
-    // DEBUG_printf("wifi link status %d", st);
-    if (st == CYW43_LINK_NONET || st == CYW43_LINK_DOWN || st == CYW43_LINK_FAIL) {
-        ERROR_printf("[WIFI] AP lost, status=%d\n", st);
-        cyw43_wifi_leave(&cyw43_state, CYW43_ITF_STA);
-        // Clean up sockets, stop services, and start reconnect logic…
-        // e.g., cyw43_wifi_leave(&cyw43_state, CYW43_ITF_STA);
-        // then try cyw43_arch_wifi_connect_timeout_ms(...) with backoff
-        runSelfHealing();
+        while(!runSelfHealing());
+
+        DEBUG_printf("Successfully rejoined network");
+        status = ERR_OK;
     }
 }
 
@@ -547,7 +700,7 @@ bool STANode::selfHealingCheck(){
 
     scan_for_nodes();
 
-    if(is_root){
+    if(is_root || !is_connected()){
         return false;
     }
 
@@ -592,6 +745,12 @@ bool STANode::runSelfHealing(){
 
         int16_t min_rssi = known_nodes.begin()->second->rssi;
         uint32_t min_node_id = known_nodes.begin()->first;
+        DEBUG_printf("Known nodes size: %d", known_nodes.size());
+        if (known_nodes.size() == 0) {
+            DEBUG_printf("Cannot see any nodes while attempting to reconnect");
+            return false;
+        }
+
 
         uint8_t potentialNewParent;
         uint8_t childrenCount;
@@ -611,6 +770,7 @@ bool STANode::runSelfHealing(){
             addChildrenToBlacklist();
 
             for (const auto& node : known_nodes) {
+                DEBUG_printf("Knows node %u with rssi %d", node.first, node.second->rssi);
                 if ((node.second->rssi > min_rssi) && std::count(self_healing_blacklist.begin(), self_healing_blacklist.end(), node.first) == 0) {
                     min_rssi = node.second->rssi;
                     min_node_id = node.first;
@@ -620,19 +780,27 @@ bool STANode::runSelfHealing(){
             potentialNewParent = min_node_id;
 
             parent = potentialNewParent;
-            connect_to_node(parent);
+
+            struct tcp_pcb* pcb_local = (this->state) ? this->state->tcp_pcb : NULL;
+            int st = wifi_tcp_reconnect(&pcb_local,
+                            /*papp_state=*/NULL,         // <- do not free your app state here
+                            parent, "password",
+                            CYW43_AUTH_WPA2_AES_PSK,
+                            30000);
+            // if (!dhcp_supplied_address(netif)) { ERROR_printf("no IP yet\n"); }
+            while (!tcp_init()) {
+                ERROR_printf("Failed to init connection... Retrying");
+            }
+            
             foundParent = true;
             DEBUG_printf("Connected to new parent node: %u\n", parent);
             uint32_t node_id = get_NodeID();
-            tree.move_node(node_id, parent);
+            // tree.move_node(node_id, parent);
+            // TODO: move_node needs to be fixed
             return true;
         }
         
     }
 
-    else{
-        return false;
-    }
-
-    return false;
+    return true;
 }
