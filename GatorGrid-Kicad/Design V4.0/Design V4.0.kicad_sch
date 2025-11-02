@@ -4982,50 +4982,6 @@
 			)
 		)
 	)
-	(global_label "B_GPIO4"
-		(shape input)
-		(at 113.03 77.47 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "0bcc3e2b-e07d-461e-a1d6-48a6e0286b01")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 102.3038 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "A_GPIO5"
-		(shape input)
-		(at 39.37 147.32 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "0cda02c5-fed8-4764-88d8-740a21df6c61")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 28.6438 147.32 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "B_RUN"
 		(shape input)
 		(at 148.59 158.75 0)
@@ -5072,7 +5028,7 @@
 	)
 	(global_label "UART_TX"
 		(shape input)
-		(at 29.21 97.79 180)
+		(at 29.21 77.47 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -5082,7 +5038,7 @@
 		)
 		(uuid "0e2e1d02-f579-4ffb-a359-84d01e0a44fe")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 18.4234 97.79 0)
+			(at 18.4234 77.47 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5622,7 +5578,7 @@
 	)
 	(global_label "UART_TX"
 		(shape input)
-		(at 120.65 173.99 180)
+		(at 120.65 148.59 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -5632,7 +5588,7 @@
 		)
 		(uuid "35c3557e-964c-4e98-aea2-5060d21b6ed6")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 109.8634 173.99 0)
+			(at 109.8634 148.59 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5796,28 +5752,6 @@
 			)
 		)
 	)
-	(global_label "B_GPIO4"
-		(shape input)
-		(at 120.65 146.05 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "4d902946-3e90-4cdf-b98a-3a28f3ebe18b")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 109.9238 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "B_GPIO17"
 		(shape input)
 		(at 148.59 179.07 0)
@@ -5950,6 +5884,50 @@
 			)
 		)
 	)
+	(global_label "B_GPIO13"
+		(shape input)
+		(at 113.03 100.33 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "5d109da9-6a82-4fbe-af60-2e8fd0a1a5df")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 100.9129 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "B_GPIO13"
+		(shape input)
+		(at 120.65 173.99 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "5d6b50fa-5d24-4a77-a389-18240cb6f711")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 108.5329 173.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "A_GPIO19"
 		(shape input)
 		(at 74.93 77.47 0)
@@ -6060,28 +6038,6 @@
 			)
 		)
 	)
-	(global_label "A_GPIO4"
-		(shape input)
-		(at 39.37 144.78 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "6cc1ea6c-0559-464f-8970-a6c8bc70c350")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 28.6438 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "A_GPIO9"
 		(shape input)
 		(at 29.21 90.17 180)
@@ -6170,6 +6126,28 @@
 			)
 		)
 	)
+	(global_label "B_GPIO12"
+		(shape input)
+		(at 113.03 97.79 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "76ad5984-9d60-4a88-b70d-24c432ec2671")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 100.9129 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "SENSOR_DATA"
 		(shape input)
 		(at 257.81 148.59 180)
@@ -6214,6 +6192,28 @@
 			)
 		)
 	)
+	(global_label "A_GPIO12"
+		(shape input)
+		(at 29.21 97.79 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "7dbdfb2f-8994-483c-83a7-b42b1a0a225f")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 17.2743 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "B_GPIO20"
 		(shape input)
 		(at 158.75 80.01 0)
@@ -6232,6 +6232,28 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "A_GPIO13"
+		(shape input)
+		(at 39.37 172.72 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "7f9cd095-99de-4041-8d46-38f696a96912")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 27.4343 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
 				(hide yes)
 			)
 		)
@@ -6304,7 +6326,7 @@
 	)
 	(global_label "UART_RX"
 		(shape input)
-		(at 120.65 171.45 180)
+		(at 120.65 146.05 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -6314,7 +6336,7 @@
 		)
 		(uuid "8612960a-d8ea-442b-a9b1-7b23370276a4")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 109.561 171.45 0)
+			(at 109.561 146.05 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6348,7 +6370,7 @@
 	)
 	(global_label "UART_RX"
 		(shape input)
-		(at 29.21 100.33 180)
+		(at 29.21 80.01 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -6358,7 +6380,7 @@
 		)
 		(uuid "875b5b2e-918f-4dea-8b8b-d10d366794e9")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 18.121 100.33 0)
+			(at 18.121 80.01 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6513,28 +6535,6 @@
 		(uuid "91e58fd5-2192-48a5-bf49-2d289ba24379")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 170.2186 133.35 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "B_GPIO5"
-		(shape input)
-		(at 120.65 148.59 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "92224d4f-e95a-452c-bbc8-6e576ecbaa3f")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 109.9238 148.59 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6742,6 +6742,28 @@
 			)
 		)
 	)
+	(global_label "A_GPIO13"
+		(shape input)
+		(at 29.21 100.33 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "9979b355-3d5b-4827-961f-010cd6ac7f15")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 17.2743 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "B_GPIO20"
 		(shape input)
 		(at 148.59 168.91 0)
@@ -6918,9 +6940,31 @@
 			)
 		)
 	)
+	(global_label "B_GPIO12"
+		(shape input)
+		(at 120.65 171.45 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "a1797cc9-2727-4d79-8c09-2a42b626623f")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 108.5329 171.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "UART_TX"
 		(shape input)
-		(at 39.37 170.18 180)
+		(at 39.37 144.78 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -6930,7 +6974,7 @@
 		)
 		(uuid "a287184c-7c6f-469f-a133-58b585d944af")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 28.5834 170.18 0)
+			(at 28.5834 144.78 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7116,28 +7160,6 @@
 			)
 		)
 	)
-	(global_label "A_GPIO5"
-		(shape input)
-		(at 29.21 80.01 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "b06fc4ac-1c8e-43a9-b48c-4a6074478dfe")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 18.4838 80.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "A-VBUS"
 		(shape input)
 		(at 260.35 100.33 0)
@@ -7250,7 +7272,7 @@
 	)
 	(global_label "UART_RX"
 		(shape input)
-		(at 39.37 172.72 180)
+		(at 39.37 147.32 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -7260,7 +7282,7 @@
 		)
 		(uuid "c427c57c-de48-432a-a859-f322500c5934")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 28.281 172.72 0)
+			(at 28.281 147.32 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7382,7 +7404,7 @@
 	)
 	(global_label "UART_TX"
 		(shape input)
-		(at 113.03 100.33 180)
+		(at 113.03 80.01 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -7392,7 +7414,7 @@
 		)
 		(uuid "c87dcf16-7e4e-4938-a46a-530adab38e3c")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 102.2434 100.33 0)
+			(at 102.2434 80.01 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7556,6 +7578,28 @@
 			)
 		)
 	)
+	(global_label "A_GPIO12"
+		(shape input)
+		(at 39.37 170.18 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "d30343c5-890f-41d7-be3c-497140e1b832")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 27.4343 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "A_GPIO7"
 		(shape input)
 		(at 39.37 154.94 180)
@@ -7666,28 +7710,6 @@
 			)
 		)
 	)
-	(global_label "A_GPIO4"
-		(shape input)
-		(at 29.21 77.47 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "dd7290dc-6e8d-45a4-9eec-052841e7d914")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 18.4838 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "B_GPIO26"
 		(shape input)
 		(at 158.75 95.25 0)
@@ -7706,28 +7728,6 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "B_GPIO5"
-		(shape input)
-		(at 113.03 80.01 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "df20be6a-25da-44f1-9cfb-e234b43debf2")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 102.3038 80.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
 				(hide yes)
 			)
 		)
@@ -7976,7 +7976,7 @@
 	)
 	(global_label "UART_RX"
 		(shape input)
-		(at 113.03 97.79 180)
+		(at 113.03 77.47 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -7986,7 +7986,7 @@
 		)
 		(uuid "f6574d40-6ec3-4538-9fcd-6046c2ef73fb")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 101.941 97.79 0)
+			(at 101.941 77.47 0)
 			(effects
 				(font
 					(size 1.27 1.27)
