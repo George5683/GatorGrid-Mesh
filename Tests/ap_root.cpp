@@ -44,6 +44,7 @@ int main() {
 
     uint32_t children_ids[4] = {};
     uint8_t number_of_children = 0;
+    char data[10] = "Test msg";
     
     while (node.server_running()) {
 
@@ -59,6 +60,16 @@ int main() {
                 printf("%u\t", children_ids[i]);
             }
             printf("\n");
+
+            /*if(number_of_children != 0) {
+                printf("Attempting to send message to node 1\n");
+
+                if(node.send_data(1, 10, (uint8_t*)data) == -1) {
+                    printf("send_data returned -1\n");
+                } else {
+                    printf("send_data returned 0\n");
+                }
+            }*/
 
             count = 0;
         }

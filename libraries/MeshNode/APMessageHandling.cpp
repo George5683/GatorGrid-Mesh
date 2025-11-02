@@ -419,8 +419,8 @@ err_t APNode::send_data(uint32_t send_id, ssize_t len, uint8_t *buf) {
     // tcp_pcb *client_pcb = client_tpcbs.at(send_id);
     // if (!send_tcp_data(send_id, client_pcb, msg.get_msg(), msg.get_len()))
     //     return -1;
-    send_msg(msg.get_msg());
-    return 0;
+    
+    return send_msg(msg.get_msg());;
 }
 
 err_t APNode::send_msg(uint8_t* msg) {

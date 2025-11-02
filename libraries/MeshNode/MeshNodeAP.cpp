@@ -56,11 +56,11 @@ err_t tcp_server_close(void *arg) {
     TCP_SERVER_T *state = node->state;
     err_t err = ERR_OK;
     if (state->client_pcb != NULL) {
-        DEBUG_printf("tcp_server_close: closing client_pcb!");
+        DEBUG_printf("closing client_pcb!");
         if(node->clients_map.find(state->client_pcb) != node->clients_map.end()) {
-            DEBUG_printf("tcp_server_close: Node ID Found %d\n", node->clients_map[state->client_pcb].id);
+            DEBUG_printf("Node ID Found %d\n", node->clients_map[state->client_pcb].id);
         } else {
-            DEBUG_printf("tcp_server_close:: Node ID Not Found\n");
+            DEBUG_printf("Node ID Not Found\n");
         }
         tcp_arg(state->client_pcb, NULL);
         tcp_poll(state->client_pcb, NULL, 0);
@@ -77,7 +77,7 @@ err_t tcp_server_close(void *arg) {
         state->client_pcb = NULL;
     }
     if (state->server_pcb) {
-        DEBUG_printf("tcp_server_close: closing server_pcb! This should not called!\n");
+        DEBUG_printf("closing server_pcb! This should not called!\n");
         tcp_arg(state->server_pcb, NULL);
         tcp_close(state->server_pcb);
         state->server_pcb = NULL;
@@ -479,7 +479,7 @@ void APNode::stop_ap_mode() {
     
     // Close the TCP server
     if (state && state->server_pcb) {
-        tcp_server_close(state);
+        tcp_server_close(this);
     }
     
     running = false;
