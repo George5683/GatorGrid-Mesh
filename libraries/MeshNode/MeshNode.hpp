@@ -274,7 +274,7 @@ public:
      * @return true 
      * @return false 
      */
-    bool handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct pbuf *p);
+    bool handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct pbuf *p, APNode *node);
 
     /**
      * @brief Handles data being transferred over serial

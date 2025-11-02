@@ -50,17 +50,25 @@ TCP_SERVER_T* tcp_server_init(void) {
     return state;
 }
 
+// this callback is bad 
 err_t tcp_server_close(void *arg) {
     APNode* node = (APNode*)arg;
     TCP_SERVER_T *state = node->state;
     err_t err = ERR_OK;
     if (state->client_pcb != NULL) {
+        DEBUG_printf("closing client_pcb!");
+        if(node->clients_map.find(state->client_pcb) != node->clients_map.end()) {
+            DEBUG_printf("Node ID Found %d\n", node->clients_map[state->client_pcb].id);
+        } else {
+            DEBUG_printf("Node ID Not Found\n");
+        }
         tcp_arg(state->client_pcb, NULL);
         tcp_poll(state->client_pcb, NULL, 0);
         tcp_sent(state->client_pcb, NULL);
         tcp_recv(state->client_pcb, NULL);
         tcp_err(state->client_pcb, NULL);
         err = tcp_close(state->client_pcb);
+        DEBUG_printf("Close called\n");
         if (err != ERR_OK) {
             DEBUG_printf("close failed %d, calling abort\n", err);
             tcp_abort(state->client_pcb);
@@ -69,10 +77,13 @@ err_t tcp_server_close(void *arg) {
         state->client_pcb = NULL;
     }
     if (state->server_pcb) {
+        DEBUG_printf("closing server_pcb! This should not called!\n");
         tcp_arg(state->server_pcb, NULL);
         tcp_close(state->server_pcb);
         state->server_pcb = NULL;
     }
+
+    DEBUG_printf("Function returning\n");
     return err;
 }
 
@@ -127,10 +138,10 @@ err_t tcp_server_send_data(void *arg, struct tcp_pcb *tpcb)
 }
 
 err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err) {
-    // APNode* node = (APNode*)arg;
-    TCP_SERVER_T *state = (TCP_SERVER_T*)arg;
+    APNode* node = (APNode*)arg;
+    TCP_SERVER_T *state = node->state;
 
-    APNode* node = (APNode*)state->ap_node;
+    //APNode* node = (APNode*)state->ap_node;
 
     bool got_full_message = false;
 
@@ -173,7 +184,7 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
             return ERR_OK; // TODO: Change error handling
         }
 
-        node->handle_incoming_data(state->buffer_recv, tpcb, p);
+        node->handle_incoming_data(state->buffer_recv, tpcb, p, node);
 
         //tcp_server_send_data(arg, state->client_pcb);
         // for (int i = 0; i < 20; i++) {
@@ -220,6 +231,7 @@ err_t tcp_server_poll(void *arg, struct tcp_pcb *tpcb) {
 void tcp_server_err(void *arg, err_t err) {
     ERROR_printf("Called with error %d", err);
     if (err != ERR_ABRT) {
+        DEBUG_printf("tcp_server_err Called!!!\n");
         DEBUG_printf("tcp_client_err_fn %d\n", err);
         tcp_server_result(arg, err);
     }
@@ -244,7 +256,7 @@ err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
     node->clients_map.insert({client_pcb, client});
 
     state->client_pcb = client_pcb;
-    tcp_arg(client_pcb, state);
+    tcp_arg(client_pcb, node);
     tcp_sent(client_pcb, tcp_server_sent);
     tcp_recv(client_pcb, tcp_server_recv);
     // tcp_poll(client_pcb, tcp_server_poll, POLL_TIME_S * 2);
@@ -467,7 +479,7 @@ void APNode::stop_ap_mode() {
     
     // Close the TCP server
     if (state && state->server_pcb) {
-        tcp_server_close(state);
+        tcp_server_close(this);
     }
     
     running = false;

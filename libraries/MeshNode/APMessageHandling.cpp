@@ -13,6 +13,8 @@
 #include "hardware/regs/addressmap.h"
 #include "display.hpp"
 
+extern err_t tcp_server_close(void *arg);
+
 #define DATA_MSG 0x01
 
  bool APNode::send_tcp_data(uint32_t id, tcp_pcb *client_pcb, uint8_t* data, uint32_t size) {
@@ -53,7 +55,7 @@
 }
 
 
-bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct pbuf *p) {
+bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct pbuf *p, APNode *node) {
     bool ACK_flag = true;
     bool NAK_flag = false;
     bool update_flag = false;
@@ -96,6 +98,28 @@ bool APNode::handle_incoming_data(unsigned char* buffer, tcp_pcb* tpcb, struct p
             DEBUG_printf("Received initialization message from node %u\n", msg_source);
             DUMP_BYTES(initMsg.get_msg(), len);
             //does stuff
+
+            if(client_tpcbs.find(msg_source) != client_tpcbs.end()) {
+                DEBUG_printf("This node has already connected before, clean up everything and make a new setup for it\n");
+                
+                // Drop from tree
+                //tree.remove_child(msg_source);
+
+                // close old connection
+                //tcp_server_close(node);
+
+                tcp_arg(client_tpcbs[msg_source], NULL);
+                tcp_poll(client_tpcbs[msg_source], NULL, 0);
+                tcp_sent(client_tpcbs[msg_source], NULL);
+                tcp_recv(client_tpcbs[msg_source], NULL);
+                tcp_err(client_tpcbs[msg_source], NULL);
+                tcp_close(client_tpcbs[msg_source]);
+
+                clients_map.erase(client_tpcbs[msg_source]);
+
+                client_tpcbs.erase(msg_source);
+                DEBUG_printf("Already connected node fixed.\n");
+            }
 
             // Set init node ID
             if(clients_map[tpcb].id_recved == false) {
@@ -395,8 +419,8 @@ err_t APNode::send_data(uint32_t send_id, ssize_t len, uint8_t *buf) {
     // tcp_pcb *client_pcb = client_tpcbs.at(send_id);
     // if (!send_tcp_data(send_id, client_pcb, msg.get_msg(), msg.get_len()))
     //     return -1;
-    send_msg(msg.get_msg());
-    return 0;
+    
+    return send_msg(msg.get_msg());;
 }
 
 err_t APNode::send_msg(uint8_t* msg) {
@@ -475,6 +499,8 @@ err_t APNode::send_msg(uint8_t* msg) {
             return -1;
         } 
     }
+
+
 
     uint32_t path_parent;
     if(!tree.find_path_parent(target_id, &path_parent)) {

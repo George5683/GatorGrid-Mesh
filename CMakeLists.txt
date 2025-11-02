@@ -30,7 +30,7 @@ include(pico_sdk_import.cmake)
 
 project(picow_access_point C CXX ASM)
 
-option(APP_DEBUG "Enable app-level debug paths" OFF)
+option(APP_DEBUG "Enable app-level debug paths" ON)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
