@@ -89,29 +89,30 @@ err_t STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward
     bool flag = false;
 
     while(state->waiting_for_ack); 
+    absolute_time_t t0 = get_absolute_time();
     cyw43_arch_lwip_begin();
 
-    DEBUG_printf("blocking before write/output\n");
+    DEBUG_printf("blocking before write/output");
     err_t err = tcp_write(state->tcp_pcb, (void*)data, size, TCP_WRITE_FLAG_COPY);
     err_t err2 = tcp_output(state->tcp_pcb);
-    DEBUG_printf("blocking after write/output\n");
+    DEBUG_printf("blocking after write/output");
     if (err != ERR_OK) {
-        ERROR_printf("Message failed to write\n");
+        ERROR_printf("Message failed to write");
         ERROR_printf("ERR: %d\n", err);
         flag = true;
     }
     if (err2 != ERR_OK) {
-        ERROR_printf("Message failed to be sent\n");
+        ERROR_printf("Message failed to be sent");
         ERROR_printf("ERR: %d\n", err2);
         flag = true;
     }
     cyw43_arch_lwip_end();
     if (flag) {
-        ERROR_printf("Some error in write/output\n");
+        ERROR_printf("Some error in write/output");
         return err | err2;
     }
     
-    DEBUG_printf("SENDING BYTES BELOW: \n");
+    DEBUG_printf("SENDING BYTES BELOW:");
     DUMP_BYTES(data, size);
     state->waiting_for_ack = !forward;
     
@@ -130,6 +131,10 @@ err_t STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward
     }
 
     DEBUG_printf("Got some ACK after send");
+    uint32_t connect_elapsed_ms = (uint32_t) to_ms_since_boot(get_absolute_time()) -
+                                  (uint32_t) to_ms_since_boot(t0);
+    DEBUG_printf("took %lu ms to send data",
+                (unsigned long)connect_elapsed_ms);
 
     if (state->got_nak) {
         ERROR_printf("Got NAK, returning false\n");

@@ -444,15 +444,15 @@ void APNode::poll(unsigned int timeout_ms) {
     if(uart.BufferReady()) {
         handle_serial_message(uart.getReadBuffer());
     }
-    int st = cyw43_wifi_link_status(&cyw43_state, CYW43_ITF_AP);
-    if (st == CYW43_LINK_NONET || st == CYW43_LINK_DOWN || st == CYW43_LINK_FAIL) {
-        ERROR_printf("[WIFI] AP lost, status=%d\n", st);
-        cyw43_wifi_leave(&cyw43_state, CYW43_ITF_AP);
-        // Clean up sockets, stop services, and start reconnect logic…
-        // e.g., cyw43_wifi_leave(&cyw43_state, CYW43_ITF_STA);
-        // then try cyw43_arch_wifi_connect_timeout_ms(...) with backoff
-        // runSelfHealing();
-    }
+    // int st = cyw43_wifi_link_status(&cyw43_state, CYW43_ITF_AP);
+    // if (st == CYW43_LINK_NONET || st == CYW43_LINK_DOWN || st == CYW43_LINK_FAIL) {
+    //     ERROR_printf("[WIFI] AP lost, status=%d\n", st);
+    //     cyw43_wifi_leave(&cyw43_state, CYW43_ITF_AP);
+    //     // Clean up sockets, stop services, and start reconnect logic…
+    //     // e.g., cyw43_wifi_leave(&cyw43_state, CYW43_ITF_STA);
+    //     // then try cyw43_arch_wifi_connect_timeout_ms(...) with backoff
+    //     // runSelfHealing();
+    // }
 }
 
 void APNode::stop_ap_mode() {
