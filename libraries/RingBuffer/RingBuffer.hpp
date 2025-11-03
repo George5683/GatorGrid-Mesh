@@ -1,6 +1,4 @@
 #pragma once
-
-using namespace std;
 #include <vector>
 #include <stdlib.h>
 #include <stdint.h>
@@ -15,16 +13,15 @@ struct data {
 };
 
 class RingBuffer {
-    public:
+public:
     vector<struct data> buf;
-    int index;
+    int write_index;  // Where to write next
+    int read_index;   // Where to read next
     int size;
     int number_of_messages;
-
+    
     RingBuffer(int size);
-
     void insert(uint8_t *data, ssize_t len, uint32_t source, uint32_t dest);
     int get_size();
     struct data digest();
-
 };

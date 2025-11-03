@@ -17,7 +17,7 @@
 
 
 
-bool STANode::send_tcp_data(uint8_t* data, uint32_t size, bool forward) {
+err_t STANode::send_tcp_data(uint8_t* data, uint32_t size, bool forward) {
 
     // uint8_t buffer[size] = {};
     // if (size > BUF_SIZE) { size = size; }
@@ -54,49 +54,6 @@ bool STANode::send_tcp_data(uint8_t* data, uint32_t size, bool forward) {
 
 
     if (err != ERR_OK) {
-       DEBUG_printf("Message failed to write\n");
-       DEBUG_printf("ERR: %d\n", err);
-        flag = true;
-    }
-    if (err2 != ERR_OK) {
-        DEBUG_printf("Message failed to be sent\n");
-        flag = true;
-    }
-    cyw43_arch_lwip_end();
-    if (flag)
-      return false;
-    
-    DEBUG_printf("SENDING BYTES BELOW: \n");
-    state->waiting_for_ack = !forward;
-    DUMP_BYTES(data, size);
-    return true;
-}
-
-
-
-/**
- * @brief Will wait until availble to send tcp, then will wait for an ACK response before releasing
- * 
- * @param data 
- * @param size 
- * @param forward 
- * @return true - message successfully sent
- * @return false - message failed to send
- */
-
-err_t STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward) {
-
-    bool flag = false;
-
-    while(state->waiting_for_ack); 
-    absolute_time_t t0 = get_absolute_time();
-    cyw43_arch_lwip_begin();
-
-    DEBUG_printf("blocking before write/output");
-    err_t err = tcp_write(state->tcp_pcb, (void*)data, size, TCP_WRITE_FLAG_COPY);
-    err_t err2 = tcp_output(state->tcp_pcb);
-    DEBUG_printf("blocking after write/output");
-    if (err != ERR_OK) {
         ERROR_printf("Message failed to write");
         ERROR_printf("ERR: %d\n", err);
         flag = true;
@@ -112,8 +69,71 @@ err_t STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward
         return err | err2;
     }
     
+    DEBUG_printf("SENDING BYTES BELOW: \n");
+    state->waiting_for_ack = !forward;
+    DUMP_BYTES(data, size);
+    return ERR_OK;
+}
+
+
+
+/**
+ * @brief Will wait until availble to send tcp, then will wait for an ACK response before releasing
+ * 
+ * @param data 
+ * @param size 
+ * @param forward 
+ * @return true - message successfully sent
+ * @return false - message failed to send
+ */
+
+err_t STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward) {
+    if (state->guard_before != 0xDEADBEEF || state->guard_after != 0xBEEFDEAD) {
+        ERROR_printf("MEMORY CORRUPTION DETECTED!\n");
+        return ERR_MEM;
+    }
+    const uint32_t WAIT_ACK_MS = 15000;
+    uint32_t waited = 0;
+    while (state->waiting_for_ack) {
+        sleep_ms(2);
+        if ((waited += 2) >= WAIT_ACK_MS) return ERR_TIMEOUT;
+    }
+
+    absolute_time_t t0 = get_absolute_time();
+    
+    cyw43_arch_lwip_begin();
+    
+    // Validate state INSIDE the lock
+    if (!state || !state->tcp_pcb) {
+        cyw43_arch_lwip_end();
+        ERROR_printf("No valid PCB");
+        return ERR_CONN;
+    }
+    
+    struct tcp_pcb* pcb = state->tcp_pcb;
+    
+    // Check PCB state
+    if (pcb->state != ESTABLISHED) {
+        cyw43_arch_lwip_end();
+        ERROR_printf("PCB not established: %d", pcb->state);
+        return ERR_CONN;
+    }
+
+    u16_t sndbuf = tcp_sndbuf(pcb);
+    u16_t qlen   = tcp_sndqueuelen(pcb);
+    DEBUG_printf("sndbuf=%u qlen=%u pcb=%p\n", sndbuf, qlen, (void*)pcb);
+
+    err_t e1 = tcp_write(pcb, data, size, TCP_WRITE_FLAG_COPY);
+    err_t e2 = (e1 == ERR_OK) ? tcp_output(pcb) : ERR_OK;
+    cyw43_arch_lwip_end();
+    if ((e1 != ERR_OK || e2 != ERR_OK)) {
+        ERROR_printf("Some error in write/output");
+        if (e1 != ERR_OK || e2 != ERR_OK) return (e1 != ERR_OK) ? e1 : e2;
+    }
+    
     DEBUG_printf("SENDING BYTES BELOW:");
     DUMP_BYTES(data, size);
+
     state->waiting_for_ack = !forward;
     
     int count = 0;
@@ -130,7 +150,7 @@ err_t STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward
             
     }
 
-    DEBUG_printf("Got some ACK after send");
+    // DEBUG_printf("Got some ACK after send");
     uint32_t connect_elapsed_ms = (uint32_t) to_ms_since_boot(get_absolute_time()) -
                                   (uint32_t) to_ms_since_boot(t0);
     DEBUG_printf("took %lu ms to send data",
@@ -140,10 +160,12 @@ err_t STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward
         ERROR_printf("Got NAK, returning false\n");
         return ERR_TIMEOUT;
     }
+    DEBUG_printf("Successfully sent message");
     return ERR_OK;
 }
 
 bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
+    check_guards("handle_incoming_data:start");
     uint32_t source_id = 0;
     bool ACK_flag = false;
     bool NAK_flag = false;
@@ -309,6 +331,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
 
 
         // uart.sendMessage();
+        check_guards("handle_incoming_data:end_uart");
         return true;
     }
 
@@ -323,19 +346,21 @@ bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
             uart.sendMessage((char*) msg.get_msg());
 
         } else {
-            send_tcp_data(ackMsg.get_msg(), ackMsg.get_len(), true);
+            send_tcp_data_blocking(ackMsg.get_msg(), ackMsg.get_len(), true);
         }
         //state->waiting_for_ack = true;
     } else if (NAK_flag) {
         // TODO: Update for error handling
         // identify the source from sender and send back?
         TCP_NAK_MESSAGE nakMsg(get_NodeID(), 0, tot_len);
-        send_tcp_data(nakMsg.get_msg(), nakMsg.get_len(), true);
+        send_tcp_data_blocking(nakMsg.get_msg(), nakMsg.get_len(), true);
         // delete msg;
+        check_guards("handle_incoming_data:end_1");
         return false;
     }
 
     // delete msg;
+    check_guards("handle_incoming_data:end_2");
     return true;
 }
 
@@ -354,7 +379,7 @@ err_t STANode::send_msg(uint8_t* msg) {
     tcp_pcb *target = nullptr;
 
     bool forward = false;
-
+    check_guards("send_msg:start");
     uint8_t id = msg[1];
     switch (id) {
         case 0x00:  // Init message from STA -> thus new parent has been added
@@ -451,11 +476,13 @@ err_t STANode::send_msg(uint8_t* msg) {
         uart.sendMessage((char*)serialMsg.get_msg());
     }
     DEBUG_printf("Message successfully sent");
+    check_guards("send_msg:end");
     
     return 0;
 }
 
 err_t STANode::handle_serial_message(uint8_t *msg) {
+    check_guards("handle_serial_message:start");
     uint8_t id = serialMessageType(msg);
     DEBUG_printf("Received serial message in handler\n");
     DUMP_BYTES(msg, msg[1]);

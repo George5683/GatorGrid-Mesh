@@ -86,6 +86,7 @@ typedef struct TCP_SERVER_T_ {
 } TCP_SERVER_T;
 
 typedef struct TCP_CLIENT_T_ {
+    uint32_t guard_before;
     struct tcp_pcb *tcp_pcb;
     ip_addr_t remote_addr;
     uint8_t buffer[BUF_SIZE];
@@ -96,6 +97,7 @@ typedef struct TCP_CLIENT_T_ {
     bool connected;
     volatile bool waiting_for_ack;
     volatile bool got_nak;
+    uint32_t guard_after;
 } TCP_CLIENT_T;
 
 struct ClientConnection {
@@ -319,6 +321,7 @@ public:
     ChildrenTree tree;
 
     STANode();
+    
     ~STANode();
 
     bool init_sta_mode();
@@ -336,7 +339,8 @@ public:
 
     err_t send_data(uint32_t send_id, ssize_t len, uint8_t *buf);
 
-    bool send_tcp_data(uint8_t* data, uint32_t size, bool forward);
+    err_t send_tcp_data(uint8_t* data, uint32_t size, bool forward);
+    void check_guards(const char* location);
     err_t send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward);
 
     struct data digest_data();

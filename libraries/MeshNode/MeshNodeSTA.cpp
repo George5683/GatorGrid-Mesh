@@ -55,6 +55,7 @@ extern "C" {
 
 // ---------- TCP close helper ----------
 static void tcp_close_safely(struct tcp_pcb **ppcb, void **papp_state) {
+    ERROR_printf("Closing");
     if (!ppcb || !*ppcb) return;
     CYW_BEGIN();
     struct tcp_pcb *pcb = *ppcb;
@@ -214,7 +215,7 @@ static err_t tcp_client_close(void *arg) {
     STANode* node = (STANode*)arg;
     TCP_CLIENT_T *state = node->state;
     err_t err = ERR_OK;
-    DEBUG_printf("Called");
+    ERROR_printf("Closing");
     if (state->tcp_pcb != NULL) {
         tcp_arg(state->tcp_pcb, NULL);
         tcp_poll(state->tcp_pcb, NULL, 0);
@@ -257,8 +258,8 @@ static err_t tcp_client_sent(void *arg, struct tcp_pcb *tpcb, u16_t len) {
     //state->sent_len += len;
 
 
-    state->buffer_len = 0;
-    state->sent_len = 0;
+    // state->buffer_len = 0;
+    // state->sent_len = 0;
 
     return ERR_OK;
 }
@@ -287,6 +288,18 @@ static void tcp_client_err(void *arg, err_t err) {
     }
 }
 
+static bool wait_established(TCP_CLIENT_T* s, uint32_t ms_to) {
+    absolute_time_t until = make_timeout_time_ms(ms_to);
+    while (!time_reached(until)) {
+        CYW_BEGIN();
+        bool ok = s && s->tcp_pcb && (s->tcp_pcb->state == ESTABLISHED);
+        CYW_END();
+        if (ok) return true;
+        sleep_ms(10);
+    }
+    return false;
+}
+
 err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err) {
     STANode* node = (STANode*)arg;
     TCP_CLIENT_T *state = node->state;
@@ -305,32 +318,38 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
     if (p->tot_len > 0) {
         DEBUG_printf("Received %d bytes, err %d\n", p->tot_len, err);
         
-        // Copy data from pbuf to our buffer
-        const uint16_t buffer_left = BUF_SIZE - state->buffer_len;
-        uint16_t copy_len = p->tot_len > buffer_left ? buffer_left : p->tot_len;
+        // Use a LOCAL buffer for this packet only
+        uint8_t packet_buffer[BUF_SIZE];
+        uint16_t copy_len = (p->tot_len > BUF_SIZE) ? BUF_SIZE : p->tot_len;
         
-        state->buffer_len += pbuf_copy_partial(p, state->buffer, copy_len, 0);
-        
-        // Print the received data for debugging
-        // char received_data[256] = {0}; // Small buffer for displaying part of response
-        // pbuf_copy_partial(p, received_data, p->tot_len > 255 ? 255 : p->tot_len, 0);
-        // DEBUG_printf("Response: %s\n", received_data);
-        
-        // Acknowledge receipt of the data
+        pbuf_copy_partial(p, packet_buffer, copy_len, 0);
         tcp_recved(tpcb, p->tot_len);
-               
-        node->handle_incoming_data(state->buffer, p->tot_len);
+        
+        // Process immediately with local buffer
+        node->handle_incoming_data(packet_buffer, copy_len);
     
     }
     DEBUG_printf("Freeing buffer and returning");
     pbuf_free(p);
     return ERR_OK;
 }
+void STANode::check_guards(const char* location) {
+    if (!state) {
+        ERROR_printf("[%s] state is NULL!\n", location);
+        return;
+    }
+    if (state->guard_before != 0xDEADBEEF) {
+        ERROR_printf("[%s] CORRUPTION BEFORE: 0x%08x\n", location, state->guard_before);
+    }
+    if (state->guard_after != 0xBEEFDEAD) {
+        ERROR_printf("[%s] CORRUPTION AFTER: 0x%08x\n", location, state->guard_after);
+    }
+}
 
 static bool tcp_client_open(void *arg) {
     STANode* node = (STANode*)arg;
     TCP_CLIENT_T *state = node->state;
-   DEBUG_printf("Connecting to %s port %u\n", ip4addr_ntoa(&state->remote_addr), TCP_PORT);
+    DEBUG_printf("Connecting to %s port %u\n", ip4addr_ntoa(&state->remote_addr), TCP_PORT);
     state->tcp_pcb = tcp_new_ip_type(IP_GET_TYPE(&state->remote_addr));
     if (!state->tcp_pcb) {
        DEBUG_printf("failed to create pcb\n");
@@ -353,6 +372,8 @@ static bool tcp_client_open(void *arg) {
     err_t err = tcp_connect(state->tcp_pcb, &state->remote_addr, TCP_PORT, tcp_client_connected);
     cyw43_arch_lwip_end();
 
+    if (!wait_established(state, 5000)) return false;
+
     return err == ERR_OK;
 }
 
@@ -363,6 +384,8 @@ static TCP_CLIENT_T* tcp_client_init(void) {
         DEBUG_printf("failed to allocate state\n");
         return NULL;
     }
+    state->guard_before = 0xDEADBEEF;
+    state->guard_after = 0xBEEFDEAD;
     ip4addr_aton("192.168.4.1", &state->remote_addr);
     return state;
 }
@@ -436,7 +459,7 @@ bool STANode::init_sta_mode() {
         }
     }
 
-   DEBUG_printf("Initiation to STA mode successful\n");
+    DEBUG_printf("Initiation to STA mode successful\n");
     return true;
 }
 
@@ -474,6 +497,7 @@ int extract_id(const char *ssid) {
 
 // Fix memory leak in scan_result
 int STANode::scan_result(void* env, const cyw43_ev_scan_result_t* result) {
+    // check_guards("scan_result:start");
     if (result == NULL) {
         return 0;
     }
@@ -514,7 +538,7 @@ int STANode::scan_result(void* env, const cyw43_ev_scan_result_t* result) {
         // Free if SSID doesn't match prefix
         goto free_mem;
     }
-     
+    // check_guards("scan_result:end");
     return 0;
 
 free_mem:
@@ -546,7 +570,7 @@ bool STANode::scan_for_nodes() {
     // Wait for scan to complete with timeout
     while (cyw43_wifi_scan_active(&cyw43_state)) {
         if (absolute_time_diff_us(scan_start_time, get_absolute_time()) > 5000000) {
-           DEBUG_printf("Scan timeout\n");
+            DEBUG_printf("Scan timeout\n");
             return false;
         }
 
@@ -701,6 +725,7 @@ bool STANode::selfHealingCheck(){
     scan_for_nodes();
 
     if(is_root || !is_connected()){
+        DEBUG_printf("Need to run healing");
         return false;
     }
 
@@ -739,7 +764,7 @@ void STANode::addChildrenToBlacklist(){
 bool STANode::runSelfHealing(){
 
     //Check if parent is still connected. If not, enter if statement
-    if(selfHealingCheck() == true){
+    if(selfHealingCheck()){
 
         bool foundParent = false;
 
@@ -760,11 +785,11 @@ bool STANode::runSelfHealing(){
 
             //Need to further implement. is_root must be made to always be correct in other functions. is_child_of_root must also be implemented
             //to ensure that this logic works.
-            if(is_child_of_root == true){
-                DEBUG_printf("Node directly connected to root has lost connection to root. Transplanting new root node.\n");
-                is_child_of_root = false;
-                is_root = true;
-            }
+            // if(is_child_of_root == true){
+            //     DEBUG_printf("Node directly connected to root has lost connection to root. Transplanting new root node.\n");
+            //     is_child_of_root = false;
+            //     is_root = true;
+            // }
 
             //MUST MAKE SURE THE NODE DOES NOT CONNECT TO ITS OWN CHILDREN/GRANDCHILDREN/FURTHER DESCENDANTS
             addChildrenToBlacklist();
@@ -781,15 +806,24 @@ bool STANode::runSelfHealing(){
 
             parent = potentialNewParent;
 
-            struct tcp_pcb* pcb_local = (this->state) ? this->state->tcp_pcb : NULL;
-            int st = wifi_tcp_reconnect(&pcb_local,
-                            /*papp_state=*/NULL,         // <- do not free your app state here
-                            parent, "password",
-                            CYW43_AUTH_WPA2_AES_PSK,
-                            30000);
-            // if (!dhcp_supplied_address(netif)) { ERROR_printf("no IP yet\n"); }
+            cyw43_arch_lwip_begin();
+            if (state && state->tcp_pcb) {
+                tcp_close_safely(&(state->tcp_pcb), NULL);
+                state->tcp_pcb = NULL;  // Explicitly null it
+                state->waiting_for_ack = false;  // Reset flags
+                state->got_nak = false;
+            }
+            cyw43_arch_lwip_end();
+            
+            // Now reconnect (passing actual pointer address)
+            struct tcp_pcb** pcb_ptr = &(state->tcp_pcb);
+            int st = wifi_tcp_reconnect(pcb_ptr, NULL, parent, "password",
+                            CYW43_AUTH_WPA2_AES_PSK, 30000);
+            
+            // Re-initialize TCP
             while (!tcp_init()) {
                 ERROR_printf("Failed to init connection... Retrying");
+                sleep_ms(1000);
             }
             
             foundParent = true;
