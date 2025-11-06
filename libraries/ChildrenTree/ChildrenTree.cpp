@@ -3,7 +3,6 @@
 #include <sstream>
 #include <string>
 #include <iostream>
-#include "display.hpp"
 
 
 // Node can't have more than 4 children, 3 at most so 4th can get 
@@ -160,14 +159,11 @@ bool ChildrenTree::node_exists(uint32_t id) {
  * @return false 
  */
  bool ChildrenTree::find_path_parent(uint32_t id, uint32_t *parent) {
-    DEBUG_printf("Checking tree for parent of the path to %u\n", id);
     if (!head) {
         // either empty tree or id not in tree
-        ERROR_printf("head == nullptr");
         return false;
     }
 
-    DEBUG_printf("Children count of head %d", head->number_of_children);
     for (int i = 0; i < head->number_of_children; i++) {
         
         Node* child = head->children[i];
@@ -183,7 +179,6 @@ bool ChildrenTree::node_exists(uint32_t id) {
         }
     }
 
-    DEBUG_printf("Failed to find path_parent, parent set to -1");
     *parent = UINT32_MAX;
     return false;
 }
@@ -258,7 +253,6 @@ bool ChildrenTree::get_children(uint32_t parent_id, uint32_t children_id[4], uin
 bool ChildrenTree::update_node(uint32_t id, uint32_t children_id[4], uint8_t &number_of_children) {
     Node* node = find_node(id, head);
     if (!node) { 
-        ERROR_printf("Node with id: %u not found", id);
         return false; 
     }
 
@@ -295,7 +289,6 @@ std::string ChildrenTree::serialize_tree() {
 
 void ChildrenTree::send_tree_serial() {
     std::string json = serialize_tree();
-    printf("%s\n", json.c_str());   // prints JSON over USB serial (Pico default)
 }
 
 void ChildrenTree::move_node(uint32_t id, uint32_t newParentID) {
@@ -316,18 +309,21 @@ void ChildrenTree::move_node(uint32_t id, uint32_t newParentID) {
         Node* grandparent = parent->parent;
         for (int i = 0; i < grandparent->number_of_children; i++) {
             index++;
-            if(grandparent->children[i] == parent) {
+            if(grandparent->children[i]->id == parent->id) {
                 delete grandparent->children[i]; // delete parent
+                break;
             }
         }   
         //need to shift rest of grandparent child nodes back if needed
-        for (int i = index; i < grandparent->number_of_children-1; i++) {
+        for (int i = index-1; i < grandparent->number_of_children-1; i++) {
             grandparent->children[i] = grandparent->children[i+1];
         }
+    
         grandparent->children[grandparent->number_of_children-1] = nullptr;
         grandparent->number_of_children--;
     }
     node->parent = newParent;
     newParent->children[newParent->number_of_children] = node;
+   
     newParent->number_of_children++; 
 }
