@@ -770,6 +770,8 @@ bool STANode::runSelfHealing(){
 
         bool foundParent = false;
 
+        scan_for_nodes();
+
         int16_t min_rssi = known_nodes.begin()->second->rssi;
         uint32_t min_node_id = known_nodes.begin()->first;
         DEBUG_printf("Known nodes size: %d", known_nodes.size());
