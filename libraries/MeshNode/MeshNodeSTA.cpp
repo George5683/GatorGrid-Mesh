@@ -764,7 +764,9 @@ void STANode::addChildrenToBlacklist(){
 bool STANode::runSelfHealing(){
 
     //Check if parent is still connected. If not, enter if statement
-    if(selfHealingCheck()){
+    //Removed this check. SelfHealing is only called when disconnected, so it shouldn't be needed
+    //if(selfHealingCheck()){
+    if(true){
 
         bool foundParent = false;
 
@@ -775,7 +777,6 @@ bool STANode::runSelfHealing(){
             DEBUG_printf("Cannot see any nodes while attempting to reconnect");
             return false;
         }
-
 
         uint8_t potentialNewParent;
         uint8_t childrenCount;
