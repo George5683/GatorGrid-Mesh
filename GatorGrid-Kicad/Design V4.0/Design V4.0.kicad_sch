@@ -12094,7 +12094,7 @@
 				)
 			)
 		)
-		(property "Value" "1k"
+		(property "Value" "220"
 			(at 243.84 80.01 90)
 			(effects
 				(font
@@ -12162,7 +12162,7 @@
 				)
 			)
 		)
-		(property "Value" "1k"
+		(property "Value" "220"
 			(at 243.84 64.77 90)
 			(effects
 				(font
