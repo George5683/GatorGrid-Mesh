@@ -60,6 +60,9 @@ target_link_libraries(sta_background
         pico_stdlib
         pico_multicore
         hardware_spi
+        hardware_i2c
+        hardware_pwm
+        hardware_adc
         )
 
 
@@ -90,6 +93,9 @@ target_link_libraries(ap_background
         pico_stdlib
         pico_multicore
         hardware_spi
+        hardware_i2c
+        hardware_pwm
+        hardware_adc
         )
 
 if (APP_DEBUG)
@@ -119,6 +125,9 @@ target_link_libraries(sta_root
         pico_stdlib
         pico_multicore
         hardware_spi
+        hardware_i2c
+        hardware_pwm
+        hardware_adc
         )
 
 if (APP_DEBUG)
@@ -148,6 +157,9 @@ target_link_libraries(ap_root
         pico_stdlib
         pico_multicore
         hardware_spi
+        hardware_i2c
+        hardware_pwm
+        hardware_adc
         )
 
 if (APP_DEBUG)
@@ -178,6 +190,9 @@ target_link_libraries(sta_one
         pico_stdlib
         pico_multicore
         hardware_spi
+        hardware_i2c
+        hardware_pwm
+        hardware_adc
         )
 
 if (APP_DEBUG)
@@ -208,6 +223,9 @@ target_link_libraries(ap_one
         pico_stdlib
         pico_multicore
         hardware_spi
+        hardware_i2c
+        hardware_pwm
+        hardware_adc
         )
 
 if (APP_DEBUG)
@@ -238,6 +256,8 @@ target_link_libraries(sta_two
         pico_stdlib
         hardware_spi
         hardware_i2c
+        hardware_pwm
+        hardware_adc
         )
 
 if (APP_DEBUG)
@@ -268,6 +288,8 @@ target_link_libraries(ap_two
         pico_stdlib
         pico_multicore
         hardware_spi
+        hardware_i2c
+        hardware_pwm
         )
 
 if (APP_DEBUG)
@@ -298,6 +320,8 @@ target_link_libraries(sta_three
         pico_stdlib
         hardware_spi
         hardware_i2c
+        hardware_pwm
+        hardware_adc
         )
 
 if (APP_DEBUG)
@@ -328,6 +352,9 @@ target_link_libraries(ap_three
         pico_stdlib
         pico_multicore
         hardware_spi
+        hardware_i2c
+        hardware_pwm
+        hardware_adc
         )
 
 if (APP_DEBUG)

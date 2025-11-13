@@ -2,8 +2,14 @@
 #include <cstdint>
 #include <pico/types.h>
 
-TTTGame::TTTGame(uint8_t game_id) {
-    this->game_id = game_id;
+extern "C" {
+    #include "images.h"
+    #include "DEV_Config.h"
+    #include "GUI_Paint.h"
+}
+
+TTTGame::TTTGame() {
+    ;
 }
 
 bool TTTGame::placeObject(object o, int x, int y) {
@@ -108,4 +114,44 @@ void TTTGame::createNetworkMessage(TCP_DATA_MSG &msg, msg_type type) {
         uint8_t buffer[1] = {static_cast<uint8_t>(type)};
         msg.add_message(buffer, 1);
     }
+}
+
+void NetworkTTTGame::increment_position() {
+     if (++user_position.x == 3) {
+        user_position.x = 0;
+        user_position.y++;
+     }
+     if (user_position.y == 3) {
+        user_position.y = 0;
+     }
+}
+pos_cords NetworkTTTGame::get_position() {
+    return user_position;
+}
+
+void NetworkTTTGame::draw_peice(object o, int x, int y) {
+    UBYTE* image = NULL;
+    
+    switch(o) {
+        case X:
+            image = (UBYTE*)(epd_bitmap_X);
+            break;
+        case O:
+            image = (UBYTE*)(epd_bitmap_O);
+            break;
+        default:
+            return;
+            //image = (UBYTE*)(epd_bitmap_O);
+            //break;
+    }
+
+    Paint_BmpWindows(piece_positions[y][x].x, piece_positions[y][x].y, image, 14, 14);
+}
+
+void NetworkTTTGame::draw_selector() {
+    Paint_DrawRectangle(piece_positions[user_position.y][user_position.x].x, 
+                        piece_positions[user_position.y][user_position.x].y, 
+                        piece_positions[user_position.y][user_position.x].x+15, 
+                        piece_positions[user_position.y][user_position.x].y+15, 
+                        WHITE, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
 }

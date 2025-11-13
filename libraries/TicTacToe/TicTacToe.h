@@ -10,6 +10,16 @@ enum object {
     O
 };
 
+typedef struct pos_cords_t { 
+    uint8_t x;
+    uint8_t y; 
+}pos_cords;
+
+static constexpr pos_cords piece_positions [3][3] = {
+    {{43, 49}, {43, 26}, {43, 3}},
+    {{65, 49}, {65, 26}, {65, 3}},
+    {{87, 49}, {87, 26}, {87, 3}}};
+
 enum msg_type {
     update,
     victory,
@@ -17,10 +27,11 @@ enum msg_type {
     restart
 };
 
-
 class TTTGame {
 public:
-    TTTGame(uint8_t game_id);
+    TTTGame();
+
+    void setID(uint8_t game_id) { this->game_id = game_id; }
 
     bool placeObject(object o, int x, int y);
     /**
@@ -41,7 +52,6 @@ public:
 
     void createNetworkMessage(TCP_DATA_MSG &msg, msg_type type);
 
-private:
     object row1[3] = {EMPTY, EMPTY, EMPTY};
     object row2[3] = {EMPTY, EMPTY, EMPTY};
     object row3[3] = {EMPTY, EMPTY, EMPTY};
@@ -49,6 +59,27 @@ private:
     object* grid[3] {row1, row2, row3};
 
     uint8_t placed_pieces = 0;
+
+private:
+    
+    
     uint8_t game_id;
 };
 
+class NetworkTTTGame {
+public:
+
+    TTTGame game;
+    bool is_my_turn = false;
+    pos_cords user_position = {.x = 0, .y = 0};
+
+    NetworkTTTGame(uint8_t id) {
+        game.setID(id);
+    }
+
+    void increment_position();
+    pos_cords get_position();
+    void draw_peice(object o, int x, int y);
+    void draw_selector();
+
+};

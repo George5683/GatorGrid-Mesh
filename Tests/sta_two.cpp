@@ -12,6 +12,14 @@
 #include "hardware/i2c.h"
 #include "display.hpp"
 
+extern "C" {
+    #include "TicTacToe.h"
+    #include "images.h"
+    #include "DEV_Config.h"
+    #include "GUI_Paint.h"
+    #include "OLED_1in3_c.h"
+}
+
 
 // By default these devices  are on bus address 0x68
 static int addr = 0x68;
@@ -69,7 +77,7 @@ static void mpu6050_read_raw(int16_t accel[3], int16_t gyro[3], int16_t *temp) {
 int main() {
     stdio_init_all();
     // initial delay to allow user to look at the serial monitor
-    sleep_ms(10000);
+    // sleep_ms(10000);
 
     // i2c_init(i2c_default, 400 * 1000);
     // gpio_set_function(PICO_DEFAULT_I2C_SDA_PIN, GPIO_FUNC_I2C);
@@ -84,55 +92,143 @@ int main() {
     // int16_t acceleration[3], gyro[3], temp;
 
     //SPI spi;
-    STANode node;
-    node.init_sta_mode();
-    node.start_sta_mode();
+    // STANode node;
+    // node.init_sta_mode();
+    // node.start_sta_mode();
 
-    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
+    // cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
 
-    if (!node.scan_for_nodes()) {
-        return 0;
-    }
-    printf("known nodes map size: %d\n", node.known_nodes.size());
-    while (node.known_nodes.empty()) {
-        //printf("known nodes map size: %d", node.known_nodes.size());
-        if (!node.scan_for_nodes()) {
+    // if (!node.scan_for_nodes()) {
+    //     return 0;
+    // }
+    // printf("known nodes map size: %d\n", node.known_nodes.size());
+    // while (node.known_nodes.empty()) {
+    //     //printf("known nodes map size: %d", node.known_nodes.size());
+    //     if (!node.scan_for_nodes()) {
 
-            return 0;
+    //         return 0;
+    //     }
+    // }
+    // sleep_ms(5000);
+    // printf("Left searching for nodes\n");
+
+    // while(!node.connect_to_node(0));
+    // if (!node.tcp_init()) {
+    //     // Failed to init TCP connection
+    //     while(true);
+    // }
+    if(DEV_Module_Init()!=0){
+        while(1){
+            printf("END\r\n");
         }
     }
-    sleep_ms(5000);
-    printf("Left searching for nodes\n");
+    // int count = 0;
+    OLED_1in3_C_Init();
+    OLED_1in3_C_Clear();
 
-    while(!node.connect_to_node(0));
-    if (!node.tcp_init()) {
-        // Failed to init TCP connection
-        while(true);
+    // bool toggle = true;
+    // uint32_t send_count = 0;
+    UBYTE *BlackImage;
+    UWORD Imagesize = ((OLED_1in3_C_WIDTH%8==0)? (OLED_1in3_C_WIDTH/8): (OLED_1in3_C_WIDTH/8+1)) * OLED_1in3_C_HEIGHT;
+    if((BlackImage = (UBYTE *)malloc(Imagesize)) == NULL) {
+        while(1){
+            printf("Failed to apply for black memory...\r\n");
+        }
     }
 
-    int count = 0;
+    Paint_NewImage(BlackImage, OLED_1in3_C_WIDTH, OLED_1in3_C_HEIGHT, 180, WHITE);	
+    Paint_Clear(BLACK);
+    int key0 = 15; 
+    int key1 = 17;
+    DEV_GPIO_Mode(key0, 0);
+    DEV_GPIO_Mode(key1, 0);
     
+    Paint_Clear(BLACK);
+    OLED_1in3_C_Display(BlackImage);
 
-    bool toggle = true;
-    uint32_t send_count = 0;
 
+
+    NetworkTTTGame TicTacToe(1);
+    object o = O;
+    bool key0_flag = false;
+    bool key1_flag = false;
     DEBUG_printf("Entering loop");
     for (;;) {
         // DEBUG_printf("Before poll");
-        node.poll();
+        // node.poll();
 
-        if (count++ >= 1000) {
-            // DEBUG_printf("Before LED toggle");
-            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
-            toggle = !toggle;
-            if(!node.is_connected()) {
-                printf("Not connected!\n");
-            }
+        // if (count++ >= 1000) {
+        //     // DEBUG_printf("Before LED toggle");
+        //     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
+        //     toggle = !toggle;
+        //     if(!node.is_connected()) {
+        //         printf("Not connected!\n");
+        //     }
 
-            count = 0;
+        //     count = 0;
+        // }
+
+        // sleep_ms(1);
+        
+        Paint_DrawBitMap(epd_bitmap_tictactoe);
+
+        TicTacToe.draw_selector();
+
+        if(DEV_Digital_Read(key0) == 0 && !key0_flag){
+            TicTacToe.increment_position();
+            key0_flag = true;
+            
+        } else if (DEV_Digital_Read(key0) == 1) {
+            key0_flag = false;
         }
 
-        sleep_ms(1);
+        if(DEV_Digital_Read(key1) == 0 && !key1_flag){
+            pos_cords pos = TicTacToe.get_position();
+            if (TicTacToe.game.placeObject(o, pos.x, pos.y)) {
+                
+                if (o == O) {
+                    o = X;
+                } else {
+                    o = O;
+                }
+            }
+
+            key1_flag = true;
+            
+        } else if (DEV_Digital_Read(key1) == 1) {
+            key1_flag = false;
+        }
+
+        // if(DEV_Digital_Read(key1) == 0 && !key1_flag){
+        //     key1_flag = true;
+        //     TicTacToe.increment_position();
+        // } else {
+        //     key1_flag = false;
+        // }
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                TicTacToe.draw_peice(TicTacToe.game.grid[i][j], i, j);
+            }
+        }
+
+        switch(TicTacToe.game.checkWin()) {
+            case 1: 
+                TicTacToe.game.restartGame();
+                break;
+            case 2:
+                TicTacToe.game.restartGame();
+                break;
+            default:
+                if (TicTacToe.game.placed_pieces == 9) {
+                    TicTacToe.game.restartGame();
+                }
+                break;
+        }
+
+        OLED_1in3_C_Display(BlackImage);
+        Paint_Clear(BLACK);
+        
     }
 
     return 0;
