@@ -7,7 +7,7 @@
 
 #include "../SerialRingBuffer/SerialRingBuffer.hpp"
 
-#define UART_ID    uart0
+#define UART_ID    uart1
 #define BAUD_RATE  115200
 #define DATA_BITS  8
 #define STOP_BITS  1
@@ -15,8 +15,8 @@
 
 
 // TODO: IFDEF based off of pico2_w or pico_2
-#define UART_TX_PIN 16
-#define UART_RX_PIN 17
+#define UART_TX_PIN 4
+#define UART_RX_PIN 5
 
 #define MAX_LEN     128
 

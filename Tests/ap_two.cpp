@@ -45,12 +45,12 @@ int main() {
         if (count++ >= 500) {
             cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
             toggle = !toggle;
-            node.tree.get_children(node.get_NodeID(), children_ids, number_of_children);
-            printf("\n\nChildren:\n");
-            for (int i = 0; i < number_of_children; i++) {
-                printf("%u\t", children_ids[i]);
-            }
-            printf("\n");
+            // node.tree.get_children(node.get_NodeID(), children_ids, number_of_children);
+            // printf("\n\nChildren:\n");
+            // for (int i = 0; i < number_of_children; i++) {
+            //     printf("%u\t", children_ids[i]);
+            // }
+            // printf("\n");
             count = 0;
         }
 

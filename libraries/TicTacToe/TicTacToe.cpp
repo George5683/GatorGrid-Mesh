@@ -78,7 +78,7 @@ std::string TTTGame::currentState() {
     std::string gameState;
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            gameState += std::to_string(grid[i][j]);
+            gameState += std::to_string(grid[j][i]);
         }
         if (i != 2) gameState += ",";
     }
@@ -86,10 +86,27 @@ std::string TTTGame::currentState() {
     return gameState;
 }
 
+void TTTGame::updateFromString(std::string state) {
+    int x_pos = 0;
+    int y_pos = 0;
+    for (int i = 0; i < state.length(); i++) {
+        if (state.at(i) == ',') continue;
+        grid[x_pos][y_pos] = (object)(state.at(i) - '0');
+        if (++x_pos == 3) {
+            x_pos = 0;
+            y_pos++;
+        }
+        if (y_pos == 3) {
+            y_pos = 0;
+        }
+              
+    }
+}
+
 void TTTGame::restartGame() {
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            grid[i][j] = EMPTY;
+            grid[j][i] = EMPTY;
         }
     }
     placed_pieces = 0;
@@ -100,8 +117,9 @@ void TTTGame::createNetworkMessage(TCP_DATA_MSG &msg, msg_type type) {
     if (update == type) {
         std::string gameState = currentState();
 
-        char buffer[13] = {};
-        buffer[0] = update;
+        char buffer[14] = {};
+        buffer[0] = game_id;
+        buffer[1] = update;
         gameState.copy(buffer+1, 11, 0);
         buffer[12] = '\0';
 

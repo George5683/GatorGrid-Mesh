@@ -47,6 +47,7 @@ public:
      * @return std::string -> example state "X0O,X0O,OX0"
      */
     std::string currentState();
+    void updateFromString(std::string state);
 
     void restartGame();
 
@@ -81,5 +82,4 @@ public:
     pos_cords get_position();
     void draw_peice(object o, int x, int y);
     void draw_selector();
-
 };

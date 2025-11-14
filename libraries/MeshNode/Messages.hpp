@@ -126,6 +126,7 @@ public:
 class TCP_DATA_MSG : public TCP_MESSAGE {
 public:
     tcp_data_msg msg = {0};
+    const int header_size = 14;
 public:
     TCP_DATA_MSG(uint32_t src_id, uint32_t dest_id) : TCP_MESSAGE(0x7F) {
         msg.priority = priority;
@@ -140,7 +141,7 @@ public:
     void add_message(uint8_t* msg_i, uint8_t msg_len) {
         memcpy(msg.msg, msg_i, msg_len > MAX_MESSAGE_LENGTH ? MAX_MESSAGE_LENGTH : msg_len);
         msg.msg_len = msg_len;
-        msg.len += msg_len > MAX_MESSAGE_LENGTH ? MAX_MESSAGE_LENGTH : msg_len;
+        msg.len = header_size + (msg_len > MAX_MESSAGE_LENGTH ? MAX_MESSAGE_LENGTH : msg_len);
     }
 
     uint8_t* get_msg() override {

@@ -1,3 +1,4 @@
+#include "SerialMessages.hpp"
 #include "pico/stdlib.h"
 #include "libraries/MeshNode/MeshNode.hpp"
 #include "libraries/MeshNode/Messages.hpp"
@@ -77,7 +78,7 @@ static void mpu6050_read_raw(int16_t accel[3], int16_t gyro[3], int16_t *temp) {
 int main() {
     stdio_init_all();
     // initial delay to allow user to look at the serial monitor
-    // sleep_ms(10000);
+    sleep_ms(10000);
 
     // i2c_init(i2c_default, 400 * 1000);
     // gpio_set_function(PICO_DEFAULT_I2C_SDA_PIN, GPIO_FUNC_I2C);
@@ -92,11 +93,11 @@ int main() {
     // int16_t acceleration[3], gyro[3], temp;
 
     //SPI spi;
-    // STANode node;
-    // node.init_sta_mode();
-    // node.start_sta_mode();
+    STANode node;
+    node.init_sta_mode();
+    node.start_sta_mode();
 
-    // cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
+    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
 
     // if (!node.scan_for_nodes()) {
     //     return 0;
@@ -122,11 +123,13 @@ int main() {
             printf("END\r\n");
         }
     }
-    // int count = 0;
+    int count = 0;
+    bool toggle = true;
+
+
     OLED_1in3_C_Init();
     OLED_1in3_C_Clear();
 
-    // bool toggle = true;
     // uint32_t send_count = 0;
     UBYTE *BlackImage;
     UWORD Imagesize = ((OLED_1in3_C_WIDTH%8==0)? (OLED_1in3_C_WIDTH/8): (OLED_1in3_C_WIDTH/8+1)) * OLED_1in3_C_HEIGHT;
@@ -153,20 +156,30 @@ int main() {
     bool key0_flag = false;
     bool key1_flag = false;
     DEBUG_printf("Entering loop");
+
+    TCP_DATA_MSG game_updates(node.get_NodeID(), 0);
+    SERIAL_DATA_MESSAGE test_serial;
+    // std::string test_state = "011,220,102";
+    // TicTacToe.game.updateFromString(test_state);
+    TicTacToe.is_my_turn = true;
+
     for (;;) {
         // DEBUG_printf("Before poll");
         // node.poll();
+        if(node.uart.BufferReady()) {
+            node.handle_serial_message(node.uart.getReadBuffer());
+        }
 
-        // if (count++ >= 1000) {
-        //     // DEBUG_printf("Before LED toggle");
-        //     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
-        //     toggle = !toggle;
-        //     if(!node.is_connected()) {
-        //         printf("Not connected!\n");
-        //     }
+        if (count++ >= 1000) {
+            // DEBUG_printf("Before LED toggle");
+            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
+            toggle = !toggle;
+            // if(!node.is_connected()) {
+            //     printf("Not connected!\n");
+            // }
 
-        //     count = 0;
-        // }
+            count = 0;
+        }
 
         // sleep_ms(1);
         
@@ -182,35 +195,43 @@ int main() {
             key0_flag = false;
         }
 
-        if(DEV_Digital_Read(key1) == 0 && !key1_flag){
-            pos_cords pos = TicTacToe.get_position();
-            if (TicTacToe.game.placeObject(o, pos.x, pos.y)) {
-                
-                if (o == O) {
-                    o = X;
-                } else {
-                    o = O;
+        if (TicTacToe.is_my_turn) {
+
+            if(DEV_Digital_Read(key1) == 0 && !key1_flag){
+                pos_cords pos = TicTacToe.get_position();
+                if (TicTacToe.game.placeObject(o, pos.x, pos.y)) {
+                    
+                    if (o == O) {
+                        o = X;
+                    } else {
+                        o = O;
+                    }
                 }
+                TicTacToe.game.createNetworkMessage(game_updates, update);
+                // node.send_msg(game_updates.get_msg());
+                DEBUG_printf(TicTacToe.game.currentState().c_str());
+                test_serial.add_message((uint8_t*)TicTacToe.game.currentState().c_str(), TicTacToe.game.currentState().length());
+                node.uart.sendMessage((char*)test_serial.get_msg());
+                DUMP_BYTES(game_updates.get_msg(), game_updates.get_len());
+                TicTacToe.is_my_turn = false;
+                key1_flag = true;
+                
+            } else if (DEV_Digital_Read(key1) == 1) {
+                key1_flag = false;
             }
 
-            key1_flag = true;
+        } else {
             
-        } else if (DEV_Digital_Read(key1) == 1) {
-            key1_flag = false;
         }
 
-        // if(DEV_Digital_Read(key1) == 0 && !key1_flag){
-        //     key1_flag = true;
-        //     TicTacToe.increment_position();
-        // } else {
-        //     key1_flag = false;
-        // }
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 TicTacToe.draw_peice(TicTacToe.game.grid[i][j], i, j);
             }
         }
+
+        // DEBUG_printf("%s", TicTacToe.game.currentState());
 
         switch(TicTacToe.game.checkWin()) {
             case 1: 
@@ -231,5 +252,5 @@ int main() {
         
     }
 
-    return 0;
+    return 0;// george said that the pin layout is flipped, or ofseet by one or soemthing
 }
