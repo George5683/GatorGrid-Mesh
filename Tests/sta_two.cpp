@@ -150,17 +150,17 @@ int main() {
     OLED_1in3_C_Display(BlackImage);
 
 
-
-    NetworkTTTGame TicTacToe(1);
-    object o = O;
+    const int game_id = 1;
+    NetworkTTTGame TicTacToe(game_id);
+    object o = X;
     bool key0_flag = false;
     bool key1_flag = false;
     DEBUG_printf("Entering loop");
 
     TCP_DATA_MSG game_updates(node.get_NodeID(), 0);
     SERIAL_DATA_MESSAGE test_serial;
-    // std::string test_state = "011,220,102";
-    // TicTacToe.game.updateFromString(test_state);
+    std::string test_state = "011,220,102";
+    TicTacToe.game.updateFromString(test_state);
     TicTacToe.is_my_turn = true;
 
     for (;;) {
@@ -182,70 +182,105 @@ int main() {
         }
 
         // sleep_ms(1);
-        
-        Paint_DrawBitMap(epd_bitmap_tictactoe);
-
-        TicTacToe.draw_selector();
-
-        if(DEV_Digital_Read(key0) == 0 && !key0_flag){
-            TicTacToe.increment_position();
-            key0_flag = true;
-            
-        } else if (DEV_Digital_Read(key0) == 1) {
-            key0_flag = false;
-        }
-
-        if (TicTacToe.is_my_turn) {
-
-            if(DEV_Digital_Read(key1) == 0 && !key1_flag){
-                pos_cords pos = TicTacToe.get_position();
-                if (TicTacToe.game.placeObject(o, pos.x, pos.y)) {
-                    
-                    if (o == O) {
-                        o = X;
-                    } else {
-                        o = O;
-                    }
-                }
-                TicTacToe.game.createNetworkMessage(game_updates, update);
-                // node.send_msg(game_updates.get_msg());
-                DEBUG_printf(TicTacToe.game.currentState().c_str());
-                test_serial.add_message((uint8_t*)TicTacToe.game.currentState().c_str(), TicTacToe.game.currentState().length());
-                node.uart.sendMessage((char*)test_serial.get_msg());
-                DUMP_BYTES(game_updates.get_msg(), game_updates.get_len());
-                TicTacToe.is_my_turn = false;
-                key1_flag = true;
+        switch (TicTacToe.game.checkWin()) {
                 
-            } else if (DEV_Digital_Read(key1) == 1) {
-                key1_flag = false;
-            }
-
-        } else {
-            
-        }
-
-
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                TicTacToe.draw_peice(TicTacToe.game.grid[i][j], i, j);
-            }
-        }
-
-        // DEBUG_printf("%s", TicTacToe.game.currentState());
-
-        switch(TicTacToe.game.checkWin()) {
-            case 1: 
-                TicTacToe.game.restartGame();
-                break;
-            case 2:
-                TicTacToe.game.restartGame();
-                break;
-            default:
-                if (TicTacToe.game.placed_pieces == 9) {
+            case 1:
+                Paint_DrawBitMap(epd_bitmap_lose);
+                if(DEV_Digital_Read(key0) == 0 || DEV_Digital_Read(key1) == 0) {
                     TicTacToe.game.restartGame();
                 }
                 break;
+            case 2:
+                Paint_DrawBitMap(epd_bitmap_win);
+                if(DEV_Digital_Read(key0) == 0 || DEV_Digital_Read(key1) == 0) {
+                    TicTacToe.game.restartGame();
+                }
+                break;
+            default:
+                Paint_DrawBitMap(epd_bitmap_tictactoe);
+
+                TicTacToe.draw_selector();
+
+                if(DEV_Digital_Read(key0) == 0 && !key0_flag){
+                    TicTacToe.increment_position();
+                    key0_flag = true;
+                    
+                } else if (DEV_Digital_Read(key0) == 1) {
+                    key0_flag = false;
+                }
+
+                if (TicTacToe.is_my_turn) {
+
+                    if(DEV_Digital_Read(key1) == 0 && !key1_flag){
+                        pos_cords pos = TicTacToe.get_position();
+                        if (TicTacToe.game.placeObject(o, pos.x, pos.y)) {
+                            
+                            if (o == O) {
+                                o = X;
+                            } else {
+                                o = O;
+                            }
+                        }
+                        TicTacToe.game.createNetworkMessage(game_updates, update);
+                        DEBUG_printf(TicTacToe.game.currentState().c_str());
+                        // test_serial.add_message((uint8_t*)TicTacToe.game.currentState().c_str(), TicTacToe.game.currentState().length());
+                        // node.uart.sendMessage((char*)test_serial.get_msg());
+                        DUMP_BYTES(game_updates.get_msg(), game_updates.get_len());
+                        node.send_msg(game_updates.get_msg());
+                        TicTacToe.is_my_turn = false;
+                        key1_flag = true;
+                        
+                    } else if (DEV_Digital_Read(key1) == 1) {
+                        key1_flag = false;
+                    }
+
+                } else {
+                    if(node.rb.get_size()) {
+                        struct data r= node.rb.digest();
+                        if (r.data[0] != game_id) continue;
+
+                        std::string game_state;
+
+                        switch ((msg_type)r.data[1]) {
+                            case update:
+                                for (int i = 2; i < 13; i++) {
+                                    game_state += to_string(r.data[i]);
+                                }
+                                TicTacToe.game.updateFromString(game_state);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        TicTacToe.draw_peice(TicTacToe.game.grid[i][j], i, j);
+                    }
+                }
+                break;
         }
+        
+
+        
+
+        // DEBUG_printf("%s", TicTacToe.game.currentState());
+
+        // switch(TicTacToe.game.checkWin()) {
+        //     case 1: 
+        //         TicTacToe.game.restartGame();
+        //         break;
+        //     case 2:
+        //         TicTacToe.game.restartGame();
+        //         break;
+        //     default:
+        //         if (TicTacToe.game.placed_pieces == 9) {
+        //             TicTacToe.game.restartGame();
+        //         }
+        //         break;
+        // }
 
         OLED_1in3_C_Display(BlackImage);
         Paint_Clear(BLACK);
