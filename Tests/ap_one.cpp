@@ -13,9 +13,11 @@ int main() {
     // initiate everything
     stdio_init_all();
 
+    sleep_ms(5000);
+
     APNode node(1);
 
-    sleep_ms(5000);
+    
 
     //PicoUART uart;
 

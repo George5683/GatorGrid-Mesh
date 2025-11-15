@@ -9,6 +9,14 @@
 #include "libraries/display/display.hpp"
 #include "libraries/DHT11/dht11-pico.h"
 
+extern "C" {
+    #include "TicTacToe.h"
+    #include "images.h"
+    #include "DEV_Config.h"
+    #include "GUI_Paint.h"
+    #include "OLED_1in3_c.h"
+}
+
 const uint DHT_PIN = 22;
 
 #define DEBUG 1
@@ -16,11 +24,12 @@ const uint DHT_PIN = 22;
 int main() {
     stdio_init_all();
     // initial delay to allow user to look at the serial monitor
+    sleep_ms(5000);
 
     STANode node;
 
     
-    sleep_ms(5000);
+    
 
     // initiate everything
 
@@ -46,63 +55,192 @@ int main() {
     }
     printf("Left searching for nodes\n");
 
-    while(!node.connect_to_node(2));
+    while(!node.connect_to_node(0));
     while (!node.tcp_init()) {
         ERROR_printf("Failed to init connection... Retrying");
     }
 
 
-    bool got_an_ack = false;
+    if(DEV_Module_Init()!=0){
+        while(1){
+            printf("END\r\n");
+        }
+    }
     int count = 0;
-    int final_size = 0;
-
-    char send_buf[50] = {0};
-
     bool toggle = true;
 
 
-    uint32_t children_ids[4] = {};
-    uint8_t number_of_children = 0;
+    OLED_1in3_C_Init();
+    OLED_1in3_C_Clear();
 
-    Dht11 dht11_sensor(DHT_PIN);
-    double temperature;
-    double rel_humidity;
+    // uint32_t send_count = 0;
+    UBYTE *BlackImage;
+    UWORD Imagesize = ((OLED_1in3_C_WIDTH%8==0)? (OLED_1in3_C_WIDTH/8): (OLED_1in3_C_WIDTH/8+1)) * OLED_1in3_C_HEIGHT;
+    if((BlackImage = (UBYTE *)malloc(Imagesize)) == NULL) {
+        while(1){
+            printf("Failed to apply for black memory...\r\n");
+        }
+    }
+
+    Paint_NewImage(BlackImage, OLED_1in3_C_WIDTH, OLED_1in3_C_HEIGHT, 180, WHITE);	
+    Paint_Clear(BLACK);
+    int key0 = 15; 
+    int key1 = 17;
+    DEV_GPIO_Mode(key0, 0);
+    DEV_GPIO_Mode(key1, 0);
     
-    char buf[50] = {};
+    Paint_Clear(BLACK);
+    OLED_1in3_C_Display(BlackImage);
+
+
+    const int game_id = 1;
+    NetworkTTTGame TicTacToe(game_id);
+    object o = X;
+    bool key0_flag = false;
+    bool key1_flag = false;
+    DEBUG_printf("Entering loop");
+
+    TCP_DATA_MSG game_updates(node.get_NodeID(), 2);
+    SERIAL_DATA_MESSAGE test_serial;
+    // std::string test_state = "011,220,102";
+    // TicTacToe.game.updateFromString(test_state);
+    TicTacToe.is_my_turn = false;
+
+    bool reset_flag = false;
+    int win_wait = 0;
 
     for (;;) {
+        // DEBUG_printf("Before poll");
         node.poll();
 
-        if (count++ % 500 == 0) {
+        if (count++ >= 1000) {
+            // DEBUG_printf("Before LED toggle");
             cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
             toggle = !toggle;
-            if(!node.is_connected()) {
-                printf("Not connected!\n");
-            }
-        }
-
-        if (count == 2000) {
-            std::cout<<"Temp:"<<dht11_sensor.readT()<<" °C"<<std::endl;
-        }
-
-        if (count == 4000) {
-            std::cout<<"RH:"<<dht11_sensor.readRH()<<" %"<<std::endl;
-        }
-
-        if (count == 6000) {
-            dht11_sensor.readRHT(&temperature, &rel_humidity);
-            snprintf(buf, sizeof buf, "Temp: %lf °C\tRH: %lf %", temperature, rel_humidity); 
-            DEBUG_printf("%s", buf);
-
-            
-            node.send_data(0, sizeof buf, (uint8_t*)buf);
+            // if(!node.is_connected()) {
+            //     printf("Not connected!\n");
+            // }
 
             count = 0;
         }
 
+        // sleep_ms(1);
+        switch (TicTacToe.game.checkWin()) {
+            
+            case 1:
+                if (o == 1) {
+                    Paint_DrawBitMap(epd_bitmap_win);
+                } else {
+                    Paint_DrawBitMap(epd_bitmap_lose);
+                }
+
+                if (win_wait++ < 100) { break;}
+
+                if(DEV_Digital_Read(key0) == 0 || DEV_Digital_Read(key1) == 0) {
+                    reset_flag = true;
+                } else {
+                    if (reset_flag) {
+                        win_wait = 0;
+                        TicTacToe.game.restartGame();
+                    }
+                }
+                break;
+            case 2:
+                if (o == 2) {
+                    Paint_DrawBitMap(epd_bitmap_win);
+                } else {
+                    Paint_DrawBitMap(epd_bitmap_lose);
+                }
+
+                if (win_wait++ < 100) { break;}
+                
+                if(DEV_Digital_Read(key0) == 0 || DEV_Digital_Read(key1) == 0) {
+                    reset_flag = true;
+                } else {
+                    if (reset_flag) {
+                        win_wait = 0;
+                        TicTacToe.game.restartGame();
+                    }
+                }
+                break;
+            default:
+            
+                if (TicTacToe.game.placed_pieces == 9) {
+                    TicTacToe.game.restartGame();
+                    break;
+                }
+                Paint_DrawBitMap(epd_bitmap_tictactoe);
+
+
+                if (TicTacToe.is_my_turn) {
+
+                    TicTacToe.draw_selector();
+
+                    if(DEV_Digital_Read(key0) == 0 && !key0_flag){
+                        TicTacToe.increment_position();
+                        key0_flag = true;
+                        
+                    } else if (DEV_Digital_Read(key0) == 1) {
+                        key0_flag = false;
+                    }
+
+                    if(DEV_Digital_Read(key1) == 0 && !key1_flag){
+                        pos_cords pos = TicTacToe.get_position();
+                        if (TicTacToe.game.placeObject(o, pos.x, pos.y)) {
+                            
+                            TicTacToe.game.createNetworkMessage(game_updates, update);
+                            DEBUG_printf(TicTacToe.game.currentState().c_str());
+                            // test_serial.add_message((uint8_t*)TicTacToe.game.currentState().c_str(), TicTacToe.game.currentState().length());
+                            // node.uart.sendMessage((char*)test_serial.get_msg());
+                            DUMP_BYTES(game_updates.get_msg(), game_updates.get_len());
+                            node.send_msg(game_updates.get_msg());
+                            TicTacToe.is_my_turn = false;
+                            key1_flag = true;
+                        }
+                        
+                        
+                    } else if (DEV_Digital_Read(key1) == 1) {
+                        key1_flag = false;
+                    }
+
+                } else {
+                    if(node.rb.get_size()) {
+                        struct data r= node.rb.digest();
+                        // if (r.data[0] != game_id) continue;
+                        DUMP_BYTES(r.data, r.size);
+
+                        std::string game_state;
+                        for (int i = 1; i < 12; i++) {
+                            
+                            game_state += (char)r.data[i];
+                        }
+                        std::cout << game_state << "\n";
+                        TicTacToe.game.updateFromString(game_state);
+                        TicTacToe.is_my_turn = true;
+
+                        // switch ((msg_type)r.data[1]) {
+                        //     case update:
+                                
+                        //         break;
+                        //     default:
+                        //         break;
+                        // }
+                    }
+                }
+
+
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        TicTacToe.draw_peice(TicTacToe.game.grid[i][j], i, j);
+                    }
+                }
+                break;
+        }
         
 
-        sleep_ms(1);
+        OLED_1in3_C_Display(BlackImage);
+        Paint_Clear(BLACK);
+        
     }
     
 

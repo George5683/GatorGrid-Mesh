@@ -692,7 +692,7 @@ void STANode::poll() {
         handle_serial_message(uart.getReadBuffer());
     }
 
-    if (!is_connected()) {
+    if (!is_connected() && !is_root) {
         ERROR_printf("Detected that we are no longer connected");
 
         while(!runSelfHealing());

@@ -89,8 +89,10 @@ std::string TTTGame::currentState() {
 void TTTGame::updateFromString(std::string state) {
     int x_pos = 0;
     int y_pos = 0;
+    placed_pieces = 0;
     for (int i = 0; i < state.length(); i++) {
         if (state.at(i) == ',') continue;
+        if ((object)(state.at(i) - '0') != EMPTY) placed_pieces++;
         grid[x_pos][y_pos] = (object)(state.at(i) - '0');
         if (++x_pos == 3) {
             x_pos = 0;

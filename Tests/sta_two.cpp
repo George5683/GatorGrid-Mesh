@@ -99,25 +99,25 @@ int main() {
 
     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
 
-    // if (!node.scan_for_nodes()) {
-    //     return 0;
-    // }
-    // printf("known nodes map size: %d\n", node.known_nodes.size());
-    // while (node.known_nodes.empty()) {
-    //     //printf("known nodes map size: %d", node.known_nodes.size());
-    //     if (!node.scan_for_nodes()) {
+    if (!node.scan_for_nodes()) {
+        return 0;
+    }
+    printf("known nodes map size: %d\n", node.known_nodes.size());
+    while (node.known_nodes.empty()) {
+        //printf("known nodes map size: %d", node.known_nodes.size());
+        if (!node.scan_for_nodes()) {
 
-    //         return 0;
-    //     }
-    // }
-    // sleep_ms(5000);
-    // printf("Left searching for nodes\n");
+            return 0;
+        }
+    }
+    sleep_ms(5000);
+    printf("Left searching for nodes\n");
 
-    // while(!node.connect_to_node(0));
-    // if (!node.tcp_init()) {
-    //     // Failed to init TCP connection
-    //     while(true);
-    // }
+    while(!node.connect_to_node(0));
+    if (!node.tcp_init()) {
+        // Failed to init TCP connection
+        while(true);
+    }
     if(DEV_Module_Init()!=0){
         while(1){
             printf("END\r\n");
@@ -152,23 +152,27 @@ int main() {
 
     const int game_id = 1;
     NetworkTTTGame TicTacToe(game_id);
-    object o = X;
+    object o = O;
     bool key0_flag = false;
     bool key1_flag = false;
     DEBUG_printf("Entering loop");
 
-    TCP_DATA_MSG game_updates(node.get_NodeID(), 0);
+    TCP_DATA_MSG game_updates(node.get_NodeID(), 1);
     SERIAL_DATA_MESSAGE test_serial;
-    std::string test_state = "011,220,102";
-    TicTacToe.game.updateFromString(test_state);
+    // std::string test_state = "011,220,102";
+    // TicTacToe.game.updateFromString(test_state);
     TicTacToe.is_my_turn = true;
+
+    bool reset_flag = false;
+    int win_wait = 0;
 
     for (;;) {
         // DEBUG_printf("Before poll");
-        // node.poll();
-        if(node.uart.BufferReady()) {
-            node.handle_serial_message(node.uart.getReadBuffer());
-        }
+        node.poll();
+
+        // if(node.uart.BufferReady()) {
+        //     node.handle_serial_message(node.uart.getReadBuffer());
+        // }
 
         if (count++ >= 1000) {
             // DEBUG_printf("Before LED toggle");
@@ -183,52 +187,78 @@ int main() {
 
         // sleep_ms(1);
         switch (TicTacToe.game.checkWin()) {
-                
+            
             case 1:
-                Paint_DrawBitMap(epd_bitmap_lose);
+                if (o == 1) {
+                    Paint_DrawBitMap(epd_bitmap_win);
+                } else {
+                    Paint_DrawBitMap(epd_bitmap_lose);
+                }
+
+                if (win_wait++ < 100) { break;}
+
                 if(DEV_Digital_Read(key0) == 0 || DEV_Digital_Read(key1) == 0) {
-                    TicTacToe.game.restartGame();
+                    reset_flag = true;
+                } else {
+                    if (reset_flag) {
+                        win_wait = 0;
+                        TicTacToe.game.restartGame();
+                    }
                 }
                 break;
             case 2:
-                Paint_DrawBitMap(epd_bitmap_win);
+                if (o == 2) {
+                    Paint_DrawBitMap(epd_bitmap_win);
+                } else {
+                    Paint_DrawBitMap(epd_bitmap_lose);
+                }
+
+                if (win_wait++ < 100) { break;}
+                
                 if(DEV_Digital_Read(key0) == 0 || DEV_Digital_Read(key1) == 0) {
-                    TicTacToe.game.restartGame();
+                    reset_flag = true;
+                } else {
+                    if (reset_flag) {
+                        win_wait = 0;
+                        TicTacToe.game.restartGame();
+                    }
                 }
                 break;
             default:
+            
+                if (TicTacToe.game.placed_pieces == 9) {
+                    TicTacToe.game.restartGame();
+                    break;
+                }
                 Paint_DrawBitMap(epd_bitmap_tictactoe);
 
-                TicTacToe.draw_selector();
-
-                if(DEV_Digital_Read(key0) == 0 && !key0_flag){
-                    TicTacToe.increment_position();
-                    key0_flag = true;
-                    
-                } else if (DEV_Digital_Read(key0) == 1) {
-                    key0_flag = false;
-                }
 
                 if (TicTacToe.is_my_turn) {
+
+                    TicTacToe.draw_selector();
+
+                    if(DEV_Digital_Read(key0) == 0 && !key0_flag){
+                        TicTacToe.increment_position();
+                        key0_flag = true;
+                        
+                    } else if (DEV_Digital_Read(key0) == 1) {
+                        key0_flag = false;
+                    }
 
                     if(DEV_Digital_Read(key1) == 0 && !key1_flag){
                         pos_cords pos = TicTacToe.get_position();
                         if (TicTacToe.game.placeObject(o, pos.x, pos.y)) {
                             
-                            if (o == O) {
-                                o = X;
-                            } else {
-                                o = O;
-                            }
+                            TicTacToe.game.createNetworkMessage(game_updates, update);
+                            DEBUG_printf(TicTacToe.game.currentState().c_str());
+                            // test_serial.add_message((uint8_t*)TicTacToe.game.currentState().c_str(), TicTacToe.game.currentState().length());
+                            // node.uart.sendMessage((char*)test_serial.get_msg());
+                            DUMP_BYTES(game_updates.get_msg(), game_updates.get_len());
+                            node.send_msg(game_updates.get_msg());
+                            TicTacToe.is_my_turn = false;
+                            key1_flag = true;
                         }
-                        TicTacToe.game.createNetworkMessage(game_updates, update);
-                        DEBUG_printf(TicTacToe.game.currentState().c_str());
-                        // test_serial.add_message((uint8_t*)TicTacToe.game.currentState().c_str(), TicTacToe.game.currentState().length());
-                        // node.uart.sendMessage((char*)test_serial.get_msg());
-                        DUMP_BYTES(game_updates.get_msg(), game_updates.get_len());
-                        node.send_msg(game_updates.get_msg());
-                        TicTacToe.is_my_turn = false;
-                        key1_flag = true;
+                        
                         
                     } else if (DEV_Digital_Read(key1) == 1) {
                         key1_flag = false;
@@ -237,20 +267,25 @@ int main() {
                 } else {
                     if(node.rb.get_size()) {
                         struct data r= node.rb.digest();
-                        if (r.data[0] != game_id) continue;
+                        // if (r.data[0] != game_id) continue;
+                        DUMP_BYTES(r.data, r.size);
 
                         std::string game_state;
-
-                        switch ((msg_type)r.data[1]) {
-                            case update:
-                                for (int i = 2; i < 13; i++) {
-                                    game_state += to_string(r.data[i]);
-                                }
-                                TicTacToe.game.updateFromString(game_state);
-                                break;
-                            default:
-                                break;
+                        for (int i = 1; i < 12; i++) {
+                            
+                            game_state += (char)r.data[i];
                         }
+                        std::cout << game_state << "\n";
+                        TicTacToe.game.updateFromString(game_state);
+                        TicTacToe.is_my_turn = true;
+
+                        // switch ((msg_type)r.data[1]) {
+                        //     case update:
+                                
+                        //         break;
+                        //     default:
+                        //         break;
+                        // }
                     }
                 }
 
@@ -263,24 +298,6 @@ int main() {
                 break;
         }
         
-
-        
-
-        // DEBUG_printf("%s", TicTacToe.game.currentState());
-
-        // switch(TicTacToe.game.checkWin()) {
-        //     case 1: 
-        //         TicTacToe.game.restartGame();
-        //         break;
-        //     case 2:
-        //         TicTacToe.game.restartGame();
-        //         break;
-        //     default:
-        //         if (TicTacToe.game.placed_pieces == 9) {
-        //             TicTacToe.game.restartGame();
-        //         }
-        //         break;
-        // }
 
         OLED_1in3_C_Display(BlackImage);
         Paint_Clear(BLACK);

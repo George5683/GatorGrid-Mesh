@@ -22,6 +22,7 @@ int main() {
     STANode node;
     node.init_sta_mode();
     node.start_sta_mode();
+    node.is_root = true;
 
     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
 
@@ -77,19 +78,19 @@ int main() {
             if(!node.is_connected()) {
                 printf("Not connected!\n");
             }
-            node.tree.get_children(node.get_NodeID(), children_ids, number_of_children);
-            printf("\n\nChildren:\n");
-            for (int i = 0; i < number_of_children; i++) {
-                printf("%u\t", children_ids[i]);
-            }
-            printf("\n");
+            // node.tree.get_children(node.get_NodeID(), children_ids, number_of_children);
+            // printf("\n\nChildren:\n");
+            // for (int i = 0; i < number_of_children; i++) {
+            //     printf("%u\t", children_ids[i]);
+            // }
+            // printf("\n");
 
-            node.tree.send_tree_serial();
-            if (node.rb.get_size() > 0) {
-                struct data received = node.rb.digest();
-                //DUMP_BYTES(received.data, received.size);
-                printf("RINGBUFFER:%s\n", (char*)received.data);
-            }
+            // node.tree.send_tree_serial();
+            // if (node.rb.get_size() > 0) {
+            //     struct data received = node.rb.digest();
+            //     //DUMP_BYTES(received.data, received.size);
+            //     printf("RINGBUFFER:%s\n", (char*)received.data);
+            // }
 
             count = 0;
         }
