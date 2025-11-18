@@ -125,23 +125,8 @@ static void log_netif_state(const char* tag) {
     DEBUG_printf("[%s] link=%d(%s) up=%d ip=%d scan=%d\n", tag, ls, ls_str(ls), up, ip, scn);
 }
 
-int wifi_tcp_reconnect(struct tcp_pcb **ppcb,
-                       void **papp_state /*ignored: pass NULL*/,
-                       uint32_t node_id,
-                       const char *pass,
-                       uint32_t auth,
-                       uint32_t connect_ms)
-{
-    absolute_time_t t0 = get_absolute_time();
+void reset_sta(struct tcp_pcb **ppcb) {
     struct netif *netif = &cyw43_state.netif[CYW43_ITF_STA];
-
-    char ssid[32];
-    snprintf(ssid, sizeof(ssid), "GatorGrid_Node:%08X", node_id);
-
-    DEBUG_printf("[reconnect] enter: ssid=\"%s\" auth=%lu to=%lu ms ppcb=%p *ppcb=%p state=%p\n",
-                 ssid ? ssid : "(null)", (unsigned long)auth, (unsigned long)connect_ms,
-                 (void*)ppcb, ppcb ? (void*)*ppcb : NULL, papp_state ? *papp_state : NULL);
-    log_netif_state("pre");
 
     if (ppcb && *ppcb) {
         DEBUG_printf("[reconnect] closing tcp pcb=%p\n", (void*)*ppcb);
@@ -182,6 +167,27 @@ int wifi_tcp_reconnect(struct tcp_pcb **ppcb,
     CYW_END();
     sleep_ms(100);
     log_netif_state("after-bringup");
+}
+
+int wifi_tcp_reconnect(struct tcp_pcb **ppcb,
+                       void **papp_state /*ignored: pass NULL*/,
+                       uint32_t node_id,
+                       const char *pass,
+                       uint32_t auth,
+                       uint32_t connect_ms)
+{
+    absolute_time_t t0 = get_absolute_time();
+    struct netif *netif = &cyw43_state.netif[CYW43_ITF_STA];
+
+    char ssid[32];
+    snprintf(ssid, sizeof(ssid), "GatorGrid_Node:%08X", node_id);
+
+    DEBUG_printf("[reconnect] enter: ssid=\"%s\" auth=%lu to=%lu ms ppcb=%p *ppcb=%p state=%p\n",
+                 ssid ? ssid : "(null)", (unsigned long)auth, (unsigned long)connect_ms,
+                 (void*)ppcb, ppcb ? (void*)*ppcb : NULL, papp_state ? *papp_state : NULL);
+    log_netif_state("pre");
+
+    reset_sta(ppcb);
 
     int st = cyw43_arch_wifi_connect_timeout_ms(ssid, pass, auth, connect_ms);
 
@@ -695,11 +701,27 @@ void STANode::poll() {
     if (!is_connected() && !is_root) {
         ERROR_printf("Detected that we are no longer connected");
 
-        while(!runSelfHealing());
+        // while(!runSelfHealing());
+        if (runSelfHealing()) {
+            DEBUG_printf("Successfully rejoined network");
+            status = ERR_OK;
+        }
+    } else {
 
-        DEBUG_printf("Successfully rejoined network");
-        status = ERR_OK;
+        if (tree.node_exists(parent)) {
+            
+            if (get_NodeID() < parent) {
+                ERROR_printf("Connected to its own child");
+                tcp_close_safely(&(state->tcp_pcb), NULL);
+                self_healing_blacklist.emplace(parent);
+                parent = UINT32_MAX;
+                reset_sta(&(state->tcp_pcb));
+                DEBUG_printf("No longer connected to parent");
+            }
+        }
     }
+
+
 }
 
 int STANode::number_of_messages() {
@@ -749,7 +771,7 @@ void STANode::addChildrenToBlacklist(){
     while (q.size() > 0) {
         uint32_t curr_id = q[0];
         DEBUG_printf("Checking node %u for children.\n", curr_id);
-        self_healing_blacklist.push_back(curr_id);
+        self_healing_blacklist.emplace(curr_id);
         q.erase(q.begin());
         bool f = tree.get_children(curr_id, children_id, number_of_children);
         DEBUG_printf("Node %u found children: %d\n", curr_id, f);
@@ -777,7 +799,7 @@ bool STANode::runSelfHealing(){
         scan_for_nodes();
 
         int16_t min_rssi = known_nodes.begin()->second->rssi;
-        uint32_t min_node_id = known_nodes.begin()->first;
+        uint32_t min_node_id = UINT32_MAX;//known_nodes.begin()->first;
         DEBUG_printf("Known nodes size: %d", known_nodes.size());
         if (known_nodes.size() == 0) {
             DEBUG_printf("Cannot see any nodes while attempting to reconnect");
@@ -801,12 +823,20 @@ bool STANode::runSelfHealing(){
             //MUST MAKE SURE THE NODE DOES NOT CONNECT TO ITS OWN CHILDREN/GRANDCHILDREN/FURTHER DESCENDANTS
             addChildrenToBlacklist();
 
+            for (const auto& blak : self_healing_blacklist) {
+                DEBUG_printf("Blakclst: %u", blak);
+            }
+
             for (const auto& node : known_nodes) {
                 DEBUG_printf("Knows node %u with rssi %d", node.first, node.second->rssi);
                 if ((node.second->rssi > min_rssi) && std::count(self_healing_blacklist.begin(), self_healing_blacklist.end(), node.first) == 0) {
                     min_rssi = node.second->rssi;
                     min_node_id = node.first;
                 }
+            }
+
+            if (min_node_id == UINT32_MAX) {
+                return false;
             }
 
             potentialNewParent = min_node_id;

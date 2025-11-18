@@ -1,5 +1,6 @@
 #include "ChildrenTree.hpp"
 #include "vector"
+#include "../display/display.hpp"
 #include <sstream>
 #include <string>
 #include <iostream>
@@ -63,6 +64,32 @@ void ChildrenTree::remove_children(Node* node) {
 //    }
 //     return true;
 // }
+
+bool ChildrenTree::remove_child(uint32_t id) {
+    Node* node = this->find_node(id, this->head);
+    if (node->number_of_children != 0) {
+        ERROR_printf("Removing nodes with children not implemented");
+        return false;
+    } else {
+        Node* node_parent = node->parent;
+        uint32_t node_id = node->id;
+        
+        if (--node_parent->number_of_children == 0) {
+            delete node;
+            return true;
+        }
+        for (int i = 0; i < node_parent->number_of_children + 1; i++) {
+            if (node_parent->children[i]->id == node_id) {
+                delete node;
+                for (int j = i; j < node_parent->number_of_children; j++){
+                    node_parent->children[j] = node_parent->children[j+1];
+                }
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
 void ChildrenTree::remove_children(int id) {
     Node* node = this->find_node(id, this->head);
@@ -253,6 +280,7 @@ bool ChildrenTree::get_children(uint32_t parent_id, uint32_t children_id[4], uin
 bool ChildrenTree::update_node(uint32_t id, uint32_t children_id[4], uint8_t &number_of_children) {
     Node* node = find_node(id, head);
     if (!node) { 
+        ERROR_printf("Head not found");
         return false; 
     }
 
@@ -265,7 +293,10 @@ bool ChildrenTree::update_node(uint32_t id, uint32_t children_id[4], uint8_t &nu
             }
         }
         if (found) continue;
-        if (!add_any_child(node->id, children_id[i])) return false;
+        if (!add_any_child(node->id, children_id[i])) {
+            ERROR_printf("Failed to add child %u", children_id[i]);
+            return false;
+        }
     }
 
     return true;

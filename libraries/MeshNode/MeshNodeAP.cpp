@@ -115,6 +115,62 @@ err_t tcp_server_sent(void *arg, struct tcp_pcb *tpcb, u16_t len) {
     return ERR_OK;
 }
 
+err_t remove_connection(void *arg, struct tcp_pcb *tpcb) {
+    ERROR_printf("pbuf returned null (client disconnected)\n");
+
+    APNode* node = (APNode*)arg;
+    TCP_SERVER_T *state = node->state;
+
+    // 1) Find the ClientConnection by pcb in clients_map
+    auto it = node->clients_map.find(tpcb);
+    if (it != node->clients_map.end()) {
+        const ClientConnection& conn = it->second;
+        uint32_t child_disconnecting = conn.id;
+
+        node->parent = UINT32_MAX;
+
+        // 2) Remove from id → pcb map
+        node->client_tpcbs.erase(child_disconnecting);
+
+        // 3) Remove from clients vector
+        auto &vec = node->clients;
+        vec.erase(
+            std::remove_if(
+                vec.begin(), vec.end(),
+                [child_disconnecting](const ClientConnection& c) {
+                    return c.id == child_disconnecting;
+                }
+            ),
+            vec.end()
+        );
+
+        // 4) Finally remove from pcb → ClientConnection map
+        node->clients_map.erase(it);
+    } else {
+        ERROR_printf("Disconnect from unknown pcb %p\n", tpcb);
+    }
+
+    // 5) Clean up lwIP side for this pcb
+    tcp_arg(tpcb, NULL);
+    tcp_poll(tpcb, NULL, 0);
+    tcp_sent(tpcb, NULL);
+    tcp_recv(tpcb, NULL);
+    tcp_err(tpcb, NULL);
+
+    err_t cerr = tcp_close(tpcb);
+    if (cerr != ERR_OK) {
+        ERROR_printf("tcp_close failed (%d), aborting pcb\n", cerr);
+        tcp_abort(tpcb);
+    }
+
+    // If you're tracking a single client in state:
+    if (state->client_pcb == tpcb) {
+        state->client_pcb = NULL;
+    }
+
+    return ERR_OK;
+}
+
 err_t tcp_server_send_data(void *arg, struct tcp_pcb *tpcb)
 {
     APNode* node = (APNode*)arg;
@@ -147,8 +203,10 @@ err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err
 
     DEBUG_printf("Recv called\n");
     if (!p) {
-        ERROR_printf("pbuf returned null");
-        return tcp_server_result(arg, -1);
+        uint32_t id = node->clients_map.find(tpcb)->second.id;
+        SERIAL_NODE_REMOVE_MESSAGE remMsg(id);
+        node->uart.sendMessage((char*)remMsg.get_msg());
+        return remove_connection(arg, tpcb);
     }
     // this method is callback from lwIP, so cyw43_arch_lwip_begin is not required, however you
     // can use this method to cause an assertion in debug mode, if this method is called when

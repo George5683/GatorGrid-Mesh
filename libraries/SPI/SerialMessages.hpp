@@ -95,6 +95,10 @@ public:
         return msg.len;
     }
 
+    void set_msg(void* msg) override {
+        this->msg = *(reinterpret_cast<serial_node_remove_msg_t*>(msg));
+    }
+
     uint8_t* get_msg() override {
         return reinterpret_cast<uint8_t*>(&msg);
     }

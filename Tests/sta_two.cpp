@@ -113,7 +113,7 @@ int main() {
     sleep_ms(5000);
     printf("Left searching for nodes\n");
 
-    while(!node.connect_to_node(0));
+    while(!node.connect_to_node(1));
     if (!node.tcp_init()) {
         // Failed to init TCP connection
         while(true);
@@ -164,7 +164,9 @@ int main() {
     TicTacToe.is_my_turn = true;
 
     bool reset_flag = false;
-    int win_wait = 0;
+    // int win_wait = 0;
+    bool flag = false;
+    absolute_time_t win_wait;
 
     for (;;) {
         // DEBUG_printf("Before poll");
@@ -195,14 +197,16 @@ int main() {
                     Paint_DrawBitMap(epd_bitmap_lose);
                 }
 
-                if (win_wait++ < 100) { break;}
-
+                if (!flag) { win_wait = get_absolute_time(); flag = true; }
+                
                 if(DEV_Digital_Read(key0) == 0 || DEV_Digital_Read(key1) == 0) {
                     reset_flag = true;
                 } else {
                     if (reset_flag) {
-                        win_wait = 0;
-                        TicTacToe.game.restartGame();
+                        if (win_wait - get_absolute_time() > 1000) {
+                            TicTacToe.game.restartGame();
+                            flag = false;
+                        }
                     }
                 }
                 break;
@@ -213,14 +217,16 @@ int main() {
                     Paint_DrawBitMap(epd_bitmap_lose);
                 }
 
-                if (win_wait++ < 100) { break;}
-                
+                if (!flag) { win_wait = get_absolute_time(); flag = true; }
+
                 if(DEV_Digital_Read(key0) == 0 || DEV_Digital_Read(key1) == 0) {
                     reset_flag = true;
                 } else {
                     if (reset_flag) {
-                        win_wait = 0;
-                        TicTacToe.game.restartGame();
+                        if (win_wait - get_absolute_time() > 1000) {
+                            TicTacToe.game.restartGame();
+                            flag = false;
+                        }
                     }
                 }
                 break;

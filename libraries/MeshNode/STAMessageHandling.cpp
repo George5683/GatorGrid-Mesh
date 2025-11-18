@@ -236,6 +236,12 @@ bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
 
             uint32_t id_buffer[4];
             MEMCPY(id_buffer, updateMsg.msg.children_IDs, sizeof(id_buffer));
+            DEBUG_printf("Source: %u and Dest: %u", updateMsg.msg.source, updateMsg.msg.dest);
+
+            if (updateMsg.msg.source == parent) {
+                DEBUG_printf("Got update message from parent... Ignoring");
+                break;
+            }
 
             if(!tree.update_node(updateMsg.msg.source, id_buffer, updateMsg.msg.child_count)) {
                 ERROR_printf("Failed to update node");
@@ -303,7 +309,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
                 else {
                     DEBUG_printf("Child %08x was not accepted to %08x\n", get_NodeID(), msg_source);
                     //Add attempted connection to blacklist
-                    self_healing_blacklist.push_back(msg_source);
+                    self_healing_blacklist.emplace(msg_source);
                     //Run self healing again
                     runSelfHealing();
                 }
@@ -517,9 +523,16 @@ err_t STANode::handle_serial_message(uint8_t *msg) {
             }
             return(send_msg(updateMsg.get_msg()));
         }
-        case 0x01: /* serial_node_remove_msg */
+        case 0x01:{ /* serial_node_remove_msg */
             // If AP receives node_remove, a parent has been removed
+            
+            SERIAL_NODE_REMOVE_MESSAGE remMsg(0);
+            remMsg.set_msg(msg);
+            DEBUG_printf("Received node_remove_msg for node %u", remMsg.msg.node);
+
+            DEBUG_printf(tree.remove_child(remMsg.msg.node) ? "Removed node" : "Failed to remove node");
             break;
+        }
         case 0x02: /* Data message */
         {
             DEBUG_printf("Got DATA SERIAL MESSAGE\n");

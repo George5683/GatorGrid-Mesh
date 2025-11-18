@@ -7,6 +7,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <set>
 #include "pico/cyw43_arch.h"
 #include <bits/stdc++.h>
 
@@ -116,7 +117,7 @@ public:
     MeshNode();
     virtual ~MeshNode();
 
-    std::vector<uint32_t> self_healing_blacklist;
+    std::set<uint32_t> self_healing_blacklist;
 
     // Base class functions for get/set NodeID
     void set_NodeID(uint32_t ID);
