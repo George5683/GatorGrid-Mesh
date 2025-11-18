@@ -748,13 +748,17 @@ void STANode::addChildrenToBlacklist(){
     q.push_back(get_NodeID());
     while (q.size() > 0) {
         uint32_t curr_id = q[0];
+        DEBUG_printf("Checking node %u for children.\n", curr_id);
         self_healing_blacklist.push_back(curr_id);
         q.erase(q.begin());
         bool f = tree.get_children(curr_id, children_id, number_of_children);
+        DEBUG_printf("Node %u found children: %d\n", curr_id, f);
         if (f) {
+            DEBUG_printf("Adding node %u children.\n", curr_id);
             for (int i = 0; i < number_of_children; i++) {
                 q.push_back(children_id[i]);
             }
+            DEBUG_printf("Added node %u children.\n", curr_id);
         }
     }
 
