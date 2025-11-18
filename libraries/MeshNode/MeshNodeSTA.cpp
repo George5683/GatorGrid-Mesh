@@ -798,7 +798,7 @@ bool STANode::runSelfHealing(){
 
         scan_for_nodes();
 
-        int16_t min_rssi = known_nodes.begin()->second->rssi;
+        int16_t min_rssi = -100;
         uint32_t min_node_id = UINT32_MAX;//known_nodes.begin()->first;
         DEBUG_printf("Known nodes size: %d", known_nodes.size());
         if (known_nodes.size() == 0) {
@@ -829,9 +829,13 @@ bool STANode::runSelfHealing(){
 
             for (const auto& node : known_nodes) {
                 DEBUG_printf("Knows node %u with rssi %d", node.first, node.second->rssi);
+                
                 if ((node.second->rssi > min_rssi) && std::count(self_healing_blacklist.begin(), self_healing_blacklist.end(), node.first) == 0) {
+                    DEBUG_printf("%i > %i", node.second->rssi);
                     min_rssi = node.second->rssi;
                     min_node_id = node.first;
+                } else {
+                    DEBUG_printf("%i < %i", node.second->rssi);
                 }
             }
 
