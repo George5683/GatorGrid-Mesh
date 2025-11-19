@@ -60,6 +60,7 @@ public:
     object* grid[3] {row1, row2, row3};
 
     uint8_t placed_pieces = 0;
+    bool is_my_turn = false;
 
 private:
     
@@ -71,7 +72,7 @@ class NetworkTTTGame {
 public:
 
     TTTGame game;
-    bool is_my_turn = false;
+    
     pos_cords user_position = {.x = 0, .y = 0};
 
     NetworkTTTGame(uint8_t id) {

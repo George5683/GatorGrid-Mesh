@@ -122,17 +122,17 @@ void TTTGame::createNetworkMessage(TCP_DATA_MSG &msg, msg_type type) {
         char buffer[14] = {};
         buffer[0] = game_id;
         buffer[1] = update;
-        gameState.copy(buffer+1, 11, 0);
-        buffer[12] = '\0';
+        gameState.copy(buffer+2, 11, 0);
+        buffer[13] = '\0';
 
-        msg.add_message(reinterpret_cast<uint8_t*>(&buffer[0]), 13);
+        msg.add_message(reinterpret_cast<uint8_t*>(&buffer[0]), 14);
     } else if (victory == type) {
         // probably don't need, each node will check and find the win
     } else if (cat == type) {
         // probably don't need, each node will check and find the cat
     } else if (restart == type) {
-        uint8_t buffer[1] = {static_cast<uint8_t>(type)};
-        msg.add_message(buffer, 1);
+        uint8_t buffer[3] = {game_id, static_cast<uint8_t>(type), is_my_turn};
+        msg.add_message(buffer, 3);
     }
 }
 

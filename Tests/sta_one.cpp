@@ -55,7 +55,7 @@ int main() {
     }
     printf("Left searching for nodes\n");
 
-    while(!node.connect_to_node(2));
+    while(!node.connect_to_node(0));
     while (!node.tcp_init()) {
         ERROR_printf("Failed to init connection... Retrying");
     }
@@ -104,11 +104,15 @@ int main() {
     SERIAL_DATA_MESSAGE test_serial;
     // std::string test_state = "011,220,102";
     // TicTacToe.game.updateFromString(test_state);
-    TicTacToe.is_my_turn = false;
+    TicTacToe.game.is_my_turn = false;
 
     bool reset_flag = false;
+    // int win_wait = 0;
     bool flag = false;
     absolute_time_t win_wait;
+
+    TicTacToe.game.createNetworkMessage(game_updates, restart);
+    node.send_msg(game_updates.get_msg());
 
     for (;;) {
         // DEBUG_printf("Before poll");
@@ -181,7 +185,7 @@ int main() {
                 Paint_DrawBitMap(epd_bitmap_tictactoe);
 
 
-                if (TicTacToe.is_my_turn) {
+                if (TicTacToe.game.is_my_turn) {
 
                     TicTacToe.draw_selector();
 
@@ -203,7 +207,7 @@ int main() {
                             // node.uart.sendMessage((char*)test_serial.get_msg());
                             DUMP_BYTES(game_updates.get_msg(), game_updates.get_len());
                             node.send_msg(game_updates.get_msg());
-                            TicTacToe.is_my_turn = false;
+                            TicTacToe.game.is_my_turn = false;
                             key1_flag = true;
                         }
                         
@@ -213,28 +217,7 @@ int main() {
                     }
 
                 } else {
-                    if(node.rb.get_size()) {
-                        struct data r= node.rb.digest();
-                        // if (r.data[0] != game_id) continue;
-                        DUMP_BYTES(r.data, r.size);
-
-                        std::string game_state;
-                        for (int i = 1; i < 12; i++) {
-                            
-                            game_state += (char)r.data[i];
-                        }
-                        std::cout << game_state << "\n";
-                        TicTacToe.game.updateFromString(game_state);
-                        TicTacToe.is_my_turn = true;
-
-                        // switch ((msg_type)r.data[1]) {
-                        //     case update:
-                                
-                        //         break;
-                        //     default:
-                        //         break;
-                        // }
-                    }
+                    
                 }
 
 
@@ -245,13 +228,41 @@ int main() {
                 }
                 break;
         }
+
+        if(node.rb.get_size()) {
+            struct data r= node.rb.digest();
+            if (r.data[0] != game_id) continue;
+            DUMP_BYTES(r.data, r.size);
+
+            std::string game_state;
+            
+
+            switch ((msg_type)r.data[1]) {
+                case update:
+                    for (int i = 2; i < 13; i++) {
+                        game_state += (char)r.data[i];
+                    }
+                    std::cout << game_state << "\n";
+                    TicTacToe.game.updateFromString(game_state);
+                    TicTacToe.game.is_my_turn = true;
+                    break;
+
+                case restart:
+                    TicTacToe.game.restartGame();
+                    TicTacToe.game.is_my_turn = !(r.data[2]); // Opponent saying it is or is not their turn
+                    break;
+
+                default:
+                    break;
+            }
+        }
         
 
         OLED_1in3_C_Display(BlackImage);
         Paint_Clear(BLACK);
         
     }
-    
+
 
     return 0;
 }
