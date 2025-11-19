@@ -861,10 +861,15 @@ bool STANode::runSelfHealing(){
             int st = wifi_tcp_reconnect(pcb_ptr, NULL, parent, "password",
                             CYW43_AUTH_WPA2_AES_PSK, 30000);
             
+            int tcp_count = 0;
             // Re-initialize TCP
             while (!tcp_init()) {
                 ERROR_printf("Failed to init connection... Retrying");
                 sleep_ms(1000);
+                if(tcp_count >= 5) {
+                    return false;
+                }
+                tcp_count++;
             }
             
             foundParent = true;
