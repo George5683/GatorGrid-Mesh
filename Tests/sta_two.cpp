@@ -1,4 +1,5 @@
 #include "SerialMessages.hpp"
+// #include "libraries/TicTacToe/GUI_Paint.h"
 #include "pico/stdlib.h"
 #include "libraries/MeshNode/MeshNode.hpp"
 #include "libraries/MeshNode/Messages.hpp"
@@ -6,6 +7,7 @@
 #include <cstdio>
 #include "pico/cyw43_arch.h"
 
+#include <lwip/err.h>
 #include <stdio.h>
 #include <string.h>
 #include "pico/stdlib.h"
@@ -166,6 +168,7 @@ int main() {
     bool reset_flag = false;
     // int win_wait = 0;
     bool flag = false;
+    bool update_flag = false;
     absolute_time_t win_wait;
 
     TicTacToe.game.createNetworkMessage(game_updates, restart);
@@ -220,7 +223,12 @@ int main() {
                     Paint_DrawBitMap(epd_bitmap_lose);
                 }
 
-                if (!flag) { win_wait = get_absolute_time(); flag = true; }
+                if (!flag) {
+                    TicTacToe.game.createNetworkMessage(game_updates, victory);
+                    update_flag = true;
+                    win_wait = get_absolute_time(); 
+                    flag = true;
+                }
 
                 if(DEV_Digital_Read(key0) == 0 || DEV_Digital_Read(key1) == 0) {
                     reset_flag = true;
@@ -263,7 +271,7 @@ int main() {
                             // test_serial.add_message((uint8_t*)TicTacToe.game.currentState().c_str(), TicTacToe.game.currentState().length());
                             // node.uart.sendMessage((char*)test_serial.get_msg());
                             DUMP_BYTES(game_updates.get_msg(), game_updates.get_len());
-                            node.send_msg(game_updates.get_msg());
+                            update_flag = true;
                             TicTacToe.game.is_my_turn = false;
                             key1_flag = true;
                         }
@@ -284,6 +292,14 @@ int main() {
                     }
                 }
                 break;
+        }
+
+        if (update_flag) {
+            if (node.send_msg(game_updates.get_msg()) != ERR_OK) {
+                ERROR_printf("Failed to send update msg\n");
+            } else {
+                update_flag = false;
+            }
         }
 
         if(node.rb.get_size()) {
@@ -312,6 +328,12 @@ int main() {
                 default:
                     break;
             }
+        }
+
+        if (update_flag) {
+            Paint_SetPixel(2,2,0xF0);
+        } if (!node.is_connected()) {
+            Paint_SetPixel(2, 4, 0x0F);
         }
         
 

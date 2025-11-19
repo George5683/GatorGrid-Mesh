@@ -128,6 +128,8 @@ void TTTGame::createNetworkMessage(TCP_DATA_MSG &msg, msg_type type) {
         msg.add_message(reinterpret_cast<uint8_t*>(&buffer[0]), 14);
     } else if (victory == type) {
         // probably don't need, each node will check and find the win
+        uint8_t buffer[3] = {game_id, victory, checkWin()};
+        msg.add_message(buffer, 3);
     } else if (cat == type) {
         // probably don't need, each node will check and find the cat
     } else if (restart == type) {
