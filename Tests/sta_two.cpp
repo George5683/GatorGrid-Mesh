@@ -209,7 +209,7 @@ int main() {
                     reset_flag = true;
                 } else {
                     if (reset_flag) {
-                        if (win_wait - get_absolute_time() > 1000) {
+                        if (get_absolute_time() - win_wait > 1000) {
                             TicTacToe.game.restartGame();
                             flag = false;
                         }
@@ -342,5 +342,5 @@ int main() {
         
     }
 
-    return 0;// george said that the pin layout is flipped, or ofseet by one or soemthing
+    return 0;
 }
