@@ -165,7 +165,7 @@ err_t STANode::send_tcp_data_blocking(uint8_t* data, uint32_t size, bool forward
 }
 
 bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
-    check_guards("handle_incoming_data:start");
+    //check_guards("handle_incoming_data:start");
     uint32_t source_id = 0;
     bool ACK_flag = false;
     bool NAK_flag = false;
@@ -337,7 +337,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
 
 
         // uart.sendMessage();
-        check_guards("handle_incoming_data:end_uart");
+        //check_guards("handle_incoming_data:end_uart");
         return true;
     }
 
@@ -354,6 +354,7 @@ bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
         } else {
             send_tcp_data_blocking(ackMsg.get_msg(), ackMsg.get_len(), true);
         }
+        DEBUG_printf("Sent ack");
         //state->waiting_for_ack = true;
     } else if (NAK_flag) {
         // TODO: Update for error handling
@@ -361,12 +362,12 @@ bool STANode::handle_incoming_data(unsigned char* buffer, uint16_t tot_len) {
         TCP_NAK_MESSAGE nakMsg(get_NodeID(), 0, tot_len);
         send_tcp_data_blocking(nakMsg.get_msg(), nakMsg.get_len(), true);
         // delete msg;
-        check_guards("handle_incoming_data:end_1");
+        //check_guards("handle_incoming_data:end_1");
         return false;
     }
 
     // delete msg;
-    check_guards("handle_incoming_data:end_2");
+    //check_guards("handle_incoming_data:end_2");
     return true;
 }
 
@@ -385,7 +386,7 @@ err_t STANode::send_msg(uint8_t* msg) {
     tcp_pcb *target = nullptr;
 
     bool forward = false;
-    check_guards("send_msg:start");
+    //check_guards("send_msg:start");
     uint8_t id = msg[1];
     switch (id) {
         case 0x00:  // Init message from STA -> thus new parent has been added
@@ -482,13 +483,13 @@ err_t STANode::send_msg(uint8_t* msg) {
         uart.sendMessage((char*)serialMsg.get_msg());
     }
     DEBUG_printf("Message successfully sent");
-    check_guards("send_msg:end");
+    //check_guards("send_msg:end");
     
     return 0;
 }
 
 err_t STANode::handle_serial_message(uint8_t *msg) {
-    check_guards("handle_serial_message:start");
+    //check_guards("handle_serial_message:start");
     uint8_t id = serialMessageType(msg);
     DEBUG_printf("Received serial message in handler\n");
     DUMP_BYTES(msg, msg[1]);
@@ -538,6 +539,10 @@ err_t STANode::handle_serial_message(uint8_t *msg) {
             DEBUG_printf("Got DATA SERIAL MESSAGE\n");
             SERIAL_DATA_MESSAGE serial_msg;
             serial_msg.set_msg(msg);
+
+            // if (is_root) {
+            //     rb.insert(serial_msg.get_data(), serial_msg.get_data_len(), serial_msg.msg.)
+            // }
 
             handle_incoming_data(serial_msg.get_data(),serial_msg.get_data_len());
             

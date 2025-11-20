@@ -23,6 +23,7 @@ int main() {
     node.init_sta_mode();
     node.start_sta_mode();
     node.is_root = true;
+    node.state = (TCP_CLIENT_T*)calloc(1, sizeof(TCP_CLIENT_T));
 
     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
 
@@ -62,39 +63,19 @@ int main() {
     
     for (;;) {
 
-        node.poll();
+        DEBUG_printf("Loop start\n");
 
-        if (count == 500) {
-            // if (node.tree.node_exists(2)) {
-            //     TCP_DATA_MSG msg(node.get_NodeID(), 2);
-            //     msg.add_message((uint8_t*)hullo, sizeof(hullo));
-            //     node.send_msg(msg.get_msg());
-            // }
-        }
+        // Mark before poll
+        DEBUG_printf("Before poll\n");
+        node.poll();
+        // Mark after poll
+        DEBUG_printf("After poll\n");
 
         if (count++ >= 1000) {
             cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);
             toggle = !toggle;
-            if(!node.is_connected()) {
-                printf("Not connected!\n");
-            }
-            // node.tree.get_children(node.get_NodeID(), children_ids, number_of_children);
-            // printf("\n\nChildren:\n");
-            // for (int i = 0; i < number_of_children; i++) {
-            //     printf("%u\t", children_ids[i]);
-            // }
-            // printf("\n");
-
-            // node.tree.send_tree_serial();
-            // if (node.rb.get_size() > 0) {
-            //     struct data received = node.rb.digest();
-            //     //DUMP_BYTES(received.data, received.size);
-            //     printf("RINGBUFFER:%s\n", (char*)received.data);
-            // }
-
             count = 0;
         }
-       
 
         sleep_ms(1);
     }

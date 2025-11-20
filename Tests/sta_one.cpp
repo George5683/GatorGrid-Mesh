@@ -55,7 +55,7 @@ int main() {
     }
     printf("Left searching for nodes\n");
 
-    while(!node.connect_to_node(0));
+    while(!node.connect_to_node(3));
     while (!node.tcp_init()) {
         ERROR_printf("Failed to init connection... Retrying");
     }
@@ -95,12 +95,13 @@ int main() {
 
     const int game_id = 1;
     NetworkTTTGame TicTacToe(game_id);
-    object o = X;
+    object o = O;
     bool key0_flag = false;
     bool key1_flag = false;
     DEBUG_printf("Entering loop");
 
     TCP_DATA_MSG game_updates(node.get_NodeID(), 2);
+    TCP_DATA_MSG victory_msg(node.get_NodeID(), 0);
     SERIAL_DATA_MESSAGE test_serial;
     // std::string test_state = "011,220,102";
     // TicTacToe.game.updateFromString(test_state);
@@ -110,6 +111,7 @@ int main() {
     // int win_wait = 0;
     bool flag = false;
     bool update_flag = false;
+    bool send_victory_flag = false;
     absolute_time_t win_wait;
 
     TicTacToe.game.createNetworkMessage(game_updates, restart);
@@ -142,6 +144,7 @@ int main() {
                     Paint_DrawBitMap(epd_bitmap_win);
                 } else {
                     Paint_DrawBitMap(epd_bitmap_lose);
+                    DEBUG_printf("LOSING");
                 }
 
                 if (!flag) { win_wait = get_absolute_time(); flag = true; }
@@ -152,6 +155,7 @@ int main() {
                     if (reset_flag) {
                         if (get_absolute_time() - win_wait > 1000) {
                             TicTacToe.game.restartGame();
+                            reset_flag = false;
                             flag = false;
                         }
                     }
@@ -160,12 +164,14 @@ int main() {
             case 2:
                 if (o == 2) {
                     Paint_DrawBitMap(epd_bitmap_win);
+                    DEBUG_printf("WINNING");
                 } else {
                     Paint_DrawBitMap(epd_bitmap_lose);
                 }
 
                 if (!flag) {
-                    TicTacToe.game.createNetworkMessage(game_updates, victory);
+                    TicTacToe.game.createNetworkMessage(victory_msg, victory);
+                    send_victory_flag = true;
                     update_flag = true;
                     win_wait = get_absolute_time(); 
                     flag = true;
@@ -175,8 +181,9 @@ int main() {
                     reset_flag = true;
                 } else {
                     if (reset_flag) {
-                        if (win_wait - get_absolute_time() > 1000) {
+                        if (get_absolute_time() - win_wait > 1000) {
                             TicTacToe.game.restartGame();
+                            reset_flag = false;
                             flag = false;
                         }
                     }
@@ -204,6 +211,7 @@ int main() {
                     }
 
                     if(DEV_Digital_Read(key1) == 0 && !key1_flag){
+                        DEBUG_printf("PLACING OBJECT");
                         pos_cords pos = TicTacToe.get_position();
                         if (TicTacToe.game.placeObject(o, pos.x, pos.y)) {
                             
@@ -236,16 +244,27 @@ int main() {
         }
 
         if (update_flag) {
+            if (flag) {
+                node.send_msg(victory_msg.get_msg());
+                send_victory_flag = false;
+                update_flag = false;
+                continue;
+            }
             if (node.send_msg(game_updates.get_msg()) != ERR_OK) {
                 ERROR_printf("Failed to send update msg\n");
             } else {
                 update_flag = false;
             }
+
+            
         }
 
         if(node.rb.get_size()) {
             struct data r= node.rb.digest();
-            if (r.data[0] != game_id) continue;
+            if (r.data[0] != game_id)  {
+                DEBUG_printf("Recieved msg for wrong game_id");
+                continue;
+            }
             DUMP_BYTES(r.data, r.size);
 
             std::string game_state;
@@ -253,6 +272,7 @@ int main() {
 
             switch ((msg_type)r.data[1]) {
                 case update:
+
                     for (int i = 2; i < 13; i++) {
                         game_state += (char)r.data[i];
                     }
@@ -262,9 +282,13 @@ int main() {
                     break;
 
                 case restart:
+                    DEBUG_printf("Received restart msg");
                     TicTacToe.game.restartGame();
                     TicTacToe.game.is_my_turn = !(r.data[2]); // Opponent saying it is or is not their turn
                     break;
+
+                case victory:
+                    DEBUG_printf("Recieved Victory message");
 
                 default:
                     break;

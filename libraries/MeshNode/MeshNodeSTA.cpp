@@ -444,6 +444,9 @@ bool STANode::init_sta_mode() {
 
     AP_ID = *(uint32_t*)buffer;
     DEBUG_printf("ID char: %d\n", AP_ID);
+
+    // uart.clearBuffer(); 
+
     tree.edit_head(AP_ID);
 
     this->set_NodeID(AP_ID);
@@ -694,9 +697,17 @@ bool STANode::tcp_init() {
 // Check for serial messages and if you have any parse them
 void STANode::poll() {
     static int count = 0;
-    if(uart.BufferReady()) {
-        handle_serial_message(uart.getReadBuffer());
+    if (uart.BufferReady()) {
+        DEBUG_printf("[poll] BufferReady == true\n");
+        uint8_t *buf = uart.getReadBuffer();
+        DEBUG_printf("[poll] First 4 bytes: %02x %02x %02x %02x\n",
+                     buf[0], buf[1], buf[2], buf[3]);
+        handle_serial_message(buf);
+        DEBUG_printf("[poll] After handle_serial_message\n");
+        // uart.clearBuffer();  // consume after handling
     }
+
+    if (is_root) return;
 
     if (!is_connected() && !is_root) {
         ERROR_printf("Detected that we are no longer connected");
