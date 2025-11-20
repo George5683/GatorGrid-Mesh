@@ -7,6 +7,14 @@
 #include "pico/multicore.h"
 #include "display.hpp"
 
+extern "C" {
+    //#include "TicTacToe.h"
+    #include "images.h"
+    #include "DEV_Config.h"
+    #include "GUI_Paint.h"
+    #include "OLED_1in3_c.h"
+}
+
 #define DEBUG 1
 
 
@@ -45,6 +53,35 @@ int main() {
     // }
 
     // sleep_ms(1000);
+
+
+    // --- init screen ---
+
+    OLED_1in3_C_Init();
+    OLED_1in3_C_Clear();
+
+    // uint32_t send_count = 0;
+    UBYTE *BlackImage;
+    UWORD Imagesize = ((OLED_1in3_C_WIDTH%8==0)? (OLED_1in3_C_WIDTH/8): (OLED_1in3_C_WIDTH/8+1)) * OLED_1in3_C_HEIGHT;
+    if((BlackImage = (UBYTE *)malloc(Imagesize)) == NULL) {
+        while(1){
+            printf("Failed to apply for black memory...\r\n");
+        }
+    }
+
+    Paint_NewImage(BlackImage, OLED_1in3_C_WIDTH, OLED_1in3_C_HEIGHT, 180, WHITE);	
+    Paint_Clear(BLACK);
+    int key0 = 15; 
+    int key1 = 17;
+    DEV_GPIO_Mode(key0, 0);
+    DEV_GPIO_Mode(key1, 0);
+    
+    Paint_Clear(BLACK);
+    OLED_1in3_C_Display(BlackImage);
+
+    // --- end init screen ---
+
+
 
 
     bool got_an_ack = false;
