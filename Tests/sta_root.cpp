@@ -60,16 +60,41 @@ int main() {
     uint8_t number_of_children = 0;
 
     char hullo[] = {"Hello from the root!"};
+
+    struct data tictactoe_message = {0};
+    uint win_count[6] = {0};
     
     for (;;) {
 
         DEBUG_printf("Loop start\n");
 
-        // Mark before poll
-        DEBUG_printf("Before poll\n");
-        node.poll();
-        // Mark after poll
-        DEBUG_printf("After poll\n");
+        if (count == 500) {
+            if(node.rb.get_size() >= 1) {
+                tictactoe_message = node.rb.digest();
+
+                printf("\n%d has won a game!\n");
+
+                win_count[tictactoe_message.source]++;
+
+                printf("--- SCORE BOARD ---\n"
+                       "Node 1: %d\n"
+                       "Node 2: %d\n"
+                       "Node 4: %d\n"
+                       "Node 5: %d\n"
+                       "------- END -------\n", 
+                        win_count[1],
+                        win_count[2],
+                        win_count[4],
+                        win_count[5]);
+                }
+
+
+            // if (node.tree.node_exists(2)) {
+            //     TCP_DATA_MSG msg(node.get_NodeID(), 2);
+            //     msg.add_message((uint8_t*)hullo, sizeof(hullo));
+            //     node.send_msg(msg.get_msg());
+            // }
+        }
 
         if (count++ >= 1000) {
             cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, toggle);

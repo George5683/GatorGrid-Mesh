@@ -23,7 +23,7 @@ if (EXISTS ${picoVscode})
     include(${picoVscode})
 endif()
 # ====================================================================================
-set(PICO_BOARD pico_w CACHE STRING "Board type")
+set(PICO_BOARD pico2_w CACHE STRING "Board type")
 
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
@@ -334,7 +334,7 @@ pico_enable_stdio_usb(sta_three 1)
 
 pico_add_extra_outputs(sta_three)
 
-# ________________________________________ Cmake for ap_two ________________________________________
+# ________________________________________ Cmake for ap_three ________________________________________
 
 add_executable(ap_three
         Tests/ap_three.cpp
@@ -366,3 +366,133 @@ pico_enable_stdio_usb(ap_three 1)
         
 
 pico_add_extra_outputs(ap_three)
+
+# node 4
+# ________________________________________ Cmake for sta_four ________________________________________
+add_executable(sta_four
+        Tests/sta_four.cpp
+        ${SRC_FILES}
+        )
+
+target_include_directories(sta_four PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
+        ${LIBRARY_DIRS}
+        )
+
+target_link_libraries(sta_four
+        pico_cyw43_arch_lwip_threadsafe_background
+        pico_stdlib
+        hardware_spi
+        hardware_i2c
+        hardware_pwm
+        hardware_adc
+        )
+
+if (APP_DEBUG)
+  target_compile_definitions(sta_four PRIVATE DEBUG=1)
+endif()
+
+pico_enable_stdio_uart(sta_four 0)
+pico_enable_stdio_usb(sta_four 1)
+        
+
+pico_add_extra_outputs(sta_four)
+
+# ________________________________________ Cmake for ap_four ________________________________________
+
+add_executable(ap_four
+        Tests/ap_four.cpp
+        ${SRC_FILES}
+        )
+
+target_include_directories(ap_four PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
+        ${LIBRARY_DIRS}
+        )
+
+target_link_libraries(ap_four
+        pico_cyw43_arch_lwip_threadsafe_background
+        pico_stdlib
+        pico_multicore
+        hardware_spi
+        hardware_i2c
+        hardware_pwm
+        hardware_adc
+        )
+
+if (APP_DEBUG)
+  target_compile_definitions(ap_four PRIVATE DEBUG=1)
+endif()
+
+pico_enable_stdio_uart(ap_four 0)
+pico_enable_stdio_usb(ap_four 1)
+        
+
+pico_add_extra_outputs(ap_four)
+
+# node 5
+# ________________________________________ Cmake for sta_five ________________________________________
+add_executable(sta_five
+        Tests/sta_five.cpp
+        ${SRC_FILES}
+        )
+
+target_include_directories(sta_five PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
+        ${LIBRARY_DIRS}
+        )
+
+target_link_libraries(sta_five
+        pico_cyw43_arch_lwip_threadsafe_background
+        pico_stdlib
+        hardware_spi
+        hardware_i2c
+        hardware_pwm
+        hardware_adc
+        )
+
+if (APP_DEBUG)
+  target_compile_definitions(sta_five PRIVATE DEBUG=1)
+endif()
+
+pico_enable_stdio_uart(sta_five 0)
+pico_enable_stdio_usb(sta_five 1)
+        
+
+pico_add_extra_outputs(sta_five)
+
+# ________________________________________ Cmake for ap_five ________________________________________
+
+add_executable(ap_five
+        Tests/ap_five.cpp
+        ${SRC_FILES}
+        )
+
+target_include_directories(ap_five PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts
+        ${LIBRARY_DIRS}
+        )
+
+target_link_libraries(ap_five
+        pico_cyw43_arch_lwip_threadsafe_background
+        pico_stdlib
+        pico_multicore
+        hardware_spi
+        hardware_i2c
+        hardware_pwm
+        hardware_adc
+        )
+
+if (APP_DEBUG)
+  target_compile_definitions(ap_five PRIVATE DEBUG=1)
+endif()
+
+pico_enable_stdio_uart(ap_five 0)
+pico_enable_stdio_usb(ap_five 1)
+        
+
+pico_add_extra_outputs(ap_five)

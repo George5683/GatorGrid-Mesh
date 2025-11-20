@@ -1,26 +1,49 @@
 #include "pico/stdlib.h"
 #include "libraries/MeshNode/MeshNode.hpp"
-#include "libraries/display/display.hpp"
 #include <cstdio>
 #include "pico/cyw43_arch.h"
 #include "pico/multicore.h"
 
+
 bool is_wifi_connected = false;
-
 #define DEBUG 1
-
 
 int main() {
 
     // initiate everything
     stdio_init_all();
 
+    sleep_ms(5000);
+
+    APNode node(4);
+
+    
+
+    //PicoUART uart;
+
+    /*cyw43_arch_init();
+
+    printf("starting uart\n");
+    uart.picoUARTInit();
+    printf("uart  nitalized\n");
+    uart.picoUARTInterruptInit();
+    printf("uart intterupts initalized\n");
+
+    printf("Init totally finished\n");*/
+
+    /*while(true) {
+        printf("ping\n");
+        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
+        sleep_ms(1000);
+        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, false);
+        sleep_ms(1000);
+    }*/
+
     // initial delay to allow user to look at the serial monitor
-    sleep_ms(10000);
-    display_test();
+    //sleep_ms(5000);
 
     //multicore_launch_core1(core1_entry);
-    APNode node(3);
+    
 
     printf("Init AP Mode\n");
     if (!node.init_ap_mode())
@@ -44,7 +67,6 @@ int main() {
 
     uint32_t children_ids[4] = {};
     uint8_t number_of_children = 0;
-    char data[10] = "Test msg";
     
     while (node.server_running()) {
 
@@ -61,16 +83,6 @@ int main() {
             }
             printf("\n");
 
-            /*if(number_of_children != 0) {
-                printf("Attempting to send message to node 1\n");
-
-                if(node.send_data(1, 10, (uint8_t*)data) == -1) {
-                    printf("send_data returned -1\n");
-                } else {
-                    printf("send_data returned 0\n");
-                }
-            }*/
-
             count = 0;
         }
 
@@ -82,6 +94,8 @@ int main() {
         puts("Exited");
         sleep_ms(1000);
     }
+        
+    
 
     return 0;
 }
