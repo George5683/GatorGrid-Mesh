@@ -73,7 +73,7 @@ int main() {
             if(node.rb.get_size() >= 1) {
                 tictactoe_message = node.rb.digest();
 
-                printf("\n%d has won a game!\n");
+                printf("\n%d has won a game!\n", tictactoe_message.source);
 
                 win_count[tictactoe_message.source]++;
 
