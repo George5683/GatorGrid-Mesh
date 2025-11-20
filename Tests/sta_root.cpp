@@ -66,7 +66,8 @@ int main() {
     
     for (;;) {
 
-        DEBUG_printf("Loop start\n");
+        // DEBUG_printf("Loop start\n");
+        node.poll();
 
         if (count == 500) {
             if(node.rb.get_size() >= 1) {

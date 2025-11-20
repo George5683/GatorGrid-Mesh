@@ -153,7 +153,7 @@ int main() {
                     reset_flag = true;
                 } else {
                     if (reset_flag) {
-                        if (get_absolute_time() - win_wait > 1000) {
+                        if (absolute_time_diff_us(win_wait, get_absolute_time()) > 1000000) {
                             TicTacToe.game.restartGame();
                             reset_flag = false;
                             flag = false;
