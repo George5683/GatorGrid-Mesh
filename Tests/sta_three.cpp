@@ -26,6 +26,24 @@ int main() {
 
     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
 
+    if (!node.scan_for_nodes()) {
+        return 0;
+    }
+    printf("known nodes map size: %d\n", node.known_nodes.size());
+    while (node.known_nodes.empty()) {
+        //printf("known nodes map size: %d", node.known_nodes.size());
+        if (!node.scan_for_nodes()) {
+
+            return 0;
+        }
+    }
+    printf("Left searching for nodes\n");
+
+    while(!node.connect_to_node(0));
+    
+    while (!node.tcp_init()) {
+        ERROR_printf("Failed to init connection... Retrying");
+    }
     
     // if (!node.scan_for_nodes()) {
     //     return 0;
