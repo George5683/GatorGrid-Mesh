@@ -55,7 +55,7 @@ int main() {
     }
     printf("Left searching for nodes\n");
 
-    while(!node.connect_to_node(3));
+    while(!node.connect_to_node(0));
     while (!node.tcp_init()) {
         ERROR_printf("Failed to init connection... Retrying");
     }
@@ -104,7 +104,7 @@ int main() {
     SERIAL_DATA_MESSAGE test_serial;
     // std::string test_state = "011,220,102";
     // TicTacToe.game.updateFromString(test_state);
-    TicTacToe.is_my_turn = false;
+    TicTacToe.game.is_my_turn = false;
 
     bool reset_flag = false;
     bool flag = false;
@@ -181,7 +181,7 @@ int main() {
                 Paint_DrawBitMap(epd_bitmap_tictactoe);
 
 
-                if (TicTacToe.is_my_turn) {
+                if (TicTacToe.game.is_my_turn) {
 
                     TicTacToe.draw_selector();
 
@@ -203,7 +203,7 @@ int main() {
                             // node.uart.sendMessage((char*)test_serial.get_msg());
                             DUMP_BYTES(game_updates.get_msg(), game_updates.get_len());
                             node.send_msg(game_updates.get_msg());
-                            TicTacToe.is_my_turn = false;
+                            TicTacToe.game.is_my_turn = false;
                             key1_flag = true;
                         }
                         
@@ -225,7 +225,7 @@ int main() {
                         }
                         std::cout << game_state << "\n";
                         TicTacToe.game.updateFromString(game_state);
-                        TicTacToe.is_my_turn = true;
+                        TicTacToe.game.is_my_turn = true;
 
                         // switch ((msg_type)r.data[1]) {
                         //     case update:
